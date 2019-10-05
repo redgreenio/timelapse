@@ -7,21 +7,21 @@ class SoSoTest {
   @Test
   fun `when there are no brackets, then return a depth of 0`() {
     val noBrackets = ""
-    assertThat(SoSo.depthOf(noBrackets))
+    assertThat(SoSo.analyze(noBrackets).depth)
       .isEqualTo(0)
   }
 
   @Test
   fun `when there are a pair of brackets, then return a depth of 1 (single line)`() {
     val onePairOfBracketsSingleLine = "{}"
-    assertThat(SoSo.depthOf(onePairOfBracketsSingleLine))
+    assertThat(SoSo.analyze(onePairOfBracketsSingleLine).depth)
       .isEqualTo(1)
   }
 
   @Test
   fun `when there are two pairs of brackets, then return a depth of 2 (single line)`() {
     val twoPairsOfBracketsSingleLine = "{{}}"
-    assertThat(SoSo.depthOf(twoPairsOfBracketsSingleLine))
+    assertThat(SoSo.analyze(twoPairsOfBracketsSingleLine).depth)
       .isEqualTo(2)
   }
 
@@ -32,7 +32,7 @@ class SoSoTest {
         }
       """.trimIndent()
 
-    assertThat(SoSo.depthOf(onePairOfBracketDifferentLines))
+    assertThat(SoSo.analyze(onePairOfBracketDifferentLines).depth)
       .isEqualTo(1)
   }
 
@@ -43,7 +43,7 @@ class SoSoTest {
       }
     """.trimIndent()
 
-    assertThat(SoSo.depthOf(mainFunction))
+    assertThat(SoSo.analyze(mainFunction).depth)
       .isEqualTo(1)
   }
 
@@ -57,7 +57,7 @@ class SoSoTest {
       }
     """.trimIndent()
 
-    assertThat(SoSo.depthOf(functionWithConditional))
+    assertThat(SoSo.analyze(functionWithConditional).depth)
       .isEqualTo(2)
   }
 
@@ -75,7 +75,7 @@ class SoSoTest {
       }
     """.trimIndent()
 
-    assertThat(SoSo.depthOf(functionWithIfElseLadder))
+    assertThat(SoSo.analyze(functionWithIfElseLadder).depth)
       .isEqualTo(2)
   }
 
@@ -102,7 +102,7 @@ class SoSoTest {
       }
     """.trimIndent()
 
-    assertThat(SoSo.depthOf(functionWith4LevelsOfNesting))
+    assertThat(SoSo.analyze(functionWith4LevelsOfNesting).depth)
       .isEqualTo(4 + 1)
   }
 }
