@@ -12,7 +12,7 @@ class SoSoTest {
   }
 
   @Test
-  fun `when there is a pair of brackets, then return a depth of 1 (single line)`() {
+  fun `when there are a pair of brackets, then return a depth of 1 (single line)`() {
     val onePairOfBracketsSingleLine = "{}"
     assertThat(SoSo.depthOf(onePairOfBracketsSingleLine))
       .isEqualTo(1)
@@ -26,7 +26,7 @@ class SoSoTest {
   }
 
   @Test
-  fun `when there is a pair of brackets on different lines, then return a depth of 1`() {
+  fun `when there are a pair of brackets on different lines, then return a depth of 1`() {
     val onePairOfBracketDifferentLines = """
         {
         }
@@ -37,7 +37,7 @@ class SoSoTest {
   }
 
   @Test
-  fun `when there is a Kotlin function, then report a depth of 1`() {
+  fun `when there is a Kotlin top-level function, then report a depth of 1`() {
     val mainFunction = """
       fun main() {
       }
@@ -48,7 +48,7 @@ class SoSoTest {
   }
 
   @Test
-  fun `when there is a Kotlin function with a conditional, then report a depth of 2`() {
+  fun `when there is a Kotlin top-level function with a conditional, then report a depth of 2`() {
     val functionWithConditional = """
       fun main() {
         if (true) {
