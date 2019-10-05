@@ -139,9 +139,10 @@ class SoSoTest {
     val functionWithCommentedMatchingBraces = """
       fun main() {
         // { /* nothing here */ }
+        //{}
       }
     """.trimIndent()
-    val expectedResult = Result(1, 3)
+    val expectedResult = Result(1, 4)
 
     assertThat(SoSo.analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
