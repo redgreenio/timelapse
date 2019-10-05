@@ -11,15 +11,15 @@ class SoSoTest {
   }
 
   @Test
-  fun `it returns an empty result for blank snippets`() {
+  fun `it returns just the line count for blank snippets`() {
     val noBrackets = "    "
 
     assertThat(SoSo.analyze(noBrackets))
-      .isEqualTo(Result.EMPTY)
+      .isEqualTo(Result(0, 1))
   }
 
   @Test
-  fun `it returns an empty result for non-code snippets`() {
+  fun `it returns just the line count for non-code snippets`() {
     val justComments = """
       // This is just some comment,
       // followed by another line of comment,
@@ -27,7 +27,7 @@ class SoSoTest {
     """.trimIndent()
 
     assertThat(SoSo.analyze(justComments))
-      .isEqualTo(Result.EMPTY)
+      .isEqualTo(Result(0, 3))
   }
 
   @Test
@@ -166,7 +166,7 @@ class SoSoTest {
   }
 
   @Test
-  fun `it can ignore brackets inside multi-line comments`() {
+  fun `it can ignore brackets inside multiline comments`() {
     val functionWithCommentedMatchingBraces = """
       fun main() {
         /* { nothing here } */
@@ -179,7 +179,23 @@ class SoSoTest {
       .isEqualTo(expectedResult)
   }
 
-  // TODO Ignore Multi-line comments
+  @Test
+  fun `it can ignore brackets inside multiline comments that span across lines`() {
+    val functionWithMultilineCommentedCode = """
+      fun main() {
+        /*
+        if (true) {
+          println("Good food, yum!")
+        }
+        */
+      }
+    """.trimIndent()
+    val expectedResult = Result(1, 7)
+
+    assertThat(SoSo.analyze(functionWithMultilineCommentedCode))
+      .isEqualTo(expectedResult)
+  }
+
   // TODO Ignore new lines after the function
   // TODO What is a depth/nesting of a function?
   // TODO Find the system newline character in a given file
