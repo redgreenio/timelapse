@@ -15,14 +15,26 @@ data class Result(
 }
 
 object SoSo {
+  private val SINGLE_LINE_COMMENT_REGEX = Regex("//+\\s[^.!?]*")
+
   fun analyze(snippet: String): Result {
     if (snippet.isBlank()) return Result(0, 0)
+    val sanitizedSnippet = sanitizeSnippet(snippet)
+    return computeDepthAndLength(sanitizedSnippet)
+  }
 
+  private fun sanitizeSnippet(snippet: String): String {
+    return snippet.split("\n")
+      .joinToString("\n") { line ->
+        line.replace(SINGLE_LINE_COMMENT_REGEX, "//")
+      }
+  }
+
+  private fun computeDepthAndLength(sanitizedSnippet: String): Result {
     val depthStack = Stack<Depth>()
     var maximumDepth = 0
     var length = 1
-
-    snippet
+    sanitizedSnippet
       .fold(0) { depth, char ->
         when (char) {
           '\n' -> {
