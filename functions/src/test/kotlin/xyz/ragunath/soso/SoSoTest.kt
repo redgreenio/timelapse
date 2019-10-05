@@ -78,4 +78,31 @@ class SoSoTest {
     assertThat(SoSo.depthOf(functionWithIfElseLadder))
       .isEqualTo(2)
   }
+
+  @Test
+  fun `when a kotlin function body has 4 nested if statements, then report a depth of 4 + 1`() {
+    val functionWith4LevelsOfNesting = """
+      fun notFun() {
+        // Level 1
+        if (true) {
+
+          // Level 2
+          if (!false) {
+
+            // Level 3
+            if (true) {
+
+              // Level 4
+              while (true) {
+                println("Hello World!")
+              }
+            }
+          }
+        }
+      }
+    """.trimIndent()
+
+    assertThat(SoSo.depthOf(functionWith4LevelsOfNesting))
+      .isEqualTo(4 + 1)
+  }
 }
