@@ -15,7 +15,10 @@ data class Result(
 }
 
 object SoSo {
+  private const val COMMENT_REPLACEMENT_STRING = "//"
+
   private val SINGLE_LINE_COMMENT_REGEX = Regex("//+\\s[^.!?]*")
+  private val MULTILINE_COMMENT_IN_ONE_LINE_REGEX = Regex("/\\*+\\s[^.!?]*\\*/")
 
   fun analyze(snippet: String): Result {
     if (snippet.isBlank()) return Result(0, 0)
@@ -26,7 +29,8 @@ object SoSo {
   private fun sanitizeSnippet(snippet: String): String {
     return snippet.split("\n")
       .joinToString("\n") { line ->
-        line.replace(SINGLE_LINE_COMMENT_REGEX, "//")
+        line.replace(SINGLE_LINE_COMMENT_REGEX, COMMENT_REPLACEMENT_STRING)
+          .replace(MULTILINE_COMMENT_IN_ONE_LINE_REGEX, COMMENT_REPLACEMENT_STRING)
       }
   }
 
