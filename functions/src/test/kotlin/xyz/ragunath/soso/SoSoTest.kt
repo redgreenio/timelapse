@@ -17,4 +17,11 @@ class SoSoTest {
     assertThat(depth)
       .isEqualTo(1)
   }
+
+  @Test
+  fun `when there are two pairs of brackets, then return a depth of 2 (single line)`() {
+    val depth = SoSo.maximumDepthOf("{{}}")
+    assertThat(depth)
+      .isEqualTo(2)
+  }
 }
