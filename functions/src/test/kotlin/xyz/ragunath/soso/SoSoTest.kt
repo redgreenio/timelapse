@@ -6,47 +6,44 @@ import org.junit.Test
 class SoSoTest {
   @Test
   fun `when there are no brackets, then return a depth of 0`() {
-    val depth = SoSo.maximumDepthOf("")
-    assertThat(depth)
+    val noBrackets = ""
+    assertThat(SoSo.depthOf(noBrackets))
       .isEqualTo(0)
   }
 
   @Test
   fun `when there is a pair of brackets, then return a depth of 1 (single line)`() {
-    val depth = SoSo.maximumDepthOf("{}")
-    assertThat(depth)
+    val onePairOfBracketsSingleLine = "{}"
+    assertThat(SoSo.depthOf(onePairOfBracketsSingleLine))
       .isEqualTo(1)
   }
 
   @Test
   fun `when there are two pairs of brackets, then return a depth of 2 (single line)`() {
-    val depth = SoSo.maximumDepthOf("{{}}")
-    assertThat(depth)
+    val twoPairsOfBracketsSingleLine = "{{}}"
+    assertThat(SoSo.depthOf(twoPairsOfBracketsSingleLine))
       .isEqualTo(2)
   }
 
   @Test
   fun `when there is a pair of brackets on different lines, then return a depth of 1`() {
-    val depth = SoSo.maximumDepthOf(
-      """
-      {
-      }
-    """.trimIndent()
-    )
+    val onePairOfBracketDifferentLines = """
+        {
+        }
+      """.trimIndent()
 
-    assertThat(depth)
+    assertThat(SoSo.depthOf(onePairOfBracketDifferentLines))
       .isEqualTo(1)
   }
 
   @Test
   fun `when there is a Kotlin function, then report a depth of 1`() {
-    val depth = SoSo.maximumDepthOf(
-      """
+    val mainFunction = """
       fun main() {
       }
     """.trimIndent()
-    )
-    assertThat(depth)
+
+    assertThat(SoSo.depthOf(mainFunction))
       .isEqualTo(1)
   }
 
@@ -60,7 +57,7 @@ class SoSoTest {
       }
     """.trimIndent()
 
-    assertThat(SoSo.maximumDepthOf(functionWithConditional))
+    assertThat(SoSo.depthOf(functionWithConditional))
       .isEqualTo(2)
   }
 }
