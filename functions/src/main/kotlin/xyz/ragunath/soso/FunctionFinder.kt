@@ -16,7 +16,7 @@ fun findFunction(text: String): Location {
     }
   }
 
-  return Location(startRow, row)
+  return Location(startRow, if (startRow == -1) -1 else row)
 }
 
 private fun CharArray.push(char: Char) {
@@ -35,4 +35,8 @@ private fun CharArray.has(text: String): Boolean =
 data class Location(
   val start: Int,
   val end: Int
-)
+) {
+  companion object {
+    val NONE = Location(-1, -1)
+  }
+}
