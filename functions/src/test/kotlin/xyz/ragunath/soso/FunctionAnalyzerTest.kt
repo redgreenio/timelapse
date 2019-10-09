@@ -3,7 +3,7 @@ package xyz.ragunath.soso
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-class SoSoTest {
+class FunctionAnalyzerTest {
   @Test
   fun `empty result has 0 depth and 0 length`() {
     assertThat(Result.EMPTY.depth).isEqualTo(0)
@@ -14,7 +14,7 @@ class SoSoTest {
   fun `it returns just the line count for blank snippets`() {
     val noBrackets = "    "
 
-    assertThat(SoSo.analyze(noBrackets))
+    assertThat(analyze(noBrackets))
       .isEqualTo(Result(0, 1))
   }
 
@@ -26,7 +26,7 @@ class SoSoTest {
       // and yet another line of comment!
     """.trimIndent()
 
-    assertThat(SoSo.analyze(justComments))
+    assertThat(analyze(justComments))
       .isEqualTo(Result(0, 3))
   }
 
@@ -35,7 +35,7 @@ class SoSoTest {
     val onePairOfBracketsSingleLine = "{}"
     val expectedResult = Result(1, 1)
 
-    assertThat(SoSo.analyze(onePairOfBracketsSingleLine))
+    assertThat(analyze(onePairOfBracketsSingleLine))
       .isEqualTo(expectedResult)
   }
 
@@ -44,7 +44,7 @@ class SoSoTest {
     val twoPairsOfBracketsSingleLine = "{{}}"
     val expectedResult = Result(2, 1)
 
-    assertThat(SoSo.analyze(twoPairsOfBracketsSingleLine))
+    assertThat(analyze(twoPairsOfBracketsSingleLine))
       .isEqualTo(expectedResult)
   }
 
@@ -56,7 +56,7 @@ class SoSoTest {
       """.trimIndent()
     val expectedResult = Result(1, 2)
 
-    assertThat(SoSo.analyze(onePairOfBracketDifferentLines))
+    assertThat(analyze(onePairOfBracketDifferentLines))
       .isEqualTo(expectedResult)
   }
 
@@ -68,7 +68,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(1, 2)
 
-    assertThat(SoSo.analyze(mainFunction))
+    assertThat(analyze(mainFunction))
       .isEqualTo(expectedResult)
   }
 
@@ -83,7 +83,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(2, 5)
 
-    assertThat(SoSo.analyze(functionWithConditional))
+    assertThat(analyze(functionWithConditional))
       .isEqualTo(expectedResult)
   }
 
@@ -102,7 +102,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(2, 9)
 
-    assertThat(SoSo.analyze(functionWithIfElseLadder))
+    assertThat(analyze(functionWithIfElseLadder))
       .isEqualTo(expectedResult)
   }
 
@@ -130,7 +130,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(5, 18)
 
-    assertThat(SoSo.analyze(functionWith4LevelsOfNesting))
+    assertThat(analyze(functionWith4LevelsOfNesting))
       .isEqualTo(expectedResult)
   }
 
@@ -144,7 +144,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(1, 4)
 
-    assertThat(SoSo.analyze(functionWithCommentedMatchingBraces))
+    assertThat(analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
   }
 
@@ -161,7 +161,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(1, 7)
 
-    assertThat(SoSo.analyze(functionWithCommentedCode))
+    assertThat(analyze(functionWithCommentedCode))
       .isEqualTo(expectedResult)
   }
 
@@ -175,7 +175,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(1, 4)
 
-    assertThat(SoSo.analyze(functionWithCommentedMatchingBraces))
+    assertThat(analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
   }
 
@@ -192,7 +192,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(1, 7)
 
-    assertThat(SoSo.analyze(functionWithMultilineCommentedCode))
+    assertThat(analyze(functionWithMultilineCommentedCode))
       .isEqualTo(expectedResult)
   }
 
@@ -205,7 +205,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(1, 3)
 
-    assertThat(SoSo.analyze(functionWithNestedSingleLineComments))
+    assertThat(analyze(functionWithNestedSingleLineComments))
       .isEqualTo(expectedResult)
   }
 
@@ -226,7 +226,7 @@ class SoSoTest {
     """.trimIndent()
     val expectedResult = Result(2, 11)
 
-    assertThat(SoSo.analyze(functionWithNestedMultilineComments))
+    assertThat(analyze(functionWithNestedMultilineComments))
       .isEqualTo(expectedResult)
   }
 
