@@ -5,24 +5,15 @@ import org.junit.Test
 
 class FunctionAnalyzerTest {
   @Test
-  fun `empty result has 0 depth and 0 length`() {
-    val expectedResult = Result(0, 0, 0, 0)
-
-    assertThat(Result.EMPTY)
-      .isEqualTo(expectedResult)
-  }
-
-  @Test
-  fun `it returns just the line count for blank snippets`() {
+  fun `it returns and empty result for blank snippets`() {
     val noBrackets = "    "
 
     assertThat(analyze(noBrackets))
-      .containsExactly(Result.with(0, 1, 0, 0))
-      .inOrder()
+      .isEmpty()
   }
 
   @Test
-  fun `it returns just the line count for non-code snippets`() {
+  fun `it returns an empty result for non-code snippets`() {
     val justComments = """
       // This is just some comment,
       // followed by another line of comment,
@@ -30,8 +21,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
 
     assertThat(analyze(justComments))
-      .containsExactly(Result.with(0, 3, 0, 0))
-      .inOrder()
+      .isEmpty()
   }
 
   @Test
@@ -256,10 +246,42 @@ class FunctionAnalyzerTest {
         // Do nothing...
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 5, 3, 5)
+    val expectedResult = Result.with(1, 3, 3, 5)
 
     assertThat(analyze(functionDeclarationWithPackageName))
       .containsExactly(expectedResult)
+      .inOrder()
+  }
+
+  @Test
+  fun `it can find multiple top-level functions in a given file`() {
+    val multipleTopLevelFunctions = """
+      package a.b.c
+
+      fun main() {
+        // Do nothing...
+      }
+
+      fun add(a: Int, b: Int): Int {
+        return a + b
+      }
+
+      fun subtract(a: Int, b: Int): Int {
+        return if (a > b) {
+          a - b
+        } else {
+          b - a
+        }
+      }
+    """.trimIndent()
+    val results = analyze(multipleTopLevelFunctions)
+
+    assertThat(results)
+      .containsExactly(
+        Result.with(1, 3, 3, 5),
+        Result.with(1, 3, 7, 9),
+        Result.with(2, 7, 11, 17)
+      )
       .inOrder()
   }
 
