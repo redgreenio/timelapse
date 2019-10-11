@@ -60,7 +60,7 @@ fun analyze(snippet: String): Result {
         TOKEN_CLOSE_CURLY -> {
           depthStack.pop()
           if (depthStack.isEmpty()) {
-            return Result(maximumDepthCount, lineCount)
+            return Result.with(maximumDepthCount, lineCount)
           }
         }
       }
@@ -69,7 +69,7 @@ fun analyze(snippet: String): Result {
     previousChar = char
   }
 
-  return Result(maximumDepthCount, lineCount)
+  return Result.with(maximumDepthCount, lineCount)
 }
 
 private fun isSingleLineComment(previousChar: Char, char: Char): Boolean =
