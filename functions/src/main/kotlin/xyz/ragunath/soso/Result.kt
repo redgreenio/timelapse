@@ -5,6 +5,9 @@ data class Result(
   val length: Length
 ) {
   companion object {
-    val EMPTY = Result(0, 0)
+    val EMPTY = with(0, 0)
+
+    fun with(depth: Int, length: Int): Result =
+      Result(depth, length)
   }
 }
