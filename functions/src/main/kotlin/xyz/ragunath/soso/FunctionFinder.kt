@@ -49,8 +49,7 @@ fun detectFunctions(snippet: String): List<Result> {
     .map { functionSnippet -> analyze(functionSnippet) }
 
   return possibleFunctions.zip(results) { possibleFunction, result ->
-    val offset = possibleFunction.lineNumber - 1
-    result.copy(startLine = offset + result.startLine, endLine = offset + result.endLine)
+    result.withOffset(possibleFunction.lineNumber - 1)
   }
 }
 
