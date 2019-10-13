@@ -38,6 +38,20 @@ fun split(
     .toList()
 }
 
+fun detectFunctions(snippet: String): List<Result> {
+  val possibleFunctions = findPossibleFunctions(snippet)
+  val lineNumbers = possibleFunctions.map { it.lineNumber }
+  val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
+  val results = functionSnippets
+    .map { functionSnippet -> analyze(functionSnippet) } // TODO Change signature to return Result instead of List<Result>
+    .flatten()
+
+  return possibleFunctions.zip(results) { possibleFunction, result ->
+    val offset = possibleFunction.lineNumber - 1
+    result.copy(startLine = offset + result.startLine, endLine = offset + result.endLine)
+  }
+}
+
 private fun getSplitRanges(
   numbers: List<Int>,
   numberOfLines: Int
