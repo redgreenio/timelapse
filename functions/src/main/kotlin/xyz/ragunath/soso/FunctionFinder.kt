@@ -44,7 +44,6 @@ fun detectFunctions(snippet: String): List<Result> {
   val possibleFunctions = findPossibleFunctions(snippet)
   val lineNumbers = possibleFunctions.map { it.lineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
-    .filter { it.contains(FUNCTION_KEYWORD) } // FIXME This is a hack-job, we are parsing the segment before the first function. Hence this.
   val results = functionSnippets
     .map { functionSnippet -> analyze(functionSnippet) }
 
@@ -57,7 +56,7 @@ private fun getSplitRanges(
   numbers: List<Int>,
   numberOfLines: Int
 ): List<Pair<Int, Int>> {
-  var splitRanges = numbers
+  return numbers
     .mapIndexed { index, number ->
       if (index == numbers.size - 1) {
         number to (numberOfLines + 1)
@@ -65,11 +64,6 @@ private fun getSplitRanges(
         number to numbers[index + 1]
       }
     }
-  val startingLine = splitRanges.first().first
-  if (startingLine != 1) {
-    splitRanges = listOf(1 to startingLine, *splitRanges.toTypedArray())
-  }
-  return splitRanges
 }
 
 private fun splitRange(
