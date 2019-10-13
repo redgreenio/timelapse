@@ -25,6 +25,7 @@ class ResultTest {
       .isEqualTo(7)
   }
 
+  // TODO(rj) 12/Oct/19 - Assert error messages as well.
   @Test(expected = IllegalStateException::class)
   fun `when start line is greater than the end line, then throw an exception`() {
     Result.with(11, 8, 1)
@@ -45,7 +46,7 @@ class ResultTest {
     Result.with(5, -4, 1)
   }
 
-  @Test(expected = java.lang.IllegalStateException::class)
+  @Test(expected = IllegalStateException::class)
   fun `when depth is not positive, throw an exception`() {
     Result.with(1, 5, -1)
   }
