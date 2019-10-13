@@ -15,8 +15,7 @@ private const val SCAN_DEPTH = 1
 private const val SKIP_SINGLE_LINE_COMMENT = 2
 private const val SKIP_MULTILINE_COMMENT = 3
 
-fun analyze(snippet: String): List<Result> {
-  val results = mutableListOf<Result>()
+fun analyze(snippet: String): Result {
   val snippetChars = snippet.toCharArray()
   var lastChar = NULL_CHAR
 
@@ -24,7 +23,7 @@ fun analyze(snippet: String): List<Result> {
   var maximumDepth = 0
   var lineNumber = 1
   var startLineNumber = 0
-  var endLineNumber: Int
+  val endLineNumber: Int
   val depthStack = Stack<Depth>()
   for (char in snippetChars) {
     if (char == TOKEN_NEW_LINE) {
@@ -70,8 +69,7 @@ fun analyze(snippet: String): List<Result> {
               endLineNumber,
               maximumDepth
             )
-            results.add(result)
-            return results
+            return result
           }
         }
       }
@@ -80,7 +78,7 @@ fun analyze(snippet: String): List<Result> {
     lastChar = char
   }
 
-  return results.toList()
+  return Result.EMPTY
 }
 
 private fun isSingleLineComment(
