@@ -25,9 +25,11 @@ fun split(text: String, splitLineNumber: Int): List<String> {
 
   if (lines.size > 1) {
     val splitLines = mutableListOf<String>()
-    splitLines.add(lines.first())
-    val remainingLines = lines.filterIndexed { index, _ -> index >= splitLineNumber - 1 }.joinToString("\n")
-    splitLines.add(remainingLines)
+    // splitLines.add(lines.first())
+    val firstSplit = lines.filterIndexed { index, _ -> index < splitLineNumber - 1 }.joinToString("\n")
+    splitLines.add(firstSplit)
+    val secondSplit = lines.filterIndexed { index, _ -> index >= splitLineNumber - 1 }.joinToString("\n")
+    splitLines.add(secondSplit)
     lines.first()
     return splitLines.toList()
   }
