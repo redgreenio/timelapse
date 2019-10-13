@@ -1,6 +1,5 @@
 package xyz.ragunath.soso
 
-// FIXME(rj) 11-Oct-19 - Use lint to throw an error when someone uses a constructor without a factory function.
 data class Result(
   val startLine: Int,
   val endLine: Int,

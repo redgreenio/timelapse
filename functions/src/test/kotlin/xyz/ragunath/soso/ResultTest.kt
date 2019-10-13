@@ -1,7 +1,8 @@
 package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class ResultTest {
   @Test
@@ -25,29 +26,48 @@ class ResultTest {
       .isEqualTo(7)
   }
 
-  // TODO(rj) 12/Oct/19 - Assert error messages as well.
-  @Test(expected = IllegalStateException::class)
+  @Test
   fun `it throws an exception when start line is greater than the end line`() {
-    Result.with(11, 8, 1)
+    val exception = assertThrows<IllegalStateException> {
+      Result.with(11, 8, 1)
+    }
+    assertThat(exception.message)
+      .isEqualTo("`startLine`: 11 cannot be greater than `endLine`: 8")
   }
 
-  @Test(expected = IllegalStateException::class)
+  @Test
   fun `it throws an exception when depth is not equal to zero for invalid start and end lines`() {
-    Result.with(0, 0, 1)
+    val exception = assertThrows<IllegalStateException> {
+      Result.with(0, 0, 1)
+    }
+    assertThat(exception.message)
+      .isEqualTo("`depth` must be zero for a non-existent function, but was `1`")
   }
 
-  @Test(expected = IllegalStateException::class)
+  @Test
   fun `it throws an exception when start line is negative`() {
-    Result.with(-1, 0, 1)
+    val exception = assertThrows<IllegalStateException> {
+      Result.with(-1, 0, 1)
+    }
+    assertThat(exception.message)
+      .isEqualTo("`startLine`: -1 should be a positive integer")
   }
 
-  @Test(expected = IllegalStateException::class)
+  @Test
   fun `it throws an exception when end line is negative`() {
-    Result.with(5, -4, 1)
+    val exception = assertThrows<IllegalStateException> {
+      Result.with(5, -4, 1)
+    }
+    assertThat(exception.message)
+      .isEqualTo("`endLine`: -4 should be a positive integer")
   }
 
-  @Test(expected = IllegalStateException::class)
+  @Test
   fun `it throws an exception when depth is negative`() {
-    Result.with(1, 5, -1)
+    val exception = assertThrows<IllegalStateException> {
+      Result.with(1, 5, -1)
+    }
+    assertThat(exception.message)
+      .isEqualTo("`depth`: -1 should be a positive integer")
   }
 }
