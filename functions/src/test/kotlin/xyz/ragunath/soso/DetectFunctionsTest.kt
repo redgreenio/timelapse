@@ -3,7 +3,7 @@ package xyz.ragunath.soso
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 
-class FunctionFinderAnalyzerIntegrationTest {
+class DetectFunctionsTest {
   @Test
   fun `it can detect top-level functions from a file`() {
     val functionWithTopLevelFunctions = """
