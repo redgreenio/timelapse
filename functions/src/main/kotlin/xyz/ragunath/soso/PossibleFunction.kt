@@ -2,5 +2,5 @@ package xyz.ragunath.soso
 
 data class PossibleFunction(
   val name: String,
-  val lineNumber: Int
+  val startLineNumber: Int
 )
