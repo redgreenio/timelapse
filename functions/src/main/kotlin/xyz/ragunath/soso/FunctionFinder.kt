@@ -13,7 +13,7 @@ fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
       val endOfFunctionKeyword = line.indexOf(FUNCTION_KEYWORD) + FUNCTION_KEYWORD.length
       val indexOfParentheses = line.indexOf('(')
       val name = line.substring(endOfFunctionKeyword, indexOfParentheses).trim()
-      possibleFunctions.add(PossibleFunction(lineNumber, name))
+      possibleFunctions.add(PossibleFunction(name, lineNumber))
     }
     lineNumber++
   }
