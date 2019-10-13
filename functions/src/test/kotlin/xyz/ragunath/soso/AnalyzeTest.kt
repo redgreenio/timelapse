@@ -3,7 +3,7 @@ package xyz.ragunath.soso
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 
-class FunctionAnalyzerTest {
+class AnalyzeTest {
   @Test
   fun `it returns and empty result for blank snippets`() {
     val noBrackets = "    "
