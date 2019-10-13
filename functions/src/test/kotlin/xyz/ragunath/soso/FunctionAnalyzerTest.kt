@@ -259,9 +259,5 @@ class FunctionAnalyzerTest {
       .isEqualTo(Result.with(1, 3, 1))
   }
 
-  // TODO Derive length of the function from start row and end row
-  // TODO Ignore new lines after the function
-  // TODO What is a depth/nesting of a function?
-  // TODO Find the system newline character in a given file
   // TODO Find character encoding in a given file
 }
