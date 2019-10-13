@@ -77,4 +77,41 @@ class SplitTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it returns entire text when split line is 1`() {
+    val threeLines = """
+      Line one
+      Line two
+      Line three
+    """.trimIndent()
+
+    assertThat(split(threeLines, 1))
+      .containsExactly(threeLines)
+      .inOrder()
+  }
+
+  @Test
+  fun `it can split multiple lines based on multiple line numbers`() {
+    val fiveLines = """
+      Line one
+      Line two
+      Line three
+      Line four
+      Line five
+    """.trimIndent()
+
+    assertThat(split(fiveLines, 3, 4))
+      .containsExactly(
+        """
+          Line one
+          Line two
+        """.trimIndent(),
+        "Line three",
+        """
+          Line four
+          Line five
+        """.trimIndent()
+      )
+  }
 }
