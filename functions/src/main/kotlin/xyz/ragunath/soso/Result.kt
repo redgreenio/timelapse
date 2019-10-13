@@ -25,6 +25,9 @@ data class Result(
     } else {
       endLine - startLine + 1
     }
+
+  fun withOffset(offset: Int): Result =
+    copy(startLine = offset + startLine, endLine = offset + endLine)
 }
 
 private val Int.isPositive: Boolean
