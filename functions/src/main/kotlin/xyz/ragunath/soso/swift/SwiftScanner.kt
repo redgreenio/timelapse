@@ -13,7 +13,11 @@ fun swiftScan(code: String): List<PossibleFunction> {
     if (line.contains(KEYWORD_FUNC)) {
       val startIndex = line.indexOf(KEYWORD_FUNC)
       val functionName = line.substring(startIndex + KEYWORD_FUNC.length, line.indexOf("(", startIndex))
-      possibleFunctions.add(PossibleFunction(functionName, lineNumber))
+      if (line.trim().endsWith('{')) {
+        possibleFunctions.add(PossibleFunction(functionName, lineNumber))
+      } else {
+        println("Found `$functionName` on line $lineNumber. Excluding from result, PTAL?")
+      }
     }
     lineNumber++
   }
