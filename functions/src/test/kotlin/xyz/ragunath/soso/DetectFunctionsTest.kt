@@ -20,10 +20,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(detectFunctions(functionWithTopLevelFunctions))
+    assertThat(getFunctionResults(::kotlinFunctionScanner, functionWithTopLevelFunctions))
       .hasSize(3)
 
-    assertThat(detectFunctions(functionWithTopLevelFunctions))
+    assertThat(getFunctionResults(::kotlinFunctionScanner, functionWithTopLevelFunctions))
       .containsExactly(
         Result.with(1, 3, 1),
         Result.with(5, 7, 1),
@@ -56,10 +56,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(detectFunctions(fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getFunctionResults(::kotlinFunctionScanner, fileWithClassFunctionsAndOneTopLevelFunction))
       .hasSize(4)
 
-    assertThat(detectFunctions(fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getFunctionResults(::kotlinFunctionScanner, fileWithClassFunctionsAndOneTopLevelFunction))
       .containsExactly(
         Result.with(4, 6, 1),
         Result.with(8, 10, 1),
