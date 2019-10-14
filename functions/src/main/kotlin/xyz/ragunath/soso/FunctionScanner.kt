@@ -24,6 +24,10 @@ fun getFunctionResults(
   snippet: String
 ): List<Result> {
   val possibleFunctions = scanner(snippet)
+  if (possibleFunctions.isEmpty()) {
+    return emptyList()
+  }
+
   val lineNumbers = possibleFunctions.map { it.startLineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
   val results = functionSnippets
