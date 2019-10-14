@@ -2,6 +2,7 @@ package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
+import xyz.ragunath.soso.kotlin.kotlinScan
 
 class DetectFunctionsTest {
   @Test
@@ -20,10 +21,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getFunctionResults(::kotlinFunctionScanner, functionWithTopLevelFunctions))
+    assertThat(getFunctionResults(::kotlinScan, functionWithTopLevelFunctions))
       .hasSize(3)
 
-    assertThat(getFunctionResults(::kotlinFunctionScanner, functionWithTopLevelFunctions))
+    assertThat(getFunctionResults(::kotlinScan, functionWithTopLevelFunctions))
       .containsExactly(
         Result.with(1, 3, 1),
         Result.with(5, 7, 1),
@@ -56,10 +57,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getFunctionResults(::kotlinFunctionScanner, fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getFunctionResults(::kotlinScan, fileWithClassFunctionsAndOneTopLevelFunction))
       .hasSize(4)
 
-    assertThat(getFunctionResults(::kotlinFunctionScanner, fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getFunctionResults(::kotlinScan, fileWithClassFunctionsAndOneTopLevelFunction))
       .containsExactly(
         Result.with(4, 6, 1),
         Result.with(8, 10, 1),
