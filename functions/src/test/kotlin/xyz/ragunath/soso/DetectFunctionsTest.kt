@@ -69,4 +69,14 @@ class DetectFunctionsTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it returns an empty list when there are no functions`() {
+    val nothing = """
+      Nothing to see here...
+    """.trimIndent()
+
+    assertThat(getFunctionResults(::kotlinScan, nothing))
+      .isEmpty()
+  }
 }
