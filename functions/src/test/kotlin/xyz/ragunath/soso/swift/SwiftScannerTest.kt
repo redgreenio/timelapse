@@ -47,4 +47,16 @@ class SwiftScannerTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it can skip functions that do not have a body`() {
+    val functionWithoutBody = """
+      protocol RandomNumberGenerator {
+        func random() -> Double
+      }
+    """.trimIndent()
+
+    assertThat(swiftScan(functionWithoutBody))
+      .isEmpty()
+  }
 }
