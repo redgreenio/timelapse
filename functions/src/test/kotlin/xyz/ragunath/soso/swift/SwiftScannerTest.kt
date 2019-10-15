@@ -65,6 +65,7 @@ class SwiftScannerTest {
     val comments = """
       // this has a func keyword
       // func printIt(message: String)
+      // func printItAgain(message: String) {}
     """.trimIndent()
 
     assertThat(swiftScan(comments))
