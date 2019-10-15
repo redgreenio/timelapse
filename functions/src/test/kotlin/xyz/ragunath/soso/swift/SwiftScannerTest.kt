@@ -81,4 +81,18 @@ class SwiftScannerTest {
       .containsExactly(PossibleFunction("singleLineFunction", 1))
       .inOrder()
   }
+
+  @Test
+  fun `it can detect function definition that spans across multiple lines`() {
+    val functionDefinitionAcrossMultipleLines = """
+      private func add(_ a: Int,
+                       _ b: Int) {
+        return a + b
+      }
+    """.trimIndent()
+
+    assertThat(swiftScan(functionDefinitionAcrossMultipleLines))
+      .containsExactly(PossibleFunction("add", 1))
+      .inOrder()
+  }
 }
