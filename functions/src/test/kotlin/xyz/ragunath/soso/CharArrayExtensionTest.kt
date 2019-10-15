@@ -50,4 +50,51 @@ class CharArrayExtensionTest {
     assertThat(exception.message)
       .isEqualTo("Cannot push into a zero-length array")
   }
+
+  @Test
+  fun `it can push items into a char array of size 1`() {
+    val size1CharArray = CharArray(1)
+    size1CharArray.push('a')
+
+    assertThat(String(size1CharArray))
+      .isEqualTo("a")
+  }
+
+  @Test
+  fun `it can overwrite items in a char array of size 1`() {
+    val size1CharArray = CharArray(1)
+    with(size1CharArray) {
+      push('a')
+      push('b')
+    }
+
+    assertThat(String(size1CharArray))
+      .isEqualTo("b")
+  }
+
+  @Test
+  fun `it can push items into a char array of size 2`() {
+    val size2CharArray = CharArray(2)
+    with(size2CharArray) {
+      push('a')
+      push('c')
+    }
+
+    assertThat(String(size2CharArray))
+      .isEqualTo("ac")
+  }
+
+  @Test
+  fun `it can overwrite items in a char array of size 2`() {
+    val size2CharArray = CharArray(2)
+    with(size2CharArray) {
+      push('a')
+      push('b')
+      push('c')
+      push('d')
+    }
+
+    assertThat(String(size2CharArray))
+      .isEqualTo("cd")
+  }
 }
