@@ -259,5 +259,19 @@ class AnalyzeTest {
       .isEqualTo(Result.with(1, 3, 1))
   }
 
-  // TODO Find character encoding in a given file
+  @Test
+  fun `it can ignore contents of string literals in function signatures`() {
+    val functionWithForwardSlashesInStringLiteral = """
+      static func make(url: URL = URL(string: "https://httpbin.org/get")!, method: HTTPMethod = .get, headers: HTTPHeaders = .init()) -> URLRequest {
+        var request = URLRequest(url: url)
+        request.method = method
+        request.headers = headers
+
+        return request
+      }
+    """.trimIndent()
+
+    assertThat(analyze(functionWithForwardSlashesInStringLiteral))
+      .isEqualTo(Result.with(1, 7, 1))
+  }
 }
