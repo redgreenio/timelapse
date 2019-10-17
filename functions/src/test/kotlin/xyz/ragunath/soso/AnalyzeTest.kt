@@ -274,4 +274,15 @@ class AnalyzeTest {
     assertThat(analyze(functionWithForwardSlashesInStringLiteral))
       .isEqualTo(Result.with(1, 7, 1))
   }
+
+  @Test
+  fun `it can ignore contents of multiline string literals`() {
+    val functionWithMultilineStringLiteral =
+        "func multilineStrings() {\n" +
+        "  println(\"\"\" { Inside a multiline string literal } \"\"\")\n" +
+        "}"
+
+    assertThat(analyze(functionWithMultilineStringLiteral))
+      .isEqualTo(Result.with(1, 3, 1))
+  }
 }
