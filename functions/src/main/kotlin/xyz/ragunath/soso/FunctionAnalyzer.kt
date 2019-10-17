@@ -1,5 +1,9 @@
 package xyz.ragunath.soso
 
+import xyz.ragunath.soso.Mode.SCAN_DEPTH
+import xyz.ragunath.soso.Mode.SKIP_MULTILINE_COMMENT
+import xyz.ragunath.soso.Mode.SKIP_SINGLE_LINE_COMMENT
+import xyz.ragunath.soso.Mode.SKIP_STRING_LITERAL
 import java.util.Stack
 import java.lang.Character.MIN_VALUE as NULL_CHAR
 
@@ -11,11 +15,6 @@ private const val TOKEN_FORWARD_SLASH = '/'
 private const val TOKEN_NEW_LINE = '\n'
 private const val TOKEN_ASTERISK = '*'
 private const val TOKEN_STRING_QUOTE = '"'
-
-private const val SCAN_DEPTH = 1
-private const val SKIP_SINGLE_LINE_COMMENT = 2
-private const val SKIP_MULTILINE_COMMENT = 3
-private const val SKIP_STRING_LITERAL = 4
 
 fun analyze(snippet: String): Result {
   val snippetChars = snippet.toCharArray()
@@ -32,10 +31,15 @@ fun analyze(snippet: String): Result {
       lineNumber++
     }
 
+    if (char == TOKEN_STRING_QUOTE && mode == SCAN_DEPTH) {
+      mode = SKIP_STRING_LITERAL
+      lastChar = char
+      continue
+    }
+
     when {
-      isSingleLineComment(lastChar, char) -> mode = SKIP_SINGLE_LINE_COMMENT
+      isSingleLineComment(mode, lastChar, char) -> mode = SKIP_SINGLE_LINE_COMMENT
       isMultilineComment(mode, lastChar, char) -> mode = SKIP_MULTILINE_COMMENT
-      char == TOKEN_STRING_QUOTE && mode != SKIP_MULTILINE_COMMENT -> mode = SKIP_STRING_LITERAL
     }
 
     when (mode) {
@@ -88,17 +92,25 @@ fun analyze(snippet: String): Result {
 }
 
 private fun isSingleLineComment(
+  currentMode: Mode,
   lastChar: Char,
   char: Char
 ): Boolean {
-  return lastChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH
+  return lastChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH && currentMode != SKIP_STRING_LITERAL
 }
 
 private fun isMultilineComment(
-  currentMode: Int,
+  currentMode: Mode,
   lastChar: Char,
   char: Char
 ): Boolean {
   return lastChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK &&
       currentMode != SKIP_SINGLE_LINE_COMMENT
+}
+
+enum class Mode {
+  SCAN_DEPTH,
+  SKIP_SINGLE_LINE_COMMENT,
+  SKIP_MULTILINE_COMMENT,
+  SKIP_STRING_LITERAL,
 }
