@@ -1,6 +1,7 @@
 package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class AnalyzeTest {
@@ -284,5 +285,30 @@ class AnalyzeTest {
 
     assertThat(analyze(functionWithMultilineStringLiteral))
       .isEqualTo(Result.with(1, 3, 1))
+  }
+
+  @Disabled
+  @Test
+  fun `it can ignore snippets that are not well formed`() {
+    val nonWellFormedSnippet = """
+      /* override func printAllThree<Z : MyPrintable>(t: Y, v: Z) {
+        print("super ", terminator: "")
+        super.printAllThree(t: t, v: v)
+      } */
+    }
+
+    // CHECK: 1 two
+    // CHECK: 1 two
+    // CHECK: 1 two [3]
+    OuterStruct<Int>.InnerStruct<String>(u: "two").printBoth(t: 1)
+    OuterStruct<Int>.InnerStruct<String>.printBoth(t: 1, u: "two")
+    OuterStruct<Int>.InnerStruct<String>(u: "two").printAllThree(t: 1, v: [3])
+    
+    // CHECK: override 1 two [3]
+    SubClass<String, Int>(u: "two").printAllThree(t: 1, v: [3])
+    """.trimIndent()
+
+    assertThat(analyze(nonWellFormedSnippet))
+      .isNull() // TODO Non well formed snippet
   }
 }
