@@ -3,15 +3,15 @@ package xyz.ragunath.soso
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import xyz.ragunath.soso.Result.WellFormedFunction
 import xyz.ragunath.soso.Result.Nothing
+import xyz.ragunath.soso.Result.WellFormedFunction
 
-class AnalyzeTest {
+class ParseTest {
   @Test
   fun `it returns and empty result for blank snippets`() {
     val noBrackets = "    "
 
-    assertThat(analyze(noBrackets))
+    assertThat(parse(noBrackets))
       .isEqualTo(Nothing)
   }
 
@@ -23,7 +23,7 @@ class AnalyzeTest {
       // and yet another line of comment!
     """.trimIndent()
 
-    assertThat(analyze(justComments))
+    assertThat(parse(justComments))
       .isEqualTo(Nothing)
   }
 
@@ -32,7 +32,7 @@ class AnalyzeTest {
     val onePairOfBracketsSingleLine = "{}"
     val expectedResult = WellFormedFunction.with(1, 1, 1)
 
-    val actualResults = analyze(onePairOfBracketsSingleLine)
+    val actualResults = parse(onePairOfBracketsSingleLine)
     assertThat(actualResults)
       .isEqualTo(expectedResult)
 
@@ -45,7 +45,7 @@ class AnalyzeTest {
     val twoPairsOfBracketsSingleLine = "{{}}"
     val expectedResult = WellFormedFunction.with(1, 1, 2)
 
-    assertThat(analyze(twoPairsOfBracketsSingleLine))
+    assertThat(parse(twoPairsOfBracketsSingleLine))
       .isEqualTo(expectedResult)
   }
 
@@ -57,7 +57,7 @@ class AnalyzeTest {
       """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 2, 1)
 
-    assertThat(analyze(onePairOfBracketDifferentLines))
+    assertThat(parse(onePairOfBracketDifferentLines))
       .isEqualTo(expectedResult)
   }
 
@@ -69,7 +69,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 2, 1)
 
-    assertThat(analyze(mainFunction))
+    assertThat(parse(mainFunction))
       .isEqualTo(expectedResult)
   }
 
@@ -84,7 +84,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 5, 2)
 
-    assertThat(analyze(functionWithConditional))
+    assertThat(parse(functionWithConditional))
       .isEqualTo(expectedResult)
   }
 
@@ -103,7 +103,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 9, 2)
 
-    assertThat(analyze(functionWithIfElseLadder))
+    assertThat(parse(functionWithIfElseLadder))
       .isEqualTo(expectedResult)
   }
 
@@ -131,7 +131,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 18, 5)
 
-    val actualResults = analyze(functionWith4LevelsOfNesting)
+    val actualResults = parse(functionWith4LevelsOfNesting)
     assertThat(actualResults)
       .isEqualTo(expectedResult)
     assertThat((actualResults as WellFormedFunction).length)
@@ -148,7 +148,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 4, 1)
 
-    assertThat(analyze(functionWithCommentedMatchingBraces))
+    assertThat(parse(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
   }
 
@@ -165,7 +165,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 7, 1)
 
-    assertThat(analyze(functionWithCommentedCode))
+    assertThat(parse(functionWithCommentedCode))
       .isEqualTo(expectedResult)
   }
 
@@ -179,7 +179,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 4, 1)
 
-    assertThat(analyze(functionWithCommentedMatchingBraces))
+    assertThat(parse(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
   }
 
@@ -196,7 +196,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 7, 1)
 
-    assertThat(analyze(functionWithMultilineCommentedCode))
+    assertThat(parse(functionWithMultilineCommentedCode))
       .isEqualTo(expectedResult)
   }
 
@@ -209,7 +209,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 3, 1)
 
-    assertThat(analyze(functionWithNestedSingleLineComments))
+    assertThat(parse(functionWithNestedSingleLineComments))
       .isEqualTo(expectedResult)
   }
 
@@ -230,7 +230,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(1, 11, 2)
 
-    assertThat(analyze(functionWithNestedMultilineComments))
+    assertThat(parse(functionWithNestedMultilineComments))
       .isEqualTo(expectedResult)
   }
 
@@ -245,7 +245,7 @@ class AnalyzeTest {
     """.trimIndent()
     val expectedResult = WellFormedFunction.with(3, 5, 1)
 
-    assertThat(analyze(functionDeclarationWithPackageName))
+    assertThat(parse(functionDeclarationWithPackageName))
       .isEqualTo(expectedResult)
   }
 
@@ -258,7 +258,7 @@ class AnalyzeTest {
       }
     """.trimIndent()
 
-    assertThat(analyze(functionWithNonMatchingBracket))
+    assertThat(parse(functionWithNonMatchingBracket))
       .isEqualTo(WellFormedFunction.with(1, 3, 1))
   }
 
@@ -274,7 +274,7 @@ class AnalyzeTest {
       }
     """.trimIndent()
 
-    assertThat(analyze(functionWithForwardSlashesInStringLiteral))
+    assertThat(parse(functionWithForwardSlashesInStringLiteral))
       .isEqualTo(WellFormedFunction.with(1, 7, 1))
   }
 
@@ -285,7 +285,7 @@ class AnalyzeTest {
         "  println(\"\"\" { Inside a multiline string literal } \"\"\")\n" +
         "}"
 
-    assertThat(analyze(functionWithMultilineStringLiteral))
+    assertThat(parse(functionWithMultilineStringLiteral))
       .isEqualTo(WellFormedFunction.with(1, 3, 1))
   }
 
@@ -310,7 +310,7 @@ class AnalyzeTest {
     SubClass<String, Int>(u: "two").printAllThree(t: 1, v: [3])
     """.trimIndent()
 
-    assertThat(analyze(nonWellFormedSnippet))
+    assertThat(parse(nonWellFormedSnippet))
       .isNull() // TODO Non well formed snippet
   }
 }
