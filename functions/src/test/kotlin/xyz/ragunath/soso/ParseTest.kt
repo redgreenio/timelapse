@@ -1,8 +1,8 @@
 package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import xyz.ragunath.soso.ParseResult.MalformedFunction
 import xyz.ragunath.soso.ParseResult.Nothing
 import xyz.ragunath.soso.ParseResult.WellFormedFunction
 
@@ -289,10 +289,9 @@ class ParseTest {
       .isEqualTo(WellFormedFunction.with(1, 3, 1))
   }
 
-  @Disabled
   @Test
   fun `it can detect malformed snippets`() {
-    val nonWellFormedSnippet = """
+    val malformedSnippet = """
       /* override func printAllThree<Z : MyPrintable>(t: Y, v: Z) {
         print("super ", terminator: "")
         super.printAllThree(t: t, v: v)
@@ -310,7 +309,7 @@ class ParseTest {
     SubClass<String, Int>(u: "two").printAllThree(t: 1, v: [3])
     """.trimIndent()
 
-    assertThat(parse(nonWellFormedSnippet))
-      .isNull() // TODO Non well formed snippet
+    assertThat(parse(malformedSnippet))
+      .isEqualTo(MalformedFunction)
   }
 }
