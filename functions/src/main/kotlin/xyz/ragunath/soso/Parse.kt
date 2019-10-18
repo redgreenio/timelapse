@@ -18,13 +18,13 @@ private const val TOKEN_NEW_LINE = '\n'
 private const val TOKEN_ASTERISK = '*'
 private const val TOKEN_STRING_QUOTE = '"'
 
-fun parse(snippet: String): ParseResult {
+fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
   val snippetChars = snippet.toCharArray()
   var lastChar = NULL_CHAR
 
   var mode = SCAN_DEPTH
   var maximumDepth = 0
-  var lineNumber = 1
+  var lineNumber = if (lineNumberOffset == 0) 1 else lineNumberOffset
   var startLineNumber = 0
   val endLineNumber: Int
   val depthStack = Stack<Depth>()
