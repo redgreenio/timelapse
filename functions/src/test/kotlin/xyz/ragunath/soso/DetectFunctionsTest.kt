@@ -2,7 +2,7 @@ package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import xyz.ragunath.soso.Result.WellFormedFunction
+import xyz.ragunath.soso.ParseResult.WellFormedFunction
 import xyz.ragunath.soso.kotlin.kotlinScan
 
 class DetectFunctionsTest {
@@ -22,10 +22,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getFunctionResults(::kotlinScan, functionWithTopLevelFunctions))
+    assertThat(getParseResults(::kotlinScan, functionWithTopLevelFunctions))
       .hasSize(3)
 
-    assertThat(getFunctionResults(::kotlinScan, functionWithTopLevelFunctions))
+    assertThat(getParseResults(::kotlinScan, functionWithTopLevelFunctions))
       .containsExactly(
         WellFormedFunction.with(1, 3, 1),
         WellFormedFunction.with(5, 7, 1),
@@ -58,10 +58,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getFunctionResults(::kotlinScan, fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getParseResults(::kotlinScan, fileWithClassFunctionsAndOneTopLevelFunction))
       .hasSize(4)
 
-    assertThat(getFunctionResults(::kotlinScan, fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getParseResults(::kotlinScan, fileWithClassFunctionsAndOneTopLevelFunction))
       .containsExactly(
         WellFormedFunction.with(4, 6, 1),
         WellFormedFunction.with(8, 10, 1),
@@ -77,7 +77,7 @@ class DetectFunctionsTest {
       Nothing to see here...
     """.trimIndent()
 
-    assertThat(getFunctionResults(::kotlinScan, nothing))
+    assertThat(getParseResults(::kotlinScan, nothing))
       .isEmpty()
   }
 }

@@ -1,13 +1,13 @@
 package xyz.ragunath.soso
 
-sealed class Result() {
-  object Nothing : Result()
+sealed class ParseResult() {
+  object Nothing : ParseResult()
 
   data class WellFormedFunction(
     val startLine: Int,
     val endLine: Int,
     val depth: Depth
-  ) : Result() {
+  ) : ParseResult() {
     companion object {
       fun with(startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
         check(startLine >= 0) { "`startLine`: $startLine should be a positive integer" }
