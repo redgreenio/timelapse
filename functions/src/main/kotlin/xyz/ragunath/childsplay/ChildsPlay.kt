@@ -24,7 +24,6 @@ fun main() {
     .asSequence()
     .filter { it.fileName.toString().endsWith(".swift") }
     .filter { !it.toAbsolutePath().toString().contains("/Pods/") }
-    .filter { !it.toAbsolutePath().toString().contains("/validation-test/") }
     .map {
       println("Reading contents from $it")
       Files.readAllBytes(it)
