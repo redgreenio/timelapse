@@ -3,9 +3,9 @@ package xyz.ragunath.soso
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import xyz.ragunath.soso.Result.WellFormedFunction
+import xyz.ragunath.soso.ParseResult.WellFormedFunction
 
-class ResultTest {
+class ParseResultTest {
   @Test
   fun `it returns a length of 1 for single line functions`() {
     val result = WellFormedFunction.with(1, 1, 5)

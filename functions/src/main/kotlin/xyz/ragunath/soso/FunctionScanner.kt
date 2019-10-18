@@ -1,6 +1,6 @@
 package xyz.ragunath.soso
 
-import xyz.ragunath.soso.Result.WellFormedFunction
+import xyz.ragunath.soso.ParseResult.WellFormedFunction
 
 // TODO(rj) 13/Oct/19 - Assertions for incoming parameters - line numbers, sorting, no dupes, etc.,
 fun split(
@@ -21,10 +21,10 @@ fun split(
     .toList()
 }
 
-fun getFunctionResults(
+fun getParseResults(
   scanner: (String) -> List<PossibleFunction>,
   snippet: String
-): List<Result> {
+): List<ParseResult> {
   val possibleFunctions = scanner(snippet)
   if (possibleFunctions.isEmpty()) {
     return emptyList()
@@ -32,10 +32,10 @@ fun getFunctionResults(
 
   val lineNumbers = possibleFunctions.map { it.startLineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
-  val results = functionSnippets
+  val parseResults = functionSnippets
     .map { functionSnippet -> parse(functionSnippet) }
 
-  return possibleFunctions.zip(results) { possibleFunction, result ->
+  return possibleFunctions.zip(parseResults) { possibleFunction, result ->
     if (result is WellFormedFunction) {
       result.withOffset(possibleFunction.startLineNumber - 1) // FIXME, supply the offset to the finder function. This should just be a `zip` call
     } else {
