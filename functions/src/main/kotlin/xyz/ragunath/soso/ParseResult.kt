@@ -23,5 +23,5 @@ sealed class ParseResult() {
       get() = endLine - startLine + 1
   }
 
-  // TODO MalformedFunction
+  object MalformedFunction : ParseResult()
 }
