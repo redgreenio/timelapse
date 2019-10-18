@@ -4,8 +4,8 @@ import xyz.ragunath.soso.Mode.SCAN_DEPTH
 import xyz.ragunath.soso.Mode.SKIP_MULTILINE_COMMENT
 import xyz.ragunath.soso.Mode.SKIP_SINGLE_LINE_COMMENT
 import xyz.ragunath.soso.Mode.SKIP_STRING_LITERAL
-import xyz.ragunath.soso.Result.WellFormedFunction
 import xyz.ragunath.soso.Result.Nothing
+import xyz.ragunath.soso.Result.WellFormedFunction
 import java.util.Stack
 import java.lang.Character.MIN_VALUE as NULL_CHAR
 
@@ -18,7 +18,7 @@ private const val TOKEN_NEW_LINE = '\n'
 private const val TOKEN_ASTERISK = '*'
 private const val TOKEN_STRING_QUOTE = '"'
 
-fun analyze(snippet: String): Result {
+fun parse(snippet: String): Result {
   val snippetChars = snippet.toCharArray()
   var lastChar = NULL_CHAR
 

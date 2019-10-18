@@ -33,7 +33,7 @@ fun getFunctionResults(
   val lineNumbers = possibleFunctions.map { it.startLineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
   val results = functionSnippets
-    .map { functionSnippet -> analyze(functionSnippet) }
+    .map { functionSnippet -> parse(functionSnippet) }
 
   return possibleFunctions.zip(results) { possibleFunction, result ->
     if (result is WellFormedFunction) {
