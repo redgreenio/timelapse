@@ -291,7 +291,7 @@ class ParseTest {
 
   @Disabled
   @Test
-  fun `it can ignore snippets that are not well formed`() {
+  fun `it can detect malformed snippets`() {
     val nonWellFormedSnippet = """
       /* override func printAllThree<Z : MyPrintable>(t: Y, v: Z) {
         print("super ", terminator: "")
