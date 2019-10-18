@@ -3,7 +3,7 @@ package xyz.ragunath.soso.swift
 import xyz.ragunath.soso.PossibleFunction
 import xyz.ragunath.soso.extensions.push
 
-private const val KEYWORD_FUNC = "func "
+private val KEYWORD_FUNC = "func ".toCharArray()
 
 private const val MODE_SEEK_FUNCTION = 0
 private const val MODE_SEEK_FUNCTION_NAME = 1
@@ -12,7 +12,7 @@ private const val MODE_SKIP_SINGLE_LINE_COMMENT = 3
 
 fun swiftScan(code: String): List<PossibleFunction> {
   val possibleFunctions = mutableListOf<PossibleFunction>()
-  val buffer = CharArray(KEYWORD_FUNC.length)
+  val buffer = CharArray(KEYWORD_FUNC.size)
   val codeChars = code.toCharArray()
   var lineNumber = 1
   var possibleFunctionLineNumber = lineNumber
@@ -29,7 +29,7 @@ fun swiftScan(code: String): List<PossibleFunction> {
     }
 
     if (mode == MODE_SEEK_FUNCTION) {
-      if (String(buffer) == KEYWORD_FUNC) { // FIXME, this will cause too many allocations and GC
+      if (buffer.contentEquals(KEYWORD_FUNC)) {
         possibleFunctionLineNumber = lineNumber
         mode = MODE_SEEK_FUNCTION_NAME
       }
