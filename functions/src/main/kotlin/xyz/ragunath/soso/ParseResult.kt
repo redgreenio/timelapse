@@ -1,19 +1,22 @@
 package xyz.ragunath.soso
 
-sealed class ParseResult {
+sealed class ParseResult(
+  open val startLine: Int,
+  open val endLine: Int
+) {
+  val length: Int
+    get() = endLine - startLine + 1
+
   data class Nothing(
-    val startLine: Int = 0,
-    val endLine: Int = 0
-  ) : ParseResult() {
-    val length: Int
-      get() = endLine - startLine + 1
-  }
+    override val startLine: Int,
+    override val endLine: Int
+  ) : ParseResult(startLine, endLine)
 
   data class WellFormedFunction(
-    val startLine: Int,
-    val endLine: Int,
+    override val startLine: Int,
+    override val endLine: Int,
     val depth: Depth
-  ) : ParseResult() {
+  ) : ParseResult(startLine, endLine) {
     companion object {
       fun with(startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
         check(startLine >= 0) { "`startLine`: $startLine should be a positive integer" }
@@ -24,16 +27,10 @@ sealed class ParseResult {
         return WellFormedFunction(startLine, endLine, depth)
       }
     }
-
-    val length: Int
-      get() = endLine - startLine + 1
   }
 
   data class MalformedFunction(
-    val startLine: Int,
-    val endLine: Int
-  ) : ParseResult() {
-    val length: Int
-      get() = endLine - startLine + 1
-  }
+    override val startLine: Int,
+    override val endLine: Int
+  ) : ParseResult(startLine, endLine)
 }
