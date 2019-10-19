@@ -1,4 +1,4 @@
-package xyz.ragunath.soso.swift
+package xyz.ragunath.soso.languages.swift
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test

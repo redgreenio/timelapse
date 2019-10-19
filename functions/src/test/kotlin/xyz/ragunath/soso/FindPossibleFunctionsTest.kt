@@ -2,7 +2,7 @@ package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import xyz.ragunath.soso.kotlin.kotlinScan
+import xyz.ragunath.soso.languages.kotlin.kotlinScan
 
 class FindPossibleFunctionsTest {
   @Test
