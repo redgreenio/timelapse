@@ -1,8 +1,8 @@
-package xyz.ragunath.soso.languages.swift
+package io.redgreen.scout.languages.swift
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.scout.PossibleFunction
 import org.junit.jupiter.api.Test
-import xyz.ragunath.soso.PossibleFunction
 
 class SwiftFunctionScannerTest {
   @Test

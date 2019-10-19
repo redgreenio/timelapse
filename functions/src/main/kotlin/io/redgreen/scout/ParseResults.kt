@@ -1,4 +1,4 @@
-package xyz.ragunath.soso
+package io.redgreen.scout
 
 fun getParseResults(
   scanner: (String) -> List<PossibleFunction>,

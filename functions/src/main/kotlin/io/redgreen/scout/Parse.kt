@@ -1,9 +1,9 @@
-package xyz.ragunath.soso
+package io.redgreen.scout
 
-import xyz.ragunath.soso.ScanMode.FIND_BLOCKS
-import xyz.ragunath.soso.ScanMode.SKIP_MULTILINE_COMMENT
-import xyz.ragunath.soso.ScanMode.SKIP_SINGLE_LINE_COMMENT
-import xyz.ragunath.soso.ScanMode.SKIP_STRING_LITERAL
+import io.redgreen.scout.ScanMode.FIND_BLOCKS
+import io.redgreen.scout.ScanMode.SKIP_MULTILINE_COMMENT
+import io.redgreen.scout.ScanMode.SKIP_SINGLE_LINE_COMMENT
+import io.redgreen.scout.ScanMode.SKIP_STRING_LITERAL
 import java.util.Stack
 import java.lang.Character.MIN_VALUE as NULL_CHAR
 
