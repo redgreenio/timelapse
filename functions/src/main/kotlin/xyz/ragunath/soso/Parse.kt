@@ -2,7 +2,6 @@ package xyz.ragunath.soso
 
 import xyz.ragunath.soso.ParseResult.MalformedFunction
 import xyz.ragunath.soso.ParseResult.Nothing
-import xyz.ragunath.soso.ParseResult.WellFormedFunction
 import xyz.ragunath.soso.ScanMode.FIND_BLOCKS
 import xyz.ragunath.soso.ScanMode.SKIP_MULTILINE_COMMENT
 import xyz.ragunath.soso.ScanMode.SKIP_SINGLE_LINE_COMMENT
@@ -87,7 +86,7 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
           depthStack.pop()
 
           if (depthStack.isEmpty()) {
-            return WellFormedFunction.with(
+            return ParseResult.wellFormedFunction(
               startLineNumber,
               lineNumber,
               maximumDepth
