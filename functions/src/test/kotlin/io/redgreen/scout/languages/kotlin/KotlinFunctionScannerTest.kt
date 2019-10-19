@@ -1,10 +1,10 @@
-package io.redgreen.scout
+package io.redgreen.scout.languages.kotlin
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
+import io.redgreen.scout.PossibleFunction
 import org.junit.jupiter.api.Test
 
-class FindPossibleFunctionsTest {
+class KotlinFunctionScannerTest {
   @Test
   fun `it returns an empty list when there are no possible functions`() {
     val thereIsNothingInHere = "  "
