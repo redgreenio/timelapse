@@ -11,8 +11,11 @@ class ParseTest {
   fun `it returns and empty result for blank snippets`() {
     val noBrackets = "    "
 
+    val actualParseResult = Nothing(1, 1)
     assertThat(parse(noBrackets))
-      .isEqualTo(Nothing)
+      .isEqualTo(actualParseResult)
+    assertThat(actualParseResult.length)
+      .isEqualTo(1)
   }
 
   @Test
@@ -23,8 +26,11 @@ class ParseTest {
       // and yet another line of comment!
     """.trimIndent()
 
+    val actualParseResult = Nothing(1, 3)
     assertThat(parse(justComments))
-      .isEqualTo(Nothing)
+      .isEqualTo(actualParseResult)
+    assertThat(actualParseResult.length)
+      .isEqualTo(3)
   }
 
   @Test
