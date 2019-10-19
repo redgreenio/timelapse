@@ -1,4 +1,4 @@
-package xyz.ragunath.soso.kotlin
+package xyz.ragunath.soso.languages.kotlin
 
 import xyz.ragunath.soso.FunctionScanner
 import xyz.ragunath.soso.PossibleFunction
