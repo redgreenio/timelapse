@@ -29,5 +29,11 @@ sealed class ParseResult {
       get() = endLine - startLine + 1
   }
 
-  object MalformedFunction : ParseResult()
+  data class MalformedFunction(
+    val startLine: Int,
+    val endLine: Int
+  ) : ParseResult() {
+    val length: Int
+      get() = endLine - startLine + 1
+  }
 }

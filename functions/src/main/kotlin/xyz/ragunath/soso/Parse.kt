@@ -34,7 +34,6 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
   var maximumDepth = 0
   var lineNumber = if (lineNumberOffset == 0) 1 else lineNumberOffset
   var startLineNumber = lineNumber
-  val endLineNumber: Int
   val depthStack = Stack<Depth>()
   for (char in snippetChars) {
     if (char == TOKEN_NEW_LINE) {
@@ -82,16 +81,15 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
 
         TOKEN_CLOSE_CURLY -> {
           if (depthStack.isEmpty()) {
-            return MalformedFunction
+            return MalformedFunction(startLineNumber, lineNumber)
           }
 
           depthStack.pop()
 
           if (depthStack.isEmpty()) {
-            endLineNumber = lineNumber
             return WellFormedFunction.with(
               startLineNumber,
-              endLineNumber,
+              lineNumber,
               maximumDepth
             )
           }
