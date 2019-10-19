@@ -2,7 +2,7 @@ package xyz.ragunath.childsplay
 
 import xyz.ragunath.soso.ParseResult.WellFormedFunction
 import xyz.ragunath.soso.getParseResults
-import xyz.ragunath.soso.swift.swiftScan
+import xyz.ragunath.soso.swift.SwiftFunctionScanner
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.function.BiPredicate
@@ -29,7 +29,7 @@ fun main() {
       Files.readAllBytes(it)
     }
     .map { String(it) }
-    .map { snippet -> getParseResults(::swiftScan, snippet) }
+    .map { snippet -> getParseResults(SwiftFunctionScanner()::scan, snippet) }
     .filter { it.isNotEmpty() }
     .asSequence()
     .toList()
