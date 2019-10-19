@@ -3,8 +3,8 @@ package xyz.ragunath.soso.languages.kotlin
 import xyz.ragunath.soso.FunctionScanner
 import xyz.ragunath.soso.PossibleFunction
 
-class KotlinFunctionScanner : FunctionScanner {
-  private val keyword = "fun"
+object KotlinFunctionScanner : FunctionScanner {
+  private const val KEYWORD = "fun"
 
   override fun scan(snippet: String): List<PossibleFunction> {
     if (snippet.isBlank()) return emptyList()
@@ -13,8 +13,8 @@ class KotlinFunctionScanner : FunctionScanner {
     var lineNumber = 1
     val lines = snippet.split('\n')
     for (line in lines) {
-      if (line.contains(keyword)) {
-        val endOfFunctionKeyword = line.indexOf(keyword) + keyword.length
+      if (line.contains(KEYWORD)) {
+        val endOfFunctionKeyword = line.indexOf(KEYWORD) + KEYWORD.length
         val indexOfParentheses = line.indexOf('(')
         val name = line.substring(endOfFunctionKeyword, indexOfParentheses).trim()
         possibleFunctions.add(PossibleFunction(name, lineNumber))

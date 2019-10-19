@@ -2,14 +2,14 @@ package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import xyz.ragunath.soso.languages.kotlin.kotlinScan
+import xyz.ragunath.soso.languages.kotlin.KotlinFunctionScanner
 
 class FindPossibleFunctionsTest {
   @Test
   fun `it returns an empty list when there are no possible functions`() {
     val thereIsNothingInHere = "  "
 
-    assertThat(kotlinScan(thereIsNothingInHere))
+    assertThat(KotlinFunctionScanner.scan(thereIsNothingInHere))
       .isEmpty()
   }
 
@@ -19,7 +19,7 @@ class FindPossibleFunctionsTest {
       fun main() { println("Hello World!") }
     """.trimIndent()
 
-    assertThat(kotlinScan(oneFunction))
+    assertThat(KotlinFunctionScanner.scan(oneFunction))
       .containsExactly(PossibleFunction("main", 1))
       .inOrder()
   }
@@ -34,7 +34,7 @@ class FindPossibleFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(kotlinScan(twoTopLevelFunctions))
+    assertThat(KotlinFunctionScanner.scan(twoTopLevelFunctions))
       .containsExactly(
         PossibleFunction("main", 1),
         PossibleFunction("printNothing", 4)
@@ -52,7 +52,7 @@ class FindPossibleFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(kotlinScan(classWithOneFunction))
+    assertThat(KotlinFunctionScanner.scan(classWithOneFunction))
       .containsExactly(PossibleFunction("main", 2))
       .inOrder()
   }
@@ -77,7 +77,7 @@ class FindPossibleFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(kotlinScan(classWithThreeFunctions))
+    assertThat(KotlinFunctionScanner.scan(classWithThreeFunctions))
       .containsExactly(
         PossibleFunction("add", 4),
         PossibleFunction("subtract", 8),
