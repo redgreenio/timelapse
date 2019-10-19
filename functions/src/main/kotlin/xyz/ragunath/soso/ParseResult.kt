@@ -7,6 +7,22 @@ sealed class ParseResult(
   val length: Int
     get() = endLine - startLine + 1
 
+  data class Nothing(
+    override val startLine: Int,
+    override val endLine: Int
+  ) : ParseResult(startLine, endLine)
+
+  data class WellFormedFunction(
+    override val startLine: Int,
+    override val endLine: Int,
+    val depth: Depth
+  ) : ParseResult(startLine, endLine)
+
+  data class MalformedFunction(
+    override val startLine: Int,
+    override val endLine: Int
+  ) : ParseResult(startLine, endLine)
+
   companion object {
     fun nothing(startLine: Int, endLine: Int): Nothing {
       check(startLine, endLine)
@@ -31,20 +47,4 @@ sealed class ParseResult(
       check(startLine <= endLine) { "`startLine`: $startLine cannot be greater than `endLine`: $endLine" }
     }
   }
-
-  data class Nothing(
-    override val startLine: Int,
-    override val endLine: Int
-  ) : ParseResult(startLine, endLine)
-
-  data class WellFormedFunction(
-    override val startLine: Int,
-    override val endLine: Int,
-    val depth: Depth
-  ) : ParseResult(startLine, endLine)
-
-  data class MalformedFunction(
-    override val startLine: Int,
-    override val endLine: Int
-  ) : ParseResult(startLine, endLine)
 }
