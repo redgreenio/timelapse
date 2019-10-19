@@ -10,17 +10,17 @@ private const val MODE_SEEK_FUNCTION_NAME = 1
 private const val MODE_SEEK_OPEN_PARENTHESIS = 2
 private const val MODE_SKIP_SINGLE_LINE_COMMENT = 3
 
-fun swiftScan(code: String): List<PossibleFunction> {
+fun swiftScan(snippet: String): List<PossibleFunction> {
   val possibleFunctions = mutableListOf<PossibleFunction>()
   val buffer = CharArray(KEYWORD_FUNC.size)
-  val codeChars = code.toCharArray()
+  val snippetChars = snippet.toCharArray()
   var lineNumber = 1
-  var possibleFunctionLineNumber = lineNumber
+  var possibleLineNumber = lineNumber
   var mode = MODE_SEEK_FUNCTION
   var previousMode = MODE_SEEK_FUNCTION
-  val functionName = mutableListOf<Char>()
+  val functionNameChars = mutableListOf<Char>()
 
-  for (char in codeChars) {
+  for (char in snippetChars) {
     buffer.push(char)
 
     if (buffer[buffer.size - 2] == '/' && buffer[buffer.size - 1] == '/') {
@@ -30,28 +30,27 @@ fun swiftScan(code: String): List<PossibleFunction> {
 
     if (mode == MODE_SEEK_FUNCTION) {
       if (buffer.contentEquals(KEYWORD_FUNC)) {
-        possibleFunctionLineNumber = lineNumber
+        possibleLineNumber = lineNumber
         mode = MODE_SEEK_FUNCTION_NAME
       }
     }
 
     if (mode == MODE_SEEK_FUNCTION_NAME && char != ' ' && char != '(') {
-      functionName.add(char)
+      functionNameChars.add(char)
     } else if (char == '(') {
       mode = MODE_SEEK_OPEN_PARENTHESIS
     }
 
     if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '}') {
       mode = MODE_SEEK_FUNCTION
-      functionName.clear()
+      functionNameChars.clear()
     }
 
-    if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '{' && functionName.isNotEmpty()) {
-      possibleFunctions.add(
-        PossibleFunction(functionName.joinToString(""), possibleFunctionLineNumber)
-      )
+    if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '{' && functionNameChars.isNotEmpty()) {
+      val possibleFunctionName = functionNameChars.joinToString("")
+      possibleFunctions.add(PossibleFunction(possibleFunctionName, possibleLineNumber))
       mode = MODE_SEEK_FUNCTION
-      functionName.clear()
+      functionNameChars.clear()
     }
 
     if (char == '\n') {
