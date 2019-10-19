@@ -20,6 +20,10 @@ sealed class ParseResult(
       check(startLine <= endLine) { "`startLine`: $startLine cannot be greater than `endLine`: $endLine" }
       return WellFormedFunction(startLine, endLine, depth)
     }
+
+    fun malformedFunction(startLine: Int, endLine: Int): MalformedFunction {
+      return MalformedFunction(startLine, endLine)
+    }
   }
 
   data class Nothing(
