@@ -1,8 +1,8 @@
-package xyz.ragunath.childsplay
+package childsplay
 
-import xyz.ragunath.soso.ParseResult.WellFormedFunction
-import xyz.ragunath.soso.getParseResults
-import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner
+import io.redgreen.scout.ParseResult.WellFormedFunction
+import io.redgreen.scout.getParseResults
+import io.redgreen.scout.languages.swift.SwiftFunctionScanner
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.function.BiPredicate

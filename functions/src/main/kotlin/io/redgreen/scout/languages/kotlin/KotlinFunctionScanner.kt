@@ -1,7 +1,7 @@
-package xyz.ragunath.soso.languages.kotlin
+package io.redgreen.scout.languages.kotlin
 
-import xyz.ragunath.soso.FunctionScanner
-import xyz.ragunath.soso.PossibleFunction
+import io.redgreen.scout.FunctionScanner
+import io.redgreen.scout.PossibleFunction
 
 object KotlinFunctionScanner : FunctionScanner {
   private const val KEYWORD = "fun"

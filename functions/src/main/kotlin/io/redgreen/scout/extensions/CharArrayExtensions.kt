@@ -1,4 +1,4 @@
-package xyz.ragunath.soso.extensions
+package io.redgreen.scout.extensions
 
 fun CharArray.push(char: Char) {
   check(this.isNotEmpty()) { "Cannot push into a zero-length array" }

@@ -1,20 +1,18 @@
-package xyz.ragunath.soso
+package io.redgreen.scout.extensions
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import xyz.ragunath.soso.extensions.push
 
-private const val NULL_CHAR = '\u0000'
-
-class CharArrayExtensionTest {
+class CharArrayExtensionsTest {
+  private val nullChar = '\u0000'
   private val charArray = CharArray(4)
 
   @Test
   fun `it can push elements into an array`() {
     charArray.push('1')
     assertThat(String(charArray))
-      .isEqualTo("$NULL_CHAR$NULL_CHAR${NULL_CHAR}1")
+      .isEqualTo("$nullChar$nullChar${nullChar}1")
   }
 
   @Test
