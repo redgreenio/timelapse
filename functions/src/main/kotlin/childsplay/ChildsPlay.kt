@@ -14,8 +14,8 @@ fun main() {
     "pechu-thiramai",
     "Alamofire",
     "RxSwift",
-    "TelegramSwift",
-    "swift"
+    "swift",
+    "TelegramSwift"
   )
 
   val projectPath = Paths.get("/Users/ragunathjawahar/OtherProjects/${projects[projects.size - 1]}")
@@ -24,10 +24,7 @@ fun main() {
     .asSequence()
     .filter { it.fileName.toString().endsWith(".swift") }
     .filter { !it.toAbsolutePath().toString().contains("/Pods/") }
-    .map {
-      println("Reading contents from $it")
-      Files.readAllBytes(it)
-    }
+    .map { Files.readAllBytes(it) }
     .map { String(it) }
     .map { snippet -> getParseResults(SwiftFunctionScanner::scan, snippet) }
     .filter { it.isNotEmpty() }
