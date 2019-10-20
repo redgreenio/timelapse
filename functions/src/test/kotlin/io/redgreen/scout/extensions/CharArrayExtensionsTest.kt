@@ -1,6 +1,8 @@
 package io.redgreen.scout.extensions
 
 import com.google.common.truth.Truth.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -94,5 +96,50 @@ class CharArrayExtensionsTest {
 
     assertThat(String(size2CharArray))
       .isEqualTo("cd")
+  }
+
+  @Nested
+  inner class EndsWithTest {
+    private val alphabets = CharArray(4)
+
+    @BeforeEach
+    fun setup() {
+      with(alphabets) {
+        push('a')
+        push('b')
+        push('c')
+        push('d')
+      }
+    }
+
+    @Test
+    fun `it returns true if both array contents are equal`() {
+      assertThat(alphabets.endsWith("abcd".toCharArray()))
+        .isTrue()
+    }
+
+    @Test
+    fun `it returns true if the array ends with a subset of chars`() {
+      assertThat(alphabets.endsWith("bcd".toCharArray()))
+        .isTrue()
+    }
+
+    @Test
+    fun `it returns false if the contents don't match`() {
+      assertThat(alphabets.endsWith("1234".toCharArray()))
+        .isFalse()
+    }
+
+    @Test
+    fun `it returns false if the passed in array is larger than the given array`() {
+      assertThat(alphabets.endsWith("abcde".toCharArray()))
+        .isFalse()
+    }
+
+    @Test
+    fun `it returns false if the passed in array is empty`() {
+      assertThat(alphabets.endsWith(CharArray(0)))
+        .isFalse()
+    }
   }
 }
