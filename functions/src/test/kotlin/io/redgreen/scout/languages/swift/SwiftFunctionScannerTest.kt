@@ -130,4 +130,23 @@ class SwiftFunctionScannerTest {
       .containsExactly(PossibleFunction("init", 1))
       .inOrder()
   }
+
+  @Test
+  fun `it can detect init functions with closures`() {
+    val initFunctionWithClosure = """
+      class InstantPageItemArguments {
+        let theme: InstantPageTheme
+        let openMedia:(InstantPageMedia)->Void
+
+        init(theme: InstantPageTheme, openMedia: @escaping (InstantPageMedia) -> Void) {
+          self.theme = theme
+          self.openMedia = openMedia
+        }
+      }
+    """.trimIndent()
+
+    assertThat(SwiftFunctionScanner.scan(initFunctionWithClosure))
+      .containsExactly(PossibleFunction("init", 5))
+      .inOrder()
+  }
 }
