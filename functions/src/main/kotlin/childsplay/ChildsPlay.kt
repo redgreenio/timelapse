@@ -3,6 +3,7 @@ package childsplay
 import io.redgreen.scout.ParseResult.WellFormedFunction
 import io.redgreen.scout.getParseResults
 import io.redgreen.scout.languages.swift.SwiftFunctionScanner
+import org.apache.logging.log4j.LogManager
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.function.BiPredicate
@@ -39,6 +40,5 @@ fun main() {
     .flatten()
     .map { it.length }
 
-  println("Total number of functions: ${functionLengths.size}")
-  println(functionLengths.joinToString())
+  LogManager.getLogger().info("Total number of functions: ${functionLengths.size}")
 }
