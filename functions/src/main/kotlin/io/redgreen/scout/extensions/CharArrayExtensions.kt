@@ -1,7 +1,7 @@
 package io.redgreen.scout.extensions
 
 fun CharArray.push(char: Char) {
-  check(this.isNotEmpty()) { "Cannot push into a zero-length array" }
+  check(this.isNotEmpty()) { "Cannot push into an empty array" }
 
   for (i in 0..this.size - 2) {
     this[i] = this[i + 1]
