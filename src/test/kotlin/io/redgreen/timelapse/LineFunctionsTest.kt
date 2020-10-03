@@ -18,6 +18,7 @@ class LineFunctionsTest {
     ArgumentsSource(HorizontalLineArgumentsProvider::class),
     ArgumentsSource(VerticalLineArgumentsProvider::class),
     ArgumentsSource(FortyFiveDegreeIncrementsArgumentsProvider::class),
+    ArgumentsSource(RandomLinesArgumentsProvider::class),
   )
   fun `it should calculate slope`(
     coordinates: Tuple5<Int, Int, Int, Int, Double>
@@ -104,6 +105,19 @@ class FortyFiveDegreeIncrementsArgumentsProvider : ArgumentsProvider {
       // 135 degrees (right -> left)
       Tuple5(1, -1, -1, 1, -1.0),
       Tuple5(3, 0, 0, 3, -1.0),
+    ).toArgumentsStream()
+  }
+}
+
+class RandomLinesArgumentsProvider : ArgumentsProvider {
+  override fun provideArguments(context: ExtensionContext?): Stream<out Arguments> {
+    return listOf(
+      Tuple5(2, 8, 3, 20, 12.0),
+      Tuple5(-2, 1, -1, 5, 4.0),
+      Tuple5(-1, -2, 3, -1, 0.25),
+      Tuple5(-3, 1, 3, 4, 0.5),
+      Tuple5(0, 4, 2, 1, -1.5),
+      Tuple5(-2, 6, 0, 2, -2.0),
     ).toArgumentsStream()
   }
 }
