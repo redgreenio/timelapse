@@ -12,6 +12,7 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
 
+  testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.0")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")

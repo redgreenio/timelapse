@@ -75,6 +75,3 @@ private fun getY(
   val scaledY = (additions - lowestValue).toDouble() / yScale
   return (actualGraphHeight + totalVerticalPadding / 2) - (scaledY * (actualGraphHeight)).toInt()
 }
-
-private fun calculateSlope(x1: Int, y1: Int, x2: Int, y2: Int): Double =
-  (y2 - y1).toDouble() / (x2 - x1)
