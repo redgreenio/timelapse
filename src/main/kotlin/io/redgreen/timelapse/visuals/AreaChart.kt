@@ -1,5 +1,8 @@
-package io.redgreen.timelapse
+package io.redgreen.timelapse.visuals
 
+import io.redgreen.timelapse.domain.Commit
+import io.redgreen.timelapse.visuals.debug.debug
+import io.redgreen.timelapse.visuals.debug.drawDebugGrid
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Graphics

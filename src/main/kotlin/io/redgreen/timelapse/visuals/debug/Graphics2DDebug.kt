@@ -1,4 +1,4 @@
-package io.redgreen.timelapse
+package io.redgreen.timelapse.visuals.debug
 
 import java.awt.BasicStroke
 import java.awt.Color

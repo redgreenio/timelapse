@@ -1,5 +1,8 @@
 package io.redgreen.timelapse
 
+import io.redgreen.timelapse.domain.Commit
+import io.redgreen.timelapse.visuals.AreaChart
+import io.redgreen.timelapse.visuals.debug.debug
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 
@@ -9,8 +12,8 @@ fun main(args: Array<String>) {
   val width = 800
   val height = 400
   val insertions = listOf(
-   3, 8, 1, 3, 1, 1, 2, 2, 3, 2, 1, 1, 11, 5, 11, 31, 6, 6, 1, 2, 14,
-   1, 1, 7, 1, 1, 1, 1, 2, 2, 4, 2, 4, 2, 1, 1, 2, 1, 11, 8, 6, 12, 10,
+    3, 8, 1, 3, 1, 1, 2, 2, 3, 2, 1, 1, 11, 5, 11, 31, 6, 6, 1, 2, 14,
+    1, 1, 7, 1, 1, 1, 1, 2, 2, 4, 2, 4, 2, 1, 1, 2, 1, 11, 8, 6, 12, 10,
   )
 
   JFrame("Timelapse").apply {

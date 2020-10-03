@@ -1,7 +1,9 @@
-package io.redgreen.timelapse
+package io.redgreen.timelapse.visuals
 
-import io.redgreen.timelapse.AreaChart.Companion.TOTAL_VERTICAL_PADDING_RATIO
-import io.redgreen.timelapse.AreaChart.Companion.X_ORIGIN
+import io.redgreen.timelapse.domain.Commit
+import io.redgreen.timelapse.geometry.calculateSlope
+import io.redgreen.timelapse.visuals.AreaChart.Companion.TOTAL_VERTICAL_PADDING_RATIO
+import io.redgreen.timelapse.visuals.AreaChart.Companion.X_ORIGIN
 import java.awt.Point
 
 @Suppress("SameParameterValue")
