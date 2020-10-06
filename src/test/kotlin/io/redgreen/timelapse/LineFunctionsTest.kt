@@ -22,7 +22,7 @@ class LineFunctionsTest {
     ArgumentsSource(RandomLinesArgumentsProvider::class),
   )
   fun `it should calculate slope`(
-    coordinates: Tuple5<Int, Int, Int, Int, Double>
+    coordinates: Tuple5<Double, Int, Double, Int, Double>
   ) {
     // given
     val (x1, y1, x2, y2, expectedSlope) = coordinates

@@ -16,7 +16,7 @@ internal fun computePolygonPoints(
 ) {
   outPoints.clear()
 
-  val horizontalSpacing = (totalWidth - pointRadius) / (commits.lastIndex)
+  val horizontalSpacing = (totalWidth - pointRadius) / commits.lastIndex.toDouble()
   val graphHeight = totalHeight - (pointRadius * 2)
   val lowestValue = commits.map(Commit::insertions).minOrNull()!!
   val highestValue = commits.map(Commit::insertions).maxOrNull()!!
@@ -46,11 +46,11 @@ internal fun computePolygonPoints(
           val c = y2 - m * x2
           val newY2 = m * x2 + c
           val delta = if (y1 == newY2.toInt()) 0 else if (c > 0) -pointRadius else pointRadius
-          outPoints.add(Point(x1, y1))
+          outPoints.add(Point(x1.toInt(), y1))
           outPoints.add(Point(totalWidth, newY2.toInt() + delta))
         }
 
-        else -> outPoints.add(Point(x1, y1))
+        else -> outPoints.add(Point(x1.toInt(), y1))
       }
     }
   }
@@ -61,10 +61,9 @@ internal fun computePolygonPoints(
 
 private fun getX(
   index: Int,
-  horizontalSpacing: Int
-): Int {
-  return index * horizontalSpacing
-}
+  horizontalSpacing: Double
+): Double =
+  index * horizontalSpacing
 
 private fun getY(
   additions: Int,
