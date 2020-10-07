@@ -35,7 +35,10 @@ class TimelapseCommand : Runnable {
   override fun run() {
     debug = isDebug
     println("$fileName in $project")
+    buildAndShowGui()
+  }
 
+  private fun buildAndShowGui() {
     val width = 1024
     val height = 768
     val insertions = listOf(
