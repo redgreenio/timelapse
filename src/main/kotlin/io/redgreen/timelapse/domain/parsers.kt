@@ -15,7 +15,7 @@ fun parseGitFollowOutput(output: String): Change {
   val insertions = if (insertionsMatcher.find()) {
     insertionsMatcher.group().split(" ")[0].toInt()
   } else {
-    throw IllegalStateException("Unexpected input: $insertionsDeletionsLine")
+    0
   }
 
   val deletionsPattern = Pattern.compile("\\d+ deletions\\(-\\)")
