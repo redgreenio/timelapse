@@ -59,4 +59,22 @@ class ParsersTest {
     assertThat(change)
       .isEqualTo(expectedChange)
   }
+
+  @Test
+  fun `it should parse a git follow summary block with 1 insertion and 1 deletion`() {
+    // given
+    val commitSummaryBlock = """
+      b35d60f Bump up dependencies for `server` module
+       build.gradle | 2 +-
+       1 file changed, 1 insertion(+), 1 deletion(-)
+    """.trimIndent()
+
+    // when
+    val change = parseGitFollowOutput(commitSummaryBlock)
+
+    // then
+    val expectedChange = Change("b35d60f", "Bump up dependencies for `server` module", 1, 1)
+    assertThat(change)
+      .isEqualTo(expectedChange)
+  }
 }

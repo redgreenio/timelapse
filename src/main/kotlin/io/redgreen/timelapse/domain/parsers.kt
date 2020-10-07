@@ -10,7 +10,7 @@ fun parseGitFollowOutput(output: String): Change {
   val message = commitIdMessageLine.substring(commitAndMessageSeparatorIndex + 1)
 
   val insertionsDeletionsLine = lines[2]
-  val insertionsPattern = Pattern.compile("\\d+ insertions\\(\\+\\)")
+  val insertionsPattern = Pattern.compile("\\d+ insertions?\\(\\+\\)")
   val insertionsMatcher = insertionsPattern.matcher(insertionsDeletionsLine)
   val insertions = if (insertionsMatcher.find()) {
     insertionsMatcher.group().split(" ")[0].toInt()
@@ -18,7 +18,7 @@ fun parseGitFollowOutput(output: String): Change {
     0
   }
 
-  val deletionsPattern = Pattern.compile("\\d+ deletions\\(-\\)")
+  val deletionsPattern = Pattern.compile("\\d+ deletions?\\(-\\)")
   val deletionsMatcher = deletionsPattern.matcher(insertionsDeletionsLine)
   val deletions = if (deletionsMatcher.find()) {
     deletionsMatcher.group().split(" ")[0].toInt()
