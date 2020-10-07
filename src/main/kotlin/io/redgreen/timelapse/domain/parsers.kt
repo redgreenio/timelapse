@@ -5,17 +5,20 @@ import java.util.regex.Pattern
 private const val INSERTIONS_REGEX = "\\d+ insertions?\\(\\+\\)"
 private const val DELETIONS_REGEX = "\\d+ deletions?\\(-\\)"
 
-fun parseGitFollowOutput(output: String): Change {
+private typealias Insertions = Int
+private typealias Deletions = Int
+
+fun parseGitFollowOutput(output: String): List<Change> {
   val lines = output.split("\n")
 
-  val commitIdMessageLine = lines[0]
-  val insertionsDeletionsLine = lines[2]
+  val commitIdMessageLines = lines.filterIndexed { index, _ -> index == 0 || index % 3 == 0 }
+  val insertionDeletionLines = lines.filterIndexed { index, _ -> (index + 1) % 3 == 0 }
 
-  val (commitId, message) = commitIdMessageLine.splitIntoTwo(' ')
-  val insertions = insertionsDeletionsLine.extractIntFromRegex(INSERTIONS_REGEX)
-  val deletions = insertionsDeletionsLine.extractIntFromRegex(DELETIONS_REGEX)
-
-  return Change(commitId, message, insertions, deletions)
+  return commitIdMessageLines.zip(insertionDeletionLines) { commitIdMessageLine, insertionsDeletionsLine ->
+    val (commitId, message) = commitIdMessageLine.splitIntoTwo(' ')
+    val (insertions, deletions) = insertionsDeletionsLine.getInsertionsAndDeletions()
+    Change(commitId, message, insertions, deletions)
+  }
 }
 
 private fun String.splitIntoTwo(delimiter: Char): Pair<String, String> {
@@ -33,4 +36,10 @@ private fun String.extractIntFromRegex(regex: String): Int {
   } else {
     0
   }
+}
+
+private fun String.getInsertionsAndDeletions(): Pair<Insertions, Deletions> {
+  val insertions = this.extractIntFromRegex(INSERTIONS_REGEX)
+  val deletions = this.extractIntFromRegex(DELETIONS_REGEX)
+  return insertions to deletions
 }

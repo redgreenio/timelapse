@@ -16,12 +16,12 @@ class ParsersTest {
     """.trimIndent()
 
     // when
-    val change = parseGitFollowOutput(commitSummaryBlock)
+    val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
     val expectedChange = Change("f5a1ed7", "Add canary test targeting Java 9", 25)
-    assertThat(change)
-      .isEqualTo(expectedChange)
+    assertThat(changes)
+      .containsExactly(expectedChange)
   }
 
   @Test
@@ -34,12 +34,12 @@ class ParsersTest {
     """.trimIndent()
 
     // when
-    val change = parseGitFollowOutput(commitSummaryBlock)
+    val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
     val expectedChange = Change("986c5ff", "Get rid of root project and optimize gradle buildscripts", 8, 22)
-    assertThat(change)
-      .isEqualTo(expectedChange)
+    assertThat(changes)
+      .containsExactly(expectedChange)
   }
 
   @Test
@@ -52,12 +52,12 @@ class ParsersTest {
     """.trimIndent()
 
     // when
-    val change = parseGitFollowOutput(commitSummaryBlock)
+    val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
     val expectedChange = Change("8eca717", "Remove stale comments", deletions = 2)
-    assertThat(change)
-      .isEqualTo(expectedChange)
+    assertThat(changes)
+      .containsExactly(expectedChange)
   }
 
   @Test
@@ -70,11 +70,39 @@ class ParsersTest {
     """.trimIndent()
 
     // when
-    val change = parseGitFollowOutput(commitSummaryBlock)
+    val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
     val expectedChange = Change("b35d60f", "Bump up dependencies for `server` module", 1, 1)
-    assertThat(change)
-      .isEqualTo(expectedChange)
+    assertThat(changes)
+      .containsExactly(expectedChange)
+  }
+
+  @Test
+  fun `it should parse multiple git summary blocks from the output`() {
+    // given
+    val commitSummaryBlocks = """
+      79c6217 Add an Android SDK module
+       build.gradle | 14 ++++++++++++++
+       1 file changed, 14 insertions(+)
+      986c5ff Get rid of root project and optimize gradle buildscripts
+       build.gradle | 30 ++++++++----------------------
+       1 file changed, 8 insertions(+), 22 deletions(-)
+      f5a1ed7 Add canary test targeting Java 9
+       build.gradle | 25 +++++++++++++++++++++++++
+       1 file changed, 25 insertions(+)
+    """.trimIndent()
+
+    // when
+    val changes = parseGitFollowOutput(commitSummaryBlocks)
+
+    // then
+    assertThat(changes)
+      .containsExactly(
+        Change("79c6217", "Add an Android SDK module", 14),
+        Change("986c5ff", "Get rid of root project and optimize gradle buildscripts", 8, 22),
+        Change("f5a1ed7", "Add canary test targeting Java 9", 25),
+      )
+      .inOrder()
   }
 }
