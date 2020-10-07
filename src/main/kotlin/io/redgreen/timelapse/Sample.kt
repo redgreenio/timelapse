@@ -26,8 +26,15 @@ class TimelapseCommand : Runnable {
   @Option(names = ["--debug"])
   private var isDebug: Boolean = false
 
+  @Option(names = ["--project"])
+  private var project: String = "."
+
+  @Option(names = ["--file"])
+  private var fileName: String = ""
+
   override fun run() {
     debug = isDebug
+    println("$fileName in $project")
 
     val width = 1024
     val height = 768
