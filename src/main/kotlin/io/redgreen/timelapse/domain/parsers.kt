@@ -10,13 +10,21 @@ fun parseGitFollowOutput(output: String): Change {
   val message = commitIdMessageLine.substring(commitAndMessageSeparatorIndex + 1)
 
   val insertionsDeletionsLine = lines[2]
-  val pattern = Pattern.compile("\\d+ insertions\\(\\+\\)")
-  val matcher = pattern.matcher(insertionsDeletionsLine)
-  val insertions = if (matcher.find()) {
-    matcher.group().split(" ")[0].toInt()
+  val insertionsPattern = Pattern.compile("\\d+ insertions\\(\\+\\)")
+  val insertionsMatcher = insertionsPattern.matcher(insertionsDeletionsLine)
+  val insertions = if (insertionsMatcher.find()) {
+    insertionsMatcher.group().split(" ")[0].toInt()
   } else {
     throw IllegalStateException("Unexpected input: $insertionsDeletionsLine")
   }
 
-  return Change(commitId, message, insertions)
+  val deletionsPattern = Pattern.compile("\\d+ deletions\\(-\\)")
+  val deletionsMatcher = deletionsPattern.matcher(insertionsDeletionsLine)
+  val deletions = if (deletionsMatcher.find()) {
+    deletionsMatcher.group().split(" ")[0].toInt()
+  } else {
+    0
+  }
+
+  return Change(commitId, message, insertions, deletions)
 }
