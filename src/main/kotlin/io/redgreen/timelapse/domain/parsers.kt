@@ -4,6 +4,7 @@ import java.util.regex.Pattern
 
 private const val INSERTIONS_REGEX = "\\d+ insertions?\\(\\+\\)"
 private const val DELETIONS_REGEX = "\\d+ deletions?\\(-\\)"
+private const val MESSAGE_REGEX = "\\(.+ -> .+\\)"
 
 private typealias Insertions = Int
 private typealias Deletions = Int
@@ -15,8 +16,9 @@ fun parseGitFollowOutput(output: String): List<Change> {
   val insertionDeletionLines = lines.filterIndexed { index, _ -> (index + 1) % 3 == 0 }
 
   return commitIdMessageLines.zip(insertionDeletionLines) { commitIdMessageLine, insertionsDeletionsLine ->
-    val (commitId, message) = commitIdMessageLine.splitIntoTwo(' ')
+    val (commitId, possiblyMessageWithBranchInformation) = commitIdMessageLine.splitIntoTwo(' ')
     val (insertions, deletions) = insertionsDeletionsLine.getInsertionsAndDeletions()
+    val message = extractMessage(possiblyMessageWithBranchInformation)
     Change(commitId, message, insertions, deletions)
   }
 }
@@ -42,4 +44,14 @@ private fun String.getInsertionsAndDeletions(): Pair<Insertions, Deletions> {
   val insertions = this.extractIntFromRegex(INSERTIONS_REGEX)
   val deletions = this.extractIntFromRegex(DELETIONS_REGEX)
   return insertions to deletions
+}
+
+private fun extractMessage(possiblyMessageWithBranchInformation: String): String {
+  val pattern = Pattern.compile(MESSAGE_REGEX)
+  val matcher = pattern.matcher(possiblyMessageWithBranchInformation)
+  return if (matcher.find()) {
+    possiblyMessageWithBranchInformation.substring(matcher.group().length).trim()
+  } else {
+    possiblyMessageWithBranchInformation
+  }
 }

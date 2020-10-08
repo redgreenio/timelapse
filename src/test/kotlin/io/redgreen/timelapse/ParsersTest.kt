@@ -105,4 +105,23 @@ class ParsersTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it should parse summary block with branch information`() {
+    // given
+    val commitSummaryBlock = """
+      77bc5c1 (HEAD -> develop) chore: update Kotlin version
+       build.gradle | 2 +-
+       1 file changed, 1 insertion(+), 1 deletion(-)
+    """.trimIndent()
+
+    // when
+    val changes = parseGitFollowOutput(commitSummaryBlock)
+
+    // then
+    assertThat(changes)
+      .containsExactly(
+        Change("77bc5c1", "chore: update Kotlin version", 1, 1)
+      )
+  }
 }
