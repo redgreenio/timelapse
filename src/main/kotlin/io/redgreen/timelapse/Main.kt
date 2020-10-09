@@ -1,6 +1,8 @@
 package io.redgreen.timelapse
 
 import io.redgreen.timelapse.domain.Commit
+import io.redgreen.timelapse.domain.getCommitHistoryText
+import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.debug.debug
 import picocli.CommandLine
@@ -30,11 +32,11 @@ class TimelapseCommand : Runnable {
   private var project: String = "."
 
   @Option(names = ["--file"])
-  private var fileName: String = ""
+  private var filePath: String = ""
 
   override fun run() {
     debug = isDebug
-    println("$fileName in $project")
+    println("$filePath in $project")
     buildAndShowGui()
   }
 
@@ -72,6 +74,20 @@ class TimelapseCommand : Runnable {
       setLocationRelativeTo(null)
       contentPane.add(rootPanel)
       isVisible = true
+    }
+
+    // Pair slider with change history 
+    val changesInAscendingOrder = parseGitFollowOutput(getCommitHistoryText(filePath))
+      .reversed()
+    println(changesInAscendingOrder.size)
+    with(timelapseSlider) {
+      maximum = changesInAscendingOrder.lastIndex
+      addChangeListener { println(changesInAscendingOrder[timelapseSlider.value]) }
+    }
+
+    // Pair area chart with insertions
+    with(insertionsAreaChart) {
+      commits = changesInAscendingOrder.map { it.insertions }.map(::Commit)
     }
   }
 }
