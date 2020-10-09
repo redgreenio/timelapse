@@ -1,10 +1,13 @@
 package io.redgreen.timelapse
 
+import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommitHistoryText
+import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.debug.debug
+import org.eclipse.jgit.lib.Repository
 import picocli.CommandLine
 import picocli.CommandLine.Option
 import java.awt.BorderLayout
@@ -12,6 +15,7 @@ import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
 import java.awt.Dimension
+import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.BoxLayout.Y_AXIS
@@ -76,19 +80,35 @@ class TimelapseCommand : Runnable {
       isVisible = true
     }
 
+    // Open Git repository
+    val gitRepository = openGitRepository(File(project))
+
     // Pair slider with change history 
     val changesInAscendingOrder = parseGitFollowOutput(getCommitHistoryText(filePath))
       .reversed()
     println(changesInAscendingOrder.size)
     with(timelapseSlider) {
       maximum = changesInAscendingOrder.lastIndex
-      addChangeListener { println(changesInAscendingOrder[timelapseSlider.value]) }
+      addChangeListener {
+        viewChange(gitRepository, filePath, changesInAscendingOrder[timelapseSlider.value])
+      }
     }
 
     // Pair area chart with insertions
     with(insertionsAreaChart) {
       commits = changesInAscendingOrder.map { it.insertions }.map(::Commit)
     }
+  }
+
+  private fun viewChange(
+    gitRepository: Repository,
+    filePath: String,
+    change: Change
+  ) {
+    // TODO checkout commit
+    // TODO get file diff
+    // TODO update in text area
+    println(change.commitId)
   }
 }
 

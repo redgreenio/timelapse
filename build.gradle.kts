@@ -12,6 +12,7 @@ repositories {
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation("info.picocli:picocli:4.5.1")
+  implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")
 
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
