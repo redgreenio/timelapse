@@ -8,6 +8,9 @@ import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.debug.debug
 import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.revwalk.RevWalk
+import org.eclipse.jgit.treewalk.TreeWalk
+import org.eclipse.jgit.treewalk.filter.PathFilter
 import picocli.CommandLine
 import picocli.CommandLine.Option
 import java.awt.BorderLayout
@@ -69,7 +72,7 @@ class TimelapseCommand : Runnable {
       layout = BorderLayout()
       add(insertionsAreaChart.apply { this.commits = insertions.map(::Commit) }, PAGE_START)
       add(sliderPanel, PAGE_END)
-      add(codeTextArea.apply { isEnabled = false }, CENTER)
+      add(codeTextArea, CENTER)
     }
 
     JFrame(APP_NAME).apply {
@@ -80,35 +83,62 @@ class TimelapseCommand : Runnable {
       isVisible = true
     }
 
-    // Open Git repository
-    val gitRepository = openGitRepository(File(project))
-
-    // Pair slider with change history 
+    // Get change history
     val changesInAscendingOrder = parseGitFollowOutput(getCommitHistoryText(filePath))
       .reversed()
-    println(changesInAscendingOrder.size)
-    with(timelapseSlider) {
-      maximum = changesInAscendingOrder.lastIndex
-      addChangeListener {
-        viewChange(gitRepository, filePath, changesInAscendingOrder[timelapseSlider.value])
-      }
-    }
 
     // Pair area chart with insertions
     with(insertionsAreaChart) {
       commits = changesInAscendingOrder.map { it.insertions }.map(::Commit)
     }
+
+    // Open Git repository
+    val gitRepository = openGitRepository(File(project))
+
+    // Pair slider with change history 
+    with(timelapseSlider) {
+      maximum = changesInAscendingOrder.lastIndex
+      addChangeListener { showCode(gitRepository, codeTextArea, changesInAscendingOrder[timelapseSlider.value]) }
+    }
+
+    // Show the latest change
+    showCode(gitRepository, codeTextArea, changesInAscendingOrder.last())
   }
 
-  private fun viewChange(
+  private fun showCode(
     gitRepository: Repository,
+    codeTextArea: JTextArea,
+    selectedChange: Change
+  ) {
+    val text = getChangeText(gitRepository, filePath, selectedChange)
+    codeTextArea.text = text
+  }
+
+  private fun getChangeText(
+    repository: Repository,
     filePath: String,
     change: Change
-  ) {
-    // TODO checkout commit
-    // TODO get file diff
-    // TODO update in text area
-    println(change.commitId)
+  ): String {
+    val commitObjectId = repository.resolve(change.commitId)
+    var text: String
+    RevWalk(repository).use { revWalk -> 
+      val commit = revWalk.parseCommit(commitObjectId)
+      val tree = commit.tree
+
+      TreeWalk(repository).apply {
+        addTree(tree)
+        isRecursive = true
+        filter = PathFilter.create(filePath)
+      }.use { treeWalk ->
+        treeWalk.next()
+
+        val filePathObjectId = treeWalk.getObjectId(0)
+        val loader = repository.open(filePathObjectId)
+
+        text = String(loader.bytes)
+      }
+    }
+    return text
   }
 }
 
