@@ -115,9 +115,17 @@ class TimelapseCommand : Runnable {
     filePath: String,
     change: Change
   ): String {
-    val commitObjectId = repository.resolve(change.commitId)
+    return readFileFromRevision(repository, change.commitId, filePath)
+  }
+
+  private fun readFileFromRevision(
+    repository: Repository,
+    commitId: String,
+    filePath: String
+  ): String {
+    val commitObjectId = repository.resolve(commitId)
     var text: String
-    RevWalk(repository).use { revWalk -> 
+    RevWalk(repository).use { revWalk ->
       val commit = revWalk.parseCommit(commitObjectId)
       val tree = commit.tree
 
