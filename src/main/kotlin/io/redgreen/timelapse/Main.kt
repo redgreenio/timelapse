@@ -50,10 +50,6 @@ class TimelapseCommand : Runnable {
   private fun buildAndShowGui() {
     val width = 1024
     val height = 768
-    val insertions = listOf(
-      3, 8, 1, 3, 1, 1, 2, 2, 3, 2, 1, 1, 11, 5, 11, 31, 6, 6, 1, 2, 14,
-      1, 1, 7, 1, 1, 1, 1, 2, 2, 4, 2, 4, 2, 1, 1, 2, 1, 11, 8, 6, 12, 10,
-    )
 
     val insertionsAreaChart = AreaChart().apply { preferredSize = Dimension(width, 100) }
     val codeTextArea = JTextArea()
@@ -70,7 +66,7 @@ class TimelapseCommand : Runnable {
     val rootPanel = JPanel()
     with(rootPanel) {
       layout = BorderLayout()
-      add(insertionsAreaChart.apply { this.commits = insertions.map(::Commit) }, PAGE_START)
+      add(insertionsAreaChart, PAGE_START)
       add(sliderPanel, PAGE_END)
       add(codeTextArea, CENTER)
     }
