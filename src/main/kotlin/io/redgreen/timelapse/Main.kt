@@ -27,6 +27,7 @@ import javax.swing.BoxLayout.Y_AXIS
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JPanel
+import javax.swing.JScrollPane
 import javax.swing.JSlider
 import javax.swing.JTextPane
 import javax.swing.text.SimpleAttributeSet
@@ -75,7 +76,7 @@ class TimelapseCommand : Runnable {
       layout = BorderLayout()
       add(insertionsAreaChart, PAGE_START)
       add(sliderPanel, PAGE_END)
-      add(codeTextPane, CENTER)
+      add(JScrollPane(codeTextPane), CENTER)
     }
 
     JFrame(APP_NAME).apply {
@@ -138,6 +139,10 @@ class TimelapseCommand : Runnable {
   }
 
   private fun JTextPane.showDiff(diffText: String) {
+    // Clear existing text
+    this.styledDocument.remove(0, this.document.length)
+
+    // Add new text
     val attributeSet = SimpleAttributeSet()
     val style = this.addStyle("", null)
     this.setCharacterAttributes(attributeSet, true)
