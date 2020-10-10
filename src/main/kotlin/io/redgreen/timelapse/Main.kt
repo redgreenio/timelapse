@@ -8,6 +8,7 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.visuals.AreaChart
+import io.redgreen.timelapse.visuals.FormattedDiff
 import io.redgreen.timelapse.visuals.debug.debug
 import org.eclipse.jgit.lib.Repository
 import picocli.CommandLine
@@ -16,7 +17,7 @@ import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
-import java.awt.Color
+import java.awt.Color.BLACK
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Font.PLAIN
@@ -146,9 +147,15 @@ class TimelapseCommand : Runnable {
     val attributeSet = SimpleAttributeSet()
     val style = this.addStyle("", null)
     this.setCharacterAttributes(attributeSet, true)
-    StyleConstants.setBackground(style, Color(198, 240, 194))
-    StyleConstants.setForeground(style, Color.BLACK)
-    this.styledDocument.insertString(0, diffText, style)
+    StyleConstants.setForeground(style, BLACK)
+
+    FormattedDiff
+      .from(diffText)
+      .spans
+      .onEach { span ->
+        StyleConstants.setBackground(style, span.backgroundColor())
+        styledDocument.insertString(styledDocument.length, span.text(), style)
+      }
   }
 
   private fun getChangeText(

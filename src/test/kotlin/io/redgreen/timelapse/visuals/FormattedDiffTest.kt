@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.visuals.DiffSpan.Blank
 import io.redgreen.timelapse.visuals.DiffSpan.Deletion
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
-import io.redgreen.timelapse.visuals.DiffSpan.Text
+import io.redgreen.timelapse.visuals.DiffSpan.Unmodified
 import org.junit.jupiter.api.Test
 
 class FormattedDiffTest {
@@ -32,13 +32,13 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.spans)
       .containsExactly(
-        Text("buildscript {"),
-        Text("  apply from: 'buildscripts/plugins.gradle'"),
+        Unmodified("buildscript {"),
+        Unmodified("  apply from: 'buildscripts/plugins.gradle'"),
         Deletion("  ext.kotlin_version = '1.3.70'"),
         Insertion("  ext.kotlin_version = '1.3.72'"),
         Blank,
-        Text("  repositories {"),
-        Text("    mavenCentral()"),
+        Unmodified("  repositories {"),
+        Unmodified("    mavenCentral()"),
       )
   }
 }
