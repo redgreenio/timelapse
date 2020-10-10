@@ -27,7 +27,7 @@ import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JPanel
 import javax.swing.JSlider
-import javax.swing.JTextArea
+import javax.swing.JTextPane
 
 private const val SPACING = 10
 private const val APP_NAME = "Timelapse"
@@ -53,8 +53,9 @@ class TimelapseCommand : Runnable {
     val height = 768
 
     val insertionsAreaChart = AreaChart().apply { preferredSize = Dimension(width, 100) }
-    val codeTextArea = JTextArea().apply {
+    val codeTextPane = JTextPane().apply {
       font = Font("monospaced", PLAIN, 15)
+      isEditable = false
     }
     val timelapseSlider = JSlider()
 
@@ -71,7 +72,7 @@ class TimelapseCommand : Runnable {
       layout = BorderLayout()
       add(insertionsAreaChart, PAGE_START)
       add(sliderPanel, PAGE_END)
-      add(codeTextArea, CENTER)
+      add(codeTextPane, CENTER)
     }
 
     JFrame(APP_NAME).apply {
@@ -100,13 +101,13 @@ class TimelapseCommand : Runnable {
       addChangeListener {
         val changeIndex = timelapseSlider.value
         val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
-        showCode(gitRepository, codeTextArea, previousChange, selectedChange)
+        showCode(gitRepository, codeTextPane, previousChange, selectedChange)
       }
     }
 
     // Show the latest change
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changesInAscendingOrder.lastIndex)
-    showCode(gitRepository, codeTextArea, previousChange, selectedChange)
+    showCode(gitRepository, codeTextPane, previousChange, selectedChange)
   }
 
   private fun getChanges(
@@ -120,7 +121,7 @@ class TimelapseCommand : Runnable {
 
   private fun showCode(
     gitRepository: Repository,
-    codeTextArea: JTextArea,
+    codeTextPane: JTextPane,
     previousChange: Change?,
     selectedChange: Change
   ) {
@@ -129,7 +130,7 @@ class TimelapseCommand : Runnable {
     } else {
       gitRepository.getDiff(filePath, previousChange.commitId, selectedChange.commitId)
     }
-    codeTextArea.text = diffText
+    codeTextPane.text = diffText
   }
 
   private fun getChangeText(
