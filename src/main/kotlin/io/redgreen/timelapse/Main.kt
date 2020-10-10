@@ -16,6 +16,7 @@ import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
+import java.awt.Color
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Font.PLAIN
@@ -28,6 +29,8 @@ import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JPanel
 import javax.swing.JSlider
 import javax.swing.JTextPane
+import javax.swing.text.SimpleAttributeSet
+import javax.swing.text.StyleConstants
 
 private const val SPACING = 10
 private const val APP_NAME = "Timelapse"
@@ -130,7 +133,17 @@ class TimelapseCommand : Runnable {
     } else {
       gitRepository.getDiff(filePath, previousChange.commitId, selectedChange.commitId)
     }
-    codeTextPane.text = diffText
+
+    codeTextPane.showDiff(diffText)
+  }
+
+  private fun JTextPane.showDiff(diffText: String) {
+    val attributeSet = SimpleAttributeSet()
+    val style = this.addStyle("", null)
+    this.setCharacterAttributes(attributeSet, true)
+    StyleConstants.setBackground(style, Color(198, 240, 194))
+    StyleConstants.setForeground(style, Color.BLACK)
+    this.styledDocument.insertString(0, diffText, style)
   }
 
   private fun getChangeText(
