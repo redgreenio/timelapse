@@ -1,9 +1,5 @@
 package io.redgreen.timelapse.domain
 
-import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import java.io.File
-
 fun getCommitHistoryText(filePath: String): String {
   return """
       77bc5c1 (HEAD -> develop) chore: update Kotlin version
@@ -34,18 +30,4 @@ fun getCommitHistoryText(filePath: String): String {
        build.gradle | 25 +++++++++++++++++++++++++
        1 file changed, 25 insertions(+)
   """.trimIndent()
-}
-
-fun openGitRepository(repositoryPath: File): Repository {
-  val gitDirectory = "${repositoryPath.canonicalPath}${File.separator}.git"
-
-  val repository = FileRepositoryBuilder()
-    .setGitDir(File(gitDirectory))
-    .build()
-
-  return if (repository.branch != null) {
-    repository
-  } else {
-    throw IllegalStateException("Not a git directory: ${repositoryPath.canonicalPath}")
-  }
 }

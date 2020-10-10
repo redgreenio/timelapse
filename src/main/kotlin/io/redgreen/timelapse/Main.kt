@@ -3,14 +3,13 @@ package io.redgreen.timelapse
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommitHistoryText
+import io.redgreen.timelapse.domain.getDiff
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
+import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.debug.debug
 import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.revwalk.RevWalk
-import org.eclipse.jgit.treewalk.TreeWalk
-import org.eclipse.jgit.treewalk.filter.PathFilter
 import picocli.CommandLine
 import picocli.CommandLine.Option
 import java.awt.BorderLayout
@@ -94,55 +93,47 @@ class TimelapseCommand : Runnable {
     // Pair slider with change history 
     with(timelapseSlider) {
       maximum = changesInAscendingOrder.lastIndex
-      addChangeListener { showCode(gitRepository, codeTextArea, changesInAscendingOrder[timelapseSlider.value]) }
+      addChangeListener {
+        val changeIndex = timelapseSlider.value
+        val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
+        showCode(gitRepository, codeTextArea, previousChange, selectedChange)
+      }
     }
 
     // Show the latest change
-    showCode(gitRepository, codeTextArea, changesInAscendingOrder.last())
+    val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changesInAscendingOrder.lastIndex)
+    showCode(gitRepository, codeTextArea, previousChange, selectedChange)
+  }
+
+  private fun getChanges(
+    changesInAscendingOrder: List<Change>,
+    changeIndex: Int
+  ): Pair<Change?, Change> {
+    val previousChange = if (changeIndex == 0) null else changesInAscendingOrder[changeIndex - 1]
+    val selectedChange = changesInAscendingOrder[changeIndex]
+    return Pair(previousChange, selectedChange)
   }
 
   private fun showCode(
     gitRepository: Repository,
     codeTextArea: JTextArea,
+    previousChange: Change?,
     selectedChange: Change
   ) {
-    val text = getChangeText(gitRepository, filePath, selectedChange)
-    codeTextArea.text = text
+    val diffText = if (previousChange == null) {
+      getChangeText(gitRepository, filePath, selectedChange)
+    } else {
+      gitRepository.getDiff(filePath, previousChange.commitId, selectedChange.commitId)
+    }
+    codeTextArea.text = diffText
   }
 
   private fun getChangeText(
     repository: Repository,
     filePath: String,
-    change: Change
+    currentChange: Change
   ): String {
-    return readFileFromRevision(repository, change.commitId, filePath)
-  }
-
-  private fun readFileFromRevision(
-    repository: Repository,
-    commitId: String,
-    filePath: String
-  ): String {
-    val commitObjectId = repository.resolve(commitId)
-    var text: String
-    RevWalk(repository).use { revWalk ->
-      val commit = revWalk.parseCommit(commitObjectId)
-      val tree = commit.tree
-
-      TreeWalk(repository).apply {
-        addTree(tree)
-        isRecursive = true
-        filter = PathFilter.create(filePath)
-      }.use { treeWalk ->
-        treeWalk.next()
-
-        val filePathObjectId = treeWalk.getObjectId(0)
-        val loader = repository.open(filePathObjectId)
-
-        text = String(loader.bytes)
-      }
-    }
-    return text
+    return repository.readFileFromCommitId(currentChange.commitId, filePath)
   }
 }
 
