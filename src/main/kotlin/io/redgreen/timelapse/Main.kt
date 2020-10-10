@@ -8,6 +8,7 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.visuals.AreaChart
+import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
 import io.redgreen.timelapse.visuals.debug.debug
 import org.eclipse.jgit.lib.Repository
@@ -106,13 +107,13 @@ class TimelapseCommand : Runnable {
       addChangeListener {
         val changeIndex = timelapseSlider.value
         val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
-        showCode(gitRepository, codeTextPane, previousChange, selectedChange)
+        showCode(codeTextPane, gitRepository, previousChange, selectedChange)
       }
     }
 
     // Show the latest change
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changesInAscendingOrder.lastIndex)
-    showCode(gitRepository, codeTextPane, previousChange, selectedChange)
+    showCode(codeTextPane, gitRepository, previousChange, selectedChange)
   }
 
   private fun getChanges(
@@ -125,33 +126,38 @@ class TimelapseCommand : Runnable {
   }
 
   private fun showCode(
-    gitRepository: Repository,
     codeTextPane: JTextPane,
+    gitRepository: Repository,
     previousChange: Change?,
     selectedChange: Change
   ) {
-    val diffText = if (previousChange == null) {
+    val noPreviousRevisions = previousChange == null
+    val diffText = if (noPreviousRevisions) {
       getChangeText(gitRepository, filePath, selectedChange)
     } else {
-      gitRepository.getDiff(filePath, previousChange.commitId, selectedChange.commitId)
+      gitRepository.getDiff(filePath, previousChange!!.commitId, selectedChange.commitId)
     }
 
-    codeTextPane.showDiff(diffText)
+    codeTextPane.showDiff(diffText, noPreviousRevisions)
   }
 
-  private fun JTextPane.showDiff(diffText: String) {
+  private fun JTextPane.showDiff(diffText: String, noPreviousRevisions: Boolean) {
     // Clear existing text
     this.styledDocument.remove(0, this.document.length)
 
     // Add new text
     val attributeSet = SimpleAttributeSet()
-    val style = this.addStyle("", null)
+    val style = this.addStyle(null, null)
     this.setCharacterAttributes(attributeSet, true)
     StyleConstants.setForeground(style, BLACK)
 
-    FormattedDiff
-      .from(diffText)
-      .spans
+    val spans = if (noPreviousRevisions) {
+      listOf(Insertion(diffText))
+    } else {
+      FormattedDiff.from(diffText).spans
+    }
+
+    spans
       .onEach { span ->
         StyleConstants.setBackground(style, span.backgroundColor())
         styledDocument.insertString(styledDocument.length, span.text(), style)

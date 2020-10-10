@@ -8,9 +8,11 @@ sealed class DiffSpan {
   data class Insertion(val text: String) : DiffSpan()
   object Blank : DiffSpan()
 
-  private val insertionColor = Color(198, 240, 194)
-  private val deletionColor = Color(240, 194, 194)
-  private val unmodifiedColor = Color(255, 255, 255)
+  companion object {
+    private val insertionColor = Color(198, 240, 194)
+    private val deletionColor = Color(240, 194, 194)
+    private val unmodifiedColor = Color(255, 255, 255)
+  }
 
   fun backgroundColor(): Color {
     return when (this) {
