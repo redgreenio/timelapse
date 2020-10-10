@@ -17,6 +17,8 @@ import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
 import java.awt.Dimension
+import java.awt.Font
+import java.awt.Font.PLAIN
 import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -51,7 +53,9 @@ class TimelapseCommand : Runnable {
     val height = 768
 
     val insertionsAreaChart = AreaChart().apply { preferredSize = Dimension(width, 100) }
-    val codeTextArea = JTextArea()
+    val codeTextArea = JTextArea().apply {
+      font = Font("monospaced", PLAIN, 15)
+    }
     val timelapseSlider = JSlider()
 
     // Slider
