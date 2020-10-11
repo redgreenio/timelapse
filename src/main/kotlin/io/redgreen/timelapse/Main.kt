@@ -2,6 +2,7 @@ package io.redgreen.timelapse
 
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
+import io.redgreen.timelapse.domain.getCommit
 import io.redgreen.timelapse.domain.getCommitHistoryText
 import io.redgreen.timelapse.domain.getDiff
 import io.redgreen.timelapse.domain.openGitRepository
@@ -28,6 +29,7 @@ import javax.swing.BoxLayout
 import javax.swing.BoxLayout.Y_AXIS
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
+import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JSlider
@@ -37,6 +39,7 @@ import javax.swing.text.StyleConstants
 
 private const val SPACING = 10
 private const val APP_NAME = "Timelapse"
+private const val COMMIT_INFORMATION_SEPARATOR = " • "
 
 class TimelapseCommand : Runnable {
   @Option(names = ["--debug"])
@@ -65,10 +68,13 @@ class TimelapseCommand : Runnable {
     }
     val timelapseSlider = JSlider()
 
+    val commitInformationLabel = JLabel()
+
     // Slider
     val sliderPanel = JPanel().apply {
       layout = BoxLayout(this, Y_AXIS)
       add(Box.createRigidArea(Dimension(width, SPACING)))
+      add(commitInformationLabel)
       add(timelapseSlider)
       add(Box.createRigidArea(Dimension(width, SPACING)))
     }
@@ -79,14 +85,6 @@ class TimelapseCommand : Runnable {
       add(insertionsAreaChart, PAGE_START)
       add(sliderPanel, PAGE_END)
       add(JScrollPane(codeTextPane), CENTER)
-    }
-
-    JFrame(APP_NAME).apply {
-      defaultCloseOperation = EXIT_ON_CLOSE
-      setSize(width, height)
-      setLocationRelativeTo(null)
-      contentPane.add(rootPanel)
-      isVisible = true
     }
 
     // Get change history
@@ -107,13 +105,22 @@ class TimelapseCommand : Runnable {
       addChangeListener {
         val changeIndex = timelapseSlider.value
         val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
-        showCode(codeTextPane, gitRepository, previousChange, selectedChange)
+        showCode(codeTextPane, commitInformationLabel, gitRepository, previousChange, selectedChange)
       }
     }
 
     // Show the latest change
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changesInAscendingOrder.lastIndex)
-    showCode(codeTextPane, gitRepository, previousChange, selectedChange)
+    showCode(codeTextPane, commitInformationLabel, gitRepository, previousChange, selectedChange)
+
+    // Show JFrame
+    JFrame(APP_NAME).apply {
+      defaultCloseOperation = EXIT_ON_CLOSE
+      setSize(width, height)
+      setLocationRelativeTo(null)
+      contentPane.add(rootPanel)
+      isVisible = true
+    }
   }
 
   private fun getChanges(
@@ -127,6 +134,7 @@ class TimelapseCommand : Runnable {
 
   private fun showCode(
     codeTextPane: JTextPane,
+    commitInformationLabel: JLabel,
     gitRepository: Repository,
     previousChange: Change?,
     selectedChange: Change
@@ -139,6 +147,7 @@ class TimelapseCommand : Runnable {
     }
 
     codeTextPane.showDiff(diffText, noPreviousRevisions)
+    commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
   }
 
   private fun JTextPane.showDiff(diffText: String, noPreviousRevisions: Boolean) {
@@ -170,6 +179,21 @@ class TimelapseCommand : Runnable {
     currentChange: Change
   ): String {
     return repository.readFileFromCommitId(currentChange.commitId, filePath)
+  }
+
+  private fun getCommitInformation(
+    gitRepository: Repository,
+    selectedChange: Change
+  ): String {
+    val commit = gitRepository.getCommit(selectedChange.commitId)
+
+    return StringBuilder()
+      .append(selectedChange.commitId)
+      .append(COMMIT_INFORMATION_SEPARATOR)
+      .append(selectedChange.message)
+      .append(COMMIT_INFORMATION_SEPARATOR)
+      .append("${commit.authorIdent.name} <${commit.authorIdent.emailAddress}>")
+      .toString()
   }
 }
 

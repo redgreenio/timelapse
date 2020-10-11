@@ -2,6 +2,7 @@ package io.redgreen.timelapse.domain
 
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevTree
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
@@ -77,6 +78,12 @@ fun Repository.getDiff(
   }
 
   return diff
+}
+
+fun Repository.getCommit(commitId: String): RevCommit {
+  RevWalk(this).use { walk ->
+    return walk.parseCommit(this.resolve(commitId))
+  }
 }
 
 private fun Repository.getTree(commitId: String): RevTree {
