@@ -5,6 +5,7 @@ import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
 import io.redgreen.timelapse.domain.getCommitHistoryText
 import io.redgreen.timelapse.domain.getDiff
+import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
@@ -19,10 +20,13 @@ import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
+import java.awt.BorderLayout.WEST
 import java.awt.Color.BLACK
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Font.PLAIN
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -34,12 +38,17 @@ import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JSlider
 import javax.swing.JTextPane
+import javax.swing.JTree
 import javax.swing.text.SimpleAttributeSet
 import javax.swing.text.StyleConstants
+import javax.swing.tree.DefaultMutableTreeNode
 
 private const val SPACING = 10
 private const val APP_NAME = "Timelapse"
 private const val COMMIT_INFORMATION_SEPARATOR = " • "
+private const val GIT_PATH_SEPARATOR = '/'
+
+private typealias DirectoryPath = String
 
 class TimelapseCommand : Runnable {
   @Option(names = ["--debug"])
@@ -53,13 +62,15 @@ class TimelapseCommand : Runnable {
 
   override fun run() {
     debug = isDebug
-    println("$filePath in $project")
     buildAndShowGui()
   }
 
   private fun buildAndShowGui() {
     val width = 1024
     val height = 768
+
+    // Open Git repository
+    val gitRepository = openGitRepository(File(project))
 
     val insertionsAreaChart = AreaChart().apply { preferredSize = Dimension(width, 100) }
     val codeTextPane = JTextPane().apply {
@@ -79,12 +90,34 @@ class TimelapseCommand : Runnable {
       add(Box.createRigidArea(Dimension(width, SPACING)))
     }
 
+    // Get all file paths inside the repository
+    val filePaths = gitRepository.getFilePaths()
+
+    // File explorer
+    val rootTreeNode = DefaultMutableTreeNode().apply {
+      userObject = project.substring(project.lastIndexOf(File.separatorChar) + 1, project.length)
+
+      buildFileExplorerTree(this, filePaths)
+    }
+
+    val fileExplorerTree = JTree(rootTreeNode).apply {
+      preferredSize = Dimension(320, 0)
+    }
+
+    fileExplorerTree.addMouseListener(object : MouseAdapter() {
+      override fun mouseClicked(e: MouseEvent) {
+        val selectedPath = fileExplorerTree.getPathForLocation(e.x, e.y)
+        println("${selectedPath?.parentPath} -> ${selectedPath?.lastPathComponent}")
+      }
+    })
+
     val rootPanel = JPanel()
     with(rootPanel) {
       layout = BorderLayout()
       add(insertionsAreaChart, PAGE_START)
       add(sliderPanel, PAGE_END)
       add(JScrollPane(codeTextPane), CENTER)
+      add(fileExplorerTree, WEST)
     }
 
     // Get change history
@@ -95,9 +128,6 @@ class TimelapseCommand : Runnable {
     with(insertionsAreaChart) {
       commits = changesInAscendingOrder.map { it.insertions }.map(::Commit)
     }
-
-    // Open Git repository
-    val gitRepository = openGitRepository(File(project))
 
     // Pair slider with change history 
     with(timelapseSlider) {
@@ -121,6 +151,72 @@ class TimelapseCommand : Runnable {
       contentPane.add(rootPanel)
       isVisible = true
     }
+  }
+
+  private fun buildFileExplorerTree(
+    rootNode: DefaultMutableTreeNode,
+    filePaths: List<String>
+  ) {
+    // Add root files
+    filePaths
+      .filter { !it.contains(GIT_PATH_SEPARATOR) }
+      .onEach { rootNode.add(DefaultMutableTreeNode(it)) }
+
+    // Add directories
+    val directoryNodesRegistry = mutableMapOf<DirectoryPath, DefaultMutableTreeNode>()
+
+    getDirectoryPaths(filePaths).onEach { directoryPath ->
+      val isFirstLevel = !directoryPath.contains(GIT_PATH_SEPARATOR)
+      if (isFirstLevel && directoryPath !in directoryNodesRegistry) {
+        val directoryNode = DefaultMutableTreeNode(directoryPath)
+        directoryNodesRegistry[directoryPath] = directoryNode
+
+        rootNode.add(directoryNode)
+      } else if (directoryPath !in directoryNodesRegistry) {
+        val parentPath = directoryPath.substring(0, directoryPath.lastIndexOf(GIT_PATH_SEPARATOR))
+        val childDirectory = directoryPath.substring(directoryPath.lastIndexOf(GIT_PATH_SEPARATOR) + 1)
+        val childDirectoryNode = DefaultMutableTreeNode(childDirectory)
+        directoryNodesRegistry[directoryPath] = childDirectoryNode
+
+        val parentDirectoryNode = directoryNodesRegistry[parentPath]!!
+        parentDirectoryNode.add(childDirectoryNode)
+      }
+    }
+
+    // Add files
+    filePaths
+      .onEach { filePath ->
+        if (filePath.contains(GIT_PATH_SEPARATOR)) {
+          val parentPath = filePath.substring(0, filePath.lastIndexOf(GIT_PATH_SEPARATOR))
+          val fileName = filePath.substring(filePath.lastIndexOf(GIT_PATH_SEPARATOR) + 1)
+          directoryNodesRegistry[parentPath]!!.add(DefaultMutableTreeNode(fileName))
+        }
+      }
+  }
+
+  private fun getDirectoryPaths(filePaths: List<String>): List<String> {
+    val directoryPaths = filePaths
+      .filter { it.contains(GIT_PATH_SEPARATOR) }
+      .map { it.substring(0, it.lastIndexOf(GIT_PATH_SEPARATOR)) }
+      .distinct()
+      .sorted()
+
+    val rootDirectories = directoryPaths
+      .filter { !it.contains(GIT_PATH_SEPARATOR) }
+
+    val nonRootDirectories = directoryPaths
+      .filter { it.contains(GIT_PATH_SEPARATOR) }
+      .flatMap { directoryPath ->
+        directoryPath.split(GIT_PATH_SEPARATOR)
+          .drop(1)
+          .scan(directoryPath.split(GIT_PATH_SEPARATOR).first()) { traversedPath, currentDirectory ->
+            "$traversedPath$GIT_PATH_SEPARATOR$currentDirectory"
+          }
+      }
+
+    return (rootDirectories + nonRootDirectories)
+      .distinct()
+      .sorted()
   }
 
   private fun getChanges(

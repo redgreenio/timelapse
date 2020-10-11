@@ -1,6 +1,8 @@
 package io.redgreen.timelapse.domain
 
 import org.eclipse.jgit.diff.DiffFormatter
+import org.eclipse.jgit.lib.Constants.HEAD
+import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevTree
@@ -84,6 +86,26 @@ fun Repository.getCommit(commitId: String): RevCommit {
   RevWalk(this).use { walk ->
     return walk.parseCommit(this.resolve(commitId))
   }
+}
+
+fun Repository.getFilePaths(): List<String> {
+  val filePaths = mutableListOf<String>()
+
+  val headObjectId = this.getHead()
+  val headCommit = this.parseCommit(headObjectId)
+  TreeWalk(this).use { treeWalk ->
+    treeWalk.reset(headCommit.tree.id)
+    treeWalk.isRecursive = true
+    while (treeWalk.next()) {
+      filePaths.add(treeWalk.pathString)
+    }
+  }
+
+  return filePaths
+}
+
+private fun Repository.getHead(): ObjectId {
+  return this.resolve(HEAD)
 }
 
 private fun Repository.getTree(commitId: String): RevTree {
