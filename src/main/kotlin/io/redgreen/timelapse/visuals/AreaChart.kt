@@ -49,7 +49,7 @@ class AreaChart : JPanel(), MouseMotionListener {
       xPoints = IntArray(0)
       yPoints = IntArray(0)
 
-      invalidate()
+      repaint()
     }
 
   override fun paintComponent(graphics: Graphics) {
