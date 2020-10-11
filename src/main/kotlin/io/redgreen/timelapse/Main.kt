@@ -90,7 +90,7 @@ class TimelapseCommand : Runnable {
     }
 
     // Get change history
-    val changesInAscendingOrder = parseGitFollowOutput(getCommitHistoryText(filePath))
+    val changesInAscendingOrder = parseGitFollowOutput(getCommitHistoryText(project, filePath))
       .reversed()
 
     // Pair area chart with insertions
