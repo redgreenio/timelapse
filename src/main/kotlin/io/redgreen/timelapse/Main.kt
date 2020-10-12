@@ -100,9 +100,7 @@ class TimelapseCommand : Runnable {
       buildFileExplorerTree(this, filePaths)
     }
 
-    val fileExplorerTree = JTree(rootTreeNode).apply {
-      preferredSize = Dimension(320, 0)
-    }
+    val fileExplorerTree = JTree(rootTreeNode)
 
     fileExplorerTree.addMouseListener(object : MouseAdapter() {
       override fun mouseClicked(e: MouseEvent) {
@@ -117,7 +115,9 @@ class TimelapseCommand : Runnable {
       add(insertionsAreaChart, PAGE_START)
       add(sliderPanel, PAGE_END)
       add(JScrollPane(codeTextPane), CENTER)
-      add(fileExplorerTree, WEST)
+      add(JScrollPane(fileExplorerTree).apply {
+        preferredSize = Dimension(320, 0)
+      }, WEST)
     }
 
     // Get change history
