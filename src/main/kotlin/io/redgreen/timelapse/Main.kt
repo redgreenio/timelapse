@@ -42,11 +42,18 @@ import javax.swing.JTree
 import javax.swing.text.SimpleAttributeSet
 import javax.swing.text.StyleConstants
 import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.tree.DefaultTreeModel
+import kotlin.LazyThreadSafetyMode.NONE
 
-private const val SPACING = 10
 private const val APP_NAME = "Timelapse"
 private const val COMMIT_INFORMATION_SEPARATOR = " • "
 private const val GIT_PATH_SEPARATOR = '/'
+
+private const val WIDTH = 1024
+private const val HEIGHT = 768
+private const val SLIDER_RIGID_AREA_SPACING = 10
+private const val AREA_CHART_HEIGHT = 100
+private const val FILE_EXPLORER_WIDTH = 320
 
 private typealias DirectoryPath = String
 
@@ -60,35 +67,56 @@ class TimelapseCommand : Runnable {
   @Option(names = ["--file"])
   private var filePath: String = ""
 
+  private val timelapseSlider = JSlider()
+
+  private val commitInformationLabel = JLabel()
+
+  private val insertionsAreaChart by lazy(NONE) {
+    AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
+  }
+
+  private val codeTextPane by lazy(NONE) {
+    JTextPane().apply {
+      font = Font("monospaced", PLAIN, 15)
+      isEditable = false
+    }
+  }
+
+  private val sliderPanel by lazy(NONE) {
+    JPanel().apply {
+      layout = BoxLayout(this, Y_AXIS)
+      add(Box.createRigidArea(Dimension(WIDTH, SLIDER_RIGID_AREA_SPACING)))
+      add(commitInformationLabel)
+      add(timelapseSlider)
+      add(Box.createRigidArea(Dimension(WIDTH, SLIDER_RIGID_AREA_SPACING)))
+    }
+  }
+
+  private val fileExplorerTree = JTree()
+
+  private val rootPanel = JPanel().apply {
+    layout = BorderLayout()
+    add(insertionsAreaChart, PAGE_START)
+    add(sliderPanel, PAGE_END)
+    add(JScrollPane(codeTextPane), CENTER)
+    add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, 0) }, WEST)
+  }
+
+  private val timelapseFrame = JFrame(APP_NAME).apply {
+    defaultCloseOperation = EXIT_ON_CLOSE
+    setSize(WIDTH, HEIGHT)
+    setLocationRelativeTo(null)
+    contentPane.add(rootPanel)
+  }
+
   override fun run() {
     debug = isDebug
     buildAndShowGui()
   }
 
   private fun buildAndShowGui() {
-    val width = 1024
-    val height = 768
-
     // Open Git repository
     val gitRepository = openGitRepository(File(project))
-
-    val insertionsAreaChart = AreaChart().apply { preferredSize = Dimension(width, 100) }
-    val codeTextPane = JTextPane().apply {
-      font = Font("monospaced", PLAIN, 15)
-      isEditable = false
-    }
-    val timelapseSlider = JSlider()
-
-    val commitInformationLabel = JLabel()
-
-    // Slider
-    val sliderPanel = JPanel().apply {
-      layout = BoxLayout(this, Y_AXIS)
-      add(Box.createRigidArea(Dimension(width, SPACING)))
-      add(commitInformationLabel)
-      add(timelapseSlider)
-      add(Box.createRigidArea(Dimension(width, SPACING)))
-    }
 
     // Get all file paths inside the repository
     val filePaths = gitRepository.getFilePaths()
@@ -96,11 +124,10 @@ class TimelapseCommand : Runnable {
     // File explorer
     val rootTreeNode = DefaultMutableTreeNode().apply {
       userObject = project.substring(project.lastIndexOf(File.separatorChar) + 1, project.length)
-
       buildFileExplorerTree(this, filePaths)
     }
 
-    val fileExplorerTree = JTree(rootTreeNode)
+    fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
 
     fileExplorerTree.addMouseListener(object : MouseAdapter() {
       override fun mouseClicked(e: MouseEvent) {
@@ -108,17 +135,6 @@ class TimelapseCommand : Runnable {
         println("${selectedPath?.parentPath} -> ${selectedPath?.lastPathComponent}")
       }
     })
-
-    val rootPanel = JPanel()
-    with(rootPanel) {
-      layout = BorderLayout()
-      add(insertionsAreaChart, PAGE_START)
-      add(sliderPanel, PAGE_END)
-      add(JScrollPane(codeTextPane), CENTER)
-      add(JScrollPane(fileExplorerTree).apply {
-        preferredSize = Dimension(320, 0)
-      }, WEST)
-    }
 
     // Get change history
     val changesInAscendingOrder = parseGitFollowOutput(getCommitHistoryText(project, filePath))
@@ -144,13 +160,7 @@ class TimelapseCommand : Runnable {
     showCode(codeTextPane, commitInformationLabel, gitRepository, previousChange, selectedChange)
 
     // Show JFrame
-    JFrame(APP_NAME).apply {
-      defaultCloseOperation = EXIT_ON_CLOSE
-      setSize(width, height)
-      setLocationRelativeTo(null)
-      contentPane.add(rootPanel)
-      isVisible = true
-    }
+    timelapseFrame.isVisible = true
   }
 
   private fun buildFileExplorerTree(
