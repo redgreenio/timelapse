@@ -25,8 +25,6 @@ import java.awt.Color.BLACK
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Font.PLAIN
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -64,10 +62,18 @@ class TimelapseCommand : Runnable {
   @Option(names = ["--project"])
   private var project: String = "."
 
-  @Option(names = ["--file"])
-  private var filePath: String = ""
+  private lateinit var gitRepository: Repository
+  private lateinit var changesInAscendingOrder: List<Change>
+  private lateinit var filePath: String
 
-  private val timelapseSlider = JSlider()
+  private val timelapseSlider = JSlider().apply {
+    addChangeListener {
+      val changeIndex = this.value
+      val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
+      // Show code on slider move
+      showCode(codeTextPane, commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
+    }
+  }
 
   private val commitInformationLabel = JLabel()
 
@@ -92,7 +98,24 @@ class TimelapseCommand : Runnable {
     }
   }
 
-  private val fileExplorerTree = JTree()
+  private val fileExplorerTree = JTree().apply {
+    addMouseListener(object : java.awt.event.MouseAdapter() {
+      override fun mouseClicked(e: java.awt.event.MouseEvent) {
+        val selectedPath = getPathForLocation(e.x, e.y)
+
+        selectedPath?.let {
+          val parentPath = it.parentPath.path.drop(1).joinToString(GIT_PATH_SEPARATOR.toString())
+          val fullFilePath = if (parentPath.isEmpty()) {
+            it.lastPathComponent.toString()
+          } else {
+            "$parentPath$GIT_PATH_SEPARATOR${it.lastPathComponent}"
+          }
+          debug { "Selected path: $fullFilePath" }
+          selectFile(gitRepository, fullFilePath)
+        }
+      }
+    })
+  }
 
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
@@ -115,52 +138,54 @@ class TimelapseCommand : Runnable {
   }
 
   private fun buildAndShowGui() {
-    // Open Git repository
-    val gitRepository = openGitRepository(File(project))
-
-    // Get all file paths inside the repository
-    val filePaths = gitRepository.getFilePaths()
-
-    // File explorer
-    val rootTreeNode = DefaultMutableTreeNode().apply {
-      userObject = project.substring(project.lastIndexOf(File.separatorChar) + 1, project.length)
-      buildFileExplorerTree(this, filePaths)
-    }
-
-    fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
-
-    fileExplorerTree.addMouseListener(object : MouseAdapter() {
-      override fun mouseClicked(e: MouseEvent) {
-        val selectedPath = fileExplorerTree.getPathForLocation(e.x, e.y)
-        println("${selectedPath?.parentPath} -> ${selectedPath?.lastPathComponent}")
+    gitRepository = openProject(project) { filePaths ->
+      val rootTreeNode = DefaultMutableTreeNode().apply {
+        userObject = project.substring(project.lastIndexOf(File.separatorChar) + 1, project.length)
+        buildFileExplorerTree(this, filePaths)
       }
-    })
-
-    // Get change history
-    val changesInAscendingOrder = parseGitFollowOutput(getCommitHistoryText(project, filePath))
-      .reversed()
-
-    // Pair area chart with insertions
-    with(insertionsAreaChart) {
-      commits = changesInAscendingOrder.map { it.insertions }.map(::Commit)
+      fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
     }
-
-    // Pair slider with change history 
-    with(timelapseSlider) {
-      maximum = changesInAscendingOrder.lastIndex
-      addChangeListener {
-        val changeIndex = timelapseSlider.value
-        val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
-        showCode(codeTextPane, commitInformationLabel, gitRepository, previousChange, selectedChange)
-      }
-    }
-
-    // Show the latest change
-    val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changesInAscendingOrder.lastIndex)
-    showCode(codeTextPane, commitInformationLabel, gitRepository, previousChange, selectedChange)
 
     // Show JFrame
     timelapseFrame.isVisible = true
+  }
+
+  private fun selectFile(gitRepository: Repository, filePath: String) {
+    this.filePath = filePath
+
+    // Get change history
+    val gitFollowOutput = getCommitHistoryText(project, filePath)
+    debug { gitFollowOutput }
+    changesInAscendingOrder = parseGitFollowOutput(gitFollowOutput)
+      .reversed()
+
+    debug { "Found ${changesInAscendingOrder.size} commits for $filePath" }
+
+    // Pair area chart with insertions
+    with(insertionsAreaChart) {
+      val changesMappedToCommits = changesInAscendingOrder
+        .map { it.insertions }
+        .map(::Commit)
+      commits = changesMappedToCommits
+      debug { "Updated area chart with data points: ${changesMappedToCommits.map { it.insertions }.joinToString()}" }
+    }
+
+    // Pair slider with change history
+    with(timelapseSlider) {
+      maximum = changesInAscendingOrder.lastIndex
+      value = changesInAscendingOrder.lastIndex
+      debug { "Setting slider's maximum to $maximum, value to $value" }
+    }
+
+    // Show code now
+    val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changesInAscendingOrder.lastIndex)
+    showCode(codeTextPane, commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
+  }
+
+  private fun openProject(projectPath: String, onProjectOpened: (List<String>) -> Unit): Repository {
+    val gitRepository = openGitRepository(File(projectPath))
+    onProjectOpened(gitRepository.getFilePaths())
+    return gitRepository
   }
 
   private fun buildFileExplorerTree(
@@ -242,6 +267,7 @@ class TimelapseCommand : Runnable {
     codeTextPane: JTextPane,
     commitInformationLabel: JLabel,
     gitRepository: Repository,
+    filePath: String,
     previousChange: Change?,
     selectedChange: Change
   ) {
@@ -305,4 +331,8 @@ class TimelapseCommand : Runnable {
 
 fun main(args: Array<String>) {
   CommandLine(TimelapseCommand()).execute(*args)
+}
+
+private fun debug(message: () -> String) {
+  println(message())
 }

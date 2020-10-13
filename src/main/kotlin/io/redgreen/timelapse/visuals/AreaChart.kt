@@ -53,17 +53,18 @@ class AreaChart : JPanel(), MouseMotionListener {
     }
 
   override fun paintComponent(graphics: Graphics) {
+    if (commits.isEmpty()) {
+      return
+    }
+
     (graphics as Graphics2D).apply { prepareGraphics() }
 
     // -- begin: Logic
-    val shouldRecompute = knownWidth != width || knownHeight != height
-    if (shouldRecompute) {
-      computePolygonPoints(commits, width, height, POINT_RADIUS, points)
-      xPoints = points.map(Point::x).toIntArray()
-      yPoints = points.map(Point::y).toIntArray()
-      knownWidth = width
-      knownHeight = height
-    }
+    computePolygonPoints(commits, width, height, POINT_RADIUS, points)
+    xPoints = points.map(Point::x).toIntArray()
+    yPoints = points.map(Point::y).toIntArray()
+    knownWidth = width
+    knownHeight = height
     // -- end: Logic
 
     with(graphics) {
