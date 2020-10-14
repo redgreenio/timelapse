@@ -333,6 +333,6 @@ fun main(args: Array<String>) {
   CommandLine(TimelapseCommand()).execute(*args)
 }
 
-private fun debug(message: () -> String) {
+internal fun debug(message: () -> String) {
   println(message())
 }

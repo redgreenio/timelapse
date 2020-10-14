@@ -9,7 +9,7 @@ fun getCommitHistoryText(
   val projectPath = "${File(projectDirectory).absolutePath}${File.separator}"
   val gitDirectory = "$projectPath.git"
 
-  val command = arrayOf("git", "--git-dir", gitDirectory, "log", "--oneline", "-M", "--stat", "--follow", "--", filePath)
+  val command = arrayOf("git", "--git-dir", gitDirectory, "log", "--oneline", "-M", "--stat",/* "--follow",*/ "--", filePath)
   val process = Runtime
     .getRuntime()
     .exec(command)
