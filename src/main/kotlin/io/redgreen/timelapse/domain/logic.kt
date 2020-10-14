@@ -6,13 +6,28 @@ fun getCommitHistoryText(
   projectDirectory: String,
   filePath: String
 ): String {
-  val projectPath = "${File(projectDirectory).absolutePath}${File.separator}"
-  val gitDirectory = "$projectPath.git"
+  val projectPath = File(projectDirectory).absolutePath
+  val gitDirectory = "$projectPath${File.separator}.git"
 
-  val command = arrayOf("git", "--git-dir", gitDirectory, "log", "--oneline", "-M", "--stat",/* "--follow",*/ "--", filePath)
   val process = Runtime
     .getRuntime()
-    .exec(command)
+    .exec(gitLogCommand(gitDirectory, filePath))
 
   return process.inputStream.reader().use { it.readText() }
+}
+
+private fun gitLogCommand(gitDirectory: String, filePath: String): Array<String> {
+  return arrayOf(
+    "git",
+    "--git-dir",
+    gitDirectory,
+    "log",
+    "--oneline",
+    "-M",
+    "--stat",
+    "--no-merges",
+    /* "--follow",*/
+    "--",
+    filePath,
+  )
 }
