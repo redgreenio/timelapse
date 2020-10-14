@@ -2,6 +2,7 @@ package io.redgreen.timelapse
 
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.domain.Change.Modification
+import io.redgreen.timelapse.domain.Change.Move
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import org.junit.jupiter.api.Test
 
@@ -122,6 +123,27 @@ class ParsersTest {
     assertThat(changes)
       .containsExactly(
         Modification("77bc5c1", "chore: update Kotlin version", 1, 1)
+      )
+  }
+
+  @Test
+  fun `it should parse summary block with a move change`() {
+    // given
+    val fileMoveCommitSummaryBlock = """
+      a30f50994 Move OngoingEditPatientEntry to the patient package
+       .../clinic/{editpatient => patient}/OngoingEditPatientEntry.kt       | 5 ++---
+       1 file changed, 2 insertions(+), 3 deletions(-)
+    """.trimIndent()
+
+    // when
+    val changes = parseGitFollowOutput(fileMoveCommitSummaryBlock)
+
+    // then
+    val oldPathFragment = "/clinic/editpatient/OngoingEditPatientEntry.kt"
+    val newPathFragment = "/clinic/patient/OngoingEditPatientEntry.kt"
+    assertThat(changes)
+      .containsExactly(
+        Move("a30f50994", "Move OngoingEditPatientEntry to the patient package", 2, 3, oldPathFragment, newPathFragment)
       )
   }
 }
