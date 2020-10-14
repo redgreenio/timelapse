@@ -146,4 +146,25 @@ class ParsersTest {
         Move("a30f50994", "Move OngoingEditPatientEntry to the patient package", 2, 3, oldPathFragment, newPathFragment)
       )
   }
+
+  @Test
+  fun `it should parse summary block with a rename change`() {
+    // given
+    val fileMoveCommitSummaryBlock = """
+      151de7ea4 Rename PatientData -> OngoingEditPatientEntry
+       .../clinic/editpatient/{PatientData.kt => OngoingEditPatientEntry.kt}   | 2 +-
+       1 file changed, 1 insertion(+), 1 deletion(-)
+    """.trimIndent()
+
+    // when
+    val changes = parseGitFollowOutput(fileMoveCommitSummaryBlock)
+
+    // then
+    val oldPathFragment = "/clinic/editpatient/PatientData.kt"
+    val newPathFragment = "/clinic/editpatient/OngoingEditPatientEntry.kt"
+    assertThat(changes)
+      .containsExactly(
+        Move("151de7ea4", "Rename PatientData -> OngoingEditPatientEntry", 1, 1, oldPathFragment, newPathFragment)
+      )
+  }
 }
