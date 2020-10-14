@@ -173,12 +173,12 @@ class TimelapseCommand : Runnable {
     // Pair slider with change history
     with(timelapseSlider) {
       maximum = changesInAscendingOrder.lastIndex
-      value = changesInAscendingOrder.lastIndex
+      value = 0
       debug { "Setting slider's maximum to $maximum, value to $value" }
     }
 
     // Show code now
-    val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changesInAscendingOrder.lastIndex)
+    val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, 0)
     showCode(codeTextPane, commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
   }
 
