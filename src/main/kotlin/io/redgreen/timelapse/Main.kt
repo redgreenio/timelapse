@@ -25,8 +25,6 @@ import java.awt.Color.BLACK
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Font.PLAIN
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -101,26 +99,22 @@ class TimelapseCommand : Runnable {
   }
 
   private val fileExplorerTree = JTree().apply {
-    addMouseListener(object : MouseAdapter() {
-      override fun mouseClicked(e: MouseEvent) {
-        val selectedPath = getPathForLocation(e.x, e.y)
+    addTreeSelectionListener { selectionEvent ->
+      selectionEvent.path?.let { selectedPath ->
+        val parentPath = selectedPath.parentPath.path.drop(1).joinToString(GIT_PATH_SEPARATOR.toString())
+        val fullFilePath = if (parentPath.isEmpty()) {
+          selectedPath.lastPathComponent.toString()
+        } else {
+          "$parentPath$GIT_PATH_SEPARATOR${selectedPath.lastPathComponent}"
+        }
+        debug { "Selected path: $fullFilePath" }
 
-        selectedPath?.let {
-          val parentPath = it.parentPath.path.drop(1).joinToString(GIT_PATH_SEPARATOR.toString())
-          val fullFilePath = if (parentPath.isEmpty()) {
-            it.lastPathComponent.toString()
-          } else {
-            "$parentPath$GIT_PATH_SEPARATOR${it.lastPathComponent}"
-          }
-          debug { "Selected path: $fullFilePath" }
-
-          val isLeafNode = (selectedPath.lastPathComponent as? DefaultMutableTreeNode)?.childCount == 0
-          if (isLeafNode) {
-            selectFile(gitRepository, fullFilePath)
-          }
+        val isLeafNode = (selectedPath.lastPathComponent as? DefaultMutableTreeNode)?.childCount == 0
+        if (isLeafNode) {
+          selectFile(gitRepository, fullFilePath)
         }
       }
-    })
+    }
   }
 
   private val rootPanel = JPanel().apply {
