@@ -1,7 +1,7 @@
 package io.redgreen.timelapse
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.domain.Change
+import io.redgreen.timelapse.domain.Change.Modification
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import org.junit.jupiter.api.Test
 
@@ -19,7 +19,7 @@ class ParsersTest {
     val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
-    val expectedChange = Change("f5a1ed7", "Add canary test targeting Java 9", 25)
+    val expectedChange = Modification("f5a1ed7", "Add canary test targeting Java 9", 25)
     assertThat(changes)
       .containsExactly(expectedChange)
   }
@@ -37,7 +37,7 @@ class ParsersTest {
     val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
-    val expectedChange = Change("986c5ff", "Get rid of root project and optimize gradle buildscripts", 8, 22)
+    val expectedChange = Modification("986c5ff", "Get rid of root project and optimize gradle buildscripts", 8, 22)
     assertThat(changes)
       .containsExactly(expectedChange)
   }
@@ -55,7 +55,7 @@ class ParsersTest {
     val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
-    val expectedChange = Change("8eca717", "Remove stale comments", deletions = 2)
+    val expectedChange = Modification("8eca717", "Remove stale comments", deletions = 2)
     assertThat(changes)
       .containsExactly(expectedChange)
   }
@@ -73,7 +73,7 @@ class ParsersTest {
     val changes = parseGitFollowOutput(commitSummaryBlock)
 
     // then
-    val expectedChange = Change("b35d60f", "Bump up dependencies for `server` module", 1, 1)
+    val expectedChange = Modification("b35d60f", "Bump up dependencies for `server` module", 1, 1)
     assertThat(changes)
       .containsExactly(expectedChange)
   }
@@ -99,9 +99,9 @@ class ParsersTest {
     // then
     assertThat(changes)
       .containsExactly(
-        Change("79c6217", "Add an Android SDK module", 14),
-        Change("986c5ff", "Get rid of root project and optimize gradle buildscripts", 8, 22),
-        Change("f5a1ed7", "Add canary test targeting Java 9", 25),
+        Modification("79c6217", "Add an Android SDK module", 14),
+        Modification("986c5ff", "Get rid of root project and optimize gradle buildscripts", 8, 22),
+        Modification("f5a1ed7", "Add canary test targeting Java 9", 25),
       )
       .inOrder()
   }
@@ -121,7 +121,7 @@ class ParsersTest {
     // then
     assertThat(changes)
       .containsExactly(
-        Change("77bc5c1", "chore: update Kotlin version", 1, 1)
+        Modification("77bc5c1", "chore: update Kotlin version", 1, 1)
       )
   }
 }

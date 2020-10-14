@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.domain
 
+import io.redgreen.timelapse.domain.Change.Modification
 import java.util.regex.Pattern
 
 private const val INSERTIONS_REGEX = "\\d+ insertions?\\(\\+\\)"
@@ -19,7 +20,7 @@ fun parseGitFollowOutput(output: String): List<Change> {
     val (commitId, possiblyMessageWithBranchInformation) = commitIdMessageLine.splitIntoTwo(' ')
     val (insertions, deletions) = insertionsDeletionsLine.getInsertionsAndDeletions()
     val message = extractMessage(possiblyMessageWithBranchInformation)
-    Change(commitId, message, insertions, deletions)
+    Modification(commitId, message, insertions, deletions)
   }
 }
 
