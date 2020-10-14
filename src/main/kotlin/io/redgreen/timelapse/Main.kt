@@ -37,6 +37,8 @@ import javax.swing.JScrollPane
 import javax.swing.JSlider
 import javax.swing.JTextPane
 import javax.swing.JTree
+import javax.swing.text.DefaultCaret
+import javax.swing.text.DefaultCaret.NEVER_UPDATE
 import javax.swing.text.SimpleAttributeSet
 import javax.swing.text.StyleConstants
 import javax.swing.tree.DefaultMutableTreeNode
@@ -52,6 +54,7 @@ private const val HEIGHT = 768
 private const val SLIDER_RIGID_AREA_SPACING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
+private const val DEFAULT_CODE_FONT_SIZE = 15
 
 private typealias DirectoryPath = String
 
@@ -83,8 +86,9 @@ class TimelapseCommand : Runnable {
 
   private val codeTextPane by lazy(NONE) {
     JTextPane().apply {
-      font = Font("monospaced", PLAIN, 15)
+      font = Font("monospaced", PLAIN, DEFAULT_CODE_FONT_SIZE)
       isEditable = false
+      (caret as DefaultCaret).updatePolicy = NEVER_UPDATE
     }
   }
 
