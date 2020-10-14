@@ -58,7 +58,7 @@ fun Repository.getDiff(
   oldCommitId: String,
   newCommitId: String
 ): String {
-  var diff = ""
+  var diff: String
 
   val filePathFilter = PathFilter.create(filePath)
   val outputStream = ByteArrayOutputStream()
