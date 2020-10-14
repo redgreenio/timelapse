@@ -25,6 +25,8 @@ import java.awt.Color.BLACK
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Font.PLAIN
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseEvent
 import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -99,8 +101,8 @@ class TimelapseCommand : Runnable {
   }
 
   private val fileExplorerTree = JTree().apply {
-    addMouseListener(object : java.awt.event.MouseAdapter() {
-      override fun mouseClicked(e: java.awt.event.MouseEvent) {
+    addMouseListener(object : MouseAdapter() {
+      override fun mouseClicked(e: MouseEvent) {
         val selectedPath = getPathForLocation(e.x, e.y)
 
         selectedPath?.let {
@@ -111,7 +113,11 @@ class TimelapseCommand : Runnable {
             "$parentPath$GIT_PATH_SEPARATOR${it.lastPathComponent}"
           }
           debug { "Selected path: $fullFilePath" }
-          selectFile(gitRepository, fullFilePath)
+
+          val isLeafNode = (selectedPath.lastPathComponent as? DefaultMutableTreeNode)?.childCount == 0
+          if (isLeafNode) {
+            selectFile(gitRepository, fullFilePath)
+          }
         }
       }
     })
