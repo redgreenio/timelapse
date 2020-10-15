@@ -1,9 +1,16 @@
 # Changelog
 ## [Unreleased]
 
-## [0.1.1] - 2020-10-14
+## [0.1.1] - 2020-10-16
+### Added
+- [WIP] Show files that changed along with the selected file.
+
+### Changed
+- The slider thumb starts at the oldest commit instead of the latest.
+
 ### Fixed
-- Exceptions due to missing commit IDs in git log caused by merge commit messages.
+- Slider getting stuck due to missing commit IDs on certain files (spoiler - merge commits in file history).
+- Selecting a file in the file explorer now works all the time!
 
 ## [0.1.0] - 2020-10-14
 ### Added

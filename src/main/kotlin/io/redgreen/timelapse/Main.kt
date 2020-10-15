@@ -159,7 +159,6 @@ class TimelapseCommand : Runnable {
 
     // Get change history
     val gitFollowOutput = getCommitHistoryText(project, filePath)
-    debug { gitFollowOutput }
     changesInAscendingOrder = parseGitFollowOutput(gitFollowOutput)
       .reversed()
 
