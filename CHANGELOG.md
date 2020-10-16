@@ -3,10 +3,14 @@
 
 ## [0.1.1] - 2020-10-16
 ### Added
-- [WIP] Show files that changed along with the selected file.
+- Show files that changed along with the selected file.
+- Maximize window on app start.
 
 ### Changed
 - The slider thumb starts at the oldest commit instead of the latest.
+
+### Removed
+- Stop the (not so useful yet) area chart anchor from following the mouse pointer.
 
 ### Fixed
 - Slider getting stuck due to missing commit IDs on certain files (spoiler - merge commits in file history).

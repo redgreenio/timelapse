@@ -34,6 +34,7 @@ import javax.swing.BoxLayout.Y_AXIS
 import javax.swing.DefaultListModel
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
+import javax.swing.JFrame.MAXIMIZED_BOTH
 import javax.swing.JLabel
 import javax.swing.JList
 import javax.swing.JPanel
@@ -56,7 +57,6 @@ private const val COMMIT_INFORMATION_SEPARATOR = " • "
 private const val GIT_PATH_SEPARATOR = '/'
 
 private const val WIDTH = 1024
-private const val HEIGHT = 768
 private const val SLIDER_RIGID_AREA_SPACING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
@@ -144,7 +144,7 @@ class TimelapseCommand : Runnable {
 
   private val timelapseFrame = JFrame(APP_NAME).apply {
     defaultCloseOperation = EXIT_ON_CLOSE
-    setSize(WIDTH, HEIGHT)
+    extendedState = MAXIMIZED_BOTH
     setLocationRelativeTo(null)
     contentPane.add(rootPanel)
   }
