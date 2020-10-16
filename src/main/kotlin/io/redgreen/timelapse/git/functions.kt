@@ -24,7 +24,7 @@ import kotlin.collections.Map.Entry
 
 private const val DEV_NULL_ID = "0000000000000000000000000000000000000000"
 
-fun Repository.getChangesCommit(commitId: String): List<Change> {
+fun Repository.getChangesInCommit(commitId: String): List<Change> {
   val commit = RevWalk(this).use { it.parseCommit(ObjectId.fromString(commitId)) }
   val objectId = resolve("$commitId^")
   val parentCommit = objectId?.let { parseCommit(it) }

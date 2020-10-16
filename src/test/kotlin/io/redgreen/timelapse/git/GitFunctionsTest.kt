@@ -18,7 +18,7 @@ class GitFunctionsTest {
     val initialCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
 
     // when
-    val changesInCommit = repository.getChangesCommit(initialCommitId)
+    val changesInCommit = repository.getChangesInCommit(initialCommitId)
 
     // then
     assertThat(changesInCommit)
@@ -35,7 +35,7 @@ class GitFunctionsTest {
     val commitIdWithNewFile = "b0d86a6cf1f8c9a12b25f2f51f5be97b61647075" // exhibit b: add a new file
 
     // when
-    val changesInCommit = repository.getChangesCommit(commitIdWithNewFile)
+    val changesInCommit = repository.getChangesInCommit(commitIdWithNewFile)
 
     // then
     assertThat(changesInCommit)
@@ -50,7 +50,7 @@ class GitFunctionsTest {
     val commitIdWithModifiedFile = "6c2faf72204d1848bdaef44f4e69c2c4ae6ca786" // exhibit c: modify a file
 
     // when
-    val changesInCommit = repository.getChangesCommit(commitIdWithModifiedFile)
+    val changesInCommit = repository.getChangesInCommit(commitIdWithModifiedFile)
 
     // then
     assertThat(changesInCommit)
@@ -65,7 +65,7 @@ class GitFunctionsTest {
     val commitIdWithDeletedFile = "68958540148efb4dd0dbfbb181df330deaffbe13" // exhibit d: delete a file
 
     // when
-    val changesInCommit = repository.getChangesCommit(commitIdWithDeletedFile)
+    val changesInCommit = repository.getChangesInCommit(commitIdWithDeletedFile)
 
     // then
     assertThat(changesInCommit)
@@ -80,7 +80,7 @@ class GitFunctionsTest {
     val commitIdWithRenamedFile = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
 
     // when
-    val changesInCommit = repository.getChangesCommit(commitIdWithRenamedFile)
+    val changesInCommit = repository.getChangesInCommit(commitIdWithRenamedFile)
 
     // then
     assertThat(changesInCommit)
@@ -95,7 +95,7 @@ class GitFunctionsTest {
     val commitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
-    val changesInCommit = repository.getChangesCommit(commitId)
+    val changesInCommit = repository.getChangesInCommit(commitId)
 
     // then
     assertThat(changesInCommit)
