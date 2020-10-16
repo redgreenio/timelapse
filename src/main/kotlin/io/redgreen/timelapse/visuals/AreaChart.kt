@@ -10,11 +10,9 @@ import java.awt.Graphics2D
 import java.awt.Point
 import java.awt.RenderingHints.KEY_ANTIALIASING
 import java.awt.RenderingHints.VALUE_ANTIALIAS_ON
-import java.awt.event.MouseEvent
-import java.awt.event.MouseMotionListener
 import javax.swing.JPanel
 
-class AreaChart : JPanel(), MouseMotionListener {
+class AreaChart : JPanel() {
   companion object {
     internal const val X_ORIGIN = 0
     internal const val Y_ORIGIN = 0
@@ -26,10 +24,6 @@ class AreaChart : JPanel(), MouseMotionListener {
     private const val STROKE_WIDTH = 1.2F
     private const val STROKE_COLOR = 0x02b53d
     private const val FILL_COLOR = 0x665eba7d
-  }
-
-  init {
-    addMouseMotionListener(this)
   }
 
   private var anchorX = 0
@@ -72,16 +66,6 @@ class AreaChart : JPanel(), MouseMotionListener {
       drawChartPolygon()
       drawDebugGrid(width, height)
     }
-  }
-
-  override fun mouseMoved(event: MouseEvent) {
-    anchorX = event.x
-    repaint()
-  }
-
-  override fun mouseDragged(event: MouseEvent) {
-    anchorX = event.x
-    repaint()
   }
 
   private fun Graphics2D.prepareGraphics() {
