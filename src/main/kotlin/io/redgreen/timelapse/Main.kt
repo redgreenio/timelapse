@@ -9,6 +9,7 @@ import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
+import io.redgreen.timelapse.git.getChangesInCommit
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
@@ -18,6 +19,7 @@ import picocli.CommandLine
 import picocli.CommandLine.Option
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
+import java.awt.BorderLayout.EAST
 import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
 import java.awt.BorderLayout.WEST
@@ -29,14 +31,17 @@ import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
 import javax.swing.BoxLayout.Y_AXIS
+import javax.swing.DefaultListModel
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JLabel
+import javax.swing.JList
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JSlider
 import javax.swing.JTextPane
 import javax.swing.JTree
+import javax.swing.ListSelectionModel.SINGLE_SELECTION
 import javax.swing.text.DefaultCaret
 import javax.swing.text.DefaultCaret.NEVER_UPDATE
 import javax.swing.text.SimpleAttributeSet
@@ -44,6 +49,7 @@ import javax.swing.text.StyleConstants
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import kotlin.LazyThreadSafetyMode.NONE
+import io.redgreen.timelapse.git.Change as FileChange
 
 private const val APP_NAME = "Timelapse"
 private const val COMMIT_INFORMATION_SEPARATOR = " • "
@@ -54,7 +60,9 @@ private const val HEIGHT = 768
 private const val SLIDER_RIGID_AREA_SPACING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
+private const val CHANGES_WIDTH = 400
 private const val DEFAULT_CODE_FONT_SIZE = 15
+private const val MATCH_PARENT = 0
 
 private typealias DirectoryPath = String
 
@@ -121,12 +129,17 @@ class TimelapseCommand : Runnable {
     }
   }
 
+  private val changesList = JList<String>().apply {
+    selectionMode = SINGLE_SELECTION
+  }
+
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
     add(insertionsAreaChart, PAGE_START)
     add(sliderPanel, PAGE_END)
     add(JScrollPane(codeTextPane), CENTER)
-    add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, 0) }, WEST)
+    add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT) }, WEST)
+    add(JScrollPane(changesList).apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
 
   private val timelapseFrame = JFrame(APP_NAME).apply {
@@ -283,6 +296,16 @@ class TimelapseCommand : Runnable {
 
     codeTextPane.showDiff(diffText, noPreviousRevisions)
     commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
+
+    val changesInCommit = gitRepository
+      .getChangesInCommit(selectedChange.commitId)
+    showChanges(changesInCommit)
+  }
+
+  private fun showChanges(changes: List<FileChange>) {
+    val changesListModel = DefaultListModel<String>()
+    changes.onEach { changesListModel.addElement(it.filePath) }
+    changesList.model = changesListModel
   }
 
   private fun JTextPane.showDiff(diffText: String, noPreviousRevisions: Boolean) {

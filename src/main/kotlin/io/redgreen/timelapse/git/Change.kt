@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.git
 
-sealed class Change {
-  data class Addition(val filePath: String) : Change()
-  data class Modification(val filePath: String) : Change()
-  data class Deletion(val filePath: String) : Change()
-  data class Rename(val filePath: String, val oldFilePath: String) : Change()
+sealed class Change(open val filePath: String) {
+  data class Addition(override val filePath: String) : Change(filePath)
+  data class Modification(override val filePath: String) : Change(filePath)
+  data class Deletion(override val filePath: String) : Change(filePath)
+  data class Rename(override val filePath: String, val oldFilePath: String) : Change(filePath)
 }
