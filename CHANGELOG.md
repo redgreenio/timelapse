@@ -3,11 +3,12 @@
 
 ## [0.1.1] - 2020-10-16
 ### Added
-- Show files that changed along with the selected file.
+- Show list of files that changed along with the selected file.
 - Maximize window on app start.
 
 ### Changed
 - The slider thumb starts at the oldest commit instead of the latest.
+- Use JetBrains Mono for code font.
 
 ### Removed
 - Stop the (not so useful yet) area chart anchor from following the mouse pointer.

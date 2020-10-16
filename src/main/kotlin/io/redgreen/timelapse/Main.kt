@@ -27,6 +27,8 @@ import java.awt.Color.BLACK
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Font.PLAIN
+import java.awt.Font.TRUETYPE_FONT
+import java.awt.GraphicsEnvironment
 import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -61,7 +63,7 @@ private const val SLIDER_RIGID_AREA_SPACING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
 private const val CHANGES_WIDTH = 400
-private const val DEFAULT_CODE_FONT_SIZE = 15
+private const val DEFAULT_CODE_FONT_SIZE = 13.0F
 private const val MATCH_PARENT = 0
 
 private typealias DirectoryPath = String
@@ -94,7 +96,7 @@ class TimelapseCommand : Runnable {
 
   private val codeTextPane by lazy(NONE) {
     JTextPane().apply {
-      font = Font("monospaced", PLAIN, DEFAULT_CODE_FONT_SIZE)
+      font = codeFont.deriveFont(PLAIN, DEFAULT_CODE_FONT_SIZE)
       isEditable = false
       (caret as DefaultCaret).updatePolicy = NEVER_UPDATE
     }
@@ -127,6 +129,13 @@ class TimelapseCommand : Runnable {
         }
       }
     }
+  }
+
+  private val codeFont by lazy(NONE) { 
+    val fontResourceStream = javaClass.classLoader.getResourceAsStream("fonts/JetBrainsMono-Regular.ttf")
+    val font = Font.createFont(TRUETYPE_FONT, fontResourceStream)
+    GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font)
+    font
   }
 
   private val changesList = JList<String>().apply {
