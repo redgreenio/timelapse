@@ -11,7 +11,6 @@ import org.eclipse.jgit.diff.DiffEntry.ChangeType.MODIFY
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.RENAME
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RenameDetector
-import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
@@ -25,7 +24,7 @@ import kotlin.collections.Map.Entry
 private const val DEV_NULL_ID = "0000000000000000000000000000000000000000"
 
 fun Repository.getChangesInCommit(commitId: String): List<Change> {
-  val commit = RevWalk(this).use { it.parseCommit(ObjectId.fromString(commitId)) }
+  val commit = RevWalk(this).use { it.parseCommit(resolve(commitId)) }
   val objectId = resolve("$commitId^")
   val parentCommit = objectId?.let { parseCommit(it) }
 
@@ -46,7 +45,8 @@ private fun Repository.getFilesBetweenCommits(
   val addEntriesPartOfRename = getAddEntriesPartOfRename(addRenameEntryPairs)
   val renames = getRenames(addRenameEntryPairs)
 
-  return getFileChangesExcludingRenames(diffEntries) - addEntriesPartOfRename + renames
+  return (getFileChangesExcludingRenames(diffEntries) - addEntriesPartOfRename + renames)
+    .distinct()
 }
 
 private fun Repository.getDiffEntries(
