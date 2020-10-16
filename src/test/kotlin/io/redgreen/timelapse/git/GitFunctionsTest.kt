@@ -88,4 +88,24 @@ class GitFunctionsTest {
         Rename("file-4.txt", "file-1-copy.txt")
       )
   }
+
+  @Test
+  fun `it should get renamed, added, modified and deleted files from a non-initial commit`() {
+    // given
+    val commitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+
+    // when
+    val filesInCommit = repository.getFilesInCommit(commitId)
+
+    // then
+    assertThat(filesInCommit)
+      .containsExactly(
+        Modification("file-1.txt"),
+        Rename("file-a.txt", "file-2.txt"),
+        Addition("file-b.txt"),
+        Addition("file-c.txt"),
+        Deletion("file-3.txt"),
+        Deletion("file-4.txt"),
+      )
+  }
 }
