@@ -135,7 +135,7 @@ class TimelapseCommand : Runnable {
     layout = BorderLayout()
     add(insertionsAreaChart, PAGE_START)
     add(sliderPanel, PAGE_END)
-    add(JScrollPane(codeTextPane), CENTER)
+    add(codeTextPane, CENTER)
     add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT) }, WEST)
     add(JScrollPane(changesList).apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
