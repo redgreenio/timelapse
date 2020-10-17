@@ -81,7 +81,13 @@ class TimelapseCommand : Runnable {
   private lateinit var filePath: String
 
   private val timelapseSlider = JSlider().apply {
+    maximum = 0
+
     addChangeListener {
+      if (!::changesInAscendingOrder.isInitialized) {
+        return@addChangeListener
+      }
+
       val changeIndex = this.value
       val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
       // Show code on slider move
