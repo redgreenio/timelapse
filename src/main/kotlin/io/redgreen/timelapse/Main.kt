@@ -59,6 +59,7 @@ private const val COMMIT_INFORMATION_SEPARATOR = " • "
 private const val GIT_PATH_SEPARATOR = '/'
 
 private const val WIDTH = 1024
+private const val HEIGHT = 768
 private const val SLIDER_RIGID_AREA_SPACING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
@@ -152,6 +153,7 @@ class TimelapseCommand : Runnable {
   }
 
   private val timelapseFrame = JFrame(APP_NAME).apply {
+    minimumSize = Dimension(WIDTH, HEIGHT)
     defaultCloseOperation = EXIT_ON_CLOSE
     extendedState = MAXIMIZED_BOTH
     setLocationRelativeTo(null)
