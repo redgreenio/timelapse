@@ -129,6 +129,14 @@ class TimelapseCommand : Runnable {
 
   private val changesList = JList<String>().apply {
     selectionMode = SINGLE_SELECTION
+
+    addListSelectionListener { event ->
+      val stableSelection = selectedIndex != -1 && !event.valueIsAdjusting
+      if (stableSelection) {
+        val selectedElement = model.getElementAt(selectedIndex)
+        println(selectedElement)
+      }
+    }
   }
 
   private val rootPanel = JPanel().apply {
