@@ -16,6 +16,7 @@
 ### Fixed
 - Slider getting stuck due to missing commit IDs on certain files (spoiler - merge commits in file history).
 - Selecting a file in the file explorer now works all the time!
+- Fix throwing exceptions on selecting the root node from file explorer.
 
 ## [0.1.0] - 2020-10-14
 ### Added

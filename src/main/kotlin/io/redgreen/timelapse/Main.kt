@@ -106,6 +106,11 @@ class TimelapseCommand : Runnable {
   private val fileExplorerTree = JTree().apply {
     addTreeSelectionListener { selectionEvent ->
       selectionEvent.path?.let { selectedPath ->
+        val selectedRootNode = selectedPath.parentPath == null
+        if (selectedRootNode) {
+          return@let
+        }
+
         val parentPath = selectedPath.parentPath.path.drop(1).joinToString(GIT_PATH_SEPARATOR.toString())
         val fullFilePath = if (parentPath.isEmpty()) {
           selectedPath.lastPathComponent.toString()
