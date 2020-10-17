@@ -10,6 +10,8 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.git.getChangesInCommit
+import io.redgreen.timelapse.ui.CommitId
+import io.redgreen.timelapse.ui.FileChangeListCellRenderer
 import io.redgreen.timelapse.ui.ReadingPane
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
@@ -80,8 +82,9 @@ class TimelapseCommand : Runnable {
 
       val changeIndex = this.value
       val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
+
       // Show code on slider move
-      showCode(commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
+      showCode(commitInformationLabel, filePath, previousChange, selectedChange)
     }
   }
 
@@ -121,20 +124,30 @@ class TimelapseCommand : Runnable {
 
         val isLeafNode = (selectedPath.lastPathComponent as? DefaultMutableTreeNode)?.childCount == 0
         if (isLeafNode) {
-          selectFile(gitRepository, fullFilePath)
+          selectFile(fullFilePath)
         }
       }
     }
   }
 
-  private val changesList = JList<String>().apply {
+  private val changesList = JList<Pair<FileChange, Pair<CommitId?, CommitId>>>().apply {
     selectionMode = SINGLE_SELECTION
+    cellRenderer = FileChangeListCellRenderer()
 
     addListSelectionListener { event ->
       val stableSelection = selectedIndex != -1 && !event.valueIsAdjusting
       if (stableSelection) {
-        val selectedElement = model.getElementAt(selectedIndex)
-        println(selectedElement)
+        val (change, commitIds) = model.getElementAt(selectedIndex)
+        val (oldCommitId, selectedCommitId) = commitIds
+
+        debug { "Selected list item: $change" }
+
+        val spans = if (oldCommitId == null) {
+          listOf(Insertion(gitRepository.getChangeText(change.filePath, selectedCommitId)))
+        } else {
+          FormattedDiff.from(gitRepository.getDiff(change.filePath, oldCommitId, selectedCommitId)).spans
+        }
+        readingPane.showOverlappingDiff(spans)
       }
     }
   }
@@ -174,7 +187,7 @@ class TimelapseCommand : Runnable {
     timelapseFrame.isVisible = true
   }
 
-  private fun selectFile(gitRepository: Repository, filePath: String) {
+  private fun selectFile(filePath: String) {
     this.filePath = filePath
 
     // Get change history
@@ -202,7 +215,7 @@ class TimelapseCommand : Runnable {
 
     // Show code now
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, 0)
-    showCode(commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
+    showCode(commitInformationLabel, filePath, previousChange, selectedChange)
   }
 
   private fun openProject(projectPath: String, onProjectOpened: (List<String>) -> Unit): Repository {
@@ -288,14 +301,13 @@ class TimelapseCommand : Runnable {
 
   private fun showCode(
     commitInformationLabel: JLabel,
-    gitRepository: Repository,
     filePath: String,
     previousChange: Change?,
     selectedChange: Change
   ) {
     val noPreviousRevisions = previousChange == null
     val diffText = if (noPreviousRevisions) {
-      getChangeText(gitRepository, filePath, selectedChange)
+      gitRepository.getChangeText(filePath, selectedChange.commitId)
     } else {
       gitRepository.getDiff(filePath, previousChange!!.commitId, selectedChange.commitId)
     }
@@ -311,21 +323,20 @@ class TimelapseCommand : Runnable {
 
     val changesInCommit = gitRepository
       .getChangesInCommit(selectedChange.commitId)
-    showChanges(changesInCommit)
+    showChanges(changesInCommit, previousChange?.commitId, selectedChange.commitId)
   }
 
-  private fun showChanges(changes: List<FileChange>) {
-    val changesListModel = DefaultListModel<String>()
-    changes.onEach { changesListModel.addElement(it.filePath) }
+  private fun showChanges(changes: List<FileChange>, previousCommitId: String?, commitId: String) {
+    val changesListModel = DefaultListModel<Pair<FileChange, Pair<CommitId?, CommitId>>>()
+    changes.map { it to (previousCommitId to commitId) }.onEach { changesListModel.addElement(it) }
     changesList.model = changesListModel
   }
 
-  private fun getChangeText(
-    repository: Repository,
+  private fun Repository.getChangeText(
     filePath: String,
-    currentChange: Change
+    commitId: String
   ): String {
-    return repository.readFileFromCommitId(currentChange.commitId, filePath)
+    return readFileFromCommitId(commitId, filePath)
   }
 
   private fun getCommitInformation(

@@ -3,7 +3,7 @@
 
 ## [0.1.1] - 2020-10-16
 ### Added
-- Show list of files that changed along with the selected file.
+- Show and view list of related files (and their diff) changes along with the selected file.
 - Maximize window on app start.
 
 ### Changed
