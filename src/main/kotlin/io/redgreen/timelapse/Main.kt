@@ -10,7 +10,7 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.git.getChangesInCommit
-import io.redgreen.timelapse.ui.CodeTextPane
+import io.redgreen.timelapse.ui.ReadingPane
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
@@ -91,7 +91,7 @@ class TimelapseCommand : Runnable {
     AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
   }
 
-  private val codeTextPane = CodeTextPane()
+  private val readingPane = ReadingPane()
 
   private val sliderPanel by lazy(NONE) {
     JPanel().apply {
@@ -135,7 +135,7 @@ class TimelapseCommand : Runnable {
     layout = BorderLayout()
     add(insertionsAreaChart, PAGE_START)
     add(sliderPanel, PAGE_END)
-    add(codeTextPane, CENTER)
+    add(readingPane, CENTER)
     add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT) }, WEST)
     add(JScrollPane(changesList).apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
@@ -297,7 +297,7 @@ class TimelapseCommand : Runnable {
     } else {
       FormattedDiff.from(diffText).spans
     }
-    codeTextPane.showDiff(diffSpans)
+    readingPane.showMainDiff(diffSpans)
 
     commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
 
