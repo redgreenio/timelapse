@@ -10,6 +10,7 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.git.getChangesInCommit
+import io.redgreen.timelapse.ui.CodeTextPane
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
@@ -23,12 +24,7 @@ import java.awt.BorderLayout.EAST
 import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
 import java.awt.BorderLayout.WEST
-import java.awt.Color.BLACK
 import java.awt.Dimension
-import java.awt.Font
-import java.awt.Font.PLAIN
-import java.awt.Font.TRUETYPE_FONT
-import java.awt.GraphicsEnvironment
 import java.io.File
 import javax.swing.Box
 import javax.swing.BoxLayout
@@ -42,13 +38,8 @@ import javax.swing.JList
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JSlider
-import javax.swing.JTextPane
 import javax.swing.JTree
 import javax.swing.ListSelectionModel.SINGLE_SELECTION
-import javax.swing.text.DefaultCaret
-import javax.swing.text.DefaultCaret.NEVER_UPDATE
-import javax.swing.text.SimpleAttributeSet
-import javax.swing.text.StyleConstants
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import kotlin.LazyThreadSafetyMode.NONE
@@ -64,7 +55,6 @@ private const val SLIDER_RIGID_AREA_SPACING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
 private const val CHANGES_WIDTH = 400
-private const val DEFAULT_CODE_FONT_SIZE = 13.0F
 private const val MATCH_PARENT = 0
 
 private typealias DirectoryPath = String
@@ -91,7 +81,7 @@ class TimelapseCommand : Runnable {
       val changeIndex = this.value
       val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
       // Show code on slider move
-      showCode(codeTextPane, commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
+      showCode(commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
     }
   }
 
@@ -101,13 +91,7 @@ class TimelapseCommand : Runnable {
     AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
   }
 
-  private val codeTextPane by lazy(NONE) {
-    JTextPane().apply {
-      font = codeFont.deriveFont(PLAIN, DEFAULT_CODE_FONT_SIZE)
-      isEditable = false
-      (caret as DefaultCaret).updatePolicy = NEVER_UPDATE
-    }
-  }
+  private val codeTextPane = CodeTextPane()
 
   private val sliderPanel by lazy(NONE) {
     JPanel().apply {
@@ -136,13 +120,6 @@ class TimelapseCommand : Runnable {
         }
       }
     }
-  }
-
-  private val codeFont by lazy(NONE) { 
-    val fontResourceStream = javaClass.classLoader.getResourceAsStream("fonts/JetBrainsMono-Regular.ttf")
-    val font = Font.createFont(TRUETYPE_FONT, fontResourceStream)
-    GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font)
-    font
   }
 
   private val changesList = JList<String>().apply {
@@ -212,7 +189,7 @@ class TimelapseCommand : Runnable {
 
     // Show code now
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, 0)
-    showCode(codeTextPane, commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
+    showCode(commitInformationLabel, gitRepository, filePath, previousChange, selectedChange)
   }
 
   private fun openProject(projectPath: String, onProjectOpened: (List<String>) -> Unit): Repository {
@@ -297,7 +274,6 @@ class TimelapseCommand : Runnable {
   }
 
   private fun showCode(
-    codeTextPane: JTextPane,
     commitInformationLabel: JLabel,
     gitRepository: Repository,
     filePath: String,
@@ -311,7 +287,13 @@ class TimelapseCommand : Runnable {
       gitRepository.getDiff(filePath, previousChange!!.commitId, selectedChange.commitId)
     }
 
-    codeTextPane.showDiff(diffText, noPreviousRevisions)
+    val diffSpans = if (noPreviousRevisions) {
+      listOf(Insertion(diffText))
+    } else {
+      FormattedDiff.from(diffText).spans
+    }
+    codeTextPane.showDiff(diffSpans)
+
     commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
 
     val changesInCommit = gitRepository
@@ -323,29 +305,6 @@ class TimelapseCommand : Runnable {
     val changesListModel = DefaultListModel<String>()
     changes.onEach { changesListModel.addElement(it.filePath) }
     changesList.model = changesListModel
-  }
-
-  private fun JTextPane.showDiff(diffText: String, noPreviousRevisions: Boolean) {
-    // Clear existing text
-    this.styledDocument.remove(0, this.document.length)
-
-    // Add new text
-    val attributeSet = SimpleAttributeSet()
-    val style = this.addStyle(null, null)
-    this.setCharacterAttributes(attributeSet, true)
-    StyleConstants.setForeground(style, BLACK)
-
-    val spans = if (noPreviousRevisions) {
-      listOf(Insertion(diffText))
-    } else {
-      FormattedDiff.from(diffText).spans
-    }
-
-    spans
-      .onEach { span ->
-        StyleConstants.setBackground(style, span.backgroundColor())
-        styledDocument.insertString(styledDocument.length, span.text(), style)
-      }
   }
 
   private fun getChangeText(
