@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "io.redgreen"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.1"
 
 repositories {
   mavenCentral()
@@ -55,8 +55,8 @@ tasks {
 
     configuration("proguard-rules.pro")
 
-    injars("build/libs/timelapse-0.1.0-SNAPSHOT-all.jar")
-    outjars("build/libs/timelapse-0.1.0-SNAPSHOT-demo.jar")
+    injars("build/libs/timelapse-${version}-all.jar")
+    outjars("build/libs/timelapse-${version}-demo.jar")
 
     libraryjars("${System.getProperty("java.home")}/lib/rt.jar")
     libraryjars("${System.getProperty("java.home")}/lib/jce.jar")
