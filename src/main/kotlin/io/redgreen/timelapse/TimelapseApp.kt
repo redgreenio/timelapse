@@ -28,6 +28,9 @@ import java.awt.GridBagConstraints.HORIZONTAL
 import java.awt.GridBagConstraints.REMAINDER
 import java.awt.GridBagLayout
 import java.awt.KeyboardFocusManager
+import java.awt.event.KeyEvent.VK_1
+import java.awt.event.KeyEvent.VK_2
+import java.awt.event.KeyEvent.VK_3
 import java.awt.event.KeyEvent.VK_ESCAPE
 import java.io.File
 import javax.swing.BorderFactory
@@ -182,12 +185,15 @@ class TimelapseApp(private val project: String) : Runnable {
     KeyboardFocusManager
       .getCurrentKeyboardFocusManager()
       .addKeyEventDispatcher { event ->
-        if (event.keyCode == VK_ESCAPE) {
-          readingPane.dismissOverlap()
-          true
-        } else {
-          false
+        val action: (() -> Unit)? = when {
+          event.keyCode == VK_ESCAPE -> { { readingPane.dismissOverlap(); timelapseSlider.requestFocus() } }
+          event.isAltDown && event.keyCode == VK_1 -> { { fileExplorerTree.requestFocus() } }
+          event.isAltDown && event.keyCode == VK_2 -> { { timelapseSlider.requestFocus() } }
+          event.isAltDown && event.keyCode == VK_3 -> { { changesList.requestFocus() } }
+          else -> null
         }
+        action?.invoke()
+        action != null
       }
   }
 
