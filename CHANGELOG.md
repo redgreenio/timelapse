@@ -10,6 +10,7 @@
 - Move the area chart and slider into the center panel.
 - The slider thumb starts at the oldest commit instead of the latest.
 - Use JetBrains Mono for code font.
+- Make commit message, id and author more readable.
 
 ### Removed
 - Stop the (not so useful yet) area chart anchor from following the mouse pointer.

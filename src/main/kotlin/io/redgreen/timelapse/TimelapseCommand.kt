@@ -347,13 +347,12 @@ class TimelapseCommand(private val project: String) : Runnable {
   ): String {
     val commit = gitRepository.getCommit(selectedChange.commitId)
 
-    return StringBuilder()
-      .append(selectedChange.commitId)
-      .append(COMMIT_INFORMATION_SEPARATOR)
-      .append(selectedChange.message)
-      .append(COMMIT_INFORMATION_SEPARATOR)
-      .append("${commit.authorIdent.name} <${commit.authorIdent.emailAddress}>")
-      .toString()
+    return """
+      <html>
+        ${selectedChange.message}<br /><br />
+        <code>${selectedChange.commitId}</code> $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  &lt;${commit.authorIdent.emailAddress}&gt;
+      </html>
+    """.trimIndent()
   }
 }
 
