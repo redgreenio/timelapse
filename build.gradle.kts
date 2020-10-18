@@ -61,6 +61,6 @@ tasks {
     libraryjars("${System.getProperty("java.home")}/lib/rt.jar")
     libraryjars("${System.getProperty("java.home")}/lib/jce.jar")
 
-    printmapping("build/libs/proguard-mapping.txt")
+    printmapping("build/libs/mapping-${version}.txt")
   }
 }
