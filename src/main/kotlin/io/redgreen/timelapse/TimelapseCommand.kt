@@ -16,10 +16,7 @@ import io.redgreen.timelapse.ui.ReadingPane
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
-import io.redgreen.timelapse.visuals.debug.debug
 import org.eclipse.jgit.lib.Repository
-import picocli.CommandLine
-import picocli.CommandLine.Option
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.EAST
@@ -63,13 +60,7 @@ private const val MATCH_PARENT = 0
 
 private typealias DirectoryPath = String
 
-class TimelapseCommand : Runnable {
-  @Option(names = ["--debug"])
-  private var isDebug: Boolean = false
-
-  @Option(names = ["--project"])
-  private var project: String = "."
-
+class TimelapseCommand(private val project: String) : Runnable {
   private lateinit var gitRepository: Repository
   private lateinit var changesInAscendingOrder: List<Change>
   private lateinit var filePath: String
@@ -178,7 +169,6 @@ class TimelapseCommand : Runnable {
   }
 
   override fun run() {
-    debug = isDebug
     buildAndShowGui()
   }
 
@@ -360,10 +350,6 @@ class TimelapseCommand : Runnable {
       .append("${commit.authorIdent.name} <${commit.authorIdent.emailAddress}>")
       .toString()
   }
-}
-
-fun main(args: Array<String>) {
-  CommandLine(TimelapseCommand()).execute(*args)
 }
 
 internal fun debug(message: () -> String) {

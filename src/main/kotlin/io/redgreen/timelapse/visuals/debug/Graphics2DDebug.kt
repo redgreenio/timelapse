@@ -6,7 +6,7 @@ import java.awt.Graphics2D
 import java.awt.RenderingHints.KEY_ANTIALIASING
 import java.awt.RenderingHints.VALUE_ANTIALIAS_ON
 
-var debug = true
+var debug = false
 
 private const val STROKE_WIDTH = 0.5F
 private const val WIDER_STROKE_WIDTH = 1.0F

@@ -1,3 +1,14 @@
+import proguard.gradle.ProGuardTask
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath("net.sf.proguard:proguard-gradle:6.2.2")
+  }
+}
+
 plugins {
   application
   kotlin("jvm") version "1.4.0"
@@ -13,8 +24,8 @@ repositories {
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
-  implementation("info.picocli:picocli:4.5.1")
   implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")
+  implementation("org.slf4j:slf4j-simple:1.7.30")
 
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
@@ -24,7 +35,7 @@ dependencies {
   testImplementation("com.google.truth:truth:1.0.1")
 }
 
-application.mainClassName = "io.redgreen.timelapse.MainKt"
+application.mainClassName = "LauncherKt"
 
 tasks {
   compileKotlin {
@@ -37,5 +48,19 @@ tasks {
 
   test {
     useJUnitPlatform()
+  }
+
+  register<ProGuardTask>("buildDemo") {
+    dependsOn("shadowJar")
+
+    configuration("proguard-rules.pro")
+
+    injars("build/libs/timelapse-0.1.0-SNAPSHOT-all.jar")
+    outjars("build/libs/timelapse-0.1.0-SNAPSHOT-demo.jar")
+
+    libraryjars("${System.getProperty("java.home")}/lib/rt.jar")
+    libraryjars("${System.getProperty("java.home")}/lib/jce.jar")
+
+    printmapping("build/libs/proguard-mapping.txt")
   }
 }
