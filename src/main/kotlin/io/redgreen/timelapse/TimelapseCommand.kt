@@ -80,6 +80,9 @@ class TimelapseCommand(private val project: String) : Runnable {
 
       // Show code on slider move
       showCode(filePath, previousChange, selectedChange)
+
+      // Update anchor in area chart
+      insertionsAreaChart.setAnchorIndex(changeIndex)
     }
   }
 

@@ -22,11 +22,21 @@ class AreaChart : JPanel() {
     private const val POINT_RADIUS = POINT_DIAMETER / 2
 
     private const val GUIDE_STROKE_WIDTH = 1.0F
-    private const val STROKE_COLOR = 0x02b53d
-    private const val FILL_COLOR = 0x665eba7d
+    private const val ANCHOR_STROKE_WIDTH = 1.5F
+
+    private const val ANCHOR_STROKE_COLOR = 0x02b53d
+    private const val GUIDE_STROKE_COLOR = 0xdbdbdb
+    private const val CHART_FILL_COLOR = 0x665eba7d
   }
 
-  private var anchorX = 0
+  private val guideColor = Color(GUIDE_STROKE_COLOR)
+  private val anchorColor = Color(ANCHOR_STROKE_COLOR)
+  private val areaChartPolygonColor = Color(CHART_FILL_COLOR, true)
+
+  private val guideStroke = BasicStroke(GUIDE_STROKE_WIDTH)
+  private val anchorStroke = BasicStroke(ANCHOR_STROKE_WIDTH)
+
+  private var anchorIndex = 0
 
   private val points = mutableListOf<Point>()
   private var xPoints = IntArray(0)
@@ -69,13 +79,16 @@ class AreaChart : JPanel() {
     }
   }
 
+  fun setAnchorIndex(index: Int) {
+    anchorIndex = index
+    repaint()
+  }
+
   private fun Graphics2D.prepareGraphics() {
     color = Color.WHITE
-    fillRect(0, 0, width, height)
+    fillRect(X_ORIGIN, Y_ORIGIN, width, height)
 
     setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON)
-    stroke = BasicStroke(GUIDE_STROKE_WIDTH)
-    color = Color(STROKE_COLOR)
   }
 
   private fun Graphics2D.drawDebugCircles() {
@@ -88,21 +101,22 @@ class AreaChart : JPanel() {
 
   private fun Graphics2D.drawChartPolygon() {
     with(this) {
-      color = Color(FILL_COLOR, true)
+      color = areaChartPolygonColor
       fillPolygon(xPoints, yPoints, points.size)
-
-      color = Color(STROKE_COLOR)
-      // drawPolygon(x, y, points.size) // Hold off on drawing borders for the polygon
-      drawLine(anchorX, Y_ORIGIN, anchorX, height)
     }
   }
 
   private fun Graphics2D.drawGuides() {
     with(this) {
-      color = Color.LIGHT_GRAY
-      xPoints.forEachIndexed { index, x ->
-        drawLine(x, 0, x, height)
+      color = guideColor
+      stroke = guideStroke
+      xPoints.forEach { x ->
+        drawLine(x, Y_ORIGIN, x, height)
       }
+
+      color = anchorColor
+      stroke = anchorStroke
+      drawLine(xPoints[anchorIndex], Y_ORIGIN, xPoints[anchorIndex], height)
     }
   }
 }

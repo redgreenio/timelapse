@@ -5,6 +5,7 @@
 ### Added
 - Show and view list of related files (and their diff) changes along with the selected file.
 - Maximize window on app start.
+- Area chart now has guides and a moving anchor.
 
 ### Changed
 - Move the area chart and slider into the center panel.
