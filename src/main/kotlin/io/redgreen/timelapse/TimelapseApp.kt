@@ -27,6 +27,8 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.HORIZONTAL
 import java.awt.GridBagConstraints.REMAINDER
 import java.awt.GridBagLayout
+import java.awt.KeyboardFocusManager
+import java.awt.event.KeyEvent.VK_ESCAPE
 import java.io.File
 import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
@@ -87,7 +89,7 @@ class TimelapseApp(private val project: String) : Runnable {
     }
   }
 
-  private val commitInformationLabel = JLabel().apply { 
+  private val commitInformationLabel = JLabel().apply {
     border = BorderFactory.createEmptyBorder(PADDING, PADDING, NO_PADDING, PADDING)
   }
 
@@ -175,6 +177,18 @@ class TimelapseApp(private val project: String) : Runnable {
     extendedState = MAXIMIZED_BOTH
     setLocationRelativeTo(null)
     contentPane.add(rootPanel)
+
+    // Key listener
+    KeyboardFocusManager
+      .getCurrentKeyboardFocusManager()
+      .addKeyEventDispatcher { event ->
+        if (event.keyCode == VK_ESCAPE) {
+          readingPane.dismissOverlap()
+          true
+        } else {
+          false
+        }
+      }
   }
 
   override fun run() {

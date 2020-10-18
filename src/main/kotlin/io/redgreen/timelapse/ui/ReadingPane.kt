@@ -52,4 +52,9 @@ class ReadingPane : JLayeredPane() {
       showDiff(diffSpans)
     }
   }
+
+  fun dismissOverlap() {
+    moveToFront(mainCodeTextPane)
+    moveToBack(overlappingModalPanel)
+  }
 }

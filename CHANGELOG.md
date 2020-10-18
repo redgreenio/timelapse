@@ -3,6 +3,7 @@
 ## [0.1.2] - 2020-10-18
 ### Added
 - Show file name on top of code panels.
+- Use the 'Esc' key to dismiss the code overlay window.
 
 ### Changed
 - Automatically scroll to the top of the code area after selecting a new file or revision.
