@@ -27,10 +27,12 @@ import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
 import java.awt.BorderLayout.WEST
 import java.awt.Dimension
+import java.awt.GridBagConstraints
+import java.awt.GridBagConstraints.HORIZONTAL
+import java.awt.GridBagConstraints.REMAINDER
+import java.awt.GridBagLayout
 import java.io.File
-import javax.swing.Box
-import javax.swing.BoxLayout
-import javax.swing.BoxLayout.Y_AXIS
+import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
@@ -53,7 +55,7 @@ private const val GIT_PATH_SEPARATOR = '/'
 
 private const val WIDTH = 1024
 private const val HEIGHT = 768
-private const val SLIDER_RIGID_AREA_SPACING = 10
+private const val SLIDER_AREA_PADDING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
 private const val CHANGES_WIDTH = 400
@@ -84,11 +86,13 @@ class TimelapseCommand : Runnable {
       val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
 
       // Show code on slider move
-      showCode(commitInformationLabel, filePath, previousChange, selectedChange)
+      showCode(filePath, previousChange, selectedChange)
     }
   }
 
-  private val commitInformationLabel = JLabel()
+  private val commitInformationLabel = JLabel().apply { 
+    border = BorderFactory.createEmptyBorder(0, 0, SLIDER_AREA_PADDING, 0)
+  }
 
   private val insertionsAreaChart by lazy(NONE) {
     AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
@@ -97,12 +101,16 @@ class TimelapseCommand : Runnable {
   private val readingPane = ReadingPane()
 
   private val sliderPanel by lazy(NONE) {
-    JPanel().apply {
-      layout = BoxLayout(this, Y_AXIS)
-      add(Box.createRigidArea(Dimension(WIDTH, SLIDER_RIGID_AREA_SPACING)))
-      add(commitInformationLabel)
-      add(timelapseSlider)
-      add(Box.createRigidArea(Dimension(WIDTH, SLIDER_RIGID_AREA_SPACING)))
+    JPanel(GridBagLayout()).apply {
+      val constraints = GridBagConstraints().apply {
+        weightx = 1.0
+        fill = HORIZONTAL
+        gridwidth = REMAINDER
+      }
+      add(commitInformationLabel, constraints)
+      add(timelapseSlider, constraints)
+      border = BorderFactory
+        .createEmptyBorder(SLIDER_AREA_PADDING, SLIDER_AREA_PADDING, SLIDER_AREA_PADDING, SLIDER_AREA_PADDING)
     }
   }
 
@@ -215,7 +223,7 @@ class TimelapseCommand : Runnable {
 
     // Show code now
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, 0)
-    showCode(commitInformationLabel, filePath, previousChange, selectedChange)
+    showCode(filePath, previousChange, selectedChange)
   }
 
   private fun openProject(projectPath: String, onProjectOpened: (List<String>) -> Unit): Repository {
@@ -300,7 +308,6 @@ class TimelapseCommand : Runnable {
   }
 
   private fun showCode(
-    commitInformationLabel: JLabel,
     filePath: String,
     previousChange: Change?,
     selectedChange: Change
