@@ -21,7 +21,7 @@ class AreaChart : JPanel() {
     private const val POINT_DIAMETER = 10
     private const val POINT_RADIUS = POINT_DIAMETER / 2
 
-    private const val STROKE_WIDTH = 1.2F
+    private const val GUIDE_STROKE_WIDTH = 1.0F
     private const val STROKE_COLOR = 0x02b53d
     private const val FILL_COLOR = 0x665eba7d
   }
@@ -64,6 +64,7 @@ class AreaChart : JPanel() {
     with(graphics) {
       drawDebugCircles()
       drawChartPolygon()
+      drawGuides()
       drawDebugGrid(width, height)
     }
   }
@@ -73,7 +74,7 @@ class AreaChart : JPanel() {
     fillRect(0, 0, width, height)
 
     setRenderingHint(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON)
-    stroke = BasicStroke(STROKE_WIDTH)
+    stroke = BasicStroke(GUIDE_STROKE_WIDTH)
     color = Color(STROKE_COLOR)
   }
 
@@ -93,6 +94,15 @@ class AreaChart : JPanel() {
       color = Color(STROKE_COLOR)
       // drawPolygon(x, y, points.size) // Hold off on drawing borders for the polygon
       drawLine(anchorX, Y_ORIGIN, anchorX, height)
+    }
+  }
+
+  private fun Graphics2D.drawGuides() {
+    with(this) {
+      color = Color.LIGHT_GRAY
+      xPoints.forEachIndexed { index, x ->
+        drawLine(x, 0, x, height)
+      }
     }
   }
 }
