@@ -43,6 +43,7 @@ import javax.swing.ListSelectionModel.SINGLE_SELECTION
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import kotlin.LazyThreadSafetyMode.NONE
+import kotlin.math.ceil
 import io.redgreen.timelapse.git.Change as FileChange
 
 private const val APP_NAME = "Timelapse"
@@ -349,10 +350,14 @@ class TimelapseApp(private val project: String) : Runnable {
     selectedChange: Change
   ): String {
     val commit = gitRepository.getCommit(selectedChange.commitId)
+    val position = "${timelapseSlider.value + 1}/${changesInAscendingOrder.size}"
+    val progressPercent = ((timelapseSlider.value + 1).toDouble() / changesInAscendingOrder.size) * 100
+    val progressPercentText = String.format("%.2f", ceil(progressPercent)).replace(".00", "")
 
     return """
       <html>
         ${selectedChange.message}<br /><br />
+        Commit $position $COMMIT_INFORMATION_SEPARATOR $progressPercentText%<br />
         <code>${selectedChange.commitId}</code> $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  &lt;${commit.authorIdent.emailAddress}&gt;
       </html>
     """.trimIndent()
