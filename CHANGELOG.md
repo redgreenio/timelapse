@@ -4,6 +4,9 @@
 ### Added
 - Show file name on top of code panels.
 
+### Changed
+- Automatically scroll to the top of the code area after selecting a new file or revision.
+
 ## [0.1.1] - 2020-10-18
 ### Added
 - Show and view list of related files (and their diff) changes along with the selected file.

@@ -78,6 +78,9 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
           StyleConstants.setBackground(style, span.backgroundColor())
           styledDocument.insertString(styledDocument.length, span.text(), style)
         }
+
+      verticalScrollBar.value = 0
+      horizontalScrollBar.value = 0
     }
   }
 }
