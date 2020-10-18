@@ -157,7 +157,7 @@ class TimelapseApp(private val project: String) : Runnable {
         } else {
           FormattedDiff.from(gitRepository.getDiff(change.filePath, oldCommitId, selectedCommitId)).spans
         }
-        readingPane.showOverlappingDiff(spans)
+        readingPane.showOverlappingDiff(change.filePath, spans)
       }
     }
   }
@@ -210,7 +210,6 @@ class TimelapseApp(private val project: String) : Runnable {
         .map { it.insertions }
         .map(::Commit)
       commits = changesMappedToCommits
-      debug { "Updated area chart with data points: ${changesMappedToCommits.map { it.insertions }.joinToString()}" }
     }
 
     // Pair slider with change history
@@ -323,7 +322,7 @@ class TimelapseApp(private val project: String) : Runnable {
     } else {
       FormattedDiff.from(diffText).spans
     }
-    readingPane.showMainDiff(diffSpans)
+    readingPane.showMainDiff(filePath, diffSpans)
 
     commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
 

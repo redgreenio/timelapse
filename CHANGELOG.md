@@ -2,7 +2,7 @@
 ## [Unreleased]
 ## [0.1.2] - 2020-10-18
 ### Added
-- [WIP] Show file name on top of code panels.
+- Show file name on top of code panels.
 
 ## [0.1.1] - 2020-10-18
 ### Added

@@ -15,10 +15,10 @@ private const val TRANSLUCENT_AREA_WIDTH = 200
 private const val MATCH_PARENT = 0
 
 class ReadingPane : JLayeredPane() {
-  private val mainCodeTextPane = CodeTextPane()
+  private val mainCodeTextPane = TitledCodeTextPane()
   private val overlappingModalPanel = JPanel()
 
-  private val overlappingCodeTextPane = CodeTextPane()
+  private val overlappingCodeTextPane = TitledCodeTextPane()
 
   init {
     layout = OverlayLayout(this)
@@ -37,13 +37,19 @@ class ReadingPane : JLayeredPane() {
     add(overlappingModalPanel, MODAL_LAYER)
   }
 
-  fun showMainDiff(diffSpans: List<DiffSpan>) {
+  fun showMainDiff(filePath: String, diffSpans: List<DiffSpan>) {
     moveToFront(mainCodeTextPane)
-    mainCodeTextPane.showDiff(diffSpans)
+    with(mainCodeTextPane) {
+      setTitle(filePath)
+      showDiff(diffSpans)
+    }
   }
 
-  fun showOverlappingDiff(diffSpans: List<DiffSpan>) {
+  fun showOverlappingDiff(fileName: String, diffSpans: List<DiffSpan>) {
     moveToFront(overlappingModalPanel)
-    overlappingCodeTextPane.showDiff(diffSpans)
+    with(overlappingCodeTextPane) {
+      setTitle(fileName)
+      showDiff(diffSpans)
+    }
   }
 }

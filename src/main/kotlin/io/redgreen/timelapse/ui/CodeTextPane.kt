@@ -1,12 +1,19 @@
 package io.redgreen.timelapse.ui
 
 import io.redgreen.timelapse.visuals.DiffSpan
+import java.awt.BorderLayout
+import java.awt.BorderLayout.CENTER
+import java.awt.BorderLayout.NORTH
 import java.awt.Color
 import java.awt.Font
 import java.awt.Font.PLAIN
 import java.awt.GraphicsEnvironment
+import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTextPane
+import javax.swing.border.LineBorder
 import javax.swing.text.DefaultCaret
 import javax.swing.text.DefaultCaret.NEVER_UPDATE
 import javax.swing.text.SimpleAttributeSet
@@ -15,8 +22,31 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 private const val DEFAULT_CODE_FONT_SIZE = 13.0F
 private const val CODE_FONT = "fonts/JetBrainsMono-Regular.ttf"
+private const val TITLE_BACKGROUND_COLOR = 0x808080
+private const val TITLE_FOREGROUND_COLOR = 0xffffff
+private const val TITLE_BORDER_THICKNESS = 10
 
-class CodeTextPane private constructor(private val textPane: JTextPane) : JScrollPane(textPane) {
+class TitledCodeTextPane : JPanel(BorderLayout()), DiffDisplay by CodeTextPane() {
+  private val titleLabel = JLabel().apply {
+    isOpaque = true
+    foreground = Color(TITLE_FOREGROUND_COLOR)
+    background = Color(TITLE_BACKGROUND_COLOR)
+    border = LineBorder(Color(TITLE_BACKGROUND_COLOR), TITLE_BORDER_THICKNESS)
+  }
+
+  init {
+    add(titleLabel, NORTH)
+    add(codeComponent, CENTER)
+  }
+
+  fun setTitle(title: String) {
+    titleLabel.text = title
+  }
+}
+
+class CodeTextPane private constructor(private val textPane: JTextPane) : JScrollPane(textPane), DiffDisplay {
+  override val codeComponent by lazy { this }
+
   private val codeFont by lazy(NONE) {
     val fontResourceStream = javaClass.classLoader.getResourceAsStream(CODE_FONT)
     val font = Font.createFont(Font.TRUETYPE_FONT, fontResourceStream)
@@ -32,7 +62,7 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
     }
   }
 
-  fun showDiff(diffSpans: List<DiffSpan>) {
+  override fun showDiff(diffSpans: List<DiffSpan>) {
     with(textPane) {
       // Clear existing text
       this.styledDocument.remove(0, this.document.length)
@@ -50,4 +80,9 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
         }
     }
   }
+}
+
+interface DiffDisplay {
+  val codeComponent: JComponent
+  fun showDiff(diffSpans: List<DiffSpan>)
 }
