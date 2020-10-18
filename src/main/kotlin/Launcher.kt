@@ -1,5 +1,5 @@
-import io.redgreen.timelapse.TimelapseCommand
+import io.redgreen.timelapse.TimelapseApp
 
 fun main(args: Array<String>) {
-  TimelapseCommand(args[0]).run()
+  TimelapseApp(args[0]).run()
 }

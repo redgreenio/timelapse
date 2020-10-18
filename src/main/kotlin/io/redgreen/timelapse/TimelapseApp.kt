@@ -61,7 +61,7 @@ private const val PADDING = 10
 
 private typealias DirectoryPath = String
 
-class TimelapseCommand(private val project: String) : Runnable {
+class TimelapseApp(private val project: String) : Runnable {
   private lateinit var gitRepository: Repository
   private lateinit var changesInAscendingOrder: List<Change>
   private lateinit var filePath: String
