@@ -1,12 +1,13 @@
 # Changelog
 ## [Unreleased]
 
-## [0.1.1] - 2020-10-16
+## [0.1.1] - 2020-10-18
 ### Added
 - Show and view list of related files (and their diff) changes along with the selected file.
 - Maximize window on app start.
 
 ### Changed
+- Move the area chart and slider into the center panel.
 - The slider thumb starts at the oldest commit instead of the latest.
 - Use JetBrains Mono for code font.
 

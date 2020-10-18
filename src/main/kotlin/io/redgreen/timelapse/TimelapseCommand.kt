@@ -20,7 +20,6 @@ import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.EAST
-import java.awt.BorderLayout.PAGE_END
 import java.awt.BorderLayout.PAGE_START
 import java.awt.BorderLayout.WEST
 import java.awt.Dimension
@@ -52,11 +51,13 @@ private const val GIT_PATH_SEPARATOR = '/'
 
 private const val WIDTH = 1024
 private const val HEIGHT = 768
-private const val SLIDER_AREA_PADDING = 10
 private const val AREA_CHART_HEIGHT = 100
 private const val FILE_EXPLORER_WIDTH = 320
 private const val CHANGES_WIDTH = 400
 private const val MATCH_PARENT = 0
+
+private const val NO_PADDING = 0
+private const val PADDING = 10
 
 private typealias DirectoryPath = String
 
@@ -67,6 +68,7 @@ class TimelapseCommand(private val project: String) : Runnable {
 
   private val timelapseSlider = JSlider().apply {
     maximum = 0
+    border = BorderFactory.createEmptyBorder(PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
 
     addChangeListener {
       if (!::changesInAscendingOrder.isInitialized) {
@@ -82,7 +84,7 @@ class TimelapseCommand(private val project: String) : Runnable {
   }
 
   private val commitInformationLabel = JLabel().apply { 
-    border = BorderFactory.createEmptyBorder(0, 0, SLIDER_AREA_PADDING, 0)
+    border = BorderFactory.createEmptyBorder(PADDING, PADDING, NO_PADDING, PADDING)
   }
 
   private val insertionsAreaChart by lazy(NONE) {
@@ -98,11 +100,16 @@ class TimelapseCommand(private val project: String) : Runnable {
         fill = HORIZONTAL
         gridwidth = REMAINDER
       }
-      add(commitInformationLabel, constraints)
+      add(insertionsAreaChart, constraints)
       add(timelapseSlider, constraints)
-      border = BorderFactory
-        .createEmptyBorder(SLIDER_AREA_PADDING, SLIDER_AREA_PADDING, SLIDER_AREA_PADDING, SLIDER_AREA_PADDING)
+      add(commitInformationLabel, constraints)
+      border = BorderFactory.createEmptyBorder(NO_PADDING, NO_PADDING, PADDING, NO_PADDING)
     }
+  }
+
+  private val centerPanel = JPanel(BorderLayout()).apply {
+    add(readingPane, CENTER)
+    add(sliderPanel, PAGE_START)
   }
 
   private val fileExplorerTree = JTree().apply {
@@ -153,9 +160,7 @@ class TimelapseCommand(private val project: String) : Runnable {
 
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
-    add(insertionsAreaChart, PAGE_START)
-    add(sliderPanel, PAGE_END)
-    add(readingPane, CENTER)
+    add(centerPanel, CENTER)
     add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT) }, WEST)
     add(JScrollPane(changesList).apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
