@@ -10,8 +10,11 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.git.getChangesInCommit
+import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.CommitId
 import io.redgreen.timelapse.ui.FileChangeListCellRenderer
+import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
+import io.redgreen.timelapse.ui.KEY_STROKE_UP
 import io.redgreen.timelapse.ui.ReadingPane
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
@@ -35,6 +38,7 @@ import java.awt.event.KeyEvent.VK_ESCAPE
 import java.io.File
 import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
+import javax.swing.JComponent.WHEN_FOCUSED
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JFrame.MAXIMIZED_BOTH
@@ -44,6 +48,7 @@ import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JSlider
 import javax.swing.JTree
+import javax.swing.KeyStroke
 import javax.swing.ListSelectionModel.SINGLE_SELECTION
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
@@ -89,6 +94,11 @@ class TimelapseApp(private val project: String) : Runnable {
 
       // Update anchor in area chart
       insertionsAreaChart.setAnchorIndex(changeIndex)
+    }
+
+    with(getInputMap(WHEN_FOCUSED)) {
+      put(KeyStroke.getKeyStroke(KEY_STROKE_UP), ACTION_MAP_KEY_NO_OP)
+      put(KeyStroke.getKeyStroke(KEY_STROKE_DOWN), ACTION_MAP_KEY_NO_OP)
     }
   }
 
@@ -188,15 +198,7 @@ class TimelapseApp(private val project: String) : Runnable {
         val action: (() -> Unit)? = when {
           event.keyCode == VK_ESCAPE -> { { readingPane.dismissOverlap(); timelapseSlider.requestFocus() } }
           event.isAltDown && event.keyCode == VK_1 -> { { fileExplorerTree.requestFocus() } }
-          event.isAltDown && event.keyCode == VK_2 -> {
-            {
-              if (readingPane.isShowingOverlap()) {
-                readingPane.focusOnOverlap()
-              } else {
-                timelapseSlider.requestFocus()
-              }
-            }
-          }
+          event.isAltDown && event.keyCode == VK_2 -> this@TimelapseApp::moveFocusToReadingPane
           event.isAltDown && event.keyCode == VK_3 -> { { changesList.requestFocus() } }
           else -> null
         }
@@ -207,6 +209,14 @@ class TimelapseApp(private val project: String) : Runnable {
 
   override fun run() {
     buildAndShowGui()
+  }
+
+  private fun moveFocusToReadingPane() {
+    if (readingPane.isShowingOverlap()) {
+      readingPane.focusOnOverlap()
+    } else {
+      timelapseSlider.requestFocus()
+    }
   }
 
   private fun buildAndShowGui() {

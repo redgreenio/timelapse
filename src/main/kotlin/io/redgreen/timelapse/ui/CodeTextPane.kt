@@ -27,10 +27,12 @@ private const val TITLE_BACKGROUND_COLOR = 0x808080
 private const val TITLE_FOREGROUND_COLOR = 0xffffff
 private const val TITLE_BORDER_THICKNESS = 10
 
+internal const val KEY_STROKE_UP = "UP"
+internal const val KEY_STROKE_DOWN = "DOWN"
+internal const val ACTION_MAP_KEY_NO_OP = ""
+
 private const val ACTION_MAP_KEY_POSITIVE_INCREMENT = "positiveUnitIncrement"
 private const val ACTION_MAP_KEY_NEGATIVE_INCREMENT = "negativeUnitIncrement"
-private const val KEY_STROKE_UP = "UP"
-private const val KEY_STROKE_DOWN = "DOWN"
 private const val KEY_STROKE_LEFT = "LEFT"
 private const val KEY_STROKE_RIGHT = "RIGHT"
 
