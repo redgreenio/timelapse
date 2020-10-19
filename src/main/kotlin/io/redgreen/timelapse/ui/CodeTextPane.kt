@@ -13,6 +13,7 @@ import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTextPane
+import javax.swing.KeyStroke
 import javax.swing.border.LineBorder
 import javax.swing.text.DefaultCaret
 import javax.swing.text.DefaultCaret.NEVER_UPDATE
@@ -25,6 +26,13 @@ private const val CODE_FONT = "fonts/JetBrainsMono-Regular.ttf"
 private const val TITLE_BACKGROUND_COLOR = 0x808080
 private const val TITLE_FOREGROUND_COLOR = 0xffffff
 private const val TITLE_BORDER_THICKNESS = 10
+
+private const val ACTION_MAP_KEY_POSITIVE_INCREMENT = "positiveUnitIncrement"
+private const val ACTION_MAP_KEY_NEGATIVE_INCREMENT = "negativeUnitIncrement"
+private const val KEY_STROKE_UP = "UP"
+private const val KEY_STROKE_DOWN = "DOWN"
+private const val KEY_STROKE_LEFT = "LEFT"
+private const val KEY_STROKE_RIGHT = "RIGHT"
 
 class TitledCodeTextPane : JPanel(BorderLayout()), DiffDisplay by CodeTextPane() {
   private val titleLabel = JLabel().apply {
@@ -59,6 +67,16 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
       font = codeFont.deriveFont(PLAIN, DEFAULT_CODE_FONT_SIZE)
       isEditable = false
       (caret as DefaultCaret).updatePolicy = NEVER_UPDATE
+    }
+
+    with(getVerticalScrollBar().getInputMap(WHEN_IN_FOCUSED_WINDOW)) {
+      put(KeyStroke.getKeyStroke(KEY_STROKE_UP), ACTION_MAP_KEY_NEGATIVE_INCREMENT)
+      put(KeyStroke.getKeyStroke(KEY_STROKE_DOWN), ACTION_MAP_KEY_POSITIVE_INCREMENT)
+    }
+
+    with(getHorizontalScrollBar().getInputMap(WHEN_IN_FOCUSED_WINDOW)) {
+      put(KeyStroke.getKeyStroke(KEY_STROKE_LEFT), ACTION_MAP_KEY_NEGATIVE_INCREMENT)
+      put(KeyStroke.getKeyStroke(KEY_STROKE_RIGHT), ACTION_MAP_KEY_POSITIVE_INCREMENT)
     }
   }
 

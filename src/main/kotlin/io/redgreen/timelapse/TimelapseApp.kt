@@ -188,7 +188,15 @@ class TimelapseApp(private val project: String) : Runnable {
         val action: (() -> Unit)? = when {
           event.keyCode == VK_ESCAPE -> { { readingPane.dismissOverlap(); timelapseSlider.requestFocus() } }
           event.isAltDown && event.keyCode == VK_1 -> { { fileExplorerTree.requestFocus() } }
-          event.isAltDown && event.keyCode == VK_2 -> { { timelapseSlider.requestFocus() } }
+          event.isAltDown && event.keyCode == VK_2 -> {
+            {
+              if (readingPane.isShowingOverlap()) {
+                readingPane.focusOnOverlap()
+              } else {
+                timelapseSlider.requestFocus()
+              }
+            }
+          }
           event.isAltDown && event.keyCode == VK_3 -> { { changesList.requestFocus() } }
           else -> null
         }

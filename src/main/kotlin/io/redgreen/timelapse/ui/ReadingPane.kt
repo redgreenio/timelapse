@@ -57,4 +57,11 @@ class ReadingPane : JLayeredPane() {
     moveToFront(mainCodeTextPane)
     moveToBack(overlappingModalPanel)
   }
+
+  fun isShowingOverlap(): Boolean =
+    getIndexOf(mainCodeTextPane) > getIndexOf(overlappingModalPanel)
+
+  fun focusOnOverlap() {
+    overlappingCodeTextPane.requestFocus()
+  }
 }
