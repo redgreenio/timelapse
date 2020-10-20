@@ -58,8 +58,6 @@ private fun Repository.getDiff(
   oldCommitId: String,
   newCommitId: String
 ): String {
-  var diff: String
-
   val filePathFilter = PathFilter.create(filePath)
   val outputStream = ByteArrayOutputStream()
 
@@ -68,7 +66,7 @@ private fun Repository.getDiff(
       diffFormatter.setRepository(this)
       diffFormatter.pathFilter = filePathFilter
 
-      val isFirstCommit = oldCommitId == newCommitId
+      val isFirstCommit = /* oldCommitId == newCommitId || */ newCommitId.startsWith(oldCommitId /* This is a hack because git log output gives short commit hashes. */)
       val oldTree = if (isFirstCommit) null else getTree(oldCommitId)
       val newTree = getTree(newCommitId)
 
@@ -76,11 +74,9 @@ private fun Repository.getDiff(
       diffFormatter.format(diffEntry)
       diffFormatter.flush()
 
-      diff = outputStream.toString()
+      return outputStream.toString()
     }
   }
-
-  return diff
 }
 
 fun Repository.getCommit(commitId: String): RevCommit {
