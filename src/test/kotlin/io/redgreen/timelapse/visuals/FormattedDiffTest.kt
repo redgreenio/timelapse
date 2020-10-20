@@ -5,6 +5,7 @@ import io.redgreen.timelapse.visuals.DiffSpan.Blank
 import io.redgreen.timelapse.visuals.DiffSpan.ContentsEmpty
 import io.redgreen.timelapse.visuals.DiffSpan.Deletion
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
+import io.redgreen.timelapse.visuals.DiffSpan.Marker
 import io.redgreen.timelapse.visuals.DiffSpan.Unmodified
 import org.junit.jupiter.api.Test
 
@@ -41,6 +42,7 @@ class FormattedDiffTest {
         Unmodified("  repositories {"),
         Unmodified("    mavenCentral()"),
       )
+      .inOrder()
   }
 
   @Test
@@ -66,6 +68,7 @@ class FormattedDiffTest {
         Deletion("Hello World!"),
         Blank,
       )
+      .inOrder()
   }
 
   @Test
@@ -91,6 +94,7 @@ class FormattedDiffTest {
         Insertion("I'm new in town :)"),
         Blank,
       )
+      .inOrder()
   }
 
   @Test
@@ -132,6 +136,62 @@ class FormattedDiffTest {
 
     // then
     assertThat(formattedDiff.spans)
-      .isEmpty()
+      .containsExactly(
+        ContentsEmpty
+      )
+      .inOrder()
+  }
+
+  @Test
+  fun `it should create a formatted diff with multiple sections`() {
+    // given
+    val rawDiff = """
+      diff --git a/retrofit/src/main/java/retrofit/RequestBuilder.java b/retrofit/src/main/java/retrofit/RequestBuilder.java
+      index 0b85c43..e49ded2 100644
+      --- a/retrofit/src/main/java/retrofit/RequestBuilder.java
+      +++ b/retrofit/src/main/java/retrofit/RequestBuilder.java
+      @@ -25,6 +25,7 @@
+       import retrofit.mime.FormUrlEncodedTypedOutput;
+       import retrofit.mime.MultipartTypedOutput;
+       import retrofit.mime.TypedOutput;
+      +import retrofit.mime.TypedString;
+       
+       final class RequestBuilder implements RequestInterceptor.RequestFacade {
+         private final Converter converter;
+      @@ -170,6 +171,8 @@
+                 if (value != null) { // Skip null values.
+                   if (value instanceof TypedOutput) {
+                     multipartBody.addPart(name, (TypedOutput) value);
+      +            } else if (value instanceof String) {
+      +              multipartBody.addPart(name, new TypedString((String) value));
+                   } else {
+                     multipartBody.addPart(name, converter.toBody(value));
+                   }
+    """.trimIndent()
+
+    // when
+    val formattedDiff = FormattedDiff.from(rawDiff)
+
+    // then
+    assertThat(formattedDiff.spans)
+      .containsExactly(
+        Unmodified("import retrofit.mime.FormUrlEncodedTypedOutput;"),
+        Unmodified("import retrofit.mime.MultipartTypedOutput;"),
+        Unmodified("import retrofit.mime.TypedOutput;"),
+        Insertion("import retrofit.mime.TypedString;"),
+        Blank,
+        Unmodified("final class RequestBuilder implements RequestInterceptor.RequestFacade {"),
+        Unmodified("  private final Converter converter;"),
+        Marker("@@ -170,6 +171,8 @@"),
+        Unmodified("          if (value != null) { // Skip null values."),
+        Unmodified("            if (value instanceof TypedOutput) {"),
+        Unmodified("              multipartBody.addPart(name, (TypedOutput) value);"),
+        Insertion("            } else if (value instanceof String) {"),
+        Insertion("              multipartBody.addPart(name, new TypedString((String) value));"),
+        Unmodified("            } else {"),
+        Unmodified("              multipartBody.addPart(name, converter.toBody(value));"),
+        Unmodified("            }"),
+      )
+      .inOrder()
   }
 }

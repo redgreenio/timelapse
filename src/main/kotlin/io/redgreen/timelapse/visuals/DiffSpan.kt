@@ -17,10 +17,17 @@ sealed class DiffSpan {
       ContentsEmpty::class.java.simpleName
   }
 
+  data class Marker(val text: String) : DiffSpan()
+
   companion object {
     private val insertionColor = Color(198, 240, 194)
     private val deletionColor = Color(240, 194, 194)
     private val unmodifiedColor = Color(255, 255, 255)
+
+    private val sectionBlocks = (0..100)
+      .fold(StringBuilder(), { builder, _ -> builder.append('▓') })
+      .append('\n')
+      .toString() 
   }
 
   fun backgroundColor(): Color {
@@ -38,6 +45,7 @@ sealed class DiffSpan {
       is Insertion -> "${this.text}\n"
       Blank -> "\n"
       ContentsEmpty -> "<contents empty>"
+      is Marker -> sectionBlocks
     }
   }
 }

@@ -4,6 +4,7 @@ import io.redgreen.timelapse.visuals.DiffSpan.Blank
 import io.redgreen.timelapse.visuals.DiffSpan.ContentsEmpty
 import io.redgreen.timelapse.visuals.DiffSpan.Deletion
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
+import io.redgreen.timelapse.visuals.DiffSpan.Marker
 import io.redgreen.timelapse.visuals.DiffSpan.Unmodified
 
 private const val DIFF_TYPE_DELETED = "deleted"
@@ -33,6 +34,7 @@ class FormattedDiff(val spans: List<DiffSpan>) {
     private fun toSpan(diffLine: String): DiffSpan {
       return when {
         diffLine.length == 1 && diffLine.isBlank() -> Blank
+        diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker(diffLine)
         diffLine.startsWith('+') -> Insertion(diffLine.safelyTrimFirstSpaceChar())
         diffLine.startsWith('-') -> Deletion(diffLine.safelyTrimFirstSpaceChar())
         else -> Unmodified(diffLine.safelyTrimFirstSpaceChar())
