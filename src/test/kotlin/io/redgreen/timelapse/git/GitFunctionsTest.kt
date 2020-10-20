@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.git
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.domain.getDiff
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.git.Change.Addition
 import io.redgreen.timelapse.git.Change.Deletion
@@ -32,10 +33,10 @@ class GitFunctionsTest {
   @Test
   fun `it should get added file from a non-initial commit`() {
     // given
-    val commitIdWithNewFile = "b0d86a6cf1f8c9a12b25f2f51f5be97b61647075" // exhibit b: add a new file
+    val newFileCommitId = "b0d86a6cf1f8c9a12b25f2f51f5be97b61647075" // exhibit b: add a new file
 
     // when
-    val changesInCommit = repository.getChangesInCommit(commitIdWithNewFile)
+    val changesInCommit = repository.getChangesInCommit(newFileCommitId)
 
     // then
     assertThat(changesInCommit)
@@ -47,10 +48,10 @@ class GitFunctionsTest {
   @Test
   fun `it should get modified file from a non-initial commit`() {
     // given
-    val commitIdWithModifiedFile = "6c2faf72204d1848bdaef44f4e69c2c4ae6ca786" // exhibit c: modify a file
+    val modifiedFileCommitId = "6c2faf72204d1848bdaef44f4e69c2c4ae6ca786" // exhibit c: modify a file
 
     // when
-    val changesInCommit = repository.getChangesInCommit(commitIdWithModifiedFile)
+    val changesInCommit = repository.getChangesInCommit(modifiedFileCommitId)
 
     // then
     assertThat(changesInCommit)
@@ -62,10 +63,10 @@ class GitFunctionsTest {
   @Test
   fun `it should get a deleted file from a non-initial commit`() {
     // given
-    val commitIdWithDeletedFile = "68958540148efb4dd0dbfbb181df330deaffbe13" // exhibit d: delete a file
+    val deletedFileCommitId = "68958540148efb4dd0dbfbb181df330deaffbe13" // exhibit d: delete a file
 
     // when
-    val changesInCommit = repository.getChangesInCommit(commitIdWithDeletedFile)
+    val changesInCommit = repository.getChangesInCommit(deletedFileCommitId)
 
     // then
     assertThat(changesInCommit)
@@ -77,10 +78,10 @@ class GitFunctionsTest {
   @Test
   fun `it should get a renamed file from a non-initial commit`() {
     // given
-    val commitIdWithRenamedFile = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
+    val renamedFileCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
 
     // when
-    val changesInCommit = repository.getChangesInCommit(commitIdWithRenamedFile)
+    val changesInCommit = repository.getChangesInCommit(renamedFileCommitId)
 
     // then
     assertThat(changesInCommit)
@@ -107,5 +108,93 @@ class GitFunctionsTest {
         Deletion("file-3.txt"),
         Deletion("file-4.txt"),
       )
+  }
+
+  @Test
+  fun `it should get the diff of a file that was newly added`() {
+    // given
+    val newlyAddedFileCommitId = "0e298ab233af0e283edff96772c75a42a21b1479" // exhibit e: copy a file
+
+    // when
+    val newlyAddedFileDiff = repository.getDiff(newlyAddedFileCommitId, "file-1-copy.txt")
+
+    // then
+    assertThat(newlyAddedFileDiff)
+      .isEqualTo("""
+        diff --git a/file-1-copy.txt b/file-1-copy.txt
+        new file mode 100644
+        index 0000000..980a0d5
+        --- /dev/null
+        +++ b/file-1-copy.txt
+        @@ -0,0 +1 @@
+        +Hello World!
+        
+      """.trimIndent())
+  }
+
+  @Test
+  fun `it should get the diff of a deleted file`() {
+    // given
+    val deletedFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+
+    // when
+    val deletedFileDiff = repository.getDiff(deletedFileCommitId, "file-4.txt")
+
+    // then
+    assertThat(deletedFileDiff)
+      .isEqualTo("""
+        diff --git a/file-4.txt b/file-4.txt
+        deleted file mode 100644
+        index 980a0d5..0000000
+        --- a/file-4.txt
+        +++ /dev/null
+        @@ -1 +0,0 @@
+        -Hello World!
+        
+      """.trimIndent())
+  }
+
+  @Test
+  fun `it should get diff of a modified file`() {
+    // given
+    val modifiedFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+
+    // when
+    val modifiedFileDiff = repository.getDiff(modifiedFileCommitId, "file-1.txt")
+
+    // then
+    assertThat(modifiedFileDiff)
+      .isEqualTo("""
+        diff --git a/file-1.txt b/file-1.txt
+        index 980a0d5..d502583 100644
+        --- a/file-1.txt
+        +++ b/file-1.txt
+        @@ -1 +1 @@
+        -Hello World!
+        +Hello Universe!
+        
+      """.trimIndent())
+  }
+
+  @Test
+  fun `it should det diff of a renamed file`() {
+    // given
+    val renamedFileCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
+
+    // when
+    val renamedFileDiff = repository.getDiff(renamedFileCommitId, "file-4.txt")
+
+    // then
+    assertThat(renamedFileDiff)
+      .isEqualTo("""
+        diff --git a/file-4.txt b/file-4.txt
+        new file mode 100644
+        index 0000000..980a0d5
+        --- /dev/null
+        +++ b/file-4.txt
+        @@ -0,0 +1 @@
+        +Hello World!
+        
+        """.trimIndent())
   }
 }

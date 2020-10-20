@@ -112,3 +112,13 @@ private fun Repository.getTree(commitId: String): RevTree {
   val revWalk = RevWalk(this)
   return revWalk.parseCommit(this.resolve(commitId)).tree
 }
+
+fun Repository.getDiff(
+  commitId: String,
+  filePath: String
+): String {
+  val commit = getCommit(commitId)
+  val parentCommit = commit.getParent(0)
+
+  return getDiff(filePath, parentCommit.name, commit.name)
+}
