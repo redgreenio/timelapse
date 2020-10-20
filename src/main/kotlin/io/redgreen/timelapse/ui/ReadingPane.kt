@@ -45,12 +45,12 @@ class ReadingPane : JLayeredPane() {
     }
   }
 
-  fun showOverlappingDiff(fileName: String, diffSpans: List<DiffSpan>) {
+  fun showOverlappingDiff(title: String, diffSpans: List<DiffSpan>) {
     overlappingModalPanel.isVisible = true
     moveToFront(overlappingModalPanel)
 
     with(overlappingCodeTextPane) {
-      setTitle(fileName)
+      setTitle(title)
       showDiff(diffSpans)
     }
   }

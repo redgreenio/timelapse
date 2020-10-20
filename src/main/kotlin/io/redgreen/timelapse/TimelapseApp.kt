@@ -9,6 +9,10 @@ import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
+import io.redgreen.timelapse.git.Change.Addition
+import io.redgreen.timelapse.git.Change.Deletion
+import io.redgreen.timelapse.git.Change.Modification
+import io.redgreen.timelapse.git.Change.Rename
 import io.redgreen.timelapse.git.getChangesInCommit
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.CommitId
@@ -168,8 +172,17 @@ class TimelapseApp(private val project: String) : Runnable {
         debug { "Selected list item: $change" }
 
         val spans = FormattedDiff.from(gitRepository.getDiff(selectedCommitId, change.filePath)).spans
-        readingPane.showOverlappingDiff(change.filePath, spans)
+        readingPane.showOverlappingDiff(getTitle(change), spans)
       }
+    }
+  }
+
+  private fun getTitle(change: io.redgreen.timelapse.git.Change): String {
+    return when (change) {
+      is Addition -> "[New File] ${change.filePath}"
+      is Modification -> "[Modified] ${change.filePath}"
+      is Deletion -> "[Deleted] ${change.filePath}"
+      is Rename -> "[Renamed] ${change.oldFilePath} => ${change.filePath}"
     }
   }
 
