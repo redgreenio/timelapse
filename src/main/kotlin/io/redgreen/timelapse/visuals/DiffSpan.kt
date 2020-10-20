@@ -6,7 +6,10 @@ sealed class DiffSpan {
   data class Unmodified(val text: String) : DiffSpan()
   data class Deletion(val text: String) : DiffSpan()
   data class Insertion(val text: String) : DiffSpan()
-  object Blank : DiffSpan()
+  object Blank : DiffSpan() {
+    override fun toString(): String =
+      Blank::class.java.simpleName
+  }
 
   companion object {
     private val insertionColor = Color(198, 240, 194)

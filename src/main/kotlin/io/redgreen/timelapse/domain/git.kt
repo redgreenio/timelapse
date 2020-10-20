@@ -119,6 +119,5 @@ fun Repository.getDiff(
 ): String {
   val commit = getCommit(commitId)
   val parentCommit = commit.getParent(0)
-
   return getDiff(filePath, parentCommit.name, commit.name)
 }

@@ -10,6 +10,7 @@
 
 ### Changed
 - Automatically scroll to the top of the code area after selecting a new file or revision.
+- Show clean diffs for newly added and deleted files.
 
 ### Fixed
 - Fix incorrect diffs for changed files when selecting the first commit in a file's history.
