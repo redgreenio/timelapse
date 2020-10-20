@@ -91,4 +91,44 @@ class FormattedDiffTest {
         Blank,
       )
   }
+
+  @Test
+  fun `it should create a diff for a deleted empty file`() {
+    // given
+    val rawDiff = """
+      diff --git a/file-3.txt b/file-3.txt
+      deleted file mode 100644
+      index e69de29..0000000
+      --- a/file-3.txt
+      +++ /dev/null
+      
+    """.trimIndent()
+
+    // when
+    val formattedDiff = FormattedDiff.from(rawDiff)
+
+    // then
+    assertThat(formattedDiff.spans)
+      .isEmpty()
+  }
+
+  @Test
+  fun `it should create a diff for a new empty file`() {
+    // given
+    val rawDiff = """
+      diff --git a/file-b.txt b/file-b.txt
+      new file mode 100644
+      index 0000000..e69de29
+      --- /dev/null
+      +++ b/file-b.txt
+      
+    """.trimIndent()
+
+    // when
+    val formattedDiff = FormattedDiff.from(rawDiff)
+
+    // then
+    assertThat(formattedDiff.spans)
+      .isEmpty()
+  }
 }
