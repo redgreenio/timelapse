@@ -163,15 +163,11 @@ class TimelapseApp(private val project: String) : Runnable {
       val stableSelection = selectedIndex != -1 && !event.valueIsAdjusting
       if (stableSelection) {
         val (change, commitIds) = model.getElementAt(selectedIndex)
-        val (oldCommitId, selectedCommitId) = commitIds
+        val (_, selectedCommitId) = commitIds
 
         debug { "Selected list item: $change" }
 
-        val spans = if (oldCommitId == null) {
-          listOf(Insertion(gitRepository.getChangeText(change.filePath, selectedCommitId)))
-        } else {
-          FormattedDiff.from(gitRepository.getDiff(change.filePath, oldCommitId, selectedCommitId)).spans
-        }
+        val spans = FormattedDiff.from(gitRepository.getDiff(selectedCommitId, change.filePath)).spans
         readingPane.showOverlappingDiff(change.filePath, spans)
       }
     }
@@ -352,7 +348,7 @@ class TimelapseApp(private val project: String) : Runnable {
     val diffText = if (noPreviousRevisions) {
       gitRepository.getChangeText(filePath, selectedChange.commitId)
     } else {
-      gitRepository.getDiff(filePath, previousChange!!.commitId, selectedChange.commitId)
+      gitRepository.getDiff(selectedChange.commitId, filePath)
     }
 
     val diffSpans = if (noPreviousRevisions) {

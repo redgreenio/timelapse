@@ -1,6 +1,6 @@
 # Changelog
 ## [Unreleased]
-## [0.1.2] - 2020-10-19
+## [0.1.2] - 2020-10-20
 ### Added
 - Show file name on top of code panels.
 - Use the 'Esc' key to dismiss the code overlay window.
@@ -10,6 +10,10 @@
 
 ### Changed
 - Automatically scroll to the top of the code area after selecting a new file or revision.
+
+### Fixed
+- Fix incorrect diffs for changed files when selecting the first commit in a file's history.
+- Stop throwing exceptions and show diff when selecting deleted files from files changed panel.
 
 ## [0.1.1] - 2020-10-18
 ### Added

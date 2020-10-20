@@ -177,7 +177,7 @@ class GitFunctionsTest {
   }
 
   @Test
-  fun `it should det diff of a renamed file`() {
+  fun `it should get diff of a renamed file`() {
     // given
     val renamedFileCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
 

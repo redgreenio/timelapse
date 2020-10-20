@@ -53,7 +53,7 @@ fun Repository.readFileFromCommitId(
   return text
 }
 
-fun Repository.getDiff(
+private fun Repository.getDiff(
   filePath: String,
   oldCommitId: String,
   newCommitId: String
