@@ -2,6 +2,7 @@ package io.redgreen.timelapse.visuals
 
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.visuals.DiffSpan.Blank
+import io.redgreen.timelapse.visuals.DiffSpan.ContentsEmpty
 import io.redgreen.timelapse.visuals.DiffSpan.Deletion
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.DiffSpan.Unmodified
@@ -109,7 +110,9 @@ class FormattedDiffTest {
 
     // then
     assertThat(formattedDiff.spans)
-      .isEmpty()
+      .containsExactly(
+        ContentsEmpty,
+      )
   }
 
   @Test

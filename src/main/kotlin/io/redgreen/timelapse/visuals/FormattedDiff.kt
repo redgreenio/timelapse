@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.visuals
 
 import io.redgreen.timelapse.visuals.DiffSpan.Blank
+import io.redgreen.timelapse.visuals.DiffSpan.ContentsEmpty
 import io.redgreen.timelapse.visuals.DiffSpan.Deletion
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.DiffSpan.Unmodified
@@ -10,6 +11,8 @@ private const val DIFF_TYPE_NEW_FILE = "new file"
 
 class FormattedDiff(val spans: List<DiffSpan>) {
   companion object {
+    private val contentsEmpty = FormattedDiff(listOf(ContentsEmpty))
+
     fun from(rawDiff: String): FormattedDiff {
       val diffTypeLine = rawDiff.lines().take(2).last()
       val deletedOrNewFile = with(diffTypeLine) { startsWith(DIFF_TYPE_NEW_FILE) || startsWith(DIFF_TYPE_DELETED) }
@@ -20,7 +23,11 @@ class FormattedDiff(val spans: List<DiffSpan>) {
         .filterIndexed { index, _ -> index > skipLines }
         .map(::toSpan)
 
-      return FormattedDiff(spans)
+      return if (spans.isEmpty()) {
+        contentsEmpty
+      } else {
+        FormattedDiff(spans)
+      }
     }
 
     private fun toSpan(diffLine: String): DiffSpan {

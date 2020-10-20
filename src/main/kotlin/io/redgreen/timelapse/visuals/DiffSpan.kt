@@ -6,9 +6,15 @@ sealed class DiffSpan {
   data class Unmodified(val text: String) : DiffSpan()
   data class Deletion(val text: String) : DiffSpan()
   data class Insertion(val text: String) : DiffSpan()
+
   object Blank : DiffSpan() {
     override fun toString(): String =
       Blank::class.java.simpleName
+  }
+
+  object ContentsEmpty : DiffSpan() {
+    override fun toString(): String =
+      ContentsEmpty::class.java.simpleName
   }
 
   companion object {
@@ -31,6 +37,7 @@ sealed class DiffSpan {
       is Deletion -> "${this.text}\n"
       is Insertion -> "${this.text}\n"
       Blank -> "\n"
+      ContentsEmpty -> "<contents empty>"
     }
   }
 }

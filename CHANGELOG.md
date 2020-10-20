@@ -8,6 +8,7 @@
 - Use 'Alt+1', 'Alt+2', 'Alt+3' to navigate between File explorer, reading area, and changes list.
 - Use the up and down arrow keys to scroll code vertically.
 - Show the type of change in the overlapping code area's title.
+- When new and deleted files are empty, show `<contents empty>` in code area.
 
 ### Changed
 - Automatically scroll to the top of the code area after selecting a new file or revision.
