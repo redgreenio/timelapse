@@ -217,4 +217,44 @@ class GitFunctionsTest {
         
       """.trimIndent())
   }
+
+  @Test
+  fun `it should get the diff of a deleted file with no content`() {
+    // given
+    val deletedFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+
+    // when
+    val deletedEmptyFileDiff = repository.getDiff(deletedFileCommitId, "file-3.txt")
+
+    // then
+    assertThat(deletedEmptyFileDiff)
+      .isEqualTo("""
+        diff --git a/file-3.txt b/file-3.txt
+        deleted file mode 100644
+        index e69de29..0000000
+        --- a/file-3.txt
+        +++ /dev/null
+        
+      """.trimIndent())
+  }
+
+  @Test
+  fun `it should get the diff of a new file with no content`() {
+    // given
+    val newEmptyFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+
+    // when
+    val newEmptyFileDiff = repository.getDiff(newEmptyFileCommitId, "file-b.txt")
+
+    // then
+    assertThat(newEmptyFileDiff)
+      .isEqualTo("""
+        diff --git a/file-b.txt b/file-b.txt
+        new file mode 100644
+        index 0000000..e69de29
+        --- /dev/null
+        +++ b/file-b.txt
+        
+      """.trimIndent())
+  }
 }
