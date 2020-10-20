@@ -68,7 +68,8 @@ private fun Repository.getDiff(
       diffFormatter.setRepository(this)
       diffFormatter.pathFilter = filePathFilter
 
-      val oldTree = getTree(oldCommitId)
+      val isFirstCommit = oldCommitId == newCommitId
+      val oldTree = if (isFirstCommit) null else getTree(oldCommitId)
       val newTree = getTree(newCommitId)
 
       val diffEntry = diffFormatter.scan(oldTree, newTree).first()
@@ -118,6 +119,7 @@ fun Repository.getDiff(
   filePath: String
 ): String {
   val commit = getCommit(commitId)
-  val parentCommit = commit.getParent(0)
-  return getDiff(filePath, parentCommit.name, commit.name)
+  val isInitialCommit = commit.parentCount == 0
+  val parentCommitId = if (isInitialCommit) commitId else commit.getParent(0).name
+  return getDiff(filePath, parentCommitId, commit.name)
 }

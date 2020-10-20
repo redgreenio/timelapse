@@ -197,4 +197,24 @@ class GitFunctionsTest {
         
         """.trimIndent())
   }
+
+  @Test
+  fun `it should get diff for a file added in the first commit`() {
+    // given
+    val initialCommit = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+
+    // when
+    val newFileDiff = repository.getDiff(initialCommit, "file-1.txt")
+
+    // then
+    assertThat(newFileDiff)
+      .isEqualTo("""
+        diff --git a/file-1.txt b/file-1.txt
+        new file mode 100644
+        index 0000000..e69de29
+        --- /dev/null
+        +++ b/file-1.txt
+        
+      """.trimIndent())
+  }
 }
