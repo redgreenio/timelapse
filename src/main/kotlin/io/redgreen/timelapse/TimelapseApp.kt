@@ -1,5 +1,6 @@
 package io.redgreen.timelapse
 
+import humanize.Humanize.naturalTime
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
@@ -400,14 +401,16 @@ class TimelapseApp(private val project: String) : Runnable {
     val position = "${timelapseSlider.value + 1}/${changesInAscendingOrder.size}"
     val progressPercent = ((timelapseSlider.value + 1).toDouble() / changesInAscendingOrder.size) * 100
     val progressPercentText = String.format("%.2f", ceil(progressPercent)).replace(".00", "")
-    val authorAndCommitDate = formatDate(commit.authorIdent.`when`, commit.committerIdent.`when`)
+    val committedDate = commit.committerIdent.`when`
+    val authorAndCommitDate = formatDate(commit.authorIdent.`when`, committedDate)
+    val committedNaturalTime = naturalTime(committedDate)
 
     return """
       <html>
         ${selectedChange.message}<br />
-        $authorAndCommitDate<br /><br />
+        $authorAndCommitDate ($committedNaturalTime)<br /><br />
         Commit $position $COMMIT_INFORMATION_SEPARATOR $progressPercentText%<br />
-        <code>${selectedChange.commitId}</code> $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  &lt;${commit.authorIdent.emailAddress}&gt;
+        <code>${commit.name}</code> $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  &lt;${commit.authorIdent.emailAddress}&gt;
       </html>
     """.trimIndent()
   }
