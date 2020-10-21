@@ -23,6 +23,7 @@ import io.redgreen.timelapse.ui.ReadingPane
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
+import io.redgreen.timelapse.visuals.formatDate
 import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
@@ -399,10 +400,12 @@ class TimelapseApp(private val project: String) : Runnable {
     val position = "${timelapseSlider.value + 1}/${changesInAscendingOrder.size}"
     val progressPercent = ((timelapseSlider.value + 1).toDouble() / changesInAscendingOrder.size) * 100
     val progressPercentText = String.format("%.2f", ceil(progressPercent)).replace(".00", "")
+    val authorAndCommitDate = formatDate(commit.authorIdent.`when`, commit.committerIdent.`when`)
 
     return """
       <html>
-        ${selectedChange.message}<br /><br />
+        ${selectedChange.message}<br />
+        $authorAndCommitDate<br /><br />
         Commit $position $COMMIT_INFORMATION_SEPARATOR $progressPercentText%<br />
         <code>${selectedChange.commitId}</code> $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  &lt;${commit.authorIdent.emailAddress}&gt;
       </html>
