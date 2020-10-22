@@ -6,11 +6,15 @@ sealed class ChangedFilesModel {
       commitId: String,
       filePath: String
     ): ChangedFilesModel =
-      HasSelection(commitId, filePath)
+      HasSelection(commitId, filePath, emptyList())
   }
 
   data class HasSelection(
     val commitId: String,
-    val filePath: String
-  ) : ChangedFilesModel()
+    val filePath: String,
+    val changedFiles: List<String>
+  ) : ChangedFilesModel() {
+    fun noOtherFilesChanged(): HasSelection =
+      copy(changedFiles = emptyList())
+  }
 }

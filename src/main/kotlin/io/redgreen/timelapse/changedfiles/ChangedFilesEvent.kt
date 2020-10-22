@@ -6,3 +6,5 @@ data class RevisionSelected(
   val commitId: String,
   val filePath: String
 ) : ChangedFilesEvent()
+
+object NoOtherFilesChanged : ChangedFilesEvent()

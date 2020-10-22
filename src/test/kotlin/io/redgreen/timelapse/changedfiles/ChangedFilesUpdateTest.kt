@@ -9,18 +9,39 @@ import io.redgreen.timelapse.mobius.spec
 import org.junit.jupiter.api.Test
 
 class ChangedFilesUpdateTest {
+  private val withUpdateSpec = ChangedFilesUpdate.spec()
+
   @Test
   fun `when user selects a revision it should show loading state`() {
-    val currentState = NoSelection
+    val noSelectionState = NoSelection
+    val commitId = "commit-id"
+    val filePath = "app/build.gradle"
 
-    ChangedFilesUpdate
-      .spec()
-      .given(currentState)
-      .whenEvent(RevisionSelected("commit-id", "file-path"))
+    withUpdateSpec
+      .given(noSelectionState)
+      .whenEvent(RevisionSelected(commitId, filePath))
       .then(
         assertThatNext(
-          hasModel(HasSelection("commit-id", "file-path")),
-          hasEffects(FetchChangedFiles("commit-id", "file-path"))
+          hasModel(HasSelection(commitId, filePath, emptyList())),
+          hasEffects(FetchChangedFiles(commitId, filePath))
+        )
+      )
+  }
+
+  @Test
+  fun `when there are no other changed files, it should return none`() {
+    val commitId = "commit-id"
+    val filePath = "app/build.gradle"
+    val revisionSelectedState = NoSelection
+      .revisionSelected(commitId, filePath)
+    val changedFiles = emptyList<String>()
+
+    withUpdateSpec
+      .given(revisionSelectedState)
+      .whenEvent(NoOtherFilesChanged)
+      .then(
+        assertThatNext(
+          hasModel(HasSelection(commitId, filePath, changedFiles))
         )
       )
   }
