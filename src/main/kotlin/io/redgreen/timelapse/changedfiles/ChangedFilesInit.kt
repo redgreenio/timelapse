@@ -5,7 +5,7 @@ import com.spotify.mobius.First.first
 import com.spotify.mobius.Init
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel.NoSelection
 
-class ChangedFilesInit : Init<ChangedFilesModel, ChangedFilesEffect> {
+object ChangedFilesInit : Init<ChangedFilesModel, ChangedFilesEffect> {
   override fun init(model: ChangedFilesModel): First<ChangedFilesModel, ChangedFilesEffect> =
     first(NoSelection)
 }
