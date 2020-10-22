@@ -4,6 +4,10 @@ import com.spotify.mobius.test.NextMatchers.hasEffects
 import com.spotify.mobius.test.NextMatchers.hasModel
 import com.spotify.mobius.test.NextMatchers.hasNoEffects
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
+import io.redgreen.timelapse.changedfiles.ChangedFiles.Retrieving
+import io.redgreen.timelapse.changedfiles.ChangedFiles.FilesChanged
+import io.redgreen.timelapse.changedfiles.ChangedFiles.NoOtherFilesChanged
+import io.redgreen.timelapse.changedfiles.ChangedFiles.ErrorRetrievingChangedFiles
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel.HasSelection
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel.NoSelection
 import io.redgreen.timelapse.mobius.spec
@@ -15,7 +19,7 @@ class ChangedFilesUpdateTest {
   private val selectedFilePath = "app/build.gradle"
 
   @Test
-  fun `when user selects a revision it should show loading state`() {
+  fun `when user selects a file's revision it should begin retrieving other files that changed in the commit`() {
     val noSelectionState = NoSelection
 
     withUpdateSpec
@@ -23,31 +27,33 @@ class ChangedFilesUpdateTest {
       .whenEvent(RevisionSelected(commitId, selectedFilePath))
       .then(
         assertThatNext(
-          hasModel(HasSelection(commitId, selectedFilePath, emptyList())),
+          hasModel(HasSelection(commitId, selectedFilePath, Retrieving)),
           hasEffects(FetchChangedFiles(commitId, selectedFilePath))
         )
       )
   }
 
   @Test
-  fun `when there are no other changed files, it should show not other files changed`() {
+  fun `when there are no other changed files, it should show no other files changed`() {
     val revisionSelectedState = NoSelection
       .revisionSelected(commitId, selectedFilePath)
     val noChangedFiles = emptyList<String>()
 
     withUpdateSpec
       .given(revisionSelectedState)
-      .whenEvent(NoOtherFilesChanged)
+      .whenEvent(io.redgreen.timelapse.changedfiles.NoOtherFilesChanged)
       .then(
         assertThatNext(
-          hasModel(HasSelection(commitId, selectedFilePath, noChangedFiles)),
+          hasModel(HasSelection(commitId, selectedFilePath,
+            NoOtherFilesChanged
+          )),
           hasNoEffects()
         )
       )
   }
 
   @Test
-  fun `when there are some changed files, it should display those changed files`() {
+  fun `when there are other changed files, it should display those changed files`() {
     val revisionSelectedState = NoSelection
       .revisionSelected(commitId, selectedFilePath)
     val changedFiles = listOf("build.gradle", "settings.gradle")
@@ -57,7 +63,7 @@ class ChangedFilesUpdateTest {
       .whenEvent(SomeFilesChanged(changedFiles))
       .then(
         assertThatNext(
-          hasModel(HasSelection(commitId, selectedFilePath, changedFiles)),
+          hasModel(HasSelection(commitId, selectedFilePath, FilesChanged(changedFiles))),
           hasNoEffects()
         )
       )
@@ -70,10 +76,10 @@ class ChangedFilesUpdateTest {
 
     withUpdateSpec
       .given(revisionSelectedState)
-      .whenEvent(UnableToFetchChangedFiles)
+      .whenEvent(UnableToRetrieveChangedFiles)
       .then(
         assertThatNext(
-          hasModel(HasSelection(commitId, selectedFilePath, emptyList(), true)),
+          hasModel(HasSelection(commitId, selectedFilePath, ErrorRetrievingChangedFiles)),
           hasNoEffects()
         )
       )

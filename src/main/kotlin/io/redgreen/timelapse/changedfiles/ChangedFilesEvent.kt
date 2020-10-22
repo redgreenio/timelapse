@@ -13,4 +13,4 @@ data class SomeFilesChanged(
   val filePaths: List<String>
 ) : ChangedFilesEvent()
 
-object UnableToFetchChangedFiles : ChangedFilesEvent()
+object UnableToRetrieveChangedFiles : ChangedFilesEvent()

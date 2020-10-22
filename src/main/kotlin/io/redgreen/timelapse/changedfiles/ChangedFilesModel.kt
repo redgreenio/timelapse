@@ -1,29 +1,33 @@
 package io.redgreen.timelapse.changedfiles
 
+import io.redgreen.timelapse.changedfiles.ChangedFiles.ErrorRetrievingChangedFiles
+import io.redgreen.timelapse.changedfiles.ChangedFiles.FilesChanged
+import io.redgreen.timelapse.changedfiles.ChangedFiles.NoOtherFilesChanged
+import io.redgreen.timelapse.changedfiles.ChangedFiles.Retrieving
+
 sealed class ChangedFilesModel {
   object NoSelection : ChangedFilesModel() {
     fun revisionSelected(
       commitId: String,
       filePath: String,
     ): ChangedFilesModel =
-      HasSelection(commitId, filePath, emptyList())
+      HasSelection(commitId, filePath, Retrieving)
   }
 
   data class HasSelection(
     val commitId: String,
     val filePath: String,
-    val changedFilePaths: List<String>,
-    val isError: Boolean = false,
+    val changedFiles: ChangedFiles,
   ) : ChangedFilesModel() {
     fun noOtherFilesChanged(): HasSelection =
-      copy(changedFilePaths = emptyList())
+      copy(changedFiles = NoOtherFilesChanged)
 
     fun someFilesChanged(filePaths: List<String>): ChangedFilesModel {
-      return copy(changedFilePaths = filePaths)
+      return copy(changedFiles = FilesChanged(filePaths))
     }
 
-    fun unableToFetchChangedFiles(): ChangedFilesModel {
-      return copy(isError = true)
+    fun unableToRetrieveChangedFiles(): ChangedFilesModel {
+      return copy(changedFiles = ErrorRetrievingChangedFiles)
     }
   }
 }
