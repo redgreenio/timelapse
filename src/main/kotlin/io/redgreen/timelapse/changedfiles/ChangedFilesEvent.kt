@@ -8,3 +8,7 @@ data class RevisionSelected(
 ) : ChangedFilesEvent()
 
 object NoOtherFilesChanged : ChangedFilesEvent()
+
+data class SomeFilesChanged(
+  val filePaths: List<String>
+) : ChangedFilesEvent()

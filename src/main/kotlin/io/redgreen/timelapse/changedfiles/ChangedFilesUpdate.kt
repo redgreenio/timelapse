@@ -17,6 +17,7 @@ object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, Changed
         setOf(FetchChangedFiles(event.commitId, event.filePath))
       )
       NoOtherFilesChanged -> next((model as HasSelection).noOtherFilesChanged())
+      is SomeFilesChanged -> next((model as HasSelection).someFilesChanged(event.filePaths))
     }
   }
 }
