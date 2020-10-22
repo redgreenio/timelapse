@@ -62,4 +62,20 @@ class ChangedFilesUpdateTest {
         )
       )
   }
+
+  @Test
+  fun `when the application is unable to get the changed files, it should display an error`() {
+    val revisionSelectedState = NoSelection
+      .revisionSelected(commitId, selectedFilePath)
+
+    withUpdateSpec
+      .given(revisionSelectedState)
+      .whenEvent(UnableToFetchChangedFiles)
+      .then(
+        assertThatNext(
+          hasModel(HasSelection(commitId, selectedFilePath, emptyList(), true)),
+          hasNoEffects()
+        )
+      )
+  }
 }
