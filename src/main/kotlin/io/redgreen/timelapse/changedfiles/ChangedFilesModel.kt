@@ -22,12 +22,13 @@ sealed class ChangedFilesModel {
     fun noOtherFilesChanged(): HasSelection =
       copy(changedFiles = NoOtherFilesChanged)
 
-    fun someFilesChanged(filePaths: List<String>): ChangedFilesModel {
-      return copy(changedFiles = FilesChanged(filePaths))
-    }
+    fun someFilesChanged(filePaths: List<String>): HasSelection =
+      copy(changedFiles = FilesChanged(filePaths))
 
-    fun unableToRetrieveChangedFiles(): ChangedFilesModel {
-      return copy(changedFiles = ErrorRetrievingChangedFiles)
-    }
+    fun unableToRetrieveChangedFiles(): HasSelection =
+      copy(changedFiles = ErrorRetrievingChangedFiles)
+
+    fun retryRetrievingChangedFiles(): HasSelection =
+      copy(changedFiles = Retrieving)
   }
 }

@@ -19,6 +19,7 @@ object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, Changed
       NoOtherFilesChanged -> next((model as HasSelection).noOtherFilesChanged())
       is SomeFilesChanged -> next((model as HasSelection).someFilesChanged(event.filePaths))
       UnableToRetrieveChangedFiles -> next((model as HasSelection).unableToRetrieveChangedFiles())
+      RetryRetrievingChangedFiles -> next((model as HasSelection).retryRetrievingChangedFiles())
     }
   }
 }

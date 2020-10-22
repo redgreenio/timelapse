@@ -14,3 +14,5 @@ data class SomeFilesChanged(
 ) : ChangedFilesEvent()
 
 object UnableToRetrieveChangedFiles : ChangedFilesEvent()
+
+object RetryRetrievingChangedFiles : ChangedFilesEvent()

@@ -4,10 +4,10 @@ import com.spotify.mobius.test.NextMatchers.hasEffects
 import com.spotify.mobius.test.NextMatchers.hasModel
 import com.spotify.mobius.test.NextMatchers.hasNoEffects
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
-import io.redgreen.timelapse.changedfiles.ChangedFiles.Retrieving
+import io.redgreen.timelapse.changedfiles.ChangedFiles.ErrorRetrievingChangedFiles
 import io.redgreen.timelapse.changedfiles.ChangedFiles.FilesChanged
 import io.redgreen.timelapse.changedfiles.ChangedFiles.NoOtherFilesChanged
-import io.redgreen.timelapse.changedfiles.ChangedFiles.ErrorRetrievingChangedFiles
+import io.redgreen.timelapse.changedfiles.ChangedFiles.Retrieving
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel.HasSelection
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel.NoSelection
 import io.redgreen.timelapse.mobius.spec
@@ -44,9 +44,7 @@ class ChangedFilesUpdateTest {
       .whenEvent(io.redgreen.timelapse.changedfiles.NoOtherFilesChanged)
       .then(
         assertThatNext(
-          hasModel(HasSelection(commitId, selectedFilePath,
-            NoOtherFilesChanged
-          )),
+          hasModel(HasSelection(commitId, selectedFilePath, NoOtherFilesChanged)),
           hasNoEffects()
         )
       )
@@ -80,6 +78,23 @@ class ChangedFilesUpdateTest {
       .then(
         assertThatNext(
           hasModel(HasSelection(commitId, selectedFilePath, ErrorRetrievingChangedFiles)),
+          hasNoEffects()
+        )
+      )
+  }
+
+  @Test
+  fun `when user see's an error fetching changed files, she should be able to retry`() {
+    val errorRetrievingChangedFilesState = (NoSelection
+      .revisionSelected(commitId, selectedFilePath) as HasSelection)
+      .unableToRetrieveChangedFiles()
+
+    withUpdateSpec
+      .given(errorRetrievingChangedFilesState)
+      .whenEvent(RetryRetrievingChangedFiles)
+      .then(
+        assertThatNext(
+          hasModel(HasSelection(commitId, selectedFilePath, Retrieving)),
           hasNoEffects()
         )
       )
