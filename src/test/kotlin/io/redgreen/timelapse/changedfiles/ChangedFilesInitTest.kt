@@ -3,19 +3,19 @@ package io.redgreen.timelapse.changedfiles
 import com.spotify.mobius.test.FirstMatchers.hasModel
 import com.spotify.mobius.test.FirstMatchers.hasNoEffects
 import com.spotify.mobius.test.InitSpec.assertThatFirst
-import io.redgreen.timelapse.changedfiles.ChangedFilesModel.NoSelection
+import io.redgreen.timelapse.mobius.AsyncOp.Companion.idle
 import io.redgreen.timelapse.mobius.spec
 import org.junit.jupiter.api.Test
 
 class ChangedFilesInitTest {
   @Test
-  fun `when user has not selected a revision, then show nothing selected`() {
+  fun `when user has not selected a file and a revision, then show no file and revision selected`() {
     ChangedFilesInit
       .spec()
-      .whenInit(NoSelection)
+      .whenInit(ChangedFilesModel.noFileAndRevisionSelected())
       .then(
         assertThatFirst(
-          hasModel(NoSelection),
+          hasModel(ChangedFilesModel(null, null, idle())),
           hasNoEffects()
         )
       )

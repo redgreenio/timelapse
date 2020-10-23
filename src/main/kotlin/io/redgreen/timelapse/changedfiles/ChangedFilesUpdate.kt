@@ -4,9 +4,7 @@ import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
-import io.redgreen.timelapse.changedfiles.ChangedFiles.FilesChanged
-import io.redgreen.timelapse.changedfiles.ChangedFilesModel.HasSelection
-import io.redgreen.timelapse.changedfiles.ChangedFilesModel.NoSelection
+import io.redgreen.timelapse.mobius.AsyncOp.Content
 
 object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, ChangedFilesEffect> {
   override fun update(
@@ -14,20 +12,32 @@ object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, Changed
     event: ChangedFilesEvent
   ): Next<ChangedFilesModel, ChangedFilesEffect> {
     return when (event) {
-      is RevisionSelected -> next(
-        (model as NoSelection).revisionSelected(event.commitId, event.filePath),
-        setOf(FetchChangedFiles(event.commitId, event.filePath))
+      is FileAndRevisionSelected -> next(
+        model.fileAndRevisionSelected(event.filePath, event.commitId),
+        setOf(GetChangedFiles(event.commitId, event.filePath))
       )
-      NoOtherFilesChanged -> next((model as HasSelection).noOtherFilesChanged())
-      is SomeFilesChanged -> next((model as HasSelection).someFilesChanged(event.filePaths))
-      UnableToRetrieveChangedFiles -> next((model as HasSelection).unableToRetrieveChangedFiles())
-      RetryRetrievingChangedFiles -> next((model as HasSelection).retryRetrievingChangedFiles())
-      is SelectChangedFile -> {
-        val hasSelection = model as HasSelection
-        val commitId = hasSelection.commitId
-        val filePath = (hasSelection.changedFiles as FilesChanged).filePaths[event.index]
-        dispatch(setOf(ChangedFileSelected(commitId, filePath)))
+
+      NoOtherFilesChanged -> next(model.noOtherFilesChanged())
+
+      is SomeMoreFilesChanged -> next(model.someMoreFilesChanged(event.filePaths))
+
+      GettingChangedFilesFailed -> next(model.gettingChangedFilesFailed())
+
+      RetryGettingChangedFiles -> next(model.retryGettingChangedFiles())
+
+      is ChangedFileSelected -> {
+        val (commitId, filePath) = getCommitIdAndFilePath(model, event.index)
+        dispatch(setOf(ShowDiff(commitId, filePath)))
       }
     }
+  }
+
+  private fun getCommitIdAndFilePath(
+    model: ChangedFilesModel,
+    index: Int
+  ): Pair<String, String> {
+    val commitId = model.commitId!!
+    val filePath = (model.getChangedFilesAsyncOp as Content<ChangedFiles>).content[index]
+    return commitId to filePath
   }
 }

@@ -2,19 +2,19 @@ package io.redgreen.timelapse.changedfiles
 
 sealed class ChangedFilesEvent
 
-data class RevisionSelected(
-  val commitId: String,
-  val filePath: String
+data class FileAndRevisionSelected(
+  val filePath: String,
+  val commitId: String
 ) : ChangedFilesEvent()
 
 object NoOtherFilesChanged : ChangedFilesEvent()
 
-data class SomeFilesChanged(
+data class SomeMoreFilesChanged(
   val filePaths: List<String>
 ) : ChangedFilesEvent()
 
-object UnableToRetrieveChangedFiles : ChangedFilesEvent()
+object GettingChangedFilesFailed : ChangedFilesEvent()
 
-object RetryRetrievingChangedFiles : ChangedFilesEvent()
+object RetryGettingChangedFiles : ChangedFilesEvent()
 
-data class SelectChangedFile(val index: Int) : ChangedFilesEvent()
+data class ChangedFileSelected(val index: Int) : ChangedFilesEvent()

@@ -1,34 +1,40 @@
 package io.redgreen.timelapse.changedfiles
 
-import io.redgreen.timelapse.changedfiles.ChangedFiles.ErrorRetrievingChangedFiles
-import io.redgreen.timelapse.changedfiles.ChangedFiles.FilesChanged
-import io.redgreen.timelapse.changedfiles.ChangedFiles.NoOtherFilesChanged
-import io.redgreen.timelapse.changedfiles.ChangedFiles.Retrieving
+import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure
+import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure.Unknown
+import io.redgreen.timelapse.mobius.AsyncOp
+import io.redgreen.timelapse.mobius.AsyncOp.Companion.content
+import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
+import io.redgreen.timelapse.mobius.AsyncOp.Companion.idle
+import io.redgreen.timelapse.mobius.AsyncOp.Companion.inFlight
 
-sealed class ChangedFilesModel {
-  object NoSelection : ChangedFilesModel() {
-    fun revisionSelected(
-      commitId: String,
-      filePath: String,
-    ): ChangedFilesModel =
-      HasSelection(commitId, filePath, Retrieving)
+typealias ChangedFiles = List<String>
+
+data class ChangedFilesModel(
+  val commitId: String?,
+  val filePath: String?,
+  val getChangedFilesAsyncOp: AsyncOp<ChangedFiles, GetChangedFilesFailure> = idle(),
+) {
+  companion object {
+    fun noFileAndRevisionSelected(): ChangedFilesModel =
+      ChangedFilesModel(commitId = null, filePath = null)
   }
 
-  data class HasSelection(
-    val commitId: String,
-    val filePath: String,
-    val changedFiles: ChangedFiles,
-  ) : ChangedFilesModel() {
-    fun noOtherFilesChanged(): HasSelection =
-      copy(changedFiles = NoOtherFilesChanged)
+  fun fileAndRevisionSelected(
+    filePath: String,
+    commitId: String,
+  ): ChangedFilesModel =
+    copy(commitId = commitId, filePath = filePath, getChangedFilesAsyncOp = inFlight())
 
-    fun someFilesChanged(filePaths: List<String>): HasSelection =
-      copy(changedFiles = FilesChanged(filePaths))
+  fun noOtherFilesChanged(): ChangedFilesModel =
+    copy(getChangedFilesAsyncOp = content(emptyList()))
 
-    fun unableToRetrieveChangedFiles(): HasSelection =
-      copy(changedFiles = ErrorRetrievingChangedFiles)
+  fun someMoreFilesChanged(filePaths: ChangedFiles): ChangedFilesModel =
+    copy(getChangedFilesAsyncOp = content(filePaths))
 
-    fun retryRetrievingChangedFiles(): HasSelection =
-      copy(changedFiles = Retrieving)
-  }
+  fun gettingChangedFilesFailed(): ChangedFilesModel =
+    copy(getChangedFilesAsyncOp = failure(Unknown))
+
+  fun retryGettingChangedFiles(): ChangedFilesModel =
+    copy(getChangedFilesAsyncOp = inFlight())
 }
