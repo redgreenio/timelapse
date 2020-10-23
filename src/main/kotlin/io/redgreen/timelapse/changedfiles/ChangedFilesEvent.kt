@@ -16,3 +16,5 @@ data class SomeFilesChanged(
 object UnableToRetrieveChangedFiles : ChangedFilesEvent()
 
 object RetryRetrievingChangedFiles : ChangedFilesEvent()
+
+data class SelectChangedFile(val index: Int) : ChangedFilesEvent()

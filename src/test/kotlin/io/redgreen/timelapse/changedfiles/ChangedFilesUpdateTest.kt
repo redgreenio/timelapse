@@ -3,6 +3,7 @@ package io.redgreen.timelapse.changedfiles
 import com.spotify.mobius.test.NextMatchers.hasEffects
 import com.spotify.mobius.test.NextMatchers.hasModel
 import com.spotify.mobius.test.NextMatchers.hasNoEffects
+import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
 import io.redgreen.timelapse.changedfiles.ChangedFiles.ErrorRetrievingChangedFiles
 import io.redgreen.timelapse.changedfiles.ChangedFiles.FilesChanged
@@ -96,6 +97,23 @@ class ChangedFilesUpdateTest {
         assertThatNext(
           hasModel(HasSelection(commitId, selectedFilePath, Retrieving)),
           hasNoEffects()
+        )
+      )
+  }
+
+  @Test
+  fun `when user selects a file from the list of changed files, it should display the diff for the file`() {
+    val someFilesChangedState = (NoSelection
+      .revisionSelected(commitId, selectedFilePath) as HasSelection)
+      .someFilesChanged(listOf("README.md", "settings.gradle"))
+
+    withUpdateSpec
+      .given(someFilesChangedState)
+      .whenEvent(SelectChangedFile(1))
+      .then(
+        assertThatNext(
+          hasNoModel(),
+          hasEffects(ChangedFileSelected(commitId, "settings.gradle"))
         )
       )
   }

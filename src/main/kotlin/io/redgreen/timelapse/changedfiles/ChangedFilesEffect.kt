@@ -6,3 +6,8 @@ data class FetchChangedFiles(
   val commitId: String,
   val selectedFilePath: String
 ) : ChangedFilesEffect()
+
+data class ChangedFileSelected(
+  val commitId: String,
+  val filePath: String
+) : ChangedFilesEffect()

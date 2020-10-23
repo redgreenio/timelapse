@@ -1,8 +1,10 @@
 package io.redgreen.timelapse.changedfiles
 
 import com.spotify.mobius.Next
+import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
+import io.redgreen.timelapse.changedfiles.ChangedFiles.FilesChanged
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel.HasSelection
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel.NoSelection
 
@@ -20,6 +22,12 @@ object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, Changed
       is SomeFilesChanged -> next((model as HasSelection).someFilesChanged(event.filePaths))
       UnableToRetrieveChangedFiles -> next((model as HasSelection).unableToRetrieveChangedFiles())
       RetryRetrievingChangedFiles -> next((model as HasSelection).retryRetrievingChangedFiles())
+      is SelectChangedFile -> {
+        val hasSelection = model as HasSelection
+        val commitId = hasSelection.commitId
+        val filePath = (hasSelection.changedFiles as FilesChanged).filePaths[event.index]
+        dispatch(setOf(ChangedFileSelected(commitId, filePath)))
+      }
     }
   }
 }
