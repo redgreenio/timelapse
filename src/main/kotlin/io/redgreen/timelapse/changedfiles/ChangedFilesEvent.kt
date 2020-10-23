@@ -10,7 +10,7 @@ data class FileAndRevisionSelected(
 object NoOtherFilesChanged : ChangedFilesEvent()
 
 data class SomeMoreFilesChanged(
-  val filePaths: List<String>
+  val filePaths: ChangedFiles
 ) : ChangedFilesEvent()
 
 object GettingChangedFilesFailed : ChangedFilesEvent()

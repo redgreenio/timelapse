@@ -1,3 +1,5 @@
+import Build_gradle.DependencyVersions.junit
+import Build_gradle.DependencyVersions.mobius
 import proguard.gradle.ProGuardTask
 
 buildscript {
@@ -22,18 +24,24 @@ repositories {
   mavenCentral()
 }
 
+object DependencyVersions {
+  internal const val mobius = "1.5.3"
+  internal const val junit = "5.6.0"
+}
+
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")
   implementation("org.slf4j:slf4j-simple:1.7.30")
   implementation("com.github.mfornos:humanize-slim:1.2.2")
-  implementation("com.spotify.mobius:mobius-core:1.5.3")
+  implementation("com.spotify.mobius:mobius-core:$mobius")
+  implementation("com.spotify.mobius:mobius-rx3:$mobius")
 
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
-  testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
-  testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.0")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
-  testImplementation("com.spotify.mobius:mobius-test:1.5.3")
+  testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
+  testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit")
+  testImplementation("com.spotify.mobius:mobius-test:$mobius")
 
   testImplementation("com.google.truth:truth:1.0.1")
 }
