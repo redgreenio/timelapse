@@ -9,9 +9,11 @@ class ChangedFilesEffectHandler private constructor() {
     fun from(vcsRepositoryService: VcsRepositoryService): ObservableTransformer<ChangedFilesEffect, ChangedFilesEvent> {
       return RxMobius
         .subtypeEffectHandler<ChangedFilesEffect, ChangedFilesEvent>()
-        .addTransformer(GetChangedFiles::class.java) { upstream ->
-          upstream.flatMapSingle { vcsRepositoryService.getChangedFilePaths(it.commitId) }
-            .map { SomeMoreFilesChanged(it) }
+        .addTransformer(GetChangedFiles::class.java) { getChangedFilesEvents ->
+          getChangedFilesEvents
+            .flatMapSingle { vcsRepositoryService.getChangedFilePaths(it.commitId) }
+            .map { if (it.size == 1) NoOtherFilesChanged else SomeMoreFilesChanged(it) }
+            .onErrorReturn { GettingChangedFilesFailed }
         }
         .build()
     }
