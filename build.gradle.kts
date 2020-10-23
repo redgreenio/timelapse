@@ -42,6 +42,7 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit")
   testImplementation("com.spotify.mobius:mobius-test:$mobius")
+  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
   testImplementation("com.google.truth:truth:1.0.1")
 }
