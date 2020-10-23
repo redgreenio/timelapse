@@ -45,4 +45,17 @@ sealed class AsyncOp<in C, in R> {
    * may be modeled using a sealed class if necessary.
    */
   data class Failure<R>(val reason: R) : AsyncOp<Nothing, R>()
+
+  /**
+   * Convenience property to use with `when` blocks to surpass verbose type casting.
+   */
+  val instance: AsyncOp<Nothing, Nothing>
+    get() {
+      return when (this) {
+        Idle -> Idle
+        InFlight -> InFlight
+        is Content -> this
+        is Failure -> this
+      }
+    }
 }
