@@ -3,7 +3,6 @@ package io.redgreen.timelapse
 import humanize.Humanize.naturalTime
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
-import io.redgreen.timelapse.changedfiles.view.CommitId
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
@@ -13,7 +12,6 @@ import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
-import io.redgreen.timelapse.git.getChangedFilesInCommit
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
 import io.redgreen.timelapse.ui.KEY_STROKE_UP
@@ -45,7 +43,6 @@ import java.awt.event.KeyEvent.VK_3
 import java.awt.event.KeyEvent.VK_ESCAPE
 import java.io.File
 import javax.swing.BorderFactory
-import javax.swing.DefaultListModel
 import javax.swing.JComponent.WHEN_FOCUSED
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
@@ -78,7 +75,7 @@ private const val PADDING = 10
 private typealias DirectoryPath = String
 
 class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract {
-  private lateinit var gitRepository: Repository
+  private val gitRepository by lazy { openGitRepository(File(project)) }
   private lateinit var changesInAscendingOrder: List<Change>
   private lateinit var filePath: String
 
@@ -169,7 +166,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     }
   }
 
-  private val changedFilesPane = ChangedFilesPane(this)
+  private val changedFilesPane = ChangedFilesPane(gitRepository, this)
 
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
@@ -214,7 +211,8 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
   }
 
   private fun buildAndShowGui() {
-    gitRepository = openProject(project) { filePaths ->
+    val filePaths = gitRepository.getFilePaths()
+    filePaths.onEach {
       val rootTreeNode = DefaultMutableTreeNode().apply {
         userObject = project.substring(project.lastIndexOf(File.separatorChar) + 1, project.length)
         buildFileExplorerTree(this, filePaths)
@@ -254,12 +252,6 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     // Show code now
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, 0)
     showCode(filePath, previousChange, selectedChange)
-  }
-
-  private fun openProject(projectPath: String, onProjectOpened: (List<String>) -> Unit): Repository {
-    val gitRepository = openGitRepository(File(projectPath))
-    onProjectOpened(gitRepository.getFilePaths())
-    return gitRepository
   }
 
   private fun buildFileExplorerTree(
@@ -358,15 +350,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
 
     commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
 
-    val changesInCommit = gitRepository
-      .getChangedFilesInCommit(selectedChange.commitId)
-    showChanges(changesInCommit, selectedChange.commitId)
-  }
-
-  private fun showChanges(changedFiles: List<ChangedFile>, commitId: String) {
-    val changesListModel = DefaultListModel<Pair<ChangedFile, CommitId>>()
-    changedFiles.map { it to commitId }.onEach { changesListModel.addElement(it) }
-    changedFilesPane.setModel(changesListModel)
+    changedFilesPane.selectFileAndRevision(filePath, selectedChange.commitId)
   }
 
   private fun Repository.getChangeText(

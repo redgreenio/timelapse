@@ -8,19 +8,19 @@ import javax.swing.ListCellRenderer
 
 internal typealias CommitId = String
 
-class ChangedFileListCellRenderer : ListCellRenderer<Pair<ChangedFile, CommitId>> {
+class ChangedFileListCellRenderer : ListCellRenderer<ChangedFile> {
   private val defaultRenderer = DefaultListCellRenderer()
 
   override fun getListCellRendererComponent(
-    list: JList<out Pair<ChangedFile, CommitId>>,
-    value: Pair<ChangedFile, CommitId>,
+    list: JList<out ChangedFile>,
+    value: ChangedFile,
     index: Int,
     isSelected: Boolean,
     cellHasFocus: Boolean
   ): Component {
     return defaultRenderer.getListCellRendererComponent(
       list,
-      value.first.filePath,
+      value.filePath,
       index,
       isSelected,
       cellHasFocus
