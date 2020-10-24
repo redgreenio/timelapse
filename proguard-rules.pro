@@ -12,3 +12,7 @@
 
 # RxJava 3
 -dontwarn java.util.concurrent.Flow*
+
+# Humanize
+-keep class humanize.** { *; }
+-keep class org.ocpsoft.** { *; }
