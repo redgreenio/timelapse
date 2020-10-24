@@ -9,3 +9,6 @@
 -keep class LauncherKt {
     public static void main(java.lang.String[]);
 }
+
+# RxJava 3
+-dontwarn java.util.concurrent.Flow*
