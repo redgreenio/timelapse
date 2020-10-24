@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.changedfiles
 
-import io.redgreen.timelapse.mobius.EffectEvent
-import io.redgreen.timelapse.mobius.UiEvent
+import io.redgreen.timelapse.mobius.annotations.EffectEvent
+import io.redgreen.timelapse.mobius.annotations.UiEvent
 import io.redgreen.timelapse.vcs.ChangedFile
 
 sealed class ChangedFilesEvent
