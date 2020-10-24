@@ -6,10 +6,10 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
-import io.redgreen.timelapse.domain.VcsRepositoryService
 import io.redgreen.timelapse.mobius.EffectHandlerTestCase
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
+import io.redgreen.timelapse.vcs.VcsRepositoryService
 import org.junit.After
 import org.junit.jupiter.api.Test
 

@@ -3,7 +3,7 @@ package io.redgreen.timelapse.changedfiles
 import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
-import io.redgreen.timelapse.domain.VcsRepositoryService
+import io.redgreen.timelapse.vcs.VcsRepositoryService
 
 class ChangedFilesEffectHandler private constructor() {
   companion object {
