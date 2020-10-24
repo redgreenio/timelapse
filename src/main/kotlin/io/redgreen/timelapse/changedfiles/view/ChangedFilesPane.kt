@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.changedfiles
+package io.redgreen.timelapse.changedfiles.view
 
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.debug

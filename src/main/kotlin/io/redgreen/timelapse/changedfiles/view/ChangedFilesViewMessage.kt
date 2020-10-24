@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.changedfiles
+package io.redgreen.timelapse.changedfiles.view
 
 enum class ChangedFilesViewMessage {
   NO_FILE_AND_REVISION_SELECTED,

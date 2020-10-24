@@ -1,10 +1,11 @@
-package io.redgreen.timelapse.changedfiles
+package io.redgreen.timelapse.changedfiles.view
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import io.redgreen.timelapse.changedfiles.ChangedFilesViewMessage.NO_FILE_AND_REVISION_SELECTED
-import io.redgreen.timelapse.changedfiles.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
-import io.redgreen.timelapse.changedfiles.ChangedFilesViewMessage.RETRY_GETTING_CHANGED_FILES
+import io.redgreen.timelapse.changedfiles.ChangedFilesModel
+import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_FILE_AND_REVISION_SELECTED
+import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
+import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.RETRY_GETTING_CHANGED_FILES
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import org.junit.jupiter.api.Test
 

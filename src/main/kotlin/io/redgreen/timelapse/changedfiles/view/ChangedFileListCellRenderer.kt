@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.changedfiles
+package io.redgreen.timelapse.changedfiles.view
 
 import io.redgreen.timelapse.vcs.ChangedFile
 import java.awt.Component

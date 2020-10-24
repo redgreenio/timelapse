@@ -1,8 +1,9 @@
 package io.redgreen.timelapse
 
 import humanize.Humanize.naturalTime
-import io.redgreen.timelapse.changedfiles.ChangedFilesPane
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
+import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
+import io.redgreen.timelapse.changedfiles.view.CommitId
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
@@ -14,7 +15,6 @@ import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.git.getChangedFilesInCommit
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
-import io.redgreen.timelapse.changedfiles.CommitId
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
 import io.redgreen.timelapse.ui.KEY_STROKE_UP
 import io.redgreen.timelapse.ui.ReadingPane
