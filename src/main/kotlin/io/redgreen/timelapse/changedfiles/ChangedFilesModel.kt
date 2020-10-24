@@ -7,13 +7,12 @@ import io.redgreen.timelapse.mobius.AsyncOp.Companion.content
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.idle
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.inFlight
-
-typealias ChangedFiles = List<String>
+import io.redgreen.timelapse.vcs.ChangedFile
 
 data class ChangedFilesModel(
   val commitId: String?,
   val filePath: String?,
-  val getChangedFilesAsyncOp: AsyncOp<ChangedFiles, GetChangedFilesFailure> = idle(),
+  val getChangedFilesAsyncOp: AsyncOp<List<ChangedFile>, GetChangedFilesFailure> = idle(),
 ) {
   companion object {
     fun noFileAndRevisionSelected(): ChangedFilesModel =
@@ -29,8 +28,8 @@ data class ChangedFilesModel(
   fun noOtherFilesChanged(): ChangedFilesModel =
     copy(getChangedFilesAsyncOp = content(emptyList()))
 
-  fun someMoreFilesChanged(filePaths: ChangedFiles): ChangedFilesModel =
-    copy(getChangedFilesAsyncOp = content(filePaths))
+  fun someMoreFilesChanged(changedFiles: List<ChangedFile>): ChangedFilesModel =
+    copy(getChangedFilesAsyncOp = content(changedFiles))
 
   fun gettingChangedFilesFailed(): ChangedFilesModel =
     copy(getChangedFilesAsyncOp = failure(Unknown))

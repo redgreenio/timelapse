@@ -10,18 +10,18 @@ import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
-import io.redgreen.timelapse.git.getChangesInCommit
+import io.redgreen.timelapse.git.getChangedFilesInCommit
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.CommitId
 import io.redgreen.timelapse.ui.FileChangeListCellRenderer
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
 import io.redgreen.timelapse.ui.KEY_STROKE_UP
 import io.redgreen.timelapse.ui.ReadingPane
-import io.redgreen.timelapse.vcs.FileChange
-import io.redgreen.timelapse.vcs.FileChange.Addition
-import io.redgreen.timelapse.vcs.FileChange.Deletion
-import io.redgreen.timelapse.vcs.FileChange.Modification
-import io.redgreen.timelapse.vcs.FileChange.Rename
+import io.redgreen.timelapse.vcs.ChangedFile
+import io.redgreen.timelapse.vcs.ChangedFile.Addition
+import io.redgreen.timelapse.vcs.ChangedFile.Deletion
+import io.redgreen.timelapse.vcs.ChangedFile.Modification
+import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
@@ -161,7 +161,7 @@ class TimelapseApp(private val project: String) : Runnable {
     }
   }
 
-  private val changesList = JList<Pair<FileChange, Pair<CommitId?, CommitId>>>().apply {
+  private val changesList = JList<Pair<ChangedFile, Pair<CommitId?, CommitId>>>().apply {
     selectionMode = SINGLE_SELECTION
     cellRenderer = FileChangeListCellRenderer()
 
@@ -179,12 +179,12 @@ class TimelapseApp(private val project: String) : Runnable {
     }
   }
 
-  private fun getTitle(fileChange: FileChange): String {
-    return when (fileChange) {
-      is Addition -> "[New File] ${fileChange.filePath}"
-      is Modification -> "[Modified] ${fileChange.filePath}"
-      is Deletion -> "[Deleted] ${fileChange.filePath}"
-      is Rename -> "[Renamed] ${fileChange.oldFilePath} => ${fileChange.filePath}"
+  private fun getTitle(changedFile: ChangedFile): String {
+    return when (changedFile) {
+      is Addition -> "[New File] ${changedFile.filePath}"
+      is Modification -> "[Modified] ${changedFile.filePath}"
+      is Deletion -> "[Deleted] ${changedFile.filePath}"
+      is Rename -> "[Renamed] ${changedFile.oldFilePath} => ${changedFile.filePath}"
     }
   }
 
@@ -376,13 +376,13 @@ class TimelapseApp(private val project: String) : Runnable {
     commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
 
     val changesInCommit = gitRepository
-      .getChangesInCommit(selectedChange.commitId)
+      .getChangedFilesInCommit(selectedChange.commitId)
     showChanges(changesInCommit, previousChange?.commitId, selectedChange.commitId)
   }
 
-  private fun showChanges(changes: List<FileChange>, previousCommitId: String?, commitId: String) {
-    val changesListModel = DefaultListModel<Pair<FileChange, Pair<CommitId?, CommitId>>>()
-    changes.map { it to (previousCommitId to commitId) }.onEach { changesListModel.addElement(it) }
+  private fun showChanges(changedFiles: List<ChangedFile>, previousCommitId: String?, commitId: String) {
+    val changesListModel = DefaultListModel<Pair<ChangedFile, Pair<CommitId?, CommitId>>>()
+    changedFiles.map { it to (previousCommitId to commitId) }.onEach { changesListModel.addElement(it) }
     changesList.model = changesListModel
   }
 

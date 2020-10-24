@@ -1,5 +1,7 @@
 package io.redgreen.timelapse.changedfiles
 
+import io.redgreen.timelapse.vcs.ChangedFile
+
 sealed class ChangedFilesEffect
 
 data class GetChangedFiles(
@@ -13,5 +15,5 @@ data class GetChangedFiles(
 
 data class ShowDiff(
   val commitId: String,
-  val filePath: String
+  val filePath: ChangedFile
 ) : ChangedFilesEffect()

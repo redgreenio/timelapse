@@ -5,6 +5,7 @@ import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
 import io.redgreen.timelapse.mobius.AsyncOp.Content
+import io.redgreen.timelapse.vcs.ChangedFile
 
 object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, ChangedFilesEffect> {
   override fun update(
@@ -19,15 +20,15 @@ object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, Changed
 
       NoOtherFilesChanged -> next(model.noOtherFilesChanged())
 
-      is SomeMoreFilesChanged -> next(model.someMoreFilesChanged(event.filePaths))
+      is SomeMoreFilesChanged -> next(model.someMoreFilesChanged(event.changedFiles))
 
       GettingChangedFilesFailed -> next(model.gettingChangedFilesFailed())
 
       RetryGettingChangedFiles -> next(model.retryGettingChangedFiles())
 
       is ChangedFileSelected -> {
-        val (commitId, filePath) = getCommitIdAndFilePath(model, event.index)
-        dispatch(setOf(ShowDiff(commitId, filePath)))
+        val (commitId, changedFile) = getCommitIdAndFilePath(model, event.index)
+        dispatch(setOf(ShowDiff(commitId, changedFile)))
       }
     }
   }
@@ -35,9 +36,9 @@ object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, Changed
   private fun getCommitIdAndFilePath(
     model: ChangedFilesModel,
     index: Int
-  ): Pair<String, String> {
+  ): Pair<String, ChangedFile> {
     val commitId = model.commitId!!
-    val filePath = (model.getChangedFilesAsyncOp as Content<ChangedFiles>).content[index]
+    val filePath = (model.getChangedFilesAsyncOp as Content<List<ChangedFile>>).content[index]
     return commitId to filePath
   }
 }

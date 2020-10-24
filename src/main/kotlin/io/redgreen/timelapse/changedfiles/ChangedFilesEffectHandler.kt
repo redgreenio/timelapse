@@ -15,12 +15,12 @@ class ChangedFilesEffectHandler private constructor() {
         .subtypeEffectHandler<ChangedFilesEffect, ChangedFilesEvent>()
         .addTransformer(GetChangedFiles::class.java) { getChangedFilesEvents ->
           getChangedFilesEvents
-            .flatMapSingle { vcsRepositoryService.getFileChanges(it.commitId) }
-            .map { if (it.size == 1) NoOtherFilesChanged else SomeMoreFilesChanged(fileChanges = it) }
+            .flatMapSingle { vcsRepositoryService.getChangedFiles(it.commitId) }
+            .map { if (it.size == 1) NoOtherFilesChanged else SomeMoreFilesChanged(changedFiles = it) }
             .onErrorReturn { GettingChangedFilesFailed }
         }
-        .addConsumer(ShowDiff::class.java) { (commitId, filePath) ->
-          readingAreaContract.showDiff(commitId, filePath)
+        .addConsumer(ShowDiff::class.java) { (commitId, changedFile) ->
+          readingAreaContract.showDiff(commitId, changedFile)
         }
         .build()
     }

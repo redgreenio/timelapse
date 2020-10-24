@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.git
 
-import io.redgreen.timelapse.vcs.FileChange
-import io.redgreen.timelapse.vcs.FileChange.Addition
-import io.redgreen.timelapse.vcs.FileChange.Deletion
-import io.redgreen.timelapse.vcs.FileChange.Modification
-import io.redgreen.timelapse.vcs.FileChange.Rename
+import io.redgreen.timelapse.vcs.ChangedFile
+import io.redgreen.timelapse.vcs.ChangedFile.Addition
+import io.redgreen.timelapse.vcs.ChangedFile.Deletion
+import io.redgreen.timelapse.vcs.ChangedFile.Modification
+import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
@@ -24,7 +24,7 @@ import kotlin.collections.Map.Entry
 
 private const val DEV_NULL_ID = "0000000000000000000000000000000000000000"
 
-fun Repository.getChangesInCommit(commitId: String): List<FileChange> {
+fun Repository.getChangedFilesInCommit(commitId: String): List<ChangedFile> {
   val commit = RevWalk(this).use { it.parseCommit(resolve(commitId)) }
   val objectId = resolve("$commitId^")
   val parentCommit = objectId?.let { parseCommit(it) }
@@ -39,7 +39,7 @@ fun Repository.getChangesInCommit(commitId: String): List<FileChange> {
 private fun Repository.getFilesBetweenCommits(
   ancestor: RevCommit,
   descendant: RevCommit
-): List<FileChange> {
+): List<ChangedFile> {
   val diffEntries = getDiffEntries(ancestor, descendant, true)
   val additionsAndRenamesGroups = groupAdditionsAndRenames(diffEntries)
   val addRenameEntryPairs = pairAdditionsAndRenames(additionsAndRenamesGroups)
@@ -114,10 +114,10 @@ private fun getRenames(addRenameEntryPairs: List<Pair<DiffEntry, DiffEntry>>): L
 
 private fun getFileChangesExcludingRenames(
   diffEntries: MutableList<DiffEntry>
-): List<FileChange> {
+): List<ChangedFile> {
   return diffEntries
     .filter { it.changeType != RENAME }
-    .map(::toFileChange)
+    .map(::toChangedFile)
 }
 
 private fun getTreeParser(
@@ -129,7 +129,7 @@ private fun getTreeParser(
   }
 }
 
-private fun toFileChange(entry: DiffEntry): FileChange {
+private fun toChangedFile(entry: DiffEntry): ChangedFile {
   return when (entry.changeType) {
     ADD -> Addition(entry.newPath)
     MODIFY -> Modification(entry.newPath)

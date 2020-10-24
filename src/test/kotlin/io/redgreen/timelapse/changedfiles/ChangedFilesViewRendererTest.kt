@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.verify
 import io.redgreen.timelapse.changedfiles.ChangedFilesViewMessage.NO_FILE_AND_REVISION_SELECTED
 import io.redgreen.timelapse.changedfiles.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
 import io.redgreen.timelapse.changedfiles.ChangedFilesViewMessage.RETRY_GETTING_CHANGED_FILES
+import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import org.junit.jupiter.api.Test
 
 class ChangedFilesViewRendererTest {
@@ -27,7 +28,7 @@ class ChangedFilesViewRendererTest {
   }
 
   @Test
-  fun `it should render loading files changed`() {
+  fun `it should render loading changed files`() {
     // given
     val noOtherFilesChangedModel = ChangedFilesModel
       .noFileAndRevisionSelected()
@@ -62,17 +63,17 @@ class ChangedFilesViewRendererTest {
   @Test
   fun `it should render some more files changed`() {
     // given
-    val changedFilePaths = listOf("settings.gradle", "build.gradle")
+    val fileChanges = listOf("settings.gradle", "build.gradle").map(::Addition)
     val someMoreFilesChangedModel = ChangedFilesModel
       .noFileAndRevisionSelected()
       .fileAndRevisionSelected("app/build.gradle", "commit-id")
-      .someMoreFilesChanged(changedFilePaths)
+      .someMoreFilesChanged(fileChanges)
 
     // when
     viewRenderer.render(someMoreFilesChangedModel)
 
     // then
-    verify(view).displayChangedFiles(changedFilePaths)
+    verify(view).displayChangedFiles(fileChanges)
     verify(view).hideMessage()
     verify(view).showLoading(false)
   }

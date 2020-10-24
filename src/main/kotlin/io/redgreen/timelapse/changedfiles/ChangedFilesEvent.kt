@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.changedfiles
 
-import io.redgreen.timelapse.vcs.FileChange
+import io.redgreen.timelapse.vcs.ChangedFile
 
 sealed class ChangedFilesEvent
 
@@ -12,9 +12,7 @@ data class FileAndRevisionSelected(
 object NoOtherFilesChanged : ChangedFilesEvent()
 
 data class SomeMoreFilesChanged(
-  @Deprecated("Use `fileChanges` instead.")
-  val filePaths: ChangedFiles = emptyList(),
-  val fileChanges: List<FileChange> = emptyList()
+  val changedFiles: List<ChangedFile>
 ) : ChangedFilesEvent()
 
 object GettingChangedFilesFailed : ChangedFilesEvent()

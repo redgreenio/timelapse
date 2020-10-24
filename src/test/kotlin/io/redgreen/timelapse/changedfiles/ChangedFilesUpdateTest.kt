@@ -10,6 +10,8 @@ import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure
 import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure.Unknown
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
 import io.redgreen.timelapse.mobius.spec
+import io.redgreen.timelapse.vcs.ChangedFile
+import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import org.junit.jupiter.api.Test
 
 class ChangedFilesUpdateTest {
@@ -55,14 +57,14 @@ class ChangedFilesUpdateTest {
     val fileAndRevisionSelectedModel = ChangedFilesModel
       .noFileAndRevisionSelected()
       .fileAndRevisionSelected(filePath, commitId)
-    val changedFilePaths = listOf("build.gradle", "settings.gradle")
+    val changedFiles = listOf("build.gradle", "settings.gradle").map(::Modification)
 
     withUpdateSpec
       .given(fileAndRevisionSelectedModel)
-      .whenEvent(SomeMoreFilesChanged(changedFilePaths))
+      .whenEvent(SomeMoreFilesChanged(changedFiles))
       .then(
         assertThatNext(
-          hasModel(fileAndRevisionSelectedModel.someMoreFilesChanged(changedFilePaths)),
+          hasModel(fileAndRevisionSelectedModel.someMoreFilesChanged(changedFiles)),
           hasNoEffects()
         )
       )
@@ -87,7 +89,7 @@ class ChangedFilesUpdateTest {
         )
       )
     assertThat(gettingChangedFilesFailedModel.getChangedFilesAsyncOp)
-      .isEqualTo(failure<ChangedFiles, GetChangedFilesFailure>(Unknown))
+      .isEqualTo(failure<List<ChangedFile>, GetChangedFilesFailure>(Unknown))
   }
 
   @Test
@@ -113,7 +115,7 @@ class ChangedFilesUpdateTest {
     val someFilesChangedState = ChangedFilesModel
       .noFileAndRevisionSelected()
       .fileAndRevisionSelected(filePath, commitId)
-      .someMoreFilesChanged(listOf("README.md", "settings.gradle"))
+      .someMoreFilesChanged(listOf("README.md", "settings.gradle").map(::Modification))
 
     withUpdateSpec
       .given(someFilesChangedState)
@@ -121,7 +123,7 @@ class ChangedFilesUpdateTest {
       .then(
         assertThatNext(
           hasNoModel(),
-          hasEffects(ShowDiff(commitId, "settings.gradle"))
+          hasEffects(ShowDiff(commitId, Modification("settings.gradle")))
         )
       )
   }

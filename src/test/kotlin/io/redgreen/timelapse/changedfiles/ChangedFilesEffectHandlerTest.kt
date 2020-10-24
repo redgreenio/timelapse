@@ -8,7 +8,8 @@ import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.domain.VcsRepositoryService
 import io.redgreen.timelapse.mobius.EffectHandlerTestCase
-import io.redgreen.timelapse.vcs.FileChange.Addition
+import io.redgreen.timelapse.vcs.ChangedFile.Addition
+import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import org.junit.After
 import org.junit.jupiter.api.Test
 
@@ -26,23 +27,23 @@ class ChangedFilesEffectHandlerTest {
   @Test
   fun `it should retrieve files that changed along with the selected file from a vcs repository`() {
     // given
-    val fileChanges = listOf("settings.gradle", "build.gradle").map(::Addition)
-    whenever(vcsRepositoryService.getFileChanges("commit-id"))
-      .thenReturn(Single.just(fileChanges))
+    val changedFiles = listOf("settings.gradle", "build.gradle").map(::Addition)
+    whenever(vcsRepositoryService.getChangedFiles("commit-id"))
+      .thenReturn(Single.just(changedFiles))
 
     // when
     testCase.dispatch(GetChangedFiles("commit-id", "app/build.gradle"))
 
     // then
     testCase
-      .assertOutgoingEvents(SomeMoreFilesChanged(fileChanges = fileChanges))
+      .assertOutgoingEvents(SomeMoreFilesChanged(changedFiles))
   }
 
   @Test
   fun `it should notify when no other files were changed in the commit`() {
     // given
     val fileChanges = listOf("app/build.gradle").map(::Addition)
-    whenever(vcsRepositoryService.getFileChanges("commit-id"))
+    whenever(vcsRepositoryService.getChangedFiles("commit-id"))
       .thenReturn(Single.just(fileChanges))
 
     // when
@@ -56,7 +57,7 @@ class ChangedFilesEffectHandlerTest {
   @Test
   fun `it should notify when there is an error while getting changed files from a vcs repository`() {
     // given
-    whenever(vcsRepositoryService.getFileChanges("commit-id"))
+    whenever(vcsRepositoryService.getChangedFiles("commit-id"))
       .thenReturn(Single.error(RuntimeException("Uh oh! there goes my treat :(")))
 
     // when
@@ -70,10 +71,10 @@ class ChangedFilesEffectHandlerTest {
   @Test
   fun `it should show diff if a file path is selected`() {
     // when
-    testCase.dispatch(ShowDiff("commit-id", "app/build.gradle"))
+    testCase.dispatch(ShowDiff("commit-id", Modification("app/build.gradle")))
 
     // then
     testCase.assertNoOutgoingEvents()
-    verify(readingAreaContract).showDiff("commit-id", "app/build.gradle")
+    verify(readingAreaContract).showDiff("commit-id", Modification("app/build.gradle"))
   }
 }
