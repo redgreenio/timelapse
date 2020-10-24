@@ -29,7 +29,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
 
   override fun getChangedFiles(commitId: String): Single<List<ChangedFile>> {
     return Single.create { emitter ->
-      val revCommitOptional = getRevCommit(commitId)
+      val revCommitOptional = gitRepository.getRevCommit(commitId)
       if (!revCommitOptional.isPresent) {
         emitter.onError(IllegalArgumentException("Invalid commit ID: $commitId"))
         return@create
@@ -47,8 +47,8 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     }
   }
 
-  private fun getRevCommit(commitId: String): Optional<RevCommit> {
-    val resolvedObjectId = gitRepository.resolve(commitId) ?: return Optional.empty()
+  private fun Repository.getRevCommit(commitId: String): Optional<RevCommit> {
+    val resolvedObjectId = resolve(commitId) ?: return Optional.empty()
 
     RevWalk(gitRepository).use { revWalk ->
       return Optional.of(revWalk.parseCommit(resolvedObjectId))
@@ -80,7 +80,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     formatter.setRepository(this)
 
     val diffEntries = formatter
-      .scan(getTreeParser(ancestor.tree, objectReader), getTreeParser(descendant.tree, objectReader))
+      .scan(ancestor.tree.getTreeParser(objectReader), descendant.tree.getTreeParser(objectReader))
 
     if (detectRenames) {
       RenameDetector(this).apply {
@@ -92,13 +92,12 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     return diffEntries
   }
 
-  private fun getTreeParser(
-    tree: RevTree,
+  private fun RevTree.getTreeParser(
     objectReader: ObjectReader
   ): CanonicalTreeParser {
-    return CanonicalTreeParser().apply {
-      reset(objectReader, tree)
-    }
+    val treeParser = CanonicalTreeParser()
+    treeParser.reset(objectReader, this)
+    return treeParser
   }
 
   private fun groupAdditionsAndRenames(
