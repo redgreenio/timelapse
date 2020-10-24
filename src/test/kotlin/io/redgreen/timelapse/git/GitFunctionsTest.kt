@@ -3,10 +3,10 @@ package io.redgreen.timelapse.git
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.domain.getDiff
 import io.redgreen.timelapse.domain.openGitRepository
-import io.redgreen.timelapse.git.Change.Addition
-import io.redgreen.timelapse.git.Change.Deletion
-import io.redgreen.timelapse.git.Change.Modification
-import io.redgreen.timelapse.git.Change.Rename
+import io.redgreen.timelapse.vcs.FileChange.Addition
+import io.redgreen.timelapse.vcs.FileChange.Deletion
+import io.redgreen.timelapse.vcs.FileChange.Modification
+import io.redgreen.timelapse.vcs.FileChange.Rename
 import org.junit.jupiter.api.Test
 import java.io.File
 

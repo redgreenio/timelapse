@@ -1,9 +1,10 @@
 package io.redgreen.timelapse.git
 
-import io.redgreen.timelapse.git.Change.Addition
-import io.redgreen.timelapse.git.Change.Deletion
-import io.redgreen.timelapse.git.Change.Modification
-import io.redgreen.timelapse.git.Change.Rename
+import io.redgreen.timelapse.vcs.FileChange
+import io.redgreen.timelapse.vcs.FileChange.Addition
+import io.redgreen.timelapse.vcs.FileChange.Deletion
+import io.redgreen.timelapse.vcs.FileChange.Modification
+import io.redgreen.timelapse.vcs.FileChange.Rename
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
@@ -23,7 +24,7 @@ import kotlin.collections.Map.Entry
 
 private const val DEV_NULL_ID = "0000000000000000000000000000000000000000"
 
-fun Repository.getChangesInCommit(commitId: String): List<Change> {
+fun Repository.getChangesInCommit(commitId: String): List<FileChange> {
   val commit = RevWalk(this).use { it.parseCommit(resolve(commitId)) }
   val objectId = resolve("$commitId^")
   val parentCommit = objectId?.let { parseCommit(it) }
@@ -38,7 +39,7 @@ fun Repository.getChangesInCommit(commitId: String): List<Change> {
 private fun Repository.getFilesBetweenCommits(
   ancestor: RevCommit,
   descendant: RevCommit
-): List<Change> {
+): List<FileChange> {
   val diffEntries = getDiffEntries(ancestor, descendant, true)
   val additionsAndRenamesGroups = groupAdditionsAndRenames(diffEntries)
   val addRenameEntryPairs = pairAdditionsAndRenames(additionsAndRenamesGroups)
@@ -113,7 +114,7 @@ private fun getRenames(addRenameEntryPairs: List<Pair<DiffEntry, DiffEntry>>): L
 
 private fun getFileChangesExcludingRenames(
   diffEntries: MutableList<DiffEntry>
-): List<Change> {
+): List<FileChange> {
   return diffEntries
     .filter { it.changeType != RENAME }
     .map(::toFileChange)
@@ -128,7 +129,7 @@ private fun getTreeParser(
   }
 }
 
-private fun toFileChange(entry: DiffEntry): Change {
+private fun toFileChange(entry: DiffEntry): FileChange {
   return when (entry.changeType) {
     ADD -> Addition(entry.newPath)
     MODIFY -> Modification(entry.newPath)

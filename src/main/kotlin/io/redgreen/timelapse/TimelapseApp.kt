@@ -10,10 +10,6 @@ import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
-import io.redgreen.timelapse.git.Change.Addition
-import io.redgreen.timelapse.git.Change.Deletion
-import io.redgreen.timelapse.git.Change.Modification
-import io.redgreen.timelapse.git.Change.Rename
 import io.redgreen.timelapse.git.getChangesInCommit
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.CommitId
@@ -21,6 +17,11 @@ import io.redgreen.timelapse.ui.FileChangeListCellRenderer
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
 import io.redgreen.timelapse.ui.KEY_STROKE_UP
 import io.redgreen.timelapse.ui.ReadingPane
+import io.redgreen.timelapse.vcs.FileChange
+import io.redgreen.timelapse.vcs.FileChange.Addition
+import io.redgreen.timelapse.vcs.FileChange.Deletion
+import io.redgreen.timelapse.vcs.FileChange.Modification
+import io.redgreen.timelapse.vcs.FileChange.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
@@ -60,7 +61,6 @@ import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.math.ceil
-import io.redgreen.timelapse.git.Change as FileChange
 
 private const val APP_NAME = "Timelapse"
 private const val COMMIT_INFORMATION_SEPARATOR = " • "
@@ -179,12 +179,12 @@ class TimelapseApp(private val project: String) : Runnable {
     }
   }
 
-  private fun getTitle(change: io.redgreen.timelapse.git.Change): String {
-    return when (change) {
-      is Addition -> "[New File] ${change.filePath}"
-      is Modification -> "[Modified] ${change.filePath}"
-      is Deletion -> "[Deleted] ${change.filePath}"
-      is Rename -> "[Renamed] ${change.oldFilePath} => ${change.filePath}"
+  private fun getTitle(fileChange: FileChange): String {
+    return when (fileChange) {
+      is Addition -> "[New File] ${fileChange.filePath}"
+      is Modification -> "[Modified] ${fileChange.filePath}"
+      is Deletion -> "[Deleted] ${fileChange.filePath}"
+      is Rename -> "[Renamed] ${fileChange.oldFilePath} => ${fileChange.filePath}"
     }
   }
 
