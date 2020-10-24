@@ -45,7 +45,7 @@ class ChangedFilesEffectHandler private constructor() {
       readingAreaContract: ReadingAreaContract
     ) {
       val (commitId, changedFile) = showDiff
-      readingAreaContract.showDiff(commitId, changedFile)
+      readingAreaContract.showChangedFileDiff(commitId, changedFile)
     }
   }
 }

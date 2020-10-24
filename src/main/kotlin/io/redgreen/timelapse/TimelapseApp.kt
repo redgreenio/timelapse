@@ -1,6 +1,7 @@
 package io.redgreen.timelapse
 
 import humanize.Humanize.naturalTime
+import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
@@ -78,7 +79,7 @@ private const val PADDING = 10
 
 private typealias DirectoryPath = String
 
-class TimelapseApp(private val project: String) : Runnable {
+class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract {
   private lateinit var gitRepository: Repository
   private lateinit var changesInAscendingOrder: List<Change>
   private lateinit var filePath: String
@@ -168,13 +169,12 @@ class TimelapseApp(private val project: String) : Runnable {
     addListSelectionListener { event ->
       val stableSelection = selectedIndex != -1 && !event.valueIsAdjusting
       if (stableSelection) {
-        val (change, commitIds) = model.getElementAt(selectedIndex)
+        val (changedFile, commitIds) = model.getElementAt(selectedIndex)
         val (_, selectedCommitId) = commitIds
 
-        debug { "Selected list item: $change" }
+        debug { "Selected list item: $changedFile" }
 
-        val spans = FormattedDiff.from(gitRepository.getDiff(selectedCommitId, change.filePath)).spans
-        readingPane.showOverlappingDiff(getTitle(change), spans)
+        showChangedFileDiff(selectedCommitId, changedFile)
       }
     }
   }
@@ -413,6 +413,11 @@ class TimelapseApp(private val project: String) : Runnable {
         <code>${commit.name}</code> $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  &lt;${commit.authorIdent.emailAddress}&gt;
       </html>
     """.trimIndent()
+  }
+
+  override fun showChangedFileDiff(commitId: String, changedFile: ChangedFile) {
+    val spans = FormattedDiff.from(gitRepository.getDiff(commitId, changedFile.filePath)).spans
+    readingPane.showOverlappingDiff(getTitle(changedFile), spans)
   }
 }
 

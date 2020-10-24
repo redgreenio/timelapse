@@ -6,5 +6,5 @@ import io.redgreen.timelapse.vcs.ChangedFile
 
 @FulfilledBy(TimelapseApp::class)
 interface ReadingAreaContract {
-  fun showDiff(commitId: String, changedFile: ChangedFile)
+  fun showChangedFileDiff(commitId: String, changedFile: ChangedFile)
 }

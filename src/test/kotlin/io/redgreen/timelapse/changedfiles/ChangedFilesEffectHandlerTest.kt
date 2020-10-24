@@ -75,6 +75,6 @@ class ChangedFilesEffectHandlerTest {
 
     // then
     testCase.assertNoOutgoingEvents()
-    verify(readingAreaContract).showDiff("commit-id", Modification("app/build.gradle"))
+    verify(readingAreaContract).showChangedFileDiff("commit-id", Modification("app/build.gradle"))
   }
 }
