@@ -49,7 +49,7 @@ sealed class AsyncOp<in C, in R> {
   /**
    * Convenience property to use with `when` blocks to surpass verbose type casting.
    */
-  val instance: AsyncOp<Nothing, Nothing>
+  val value: AsyncOp<Nothing, Nothing>
     get() {
       return when (this) {
         Idle -> Idle

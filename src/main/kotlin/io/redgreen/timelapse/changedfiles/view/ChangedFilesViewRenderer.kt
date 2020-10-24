@@ -13,7 +13,7 @@ import io.redgreen.timelapse.vcs.ChangedFile
 class ChangedFilesViewRenderer(
   private val view: ChangedFilesView
 ) : ViewRenderer<ChangedFilesModel> {
-  override fun render(model: ChangedFilesModel) = when (model.getChangedFilesAsyncOp.instance) {
+  override fun render(model: ChangedFilesModel) = when (model.getChangedFilesAsyncOp.value) {
     is InFlight -> renderGettingChangedFiles()
     is Content -> renderChangedFiles((model.getChangedFilesAsyncOp as Content<List<ChangedFile>>).content)
     is Failure -> renderUnableToGetChangedFiles()
