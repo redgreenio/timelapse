@@ -7,12 +7,13 @@ import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.RETRY_GET
 import io.redgreen.timelapse.mobius.AsyncOp.Content
 import io.redgreen.timelapse.mobius.AsyncOp.Failure
 import io.redgreen.timelapse.mobius.AsyncOp.InFlight
+import io.redgreen.timelapse.mobius.view.ViewRenderer
 import io.redgreen.timelapse.vcs.ChangedFile
 
 class ChangedFilesViewRenderer(
   private val view: ChangedFilesView
-) {
-  fun render(model: ChangedFilesModel) = when (model.getChangedFilesAsyncOp.instance) {
+) : ViewRenderer<ChangedFilesModel> {
+  override fun render(model: ChangedFilesModel) = when (model.getChangedFilesAsyncOp.instance) {
     is InFlight -> renderGettingChangedFiles()
     is Content -> renderChangedFiles((model.getChangedFilesAsyncOp as Content<List<ChangedFile>>).content)
     is Failure -> renderUnableToGetChangedFiles()
