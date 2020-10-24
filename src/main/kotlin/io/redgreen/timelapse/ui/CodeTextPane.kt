@@ -15,6 +15,7 @@ import javax.swing.JScrollPane
 import javax.swing.JTextPane
 import javax.swing.KeyStroke
 import javax.swing.border.LineBorder
+import javax.swing.text.BadLocationException
 import javax.swing.text.DefaultCaret
 import javax.swing.text.DefaultCaret.NEVER_UPDATE
 import javax.swing.text.SimpleAttributeSet
@@ -84,20 +85,27 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
 
   override fun showDiff(diffSpans: List<DiffSpan>) {
     with(textPane) {
-      // Clear existing text
-      this.styledDocument.remove(0, this.document.length)
-
-      // Add new text
+      // Set attributes
       val attributeSet = SimpleAttributeSet()
       val style = this.addStyle(null, null)
       this.setCharacterAttributes(attributeSet, true)
       StyleConstants.setForeground(style, Color.BLACK)
 
-      diffSpans
-        .onEach { span ->
-          StyleConstants.setBackground(style, span.backgroundColor())
-          styledDocument.insertString(styledDocument.length, span.text(), style)
-        }
+      try {
+        // Clear existing text
+        this.styledDocument.remove(0, this.document.length)
+
+        // Add new text
+        diffSpans
+          .onEach { span ->
+            StyleConstants.setBackground(style, span.backgroundColor())
+            styledDocument.insertString(styledDocument.length, span.text(), style)
+          }
+      } catch (exception: BadLocationException) {
+        // Traversing the changed files list with the arrow keys results in
+        // this exception. I don't really know how to fix this, so I am swallowing
+        // this case until it comes back to haunt me in the night!
+      }
 
       verticalScrollBar.value = 0
       horizontalScrollBar.value = 0
