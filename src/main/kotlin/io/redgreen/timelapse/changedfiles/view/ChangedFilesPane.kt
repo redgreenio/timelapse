@@ -14,6 +14,7 @@ import io.redgreen.timelapse.changedfiles.ChangedFilesModel
 import io.redgreen.timelapse.changedfiles.ChangedFilesUpdate
 import io.redgreen.timelapse.changedfiles.FileAndRevisionSelected
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
+import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
 import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.mobius.DeferredEventSource
 import io.redgreen.timelapse.vcs.ChangedFile
@@ -73,6 +74,9 @@ class ChangedFilesPane(
 
   override fun showMessage(message: ChangedFilesViewMessage) {
     debug { "showMessage stub! $message" }
+    if (message == NO_OTHER_FILES_CHANGED) {
+      changedFilesList.model = DefaultListModel()
+    }
   }
 
   override fun hideMessage() {
