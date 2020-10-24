@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.domain.VcsRepositoryService
 import io.redgreen.timelapse.mobius.EffectHandlerTestCase
+import io.redgreen.timelapse.vcs.FileChange.Addition
 import org.junit.After
 import org.junit.jupiter.api.Test
 
@@ -25,23 +26,24 @@ class ChangedFilesEffectHandlerTest {
   @Test
   fun `it should retrieve files that changed along with the selected file from a vcs repository`() {
     // given
-    val changedFilePaths = listOf("settings.gradle", "build.gradle")
-    whenever(vcsRepositoryService.getChangedFilePaths("commit-id"))
-      .thenReturn(Single.just(changedFilePaths))
+    val fileChanges = listOf("settings.gradle", "build.gradle").map(::Addition)
+    whenever(vcsRepositoryService.getFileChanges("commit-id"))
+      .thenReturn(Single.just(fileChanges))
 
     // when
     testCase.dispatch(GetChangedFiles("commit-id", "app/build.gradle"))
 
     // then
     testCase
-      .assertOutgoingEvents(SomeMoreFilesChanged(changedFilePaths))
+      .assertOutgoingEvents(SomeMoreFilesChanged(fileChanges = fileChanges))
   }
 
   @Test
   fun `it should notify when no other files were changed in the commit`() {
     // given
-    whenever(vcsRepositoryService.getChangedFilePaths("commit-id"))
-      .thenReturn(Single.just(listOf("app/build.gradle")))
+    val fileChanges = listOf("app/build.gradle").map(::Addition)
+    whenever(vcsRepositoryService.getFileChanges("commit-id"))
+      .thenReturn(Single.just(fileChanges))
 
     // when
     testCase.dispatch(GetChangedFiles("commit-id", "app/build.gradle"))
@@ -54,7 +56,7 @@ class ChangedFilesEffectHandlerTest {
   @Test
   fun `it should notify when there is an error while getting changed files from a vcs repository`() {
     // given
-    whenever(vcsRepositoryService.getChangedFilePaths("commit-id"))
+    whenever(vcsRepositoryService.getFileChanges("commit-id"))
       .thenReturn(Single.error(RuntimeException("Uh oh! there goes my treat :(")))
 
     // when
