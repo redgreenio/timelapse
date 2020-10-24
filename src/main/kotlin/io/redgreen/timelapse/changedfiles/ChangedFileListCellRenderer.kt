@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.ui
+package io.redgreen.timelapse.changedfiles
 
 import io.redgreen.timelapse.vcs.ChangedFile
 import java.awt.Component
@@ -8,12 +8,12 @@ import javax.swing.ListCellRenderer
 
 internal typealias CommitId = String
 
-class FileChangeListCellRenderer : ListCellRenderer<Pair<ChangedFile, Pair<CommitId?, CommitId>>> {
+class ChangedFileListCellRenderer : ListCellRenderer<Pair<ChangedFile, CommitId>> {
   private val defaultRenderer = DefaultListCellRenderer()
 
   override fun getListCellRendererComponent(
-    list: JList<out Pair<ChangedFile, Pair<CommitId?, CommitId>>>,
-    value: Pair<ChangedFile, Pair<CommitId?, CommitId>>,
+    list: JList<out Pair<ChangedFile, CommitId>>,
+    value: Pair<ChangedFile, CommitId>,
     index: Int,
     isSelected: Boolean,
     cellHasFocus: Boolean

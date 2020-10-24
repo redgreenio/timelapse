@@ -1,6 +1,7 @@
 package io.redgreen.timelapse
 
 import humanize.Humanize.naturalTime
+import io.redgreen.timelapse.changedfiles.ChangedFilesPane
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
@@ -13,8 +14,7 @@ import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.git.getChangedFilesInCommit
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
-import io.redgreen.timelapse.ui.CommitId
-import io.redgreen.timelapse.ui.FileChangeListCellRenderer
+import io.redgreen.timelapse.changedfiles.CommitId
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
 import io.redgreen.timelapse.ui.KEY_STROKE_UP
 import io.redgreen.timelapse.ui.ReadingPane
@@ -51,13 +51,11 @@ import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JFrame.MAXIMIZED_BOTH
 import javax.swing.JLabel
-import javax.swing.JList
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JSlider
 import javax.swing.JTree
 import javax.swing.KeyStroke
-import javax.swing.ListSelectionModel.SINGLE_SELECTION
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import kotlin.LazyThreadSafetyMode.NONE
@@ -162,23 +160,6 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     }
   }
 
-  private val changesList = JList<Pair<ChangedFile, Pair<CommitId?, CommitId>>>().apply {
-    selectionMode = SINGLE_SELECTION
-    cellRenderer = FileChangeListCellRenderer()
-
-    addListSelectionListener { event ->
-      val stableSelection = selectedIndex != -1 && !event.valueIsAdjusting
-      if (stableSelection) {
-        val (changedFile, commitIds) = model.getElementAt(selectedIndex)
-        val (_, selectedCommitId) = commitIds
-
-        debug { "Selected list item: $changedFile" }
-
-        showChangedFileDiff(selectedCommitId, changedFile)
-      }
-    }
-  }
-
   private fun getTitle(changedFile: ChangedFile): String {
     return when (changedFile) {
       is Addition -> "[New File] ${changedFile.filePath}"
@@ -188,11 +169,13 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     }
   }
 
+  private val changedFilesPane = ChangedFilesPane(this)
+
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
     add(centerPanel, CENTER)
     add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT) }, WEST)
-    add(JScrollPane(changesList).apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
+    add(changedFilesPane.apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
 
   private val timelapseFrame = JFrame(APP_NAME).apply {
@@ -210,7 +193,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
           event.keyCode == VK_ESCAPE -> { { readingPane.dismissOverlap(); timelapseSlider.requestFocus() } }
           event.isAltDown && event.keyCode == VK_1 -> { { fileExplorerTree.requestFocus() } }
           event.isAltDown && event.keyCode == VK_2 -> this@TimelapseApp::moveFocusToReadingPane
-          event.isAltDown && event.keyCode == VK_3 -> { { changesList.requestFocus() } }
+          event.isAltDown && event.keyCode == VK_3 -> { { changedFilesPane.focusOnList() } }
           else -> null
         }
         action?.invoke()
@@ -377,13 +360,13 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
 
     val changesInCommit = gitRepository
       .getChangedFilesInCommit(selectedChange.commitId)
-    showChanges(changesInCommit, previousChange?.commitId, selectedChange.commitId)
+    showChanges(changesInCommit, selectedChange.commitId)
   }
 
-  private fun showChanges(changedFiles: List<ChangedFile>, previousCommitId: String?, commitId: String) {
-    val changesListModel = DefaultListModel<Pair<ChangedFile, Pair<CommitId?, CommitId>>>()
-    changedFiles.map { it to (previousCommitId to commitId) }.onEach { changesListModel.addElement(it) }
-    changesList.model = changesListModel
+  private fun showChanges(changedFiles: List<ChangedFile>, commitId: String) {
+    val changesListModel = DefaultListModel<Pair<ChangedFile, CommitId>>()
+    changedFiles.map { it to commitId }.onEach { changesListModel.addElement(it) }
+    changedFilesPane.setModel(changesListModel)
   }
 
   private fun Repository.getChangeText(
