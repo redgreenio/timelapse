@@ -29,7 +29,8 @@ import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.EAST
-import java.awt.BorderLayout.PAGE_START
+import java.awt.BorderLayout.NORTH
+import java.awt.BorderLayout.SOUTH
 import java.awt.BorderLayout.WEST
 import java.awt.Dimension
 import java.awt.GridBagConstraints
@@ -115,22 +116,26 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
   private val readingPane = ReadingPane()
 
   private val sliderPanel by lazy(NONE) {
-    JPanel(GridBagLayout()).apply {
+    val sliderAndInformationPanel = JPanel(GridBagLayout()).apply {
       val constraints = GridBagConstraints().apply {
         weightx = 1.0
         fill = HORIZONTAL
         gridwidth = REMAINDER
       }
-      add(insertionsAreaChart, constraints)
       add(timelapseSlider, constraints)
       add(commitInformationLabel, constraints)
       border = BorderFactory.createEmptyBorder(NO_PADDING, NO_PADDING, PADDING, NO_PADDING)
+    }
+
+    JPanel(BorderLayout()).apply {
+      add(insertionsAreaChart, CENTER)
+      add(sliderAndInformationPanel, SOUTH)
     }
   }
 
   private val centerPanel = JPanel(BorderLayout()).apply {
     add(readingPane, CENTER)
-    add(sliderPanel, PAGE_START)
+    add(sliderPanel, NORTH)
   }
 
   private val fileExplorerTree = JTree().apply {

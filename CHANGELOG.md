@@ -1,6 +1,6 @@
 # Changelog
 ## [Unreleased]
-## [0.1.2] - 2020-10-20
+## [0.1.2] - 2020-10-25
 ### Added
 - Show file name on top of code panels.
 - Use the 'Esc' key to dismiss the code overlay window.
@@ -19,6 +19,7 @@
 ### Fixed
 - Fix incorrect diffs for changed files when selecting the first commit in a file's history.
 - Stop throwing exceptions and show diff when selecting deleted files from files changed panel.
+- Squished area chart on smaller window sizes and screen resolutions.
 
 ## [0.1.1] - 2020-10-18
 ### Added
