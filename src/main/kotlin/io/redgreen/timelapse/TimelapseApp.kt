@@ -3,6 +3,9 @@ package io.redgreen.timelapse
 import humanize.Humanize.naturalTime
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
+import io.redgreen.timelapse.datastructures.NodeTransformer
+import io.redgreen.timelapse.datastructures.Tree
+import io.redgreen.timelapse.datastructures.Tree.Node
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
@@ -220,24 +223,22 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
   }
 
   private fun buildAndShowGui() {
-    val filePaths = gitRepository.getFilePaths()
-    val totalNumberOfFiles = filePaths.size
-    debug { "Found $totalNumberOfFiles files." }
+    val projectName = project.split(File.separator).last()
+    val filePaths = gitRepository.getFilePaths().map { "$projectName$GIT_PATH_SEPARATOR$it" }
+    debug { "Found ${filePaths.size} files." }
 
-    val printLoadingInformation = false
-    filePaths.onEachIndexed { index, filePath ->
-      if (printLoadingInformation) {
-        val currentCount = index + 1
-        val loadedPercent = String.format("%.02f", (currentCount / totalNumberOfFiles.toDouble()) * 100)
-        debug { "$currentCount/$totalNumberOfFiles (${loadedPercent}%): $filePath" }
-      }
+    val filePathsTree = Tree.create(projectName) { filePath -> filePath.split(GIT_PATH_SEPARATOR) }
+    filePaths.forEach(filePathsTree::insert)
 
-      val rootTreeNode = DefaultMutableTreeNode().apply {
-        userObject = project.substring(project.lastIndexOf(File.separatorChar) + 1, project.length)
-        buildFileExplorerTree(this, filePaths)
+    val defaultMutableTreeNodeTransformer = object : NodeTransformer<Node<String>, DefaultMutableTreeNode> {
+      override fun create(node: Node<String>): DefaultMutableTreeNode {
+        return DefaultMutableTreeNode(node.value, node.children.isNotEmpty()).apply {
+          node.children.map(::create).onEach(this::add)
+        }
       }
-      fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
     }
+    val rootTreeNode = filePathsTree.transform(defaultMutableTreeNodeTransformer)
+    fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
 
     // Show JFrame
     timelapseFrame.isVisible = true
@@ -271,72 +272,6 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     // Show code now
     val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, 0)
     showCode(filePath, previousChange, selectedChange)
-  }
-
-  private fun buildFileExplorerTree(
-    rootNode: DefaultMutableTreeNode,
-    filePaths: List<String>
-  ) {
-    // Add root files
-    filePaths
-      .filter { !it.contains(GIT_PATH_SEPARATOR) }
-      .onEach { rootNode.add(DefaultMutableTreeNode(it)) }
-
-    // Add directories
-    val directoryNodesRegistry = mutableMapOf<DirectoryPath, DefaultMutableTreeNode>()
-
-    getDirectoryPaths(filePaths).onEach { directoryPath ->
-      val isFirstLevel = !directoryPath.contains(GIT_PATH_SEPARATOR)
-      if (isFirstLevel && directoryPath !in directoryNodesRegistry) {
-        val directoryNode = DefaultMutableTreeNode(directoryPath)
-        directoryNodesRegistry[directoryPath] = directoryNode
-
-        rootNode.add(directoryNode)
-      } else if (directoryPath !in directoryNodesRegistry) {
-        val parentPath = directoryPath.substring(0, directoryPath.lastIndexOf(GIT_PATH_SEPARATOR))
-        val childDirectory = directoryPath.substring(directoryPath.lastIndexOf(GIT_PATH_SEPARATOR) + 1)
-        val childDirectoryNode = DefaultMutableTreeNode(childDirectory)
-        directoryNodesRegistry[directoryPath] = childDirectoryNode
-
-        val parentDirectoryNode = directoryNodesRegistry[parentPath]!!
-        parentDirectoryNode.add(childDirectoryNode)
-      }
-    }
-
-    // Add files
-    filePaths
-      .onEach { filePath ->
-        if (filePath.contains(GIT_PATH_SEPARATOR)) {
-          val parentPath = filePath.substring(0, filePath.lastIndexOf(GIT_PATH_SEPARATOR))
-          val fileName = filePath.substring(filePath.lastIndexOf(GIT_PATH_SEPARATOR) + 1)
-          directoryNodesRegistry[parentPath]!!.add(DefaultMutableTreeNode(fileName))
-        }
-      }
-  }
-
-  private fun getDirectoryPaths(filePaths: List<String>): List<String> {
-    val directoryPaths = filePaths
-      .filter { it.contains(GIT_PATH_SEPARATOR) }
-      .map { it.substring(0, it.lastIndexOf(GIT_PATH_SEPARATOR)) }
-      .distinct()
-      .sorted()
-
-    val rootDirectories = directoryPaths
-      .filter { !it.contains(GIT_PATH_SEPARATOR) }
-
-    val nonRootDirectories = directoryPaths
-      .filter { it.contains(GIT_PATH_SEPARATOR) }
-      .flatMap { directoryPath ->
-        directoryPath.split(GIT_PATH_SEPARATOR)
-          .drop(1)
-          .scan(directoryPath.split(GIT_PATH_SEPARATOR).first()) { traversedPath, currentDirectory ->
-            "$traversedPath$GIT_PATH_SEPARATOR$currentDirectory"
-          }
-      }
-
-    return (rootDirectories + nonRootDirectories)
-      .distinct()
-      .sorted()
   }
 
   private fun getChanges(

@@ -1,5 +1,8 @@
 # Changelog
 ## [Unreleased]
+### Changed
+- Bring down the worst case load time per node construction for the file explorer from 48.47ms to 1.94ms! Woot woot!
+
 ## [0.1.2] - 2020-10-25
 ### Added
 - Show file name on top of code panels.
