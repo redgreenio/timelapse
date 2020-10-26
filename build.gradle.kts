@@ -62,17 +62,26 @@ tasks {
     useJUnitPlatform()
   }
 
-  register<ProGuardTask>("buildDemo") {
+  register<ProGuardTask>("demoJar") {
     dependsOn("shadowJar")
+    val shadowJar = "build/libs/timelapse-${version}-all.jar"
+    val demoJar = "build/libs/timelapse-${version}-demo.jar"
+    val javaRuntime = "${System.getProperty("java.home")}/lib/rt.jar"
+    val javaCryptographicExtensions = "${System.getProperty("java.home")}/lib/jce.jar"
+    val mappingFile = "build/libs/mapping-${version}.txt"
 
     configuration("proguard-rules.pro")
 
-    injars("build/libs/timelapse-${version}-all.jar")
-    outjars("build/libs/timelapse-${version}-demo.jar")
+    injars(shadowJar)
+    outjars(demoJar)
 
-    libraryjars("${System.getProperty("java.home")}/lib/rt.jar")
-    libraryjars("${System.getProperty("java.home")}/lib/jce.jar")
+    libraryjars(javaRuntime)
+    libraryjars(javaCryptographicExtensions)
 
-    printmapping("build/libs/mapping-${version}.txt")
+    printmapping(mappingFile)
+
+    doLast {
+      delete(shadowJar)
+    }
   }
 }

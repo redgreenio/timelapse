@@ -16,9 +16,7 @@ This command is used to retrieve the commit history of the specified file.
 
 ### Creating a release
 ```shell script
-gradlew buildDemo
+gradlew demoJar
 ```
 
-After a release is created,
-1. Copy the `mapping-<version>.txt` and `timelapse-<version>-demo.jar` into the designated Google Drive directory.
-2. **DO NOT** share the `timelapse-<version>-all.jar`.
+After a build is created, copy the `mapping-<version>.txt` and `timelapse-<version>-demo.jar` into the designated Google Drive directory.
