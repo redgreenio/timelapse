@@ -25,6 +25,9 @@ class Tree<T> private constructor(
     return parent.addChild(value)
   }
 
+  fun <I : Any, O> transform(transformer: NodeTransformer<Node<I>, O>): O =
+    transformer.create(root as Node<I>)
+
   data class Node<T>(
     val value: T,
     private val mutableChildren: MutableList<Node<T>> = mutableListOf()

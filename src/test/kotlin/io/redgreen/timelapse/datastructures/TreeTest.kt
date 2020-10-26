@@ -85,4 +85,32 @@ class TreeTest {
         Node("root")
       )
   }
+
+  @Test
+  fun `it should transform a tree with just the root`() {
+    val transformedRootNode = tree.transform(AnotherNode.transformer)
+
+    assertThat(transformedRootNode)
+      .isEqualTo(AnotherNode(1))
+  }
+
+  @Test
+  fun `it should map a tree into a different tree with the same structure`() {
+    // given
+    with(tree) {
+      insert("root/app/main")
+      insert("root/app/test")
+    }
+
+    // when
+    val transformedRootNode = tree.transform(AnotherNode.transformer)
+
+    // then
+    assertThat(transformedRootNode.value)
+      .isEqualTo(1)
+    assertThat(transformedRootNode.children)
+      .containsExactly(
+        AnotherNode(2, mutableListOf(AnotherNode(3), AnotherNode(4)))
+      )
+  }
 }
