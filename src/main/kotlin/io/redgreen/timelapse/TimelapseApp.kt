@@ -58,6 +58,7 @@ import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.math.ceil
+import kotlin.system.measureTimeMillis
 
 private const val APP_NAME = "Timelapse"
 private const val COMMIT_INFORMATION_SEPARATOR = " • "
@@ -204,7 +205,10 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
   }
 
   override fun run() {
-    buildAndShowGui()
+    val loadingTimeMillis = measureTimeMillis {
+      buildAndShowGui()
+    }
+    debug { "Loading the application took ${loadingTimeMillis}ms." }
   }
 
   private fun moveFocusToReadingPane() {
@@ -217,7 +221,17 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
 
   private fun buildAndShowGui() {
     val filePaths = gitRepository.getFilePaths()
-    filePaths.onEach {
+    val totalNumberOfFiles = filePaths.size
+    debug { "Found $totalNumberOfFiles files." }
+
+    val printLoadingInformation = false
+    filePaths.onEachIndexed { index, filePath ->
+      if (printLoadingInformation) {
+        val currentCount = index + 1
+        val loadedPercent = String.format("%.02f", (currentCount / totalNumberOfFiles.toDouble()) * 100)
+        debug { "$currentCount/$totalNumberOfFiles (${loadedPercent}%): $filePath" }
+      }
+
       val rootTreeNode = DefaultMutableTreeNode().apply {
         userObject = project.substring(project.lastIndexOf(File.separatorChar) + 1, project.length)
         buildFileExplorerTree(this, filePaths)
