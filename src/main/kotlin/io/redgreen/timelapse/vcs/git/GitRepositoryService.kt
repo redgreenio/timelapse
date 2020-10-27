@@ -15,6 +15,7 @@ import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.MODIFY
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RenameDetector
+import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
@@ -22,8 +23,14 @@ import org.eclipse.jgit.revwalk.RevTree
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.treewalk.TreeWalk
+import org.eclipse.jgit.treewalk.filter.PathFilter
 import org.eclipse.jgit.util.io.DisabledOutputStream
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
 import java.util.Optional
+
+private typealias ContributionCount = Int
 
 class GitRepositoryService(private val gitRepository: Repository) : VcsRepositoryService {
   companion object {
@@ -53,7 +60,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
   override fun getContributions(
     commitId: String,
     filePath: String
-  ): Single<Contribution> {
+  ): Single<List<Contribution>> {
     return Single.create { emitter ->
       val revCommit = gitRepository.getRevCommit(commitId)
       val blameCommand = BlameCommand(gitRepository).apply {
@@ -61,9 +68,24 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
         setFilePath(filePath)
       }
       val blameResult = blameCommand.call()
-      val sourceAuthor = blameResult.getSourceAuthor(0)
 
-      emitter.onSuccess(Contribution(Identity(sourceAuthor.name, sourceAuthor.emailAddress), 100.0))
+      val contributionsCountMap = mutableMapOf<Identity, ContributionCount>()
+      val lineCount = gitRepository.countLinesInFile(revCommit.get(), filePath)
+      for (index in 0 until lineCount) {
+        val sourceAuthor = blameResult.getSourceAuthor(index)
+        val authorIdentity = Identity(sourceAuthor.name, sourceAuthor.emailAddress)
+
+        with(contributionsCountMap) {
+          computeIfPresent(authorIdentity) { _, contributionCount -> contributionCount + 1 }
+          putIfAbsent(authorIdentity, 1)
+        }
+      }
+
+      val contributions = contributionsCountMap.map { (identity, contributionCount) ->
+        Contribution(identity, contributionCount / lineCount.toDouble())
+      }
+
+      emitter.onSuccess(contributions.sortedByDescending { it.fraction })
     }
   }
 
@@ -188,5 +210,32 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
       DELETE -> Deletion(entry.oldPath)
       else -> TODO("Yet to add support for ${entry.changeType}")
     }
+  }
+
+  private fun Repository.countLinesInFile(commitId: ObjectId, filePath: String): Int {
+    val byteArrayOutputStream = ByteArrayOutputStream()
+
+    RevWalk(this).use { revWalk ->
+      val commit = revWalk.parseCommit(commitId)
+      TreeWalk(this).use { treeWalk ->  
+        with(treeWalk) {
+          addTree(commit.tree)
+          isRecursive = true
+          filter = PathFilter.create(filePath)
+          next()
+
+          val fileObjectId = treeWalk.getObjectId(0)
+          val loader = open(fileObjectId)
+
+          loader.copyTo(byteArrayOutputStream)
+        }
+      }
+      revWalk.dispose()
+    }
+
+    return ByteArrayInputStream(byteArrayOutputStream.toByteArray())
+      .reader(Charset.forName("UTF-8"))
+      .readLines()
+      .size
   }
 }

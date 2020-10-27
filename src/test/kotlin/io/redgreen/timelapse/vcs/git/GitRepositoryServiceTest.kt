@@ -77,11 +77,11 @@ class GitRepositoryServiceTest {
   inner class GetContributions {
     private val simpleAndroidRepository = openGitRepository(File("simple-android"))
     private val repositoryService = GitRepositoryService(simpleAndroidRepository)
+    private val commitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd"
 
     @Test
-    fun `it should return a single author for a file with just one contributor`() {
+    fun `it should return a single contribution for a file with just one contributor`() {
       // given
-      val commitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd"
       val filePath = "newbranch"
 
       // when
@@ -89,7 +89,35 @@ class GitRepositoryServiceTest {
 
       // then
       testObserver
-        .assertValue(Contribution(Identity("Ragunath Jawahar", "ragunath@obvious.in"), 100.0))
+        .assertValue(listOf(Contribution(Identity("Ragunath Jawahar", "ragunath@obvious.in"), 1.0)))
+        .assertNoErrors()
+        .assertComplete()
+    }
+
+    @Test
+    fun `it should return several contributions for a file with multiple contributors`() {
+      // given
+      val filePath = "app/src/androidTest/java/org/simple/clinic/di/TestAppComponent.kt"
+
+      // when
+      val testObserver = repositoryService.getContributions(commitId, filePath).test()
+
+      // then
+      testObserver
+        .assertValue(listOf(
+          Contribution(Identity("Vinay Shenoy", "vinay@obvious.in"), 0.26956521739130435),
+          Contribution(Identity("Vinay S Shenoy", "vinay@obvious.in"), 0.17391304347826086),
+          Contribution(Identity("Pratul Kalia", "pratul@uncommon.is"), 0.10434782608695652),
+          Contribution(Identity("Saket Narayan", "saket@saket.me"), 0.0782608695652174),
+          Contribution(Identity("Saket Narayan", "saket@uncommon.is"), 0.0782608695652174),
+          Contribution(Identity("Sasikanth Miriyampalli", "sasikanth@obvious.in"), 0.06956521739130435),
+          Contribution(Identity("Rakshak R.Hegde", "rakshak@obvious.in"), 0.05217391304347826),
+          Contribution(Identity("Sanchita Agarwal", "sanchita@uncommon.is"), 0.05217391304347826),
+          Contribution(Identity("Honey Sonwani", "honey@obvious.in"), 0.05217391304347826),
+          Contribution(Identity("Vinay S Shenoy", "vinay.sh@uncommon.is"), 0.034782608695652174),
+          Contribution(Identity("Sanchita Agarwal", "sanchita@obvious.in"), 0.017391304347826087),
+          Contribution(Identity("Sasikanth Miriyampalli", "sasikanthmiriyampalli@gmail.com"), 0.017391304347826087),
+        ))
         .assertNoErrors()
         .assertComplete()
     }
