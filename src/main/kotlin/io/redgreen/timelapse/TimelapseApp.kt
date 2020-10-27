@@ -191,7 +191,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     }
     with(rightPanel) {
       add(changedFilesPane)
-      add(peoplePane.apply { border = BorderFactory.createTitledBorder("People") })
+      add(peoplePane)
     }
     add(rightPanel.apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
