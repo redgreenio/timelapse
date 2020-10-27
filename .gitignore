@@ -1,6 +1,12 @@
+# Project files
 .gradle/
 .idea/
 build/
-git-testbed/
 out/
+
+# sdfsdf
 proguard-lab/
+
+# Cloned repositories used in tests
+git-testbed/
+simple-android/
