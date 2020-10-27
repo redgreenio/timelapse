@@ -15,6 +15,7 @@ import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
+import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
 import io.redgreen.timelapse.ui.KEY_STROKE_UP
@@ -40,6 +41,7 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.HORIZONTAL
 import java.awt.GridBagConstraints.REMAINDER
 import java.awt.GridBagLayout
+import java.awt.GridLayout
 import java.awt.KeyboardFocusManager
 import java.awt.event.KeyEvent.VK_1
 import java.awt.event.KeyEvent.VK_2
@@ -177,11 +179,21 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
 
   private val changedFilesPane = ChangedFilesPane(gitRepository, this)
 
+  private val peoplePane = PeoplePane(gitRepository)
+
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
     add(centerPanel, CENTER)
     add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT) }, WEST)
-    add(changedFilesPane.apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
+
+    val rightPanel = JPanel().apply {
+      layout = GridLayout(2, 1)
+    }
+    with(rightPanel) {
+      add(changedFilesPane)
+      add(peoplePane.apply { border = BorderFactory.createTitledBorder("People") })
+    }
+    add(rightPanel.apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
 
   private val timelapseFrame = JFrame(APP_NAME).apply {
@@ -305,6 +317,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
 
     changedFilesPane.selectFileAndRevision(filePath, selectedChange.commitId)
+    peoplePane.selectFileAndRevision(filePath, selectedChange.commitId)
   }
 
   private fun Repository.getChangeText(

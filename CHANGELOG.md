@@ -1,5 +1,8 @@
 # Changelog
 ## [Unreleased]
+### Added
+- Show contributions for a file in a selected commit.
+
 ### Changed
 - Bring down the worst case load time per node construction for the file explorer from 48.47ms to 1.94ms! Woot woot!
 
