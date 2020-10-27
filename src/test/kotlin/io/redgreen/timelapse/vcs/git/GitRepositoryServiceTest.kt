@@ -5,6 +5,8 @@ import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
+import io.redgreen.timelapse.vcs.Contribution
+import io.redgreen.timelapse.vcs.Identity
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -12,8 +14,8 @@ import java.io.File
 class GitRepositoryServiceTest {
   @Nested
   inner class GetChangedFiles {
-    private val gitRepository = openGitRepository(File("git-testbed"))
-    private val repositoryService = GitRepositoryService(gitRepository)
+    private val gitTestbedRepository = openGitRepository(File("git-testbed"))
+    private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
     fun `it should get changed files from an initial commit`() {
@@ -68,6 +70,28 @@ class GitRepositoryServiceTest {
         .assertError { throwable ->
           throwable is IllegalArgumentException && throwable.message == ("Invalid commit ID: $invalidCommitId")
         }
+    }
+  }
+
+  @Nested
+  inner class GetContributions {
+    private val simpleAndroidRepository = openGitRepository(File("simple-android"))
+    private val repositoryService = GitRepositoryService(simpleAndroidRepository)
+
+    @Test
+    fun `it should return a single author for a file with just one contributor`() {
+      // given
+      val commitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd"
+      val filePath = "newbranch"
+
+      // when
+      val testObserver = repositoryService.getContributions(commitId, filePath).test()
+
+      // then
+      testObserver
+        .assertValue(Contribution(Identity("Ragunath Jawahar", "ragunath@obvious.in"), 100.0))
+        .assertNoErrors()
+        .assertComplete()
     }
   }
 }

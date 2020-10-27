@@ -5,7 +5,10 @@ import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
+import io.redgreen.timelapse.vcs.Contribution
+import io.redgreen.timelapse.vcs.Identity
 import io.redgreen.timelapse.vcs.VcsRepositoryService
+import org.eclipse.jgit.api.BlameCommand
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
@@ -44,6 +47,23 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
         gitRepository.getFilesFromInitialCommit(revCommitOptional.get())
       }
       emitter.onSuccess(changedFiles)
+    }
+  }
+
+  override fun getContributions(
+    commitId: String,
+    filePath: String
+  ): Single<Contribution> {
+    return Single.create { emitter ->
+      val revCommit = gitRepository.getRevCommit(commitId)
+      val blameCommand = BlameCommand(gitRepository).apply {
+        setStartCommit(revCommit.get())
+        setFilePath(filePath)
+      }
+      val blameResult = blameCommand.call()
+      val sourceAuthor = blameResult.getSourceAuthor(0)
+
+      emitter.onSuccess(Contribution(Identity(sourceAuthor.name, sourceAuthor.emailAddress), 100.0))
     }
   }
 
