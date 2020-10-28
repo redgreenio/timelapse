@@ -6,8 +6,6 @@ import javax.swing.DefaultListCellRenderer
 import javax.swing.JList
 import javax.swing.ListCellRenderer
 
-internal typealias CommitId = String
-
 class ChangedFileListCellRenderer : ListCellRenderer<ChangedFile> {
   private val defaultRenderer = DefaultListCellRenderer()
 

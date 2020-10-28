@@ -53,6 +53,7 @@ class ChangedFilesPane(
   private val changedFilesList = JList<ChangedFile>().apply {
     selectionMode = ListSelectionModel.SINGLE_SELECTION
     cellRenderer = ChangedFileListCellRenderer()
+    model = DefaultListModel()
   }
 
   init {
@@ -92,9 +93,11 @@ class ChangedFilesPane(
   }
 
   override fun showChangedFiles(changedFiles: List<ChangedFile>) {
-    val changesListModel = DefaultListModel<ChangedFile>()
-    changedFiles.onEach { changesListModel.addElement(it) }
-    changedFilesList.model = changesListModel
+    with((changedFilesList.model as DefaultListModel<ChangedFile>)) {
+      removeAllElements()
+      changedFiles.onEach { addElement(it) }
+    }
+    changedFilesList.ensureIndexIsVisible(0)
   }
 
   fun focusOnList() {
