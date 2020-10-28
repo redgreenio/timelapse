@@ -22,22 +22,22 @@ class ChangedFilesViewRenderer(
 
   private fun renderGettingChangedFiles() {
     with(view) {
-      showLoading(true)
+      setLoadingVisibility(true)
       hideMessage()
-      showChangedFilesList(false)
+      setChangedFilesListVisibility(false)
     }
   }
 
   private fun renderChangedFiles(changedFiles: List<ChangedFile>) {
     with(view) {
-      showLoading(false)
+      setLoadingVisibility(false)
 
       if (changedFiles.isEmpty()) {
         showMessage(NO_OTHER_FILES_CHANGED)
-        showChangedFilesList(false)
+        setChangedFilesListVisibility(false)
       } else {
         hideMessage()
-        displayChangedFiles(changedFiles)
+        showChangedFiles(changedFiles)
       }
     }
   }
@@ -45,16 +45,16 @@ class ChangedFilesViewRenderer(
   private fun renderUnableToGetChangedFiles() {
     with(view) {
       showMessage(RETRY_GETTING_CHANGED_FILES)
-      showLoading(false)
-      showChangedFilesList(false)
+      setLoadingVisibility(false)
+      setChangedFilesListVisibility(false)
     }
   }
 
   private fun renderNoFileAndRevisionSelected() {
     with(view) {
-      showLoading(false)
+      setLoadingVisibility(false)
       showMessage(NO_FILE_AND_REVISION_SELECTED)
-      showChangedFilesList(false)
+      setChangedFilesListVisibility(false)
     }
   }
 }

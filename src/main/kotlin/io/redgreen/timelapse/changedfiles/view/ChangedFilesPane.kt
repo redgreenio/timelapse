@@ -83,15 +83,15 @@ class ChangedFilesPane(
     debug { "hideMessage stub!" }
   }
 
-  override fun showLoading(show: Boolean) {
-    debug { "showLoading stub! $show" }
+  override fun setLoadingVisibility(visible: Boolean) {
+    debug { "showLoading stub! $visible" }
   }
 
-  override fun showChangedFilesList(show: Boolean) {
-    debug { "showChangedFilesList stub! $show" }
+  override fun setChangedFilesListVisibility(visible: Boolean) {
+    debug { "showChangedFilesList stub! $visible" }
   }
 
-  override fun displayChangedFiles(changedFiles: List<ChangedFile>) {
+  override fun showChangedFiles(changedFiles: List<ChangedFile>) {
     val changesListModel = DefaultListModel<ChangedFile>()
     changedFiles.onEach { changesListModel.addElement(it) }
     changedFilesList.model = changesListModel

@@ -24,8 +24,8 @@ class ChangedFilesViewRendererTest {
 
     // then
     verify(view).showMessage(NO_FILE_AND_REVISION_SELECTED)
-    verify(view).showLoading(false)
-    verify(view).showChangedFilesList(false)
+    verify(view).setLoadingVisibility(false)
+    verify(view).setChangedFilesListVisibility(false)
   }
 
   @Test
@@ -39,8 +39,8 @@ class ChangedFilesViewRendererTest {
     viewRenderer.render(noOtherFilesChangedModel)
 
     // then
-    verify(view).showLoading(true)
-    verify(view).showChangedFilesList(false)
+    verify(view).setLoadingVisibility(true)
+    verify(view).setChangedFilesListVisibility(false)
     verify(view).hideMessage()
   }
 
@@ -57,8 +57,8 @@ class ChangedFilesViewRendererTest {
 
     // then
     verify(view).showMessage(NO_OTHER_FILES_CHANGED)
-    verify(view).showLoading(false)
-    verify(view).showChangedFilesList(false)
+    verify(view).setLoadingVisibility(false)
+    verify(view).setChangedFilesListVisibility(false)
   }
 
   @Test
@@ -74,9 +74,9 @@ class ChangedFilesViewRendererTest {
     viewRenderer.render(someMoreFilesChangedModel)
 
     // then
-    verify(view).displayChangedFiles(fileChanges)
+    verify(view).showChangedFiles(fileChanges)
     verify(view).hideMessage()
-    verify(view).showLoading(false)
+    verify(view).setLoadingVisibility(false)
   }
 
   @Test
@@ -92,8 +92,8 @@ class ChangedFilesViewRendererTest {
 
     // then
     verify(view).showMessage(RETRY_GETTING_CHANGED_FILES)
-    verify(view).showLoading(false)
-    verify(view).showChangedFilesList(false)
+    verify(view).setLoadingVisibility(false)
+    verify(view).setChangedFilesListVisibility(false)
   }
 
   @Test
@@ -109,8 +109,8 @@ class ChangedFilesViewRendererTest {
     viewRenderer.render(retryGettingChangedFilesModel)
 
     // then
-    verify(view).showLoading(true)
-    verify(view).showChangedFilesList(false)
+    verify(view).setLoadingVisibility(true)
+    verify(view).setChangedFilesListVisibility(false)
     verify(view).hideMessage()
   }
 }
