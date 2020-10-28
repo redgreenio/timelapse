@@ -61,6 +61,7 @@ import javax.swing.JTree
 import javax.swing.KeyStroke
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
+import javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.math.ceil
 import kotlin.system.measureTimeMillis
@@ -145,6 +146,8 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
   }
 
   private val fileExplorerTree = JTree().apply {
+    selectionModel.selectionMode = SINGLE_TREE_SELECTION
+
     addTreeSelectionListener { selectionEvent ->
       selectionEvent.path?.let { selectedPath ->
         val selectedRootNode = selectedPath.parentPath == null

@@ -1,13 +1,14 @@
 # Changelog
 ## [Unreleased]
 ### Added
-- Show contributions for a file in a selected commit.
+- People pane to list contributions to a given file.
 
 ### Changed
 - Bring down the worst case load time per node construction for the file explorer from 48.47ms to 1.94ms! Woot woot!
 
 ### Fixed
 - Changed files list focus on previously selected index even after selecting a new file.
+- Disallow selecting multiple files/directories in the file explorer.
 
 ## [0.1.2] - 2020-10-25
 ### Added
