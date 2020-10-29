@@ -15,6 +15,7 @@ import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.MODIFY
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.diff.RenameDetector
+import org.eclipse.jgit.errors.MissingObjectException
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.ObjectReader
 import org.eclipse.jgit.lib.Repository
@@ -63,6 +64,11 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
   ): Single<List<Contribution>> {
     return Single.create { emitter ->
       val revCommit = gitRepository.getRevCommit(commitId)
+      if (!revCommit.isPresent) {
+        emitter.onError(IllegalArgumentException("Invalid commit ID: $commitId"))
+        return@create
+      }
+
       val blameCommand = BlameCommand(gitRepository).apply {
         setStartCommit(revCommit.get())
         setFilePath(filePath)
@@ -70,7 +76,12 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
       val blameResult = blameCommand.call()
 
       val contributionsCountMap = mutableMapOf<Identity, ContributionCount>()
-      val lineCount = gitRepository.countLinesInFile(revCommit.get(), filePath)
+      val lineCount = try {
+        gitRepository.countLinesInFile(revCommit.get(), filePath)
+      } catch (exception: MissingObjectException) {
+        emitter.onError(IllegalArgumentException("Non-existent file path: $filePath"))
+        return@create
+      }
       for (index in 0 until lineCount) {
         val sourceAuthor = blameResult.getSourceAuthor(index)
         val authorIdentity = Identity(sourceAuthor.name, sourceAuthor.emailAddress)

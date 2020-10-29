@@ -121,5 +121,40 @@ class GitRepositoryServiceTest {
         .assertNoErrors()
         .assertComplete()
     }
+
+    @Test
+    fun `it should return an error if the commit ID is invalid`() {
+      // given
+      val invalidCommitId = "invalid-commit-id"
+      val filePath = "app/src/androidTest/java/org/simple/clinic/di/TestAppComponent.kt"
+
+      // when
+      val testObserver = repositoryService.getContributions(invalidCommitId, filePath).test()
+
+      // then
+      testObserver
+        .assertError {
+          it is IllegalArgumentException
+              && it.message == "Invalid commit ID: $invalidCommitId"
+        }
+        .assertNoValues()
+    }
+
+    @Test
+    fun `it should return an error if the file path is non-existent`() {
+      // given
+      val nonExistentFilePath = "non/existent/file/path"
+
+      // when
+      val testObserver = repositoryService.getContributions(commitId, nonExistentFilePath).test()
+
+      // then
+      testObserver
+        .assertError {
+          it is java.lang.IllegalArgumentException
+              && it.message == "Non-existent file path: $nonExistentFilePath"
+        }
+        .assertNoValues()
+    }
   }
 }
