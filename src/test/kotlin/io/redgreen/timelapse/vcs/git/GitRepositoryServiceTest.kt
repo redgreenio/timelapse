@@ -180,4 +180,70 @@ class GitRepositoryServiceTest {
         .assertComplete()
     }
   }
+
+  @Nested
+  inner class GetChangedFilePaths {
+    private val gitTestbedRepository = openGitRepository(File("git-testbed"))
+    private val repositoryService = GitRepositoryService(gitTestbedRepository)
+
+    @Test
+    fun `it should return changed file paths for initial commit`() {
+      // given
+      val initialCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+
+      // when
+      val testObserver = repositoryService.getChangedFilePaths(initialCommitId).test()
+
+      // then
+      testObserver
+        .assertValue(
+          listOf(
+            "file-1.txt",
+            "file-2.txt",
+            "file-3.txt",
+          )
+        )
+        .assertNoErrors()
+        .assertComplete()
+    }
+
+    @Test
+    fun `it should return changed file paths between a parent and a child`() {
+      // given
+      val parentCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+      val childCommitId = "b0d86a6cf1f8c9a12b25f2f51f5be97b61647075" // exhibit b: add a new file
+
+      // when
+      val testObserver = repositoryService.getChangedFilePaths(childCommitId, parentCommitId).test()
+
+      // then
+      testObserver
+        .assertValue(
+          listOf("file-4.txt")
+        )
+        .assertNoErrors()
+        .assertComplete()
+    }
+
+    @Test
+    fun `it should return changed file paths between an ancestor and a descendant`() {
+      // given
+      val parentCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+      val childCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
+
+      // when
+      val testObserver = repositoryService.getChangedFilePaths(childCommitId, parentCommitId).test()
+
+      // then
+      testObserver
+        .assertValue(
+          listOf(
+            "file-4.txt",
+            "file-1.txt",
+          )
+        )
+        .assertNoErrors()
+        .assertComplete()
+    }
+  }
 }

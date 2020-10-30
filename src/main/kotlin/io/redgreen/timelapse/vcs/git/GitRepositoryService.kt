@@ -48,7 +48,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
         return@create
       }
 
-      val objectId = gitRepository.resolve("$commitId^")
+      val objectId = gitRepository.getParentObjectId(commitId)
       val parentCommit = objectId?.let { gitRepository.parseCommit(it) }
 
       val changedFiles = if (parentCommit != null) {
@@ -121,6 +121,44 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
         }
         emitter.onSuccess(commitId!!)
       }
+    }
+  }
+
+  override fun getChangedFilePaths(
+    descendantCommitId: String,
+    ancestorCommitId: String?
+  ): Single<List<String>> {
+    return Single.create { emitter ->
+      val ancestorObjectId = gitRepository.getParentObjectId(descendantCommitId)
+      val descendantRevCommitOptional = gitRepository.getRevCommit(descendantCommitId)
+
+      val changedFilePaths = if (ancestorObjectId == null) {
+        gitRepository
+          .getFilesFromInitialCommit(descendantRevCommitOptional.get())
+          .map(ChangedFile::filePath)
+          .distinct()
+      } else {
+        var reachedAncestor = false
+        var currentDescendantCommitId = descendantCommitId
+        val changedFilePaths = mutableSetOf<String>()
+        while (!reachedAncestor) {
+          val immediateAncestorCommitId = gitRepository.getParentObjectId(currentDescendantCommitId)!!.name
+          val immediateAncestorRevCommit = gitRepository.getRevCommit(immediateAncestorCommitId).get()
+
+          changedFilePaths.addAll(
+            gitRepository
+              .getFilesBetweenCommits(immediateAncestorRevCommit, descendantRevCommitOptional.get())
+              .map(ChangedFile::filePath)
+              .distinct()
+          )
+
+          currentDescendantCommitId = immediateAncestorCommitId
+          reachedAncestor = immediateAncestorCommitId == ancestorCommitId
+        }
+        changedFilePaths.toList()
+      }
+
+      emitter.onSuccess(changedFilePaths)
     }
   }
 
@@ -273,4 +311,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
       .readLines()
       .size
   }
+
+  private fun Repository.getParentObjectId(commitId: String): ObjectId? =
+    resolve("$commitId^")
 }
