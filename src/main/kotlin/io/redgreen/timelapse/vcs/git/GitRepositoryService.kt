@@ -9,6 +9,7 @@ import io.redgreen.timelapse.vcs.Contribution
 import io.redgreen.timelapse.vcs.Identity
 import io.redgreen.timelapse.vcs.VcsRepositoryService
 import org.eclipse.jgit.api.BlameCommand
+import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
@@ -103,7 +104,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     }
   }
 
-  override fun getFirstCommitOnDate(date: LocalDate): Single<String> {
+  override fun getFirstCommitOnOrAfter(date: LocalDate): Single<String> {
     return Single.create { emitter ->
       val allRefs = gitRepository.refDatabase.refs
       RevWalk(gitRepository).use { revWalk ->
@@ -113,9 +114,13 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
 
         var commitId: String? = null
         for (commit in revWalk) {
-          val firstSecondOfDate = date.atTime(0, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-          val lastSecondOfDate = date.atTime(23, 59, 59, 999_999_999).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-          if (commit.authorIdent.`when`.time in firstSecondOfDate..lastSecondOfDate) {
+          val firstSecondOfDate = date.startDateMillis()
+          val lastSecondOfDate = date.endDateMillis()
+
+          val commitTime = commit.authorIdent.`when`.time
+          val commitIsFromDateRequested = commitTime in firstSecondOfDate..lastSecondOfDate
+          val commitAfterDateRequested = commitTime > firstSecondOfDate
+          if (commitIsFromDateRequested || commitAfterDateRequested) {
             commitId = commit.name
           }
         }
@@ -124,39 +129,47 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     }
   }
 
+  private fun LocalDate.startDateMillis(): Long {
+    return this
+      .atTime(0, 0, 0, 0)
+      .atZone(ZoneId.systemDefault())
+      .toInstant()
+      .toEpochMilli()
+  }
+
+  private fun LocalDate.endDateMillis(): Long {
+    return this
+      .atTime(23, 59, 59, 999_999_999)
+      .atZone(ZoneId.systemDefault())
+      .toInstant()
+      .toEpochMilli()
+  }
+
   override fun getChangedFilePaths(
     descendantCommitId: String,
     ancestorCommitId: String?
   ): Single<List<String>> {
     return Single.create { emitter ->
       val ancestorObjectId = gitRepository.getParentObjectId(descendantCommitId)
-      val descendantRevCommitOptional = gitRepository.getRevCommit(descendantCommitId)
 
       val changedFilePaths = if (ancestorObjectId == null) {
         gitRepository
-          .getFilesFromInitialCommit(descendantRevCommitOptional.get())
+          .getFilesFromInitialCommit(gitRepository.parseCommit(gitRepository.resolve(descendantCommitId)))
           .map(ChangedFile::filePath)
           .distinct()
       } else {
-        var reachedAncestor = false
-        var currentDescendantCommitId = descendantCommitId
-        val changedFilePaths = mutableSetOf<String>()
-        while (!reachedAncestor) {
-          val immediateAncestorCommitId = gitRepository.getParentObjectId(currentDescendantCommitId)!!.name
-          val immediateAncestorRevCommit = gitRepository.getRevCommit(immediateAncestorCommitId).get()
+        val oldTree = gitRepository.parseCommit(gitRepository.resolve(ancestorCommitId)).tree
+        val newTree = gitRepository.parseCommit(gitRepository.resolve(descendantCommitId)).tree
+        val objectReader = gitRepository.newObjectReader()
+        val diffCommand = Git(gitRepository)
+          .diff()
+          .setOldTree(oldTree.getTreeParser(objectReader))
+          .setNewTree(newTree.getTreeParser(objectReader))
+        val diffEntry = diffCommand.call()
 
-          changedFilePaths.addAll(
-            gitRepository
-              .getFilesBetweenCommits(immediateAncestorRevCommit, descendantRevCommitOptional.get())
-              .filter { it !is Deletion }
-              .map(ChangedFile::filePath)
-              .distinct()
-          )
-
-          currentDescendantCommitId = immediateAncestorCommitId
-          reachedAncestor = immediateAncestorCommitId == ancestorCommitId
-        }
-        changedFilePaths.toList()
+        diffEntry
+          .filter { it.changeType != DELETE }
+          .map { it.newPath }
       }
 
       emitter.onSuccess(changedFilePaths)

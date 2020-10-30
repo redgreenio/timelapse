@@ -8,7 +8,7 @@ interface VcsRepositoryService {
 
   fun getContributions(commitId: String, filePath: String): Single<List<Contribution>>
 
-  fun getFirstCommitOnDate(date: LocalDate): Single<String>
+  fun getFirstCommitOnOrAfter(date: LocalDate): Single<String>
 
   fun getChangedFilePaths(descendantCommitId: String, ancestorCommitId: String? = null): Single<List<String>>
 }

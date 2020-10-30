@@ -4,6 +4,10 @@ import io.redgreen.timelapse.datastructures.NodeTransformer
 import io.redgreen.timelapse.datastructures.Tree
 import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.domain.getFilePaths
+import io.redgreen.timelapse.fileexplorer.view.FileExplorerSelection.AllFiles
+import io.redgreen.timelapse.fileexplorer.view.FileExplorerSelection.TMinusDays
+import io.redgreen.timelapse.foo.toLocalDateTime
+import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.embed.swing.JFXPanel
@@ -21,6 +25,7 @@ import javax.swing.JTree
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeModel
 import javax.swing.tree.TreeSelectionModel
+import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.system.measureTimeMillis
 
 private const val GIT_PATH_SEPARATOR = '/'
@@ -60,14 +65,16 @@ class FileExplorerPane(
     }
   }
 
-  private val timeSpanComboBox: ComboBox<String>
+  private val timeSpanComboBox: ComboBox<FileExplorerSelection>
   private val timeSpans = FXCollections.observableArrayList(
-    "All Files",
-    "T-7 days",
-    "T-30 days",
-    "T-60 days",
-    "T-90 days",
+    AllFiles,
+    TMinusDays(7),
+    TMinusDays(30),
+    TMinusDays(60),
+    TMinusDays(90),
   )
+
+  private val gitRepositoryService by lazy(NONE) { GitRepositoryService(gitRepository) }
 
   init {
     add(JFXPanel().apply {
@@ -82,9 +89,32 @@ class FileExplorerPane(
     timeSpanComboBox.valueProperty().addListener { _, _, newValue ->
       val loadingTimeMillis = measureTimeMillis {
         val projectName = getProjectName()
-        val projectFilePaths = gitRepository.getFilePaths().map { "$projectName/$it" }
-        buildFileExplorerTree(projectName, projectFilePaths)
+        when(newValue) {
+          AllFiles -> {
+            val projectFiles = gitRepository.getFilePaths().map { "$projectName/$it" }
+            buildFileExplorerTree(projectName, projectFiles)
+          }
+
+          is TMinusDays -> {
+            val head = gitRepository.resolve("HEAD").let { gitRepository.parseCommit(it) }
+
+            val endDate = head.authorIdent.`when`.time.toLocalDateTime().toLocalDate()
+            val startDate = endDate.minusDays(newValue.days.toLong())
+
+            debug { "Attempting to get commits between $startDate and $endDate" }
+
+            gitRepositoryService
+              .getFirstCommitOnOrAfter(startDate)
+              .flatMap { gitRepositoryService.getChangedFilePaths(head.name, it) }
+              .subscribe(
+                { projectFiles -> buildFileExplorerTree(projectName, projectFiles) },
+                { it.printStackTrace() }
+              )
+          }
+        }
       }
+
+      debug { "Selected $newValue from the file explorer combo box." }
       debug { "Building file explorer took ${loadingTimeMillis}ms." }
     }
 
