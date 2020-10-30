@@ -187,7 +187,10 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
     add(centerPanel, CENTER)
-    add(JScrollPane(fileExplorerTree).apply { preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT) }, WEST)
+    add(JScrollPane(fileExplorerTree).apply {
+      preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT)
+      border = BorderFactory.createTitledBorder("File Explorer")
+    }, WEST)
 
     val rightPanel = JPanel().apply {
       layout = GridLayout(2, 1)
