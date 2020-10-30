@@ -225,10 +225,19 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
 
   override fun run() {
     val loadingTimeMillis = measureTimeMillis {
-      buildAndShowGui()
+      val projectName = getProjectName()
+      val projectFilePaths = gitRepository.getFilePaths().map { "$projectName$GIT_PATH_SEPARATOR$it" }
+      buildFileExplorerTree(projectName, projectFilePaths)
     }
-    debug { "Loading the application took ${loadingTimeMillis}ms." }
+
+    debug { "Building file explorer took ${loadingTimeMillis}ms." }
+
+    // Show JFrame
+    timelapseFrame.isVisible = true
   }
+
+  private fun getProjectName(): String =
+    project.split(File.separator).last()
 
   private fun moveFocusToReadingPane() {
     if (readingPane.isShowingOverlap()) {
@@ -238,9 +247,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     }
   }
 
-  private fun buildAndShowGui() {
-    val projectName = project.split(File.separator).last()
-    val filePaths = gitRepository.getFilePaths().map { "$projectName$GIT_PATH_SEPARATOR$it" }
+  private fun buildFileExplorerTree(projectName: String, filePaths: List<String>) {
     debug { "Found ${filePaths.size} files." }
 
     val filePathsTree = Tree.create(projectName) { filePath -> filePath.split(GIT_PATH_SEPARATOR) }
@@ -255,9 +262,6 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     }
     val rootTreeNode = filePathsTree.transform(defaultMutableTreeNodeTransformer)
     fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
-
-    // Show JFrame
-    timelapseFrame.isVisible = true
   }
 
   private fun selectFile(filePath: String) {
