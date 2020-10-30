@@ -3,9 +3,6 @@ package io.redgreen.timelapse
 import humanize.Humanize.naturalTime
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
-import io.redgreen.timelapse.datastructures.NodeTransformer
-import io.redgreen.timelapse.datastructures.Tree
-import io.redgreen.timelapse.datastructures.Tree.Node
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
@@ -15,6 +12,8 @@ import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
+import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
+import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
@@ -55,20 +54,14 @@ import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JFrame.MAXIMIZED_BOTH
 import javax.swing.JLabel
 import javax.swing.JPanel
-import javax.swing.JScrollPane
 import javax.swing.JSlider
-import javax.swing.JTree
 import javax.swing.KeyStroke
-import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeModel
-import javax.swing.tree.TreeSelectionModel.SINGLE_TREE_SELECTION
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.math.ceil
 import kotlin.system.measureTimeMillis
 
 private const val APP_NAME = "Timelapse"
 private const val COMMIT_INFORMATION_SEPARATOR = " • "
-private const val GIT_PATH_SEPARATOR = '/'
 
 private const val WIDTH = 1024
 private const val HEIGHT = 768
@@ -80,7 +73,7 @@ private const val MATCH_PARENT = 0
 private const val NO_PADDING = 0
 private const val PADDING = 10
 
-class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract {
+class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract, FileSelectionListener {
   private val gitRepository by lazy { openGitRepository(File(project)) }
   private lateinit var changesInAscendingOrder: List<Change>
   private lateinit var filePath: String
@@ -143,32 +136,6 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     add(sliderPanel, NORTH)
   }
 
-  private val fileExplorerTree = JTree().apply {
-    selectionModel.selectionMode = SINGLE_TREE_SELECTION
-
-    addTreeSelectionListener { selectionEvent ->
-      selectionEvent.path?.let { selectedPath ->
-        val selectedRootNode = selectedPath.parentPath == null
-        if (selectedRootNode) {
-          return@let
-        }
-
-        val parentPath = selectedPath.parentPath.path.drop(1).joinToString(GIT_PATH_SEPARATOR.toString())
-        val fullFilePath = if (parentPath.isEmpty()) {
-          selectedPath.lastPathComponent.toString()
-        } else {
-          "$parentPath$GIT_PATH_SEPARATOR${selectedPath.lastPathComponent}"
-        }
-        debug { "Selected path: $fullFilePath" }
-
-        val isLeafNode = (selectedPath.lastPathComponent as? DefaultMutableTreeNode)?.childCount == 0
-        if (isLeafNode) {
-          selectFile(fullFilePath)
-        }
-      }
-    }
-  }
-
   private fun getTitle(changedFile: ChangedFile): String {
     return when (changedFile) {
       is Addition -> "[New File] ${changedFile.filePath}"
@@ -182,10 +149,12 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
 
   private val peoplePane = PeoplePane(gitRepository)
 
+  private val fileExplorerPane = FileExplorerPane(this)
+
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
     add(centerPanel, CENTER)
-    add(JScrollPane(fileExplorerTree).apply {
+    add(fileExplorerPane.apply {
       preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT)
       border = BorderFactory.createTitledBorder("File Explorer")
     }, WEST)
@@ -213,7 +182,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
       .addKeyEventDispatcher { event ->
         val action: (() -> Unit)? = when {
           event.keyCode == VK_ESCAPE -> { { readingPane.dismissOverlap(); timelapseSlider.requestFocus() } }
-          event.isAltDown && event.keyCode == VK_1 -> { { fileExplorerTree.requestFocus() } }
+          event.isAltDown && event.keyCode == VK_1 -> { { fileExplorerPane.focus() } }
           event.isAltDown && event.keyCode == VK_2 -> this@TimelapseApp::moveFocusToReadingPane
           event.isAltDown && event.keyCode == VK_3 -> { { changedFilesPane.focusOnList() } }
           else -> null
@@ -226,8 +195,8 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
   override fun run() {
     val loadingTimeMillis = measureTimeMillis {
       val projectName = getProjectName()
-      val projectFilePaths = gitRepository.getFilePaths().map { "$projectName$GIT_PATH_SEPARATOR$it" }
-      buildFileExplorerTree(projectName, projectFilePaths)
+      val projectFilePaths = gitRepository.getFilePaths().map { "$projectName/$it" }
+      fileExplorerPane.buildFileExplorerTree(projectName, projectFilePaths)
     }
 
     debug { "Building file explorer took ${loadingTimeMillis}ms." }
@@ -247,24 +216,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract 
     }
   }
 
-  private fun buildFileExplorerTree(projectName: String, filePaths: List<String>) {
-    debug { "Found ${filePaths.size} files." }
-
-    val filePathsTree = Tree.create(projectName) { filePath -> filePath.split(GIT_PATH_SEPARATOR) }
-    filePaths.forEach(filePathsTree::insert)
-
-    val defaultMutableTreeNodeTransformer = object : NodeTransformer<Node<String>, DefaultMutableTreeNode> {
-      override fun create(node: Node<String>): DefaultMutableTreeNode {
-        return DefaultMutableTreeNode(node.value, node.children.isNotEmpty()).apply {
-          node.children.map(::create).onEach(this::add)
-        }
-      }
-    }
-    val rootTreeNode = filePathsTree.transform(defaultMutableTreeNodeTransformer)
-    fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
-  }
-
-  private fun selectFile(filePath: String) {
+  override fun onFilePathSelected(filePath: String) {
     this.filePath = filePath
 
     // Get change history
