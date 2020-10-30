@@ -80,8 +80,6 @@ private const val MATCH_PARENT = 0
 private const val NO_PADDING = 0
 private const val PADDING = 10
 
-private typealias DirectoryPath = String
-
 class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract {
   private val gitRepository by lazy { openGitRepository(File(project)) }
   private lateinit var changesInAscendingOrder: List<Change>
