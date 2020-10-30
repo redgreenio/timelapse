@@ -10,6 +10,8 @@ import io.redgreen.timelapse.vcs.Identity
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.time.LocalDate
+import java.time.Month.OCTOBER
 
 class GitRepositoryServiceTest {
   @Nested
@@ -155,6 +157,27 @@ class GitRepositoryServiceTest {
               && it.message == "Non-existent file path at $commitId: $nonExistentFilePath"
         }
         .assertNoValues()
+    }
+  }
+
+  @Nested
+  inner class GetCommitOnDate {
+    private val simpleAndroidRepository = openGitRepository(File("simple-android"))
+    private val repositoryService = GitRepositoryService(simpleAndroidRepository)
+
+    @Test
+    fun `it should return the first commit on a given date`() {
+      // given
+      val october26 = LocalDate.of(2020, OCTOBER, 26)
+
+      // when
+      val testObserver = repositoryService.getFirstCommitOnDate(october26).test()
+
+      // then
+      testObserver
+        .assertValue("f7a3080ee72869bd9925eaef49cb0de75acc7083") // Update CHANGELOG (#2037)
+        .assertNoErrors()
+        .assertComplete()
     }
   }
 }

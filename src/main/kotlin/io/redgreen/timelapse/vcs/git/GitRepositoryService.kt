@@ -29,6 +29,8 @@ import org.eclipse.jgit.util.io.DisabledOutputStream
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.nio.charset.Charset
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Optional
 
 private typealias ContributionCount = Int
@@ -58,6 +60,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     }
   }
 
+  // TODO: 30-10-2020 Refactor this function, it's really large 
   override fun getContributions(
     commitId: String,
     filePath: String
@@ -97,6 +100,27 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
       }
 
       emitter.onSuccess(contributions.sortedByDescending { it.fraction })
+    }
+  }
+
+  override fun getFirstCommitOnDate(date: LocalDate): Single<String> {
+    return Single.create { emitter ->
+      val allRefs = gitRepository.refDatabase.refs
+      RevWalk(gitRepository).use { revWalk ->
+        allRefs.forEach { ref ->
+          revWalk.markStart(revWalk.parseCommit(ref.objectId))
+        }
+
+        var commitId: String? = null
+        for (commit in revWalk) {
+          val firstSecondOfDate = date.atTime(0, 0, 0, 0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+          val lastSecondOfDate = date.atTime(23, 59, 59, 999_999_999).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+          if (commit.authorIdent.`when`.time in firstSecondOfDate..lastSecondOfDate) {
+            commitId = commit.name
+          }
+        }
+        emitter.onSuccess(commitId!!)
+      }
     }
   }
 
