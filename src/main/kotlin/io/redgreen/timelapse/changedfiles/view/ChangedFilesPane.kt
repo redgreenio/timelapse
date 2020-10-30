@@ -22,6 +22,7 @@ import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
+import javax.swing.BorderFactory
 import javax.swing.DefaultListModel
 import javax.swing.JList
 import javax.swing.JPanel
@@ -71,6 +72,8 @@ class ChangedFilesPane(
       connect(Connectables.contramap({ it }, this@ChangedFilesPane))
       start()
     }
+
+    border = BorderFactory.createTitledBorder("Changed Files")
   }
 
   override fun showMessage(message: ChangedFilesViewMessage) {

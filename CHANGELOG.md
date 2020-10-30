@@ -2,6 +2,7 @@
 ## [Unreleased]
 ### Added
 - People pane to list contributions to a given file.
+- A titled border to the changed files panel.
 
 ### Changed
 - Bring down the worst case load time per node construction for the file explorer from 48.47ms to 1.94ms! Woot woot!
