@@ -8,7 +8,6 @@ import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommit
 import io.redgreen.timelapse.domain.getCommitHistoryText
 import io.redgreen.timelapse.domain.getDiff
-import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
@@ -58,7 +57,6 @@ import javax.swing.JSlider
 import javax.swing.KeyStroke
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.math.ceil
-import kotlin.system.measureTimeMillis
 
 private const val APP_NAME = "Timelapse"
 private const val COMMIT_INFORMATION_SEPARATOR = " • "
@@ -149,7 +147,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
 
   private val peoplePane = PeoplePane(gitRepository)
 
-  private val fileExplorerPane = FileExplorerPane(this)
+  private val fileExplorerPane = FileExplorerPane(project, gitRepository, this)
 
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
@@ -193,20 +191,8 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
   }
 
   override fun run() {
-    val loadingTimeMillis = measureTimeMillis {
-      val projectName = getProjectName()
-      val projectFilePaths = gitRepository.getFilePaths().map { "$projectName/$it" }
-      fileExplorerPane.buildFileExplorerTree(projectName, projectFilePaths)
-    }
-
-    debug { "Building file explorer took ${loadingTimeMillis}ms." }
-
-    // Show JFrame
     timelapseFrame.isVisible = true
   }
-
-  private fun getProjectName(): String =
-    project.split(File.separator).last()
 
   private fun moveFocusToReadingPane() {
     if (readingPane.isShowingOverlap()) {
