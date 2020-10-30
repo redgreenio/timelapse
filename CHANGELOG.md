@@ -3,6 +3,7 @@
 ### Added
 - People pane to list contributions to a given file.
 - Add titled borders to file explorer and changed files.
+- Show additions and deletions count along with the file name in code area.
 
 ### Changed
 - Bring down the worst case load time per node construction for the file explorer from 48.47ms to 1.94ms! Woot woot!
@@ -36,7 +37,7 @@
 ## [0.1.1] - 2020-10-18
 ### Added
 - Show and view list of related files (and their diff) changes along with the selected file.
-- Maximize window on app start.
+- Maximize the window on app start.
 - Area chart now has guides and a moving anchor.
 - Show commit position and progress percent in commit information area.
 
@@ -56,5 +57,5 @@
 
 ## [0.1.0] - 2020-10-14
 ### Added
-- Crude UI with a file explorer, insertions area chart, code area and a slider.
+- A crude UI with a file explorer, insertions area chart, code area and a slider.
 - Show commit ID, message and author name in description area.

@@ -1,6 +1,8 @@
 package io.redgreen.timelapse.ui
 
 import io.redgreen.timelapse.visuals.DiffSpan
+import io.redgreen.timelapse.visuals.DiffSpan.Deletion
+import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.WEST
@@ -40,7 +42,7 @@ class ReadingPane : JLayeredPane() {
   fun showMainDiff(filePath: String, diffSpans: List<DiffSpan>) {
     moveToFront(mainCodeTextPane)
     with(mainCodeTextPane) {
-      setTitle(filePath)
+      setTitle("$filePath [${getInsertionsDeletionsSummaryText(diffSpans)}]")
       showDiff(diffSpans)
     }
   }
@@ -50,7 +52,7 @@ class ReadingPane : JLayeredPane() {
     moveToFront(overlappingModalPanel)
 
     with(overlappingCodeTextPane) {
-      setTitle(title)
+      setTitle("$title [${getInsertionsDeletionsSummaryText(diffSpans)}]")
       showDiff(diffSpans)
     }
   }
@@ -67,5 +69,18 @@ class ReadingPane : JLayeredPane() {
 
   fun focusOnOverlap() {
     overlappingCodeTextPane.requestFocus()
+  }
+
+  private fun getInsertionsDeletionsSummaryText(diffSpans: List<DiffSpan>): String {
+    val deletionsCount = diffSpans.filterIsInstance<Deletion>().count()
+    val insertionsCount = diffSpans.filterIsInstance<Insertion>().count()
+
+    return when {
+      deletionsCount > 0 && insertionsCount > 0 -> "+$insertionsCount, -$deletionsCount"
+      deletionsCount == 0 && insertionsCount == 0 -> "?? Empty Commit ??"
+      deletionsCount == 0 -> "+$insertionsCount"
+      insertionsCount == 0 -> "-$deletionsCount"
+      else -> throw IllegalStateException("Insertions $insertionsCount, Deletions $deletionsCount")
+    }
   }
 }
