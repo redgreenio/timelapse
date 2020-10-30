@@ -11,25 +11,23 @@ object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, Changed
   override fun update(
     model: ChangedFilesModel,
     event: ChangedFilesEvent
-  ): Next<ChangedFilesModel, ChangedFilesEffect> {
-    return when (event) {
-      is FileAndRevisionSelected -> next(
-        model.fileAndRevisionSelected(event.filePath, event.commitId),
-        setOf(GetChangedFiles(event.commitId, event.filePath))
-      )
+  ): Next<ChangedFilesModel, ChangedFilesEffect> = when (event) {
+    is FileAndRevisionSelected -> next(
+      model.fileAndRevisionSelected(event.selectedFilePath, event.commitId),
+      setOf(GetChangedFiles(event.commitId, event.selectedFilePath))
+    )
 
-      NoOtherFilesChanged -> next(model.noOtherFilesChanged())
+    NoOtherFilesChanged -> next(model.noOtherFilesChanged())
 
-      is SomeMoreFilesChanged -> next(model.someMoreFilesChanged(event.changedFiles))
+    is SomeMoreFilesChanged -> next(model.someMoreFilesChanged(event.changedFiles))
 
-      GettingChangedFilesFailed -> next(model.gettingChangedFilesFailed())
+    GettingChangedFilesFailed -> next(model.gettingChangedFilesFailed())
 
-      RetryGettingChangedFiles -> next(model.retryGettingChangedFiles())
+    RetryGettingChangedFiles -> next(model.retryGettingChangedFiles())
 
-      is ChangedFileSelected -> {
-        val (commitId, changedFile) = getCommitIdAndFilePath(model, event.index)
-        dispatch(setOf(ShowDiff(commitId, changedFile)))
-      }
+    is ChangedFileSelected -> {
+      val (commitId, changedFile) = getCommitIdAndFilePath(model, event.index)
+      dispatch(setOf(ShowDiff(commitId, changedFile)))
     }
   }
 

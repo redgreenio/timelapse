@@ -9,6 +9,7 @@
 ### Fixed
 - Changed files list focus on previously selected index even after selecting a new file.
 - Disallow selecting multiple files/directories in the file explorer.
+- Don't show the selected file in the list of changed files.
 
 ## [0.1.2] - 2020-10-25
 ### Added

@@ -8,7 +8,7 @@ sealed class ChangedFilesEvent
 
 @UiEvent
 data class FileAndRevisionSelected(
-  val filePath: String,
+  val selectedFilePath: String,
   val commitId: String
 ) : ChangedFilesEvent()
 

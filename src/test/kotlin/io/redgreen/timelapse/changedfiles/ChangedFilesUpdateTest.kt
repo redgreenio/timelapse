@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test
 class ChangedFilesUpdateTest {
   private val withUpdateSpec = ChangedFilesUpdate.spec()
   private val commitId = "commit-id"
-  private val filePath = "app/build.gradle"
+  private val selectedFilePath = "app/build.gradle"
 
   @Test
   fun `when user selects a file path and revision it should begin loading other files that changed in the commit`() {
@@ -26,11 +26,11 @@ class ChangedFilesUpdateTest {
 
     withUpdateSpec
       .given(noFileAndRevisionSelectedModel)
-      .whenEvent(FileAndRevisionSelected(filePath, commitId))
+      .whenEvent(FileAndRevisionSelected(selectedFilePath, commitId))
       .then(
         assertThatNext(
-          hasModel(noFileAndRevisionSelectedModel.fileAndRevisionSelected(filePath, commitId)),
-          hasEffects(GetChangedFiles(commitId, filePath))
+          hasModel(noFileAndRevisionSelectedModel.fileAndRevisionSelected(selectedFilePath, commitId)),
+          hasEffects(GetChangedFiles(commitId, selectedFilePath))
         )
       )
   }
@@ -39,7 +39,7 @@ class ChangedFilesUpdateTest {
   fun `when commit does not have any other changed files, it should show no other files changed`() {
     val fileAndRevisionSelectedModel = ChangedFilesModel
       .noFileAndRevisionSelected()
-      .fileAndRevisionSelected(filePath, commitId)
+      .fileAndRevisionSelected(selectedFilePath, commitId)
 
     withUpdateSpec
       .given(fileAndRevisionSelectedModel)
@@ -56,7 +56,7 @@ class ChangedFilesUpdateTest {
   fun `when the commit has other files that were modified, it should display those modified files`() {
     val fileAndRevisionSelectedModel = ChangedFilesModel
       .noFileAndRevisionSelected()
-      .fileAndRevisionSelected(filePath, commitId)
+      .fileAndRevisionSelected(selectedFilePath, commitId)
     val changedFiles = listOf("build.gradle", "settings.gradle").map(::Modification)
 
     withUpdateSpec
@@ -74,7 +74,7 @@ class ChangedFilesUpdateTest {
   fun `when the application is unable to get the changed files, it should display an error`() {
     val fileAndRevisionSelectedModel = ChangedFilesModel
       .noFileAndRevisionSelected()
-      .fileAndRevisionSelected(filePath, commitId)
+      .fileAndRevisionSelected(selectedFilePath, commitId)
 
     val gettingChangedFilesFailedModel = fileAndRevisionSelectedModel
       .gettingChangedFilesFailed()
@@ -96,7 +96,7 @@ class ChangedFilesUpdateTest {
   fun `when user see's an error fetching changed files, she should be able to retry`() {
     val errorRetrievingChangedFilesModel = ChangedFilesModel
       .noFileAndRevisionSelected()
-      .fileAndRevisionSelected(filePath, commitId)
+      .fileAndRevisionSelected(selectedFilePath, commitId)
       .gettingChangedFilesFailed()
 
     withUpdateSpec
@@ -114,7 +114,7 @@ class ChangedFilesUpdateTest {
   fun `when user selects a file from the list of changed files, it should display the diff for the file`() {
     val someFilesChangedState = ChangedFilesModel
       .noFileAndRevisionSelected()
-      .fileAndRevisionSelected(filePath, commitId)
+      .fileAndRevisionSelected(selectedFilePath, commitId)
       .someMoreFilesChanged(listOf("README.md", "settings.gradle").map(::Modification))
 
     withUpdateSpec
@@ -124,6 +124,25 @@ class ChangedFilesUpdateTest {
         assertThatNext(
           hasNoModel(),
           hasEffects(ShowDiff(commitId, Modification("settings.gradle")))
+        )
+      )
+  }
+
+  @Test
+  fun `when the commit has  files that were modified, it should ignore the currently selected file from the list`() {
+    val fileAndRevisionSelectedModel = ChangedFilesModel
+      .noFileAndRevisionSelected()
+      .fileAndRevisionSelected(selectedFilePath, commitId)
+    val changedFiles = listOf("build.gradle", "settings.gradle", selectedFilePath).map(::Modification)
+
+    val expectedChangedFiles = listOf("build.gradle", "settings.gradle").map(::Modification)
+    withUpdateSpec
+      .given(fileAndRevisionSelectedModel)
+      .whenEvent(SomeMoreFilesChanged(changedFiles))
+      .then(
+        assertThatNext(
+          hasModel(fileAndRevisionSelectedModel.someMoreFilesChanged(expectedChangedFiles)),
+          hasNoEffects()
         )
       )
   }
