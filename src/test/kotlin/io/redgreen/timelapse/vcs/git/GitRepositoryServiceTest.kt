@@ -245,5 +245,43 @@ class GitRepositoryServiceTest {
         .assertNoErrors()
         .assertComplete()
     }
+
+    @Test
+    fun `it should ignore deleted file paths between an ancestor and a descendant (simple-android)`() {
+      // given
+      val repositoryService = GitRepositoryService(openGitRepository(File("simple-android")))
+      val ancestorCommitId = "f7a3080ee72869bd9925eaef49cb0de75acc7083" // Update CHANGELOG (#2037)
+      val descendantCommitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd" // Update CHANGELOG (#2043)
+
+      // when
+      val testObserver = repositoryService
+        .getChangedFilePaths(descendantCommitId, ancestorCommitId)
+        .test()
+
+      // then
+      testObserver
+        .assertValue(
+          listOf(
+            "CHANGELOG.md",
+            "app/src/androidTest/java/org/simple/clinic/di/TestAppComponent.kt",
+            "app/src/androidTest/java/org/simple/clinic/patient/PatientRepositoryAndroidTest.kt",
+            "app/src/main/java/org/simple/clinic/patient/PatientModule.kt",
+            "app/src/main/java/org/simple/clinic/patient/PatientRepository.kt",
+            "app/src/main/java/org/simple/clinic/patient/businessid/BusinessId.kt",
+            "app/src/main/java/org/simple/clinic/patient/businessid/BusinessIdMetaData.kt",
+            "app/src/sharedTest/java/org/simple/clinic/TestData.kt",
+            "app/src/test/java/org/simple/clinic/patient/PatientRepositoryTest.kt",
+            "app/src/main/res/layout/screen_patient_summary.xml",
+            "app/src/main/res/layout/screen_splash.xml",
+            "app/src/main/java/org/simple/clinic/drugs/PrescribedDrug.kt",
+            "app/build.gradle",
+            "app/src/main/AndroidManifest.xml",
+            "build.gradle",
+            "gradle/wrapper/gradle-wrapper.properties",
+          )
+        )
+        .assertNoErrors()
+        .assertComplete()
+    }
   }
 }

@@ -148,6 +148,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
           changedFilePaths.addAll(
             gitRepository
               .getFilesBetweenCommits(immediateAncestorRevCommit, descendantRevCommitOptional.get())
+              .filter { it !is Deletion }
               .map(ChangedFile::filePath)
               .distinct()
           )
