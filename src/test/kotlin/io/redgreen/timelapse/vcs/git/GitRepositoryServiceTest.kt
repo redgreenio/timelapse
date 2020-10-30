@@ -152,7 +152,7 @@ class GitRepositoryServiceTest {
       testObserver
         .assertError {
           it is java.lang.IllegalArgumentException
-              && it.message == "Non-existent file path: $nonExistentFilePath"
+              && it.message == "Non-existent file path at $commitId: $nonExistentFilePath"
         }
         .assertNoValues()
     }
