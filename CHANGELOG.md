@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased]
+
+## [0.1.3] - 2020-10-31
 ### Added
 - People pane to list contributions to a given file.
 - Add titled borders to file explorer and changed files.
