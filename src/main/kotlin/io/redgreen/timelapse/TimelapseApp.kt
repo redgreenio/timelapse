@@ -73,7 +73,7 @@ private const val PADDING = 10
 
 class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract, FileSelectionListener {
   private val gitRepository by lazy { openGitRepository(File(project)) }
-  private lateinit var changesInAscendingOrder: List<Change>
+  private lateinit var changes: List<Change>
   private lateinit var filePath: String
 
   private val timelapseSlider = JSlider().apply {
@@ -81,12 +81,12 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     border = BorderFactory.createEmptyBorder(PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
 
     addChangeListener {
-      if (!::changesInAscendingOrder.isInitialized) {
+      if (!::changes.isInitialized) {
         return@addChangeListener
       }
 
       val changeIndex = this.value
-      val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, changeIndex)
+      val (previousChange, selectedChange) = getChanges(changes, changeIndex)
 
       // Show code on slider move
       showCode(filePath, previousChange, selectedChange)
@@ -207,37 +207,36 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
 
     // Get change history
     val gitFollowOutput = getCommitHistoryText(project, filePath)
-    changesInAscendingOrder = parseGitFollowOutput(gitFollowOutput)
+    changes = parseGitFollowOutput(gitFollowOutput)
       .reversed()
 
-    debug { "Found ${changesInAscendingOrder.size} commits for $filePath" }
+    debug { "Found ${changes.size} commits for $filePath" }
 
     // Pair area chart with insertions
     with(insertionsAreaChart) {
-      val changesMappedToCommits = changesInAscendingOrder
+      commits = changes
         .map { it.insertions }
         .map(::Commit)
-      commits = changesMappedToCommits
     }
 
     // Pair slider with change history
     with(timelapseSlider) {
-      maximum = changesInAscendingOrder.lastIndex
+      maximum = changes.lastIndex
       value = 0
       debug { "Setting slider's maximum to $maximum, value to $value" }
     }
 
     // Show code now
-    val (previousChange, selectedChange) = getChanges(changesInAscendingOrder, 0)
+    val (previousChange, selectedChange) = getChanges(changes, 0)
     showCode(filePath, previousChange, selectedChange)
   }
 
   private fun getChanges(
-    changesInAscendingOrder: List<Change>,
+    changes: List<Change>,
     changeIndex: Int
   ): Pair<Change?, Change> {
-    val previousChange = if (changeIndex == 0) null else changesInAscendingOrder[changeIndex - 1]
-    val selectedChange = changesInAscendingOrder[changeIndex]
+    val previousChange = if (changeIndex == 0) null else changes[changeIndex - 1]
+    val selectedChange = changes[changeIndex]
     return Pair(previousChange, selectedChange)
   }
 
@@ -278,8 +277,8 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     selectedChange: Change
   ): String {
     val commit = gitRepository.getCommit(selectedChange.commitId)
-    val position = "${timelapseSlider.value + 1}/${changesInAscendingOrder.size}"
-    val progressPercent = ((timelapseSlider.value + 1).toDouble() / changesInAscendingOrder.size) * 100
+    val position = "${timelapseSlider.value + 1}/${changes.size}"
+    val progressPercent = ((timelapseSlider.value + 1).toDouble() / changes.size) * 100
     val progressPercentText = String.format("%.2f", ceil(progressPercent)).replace(".00", "")
     val committedDate = commit.committerIdent.`when`
     val authorAndCommitDate = formatDate(commit.authorIdent.`when`, committedDate)
