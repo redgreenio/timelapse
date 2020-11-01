@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.vcs.git
 
 import io.reactivex.rxjava3.core.Single
+import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
@@ -149,6 +150,8 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     descendantCommitId: String,
     ancestorCommitId: String?
   ): Single<List<String>> {
+    debug { "Getting changed files between $ancestorCommitId and $descendantCommitId" }
+
     return Single.create { emitter ->
       val ancestorObjectId = gitRepository.getParentObjectId(descendantCommitId)
 
