@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased]
+### Added
+- Prune and display changed files by X days (7, 30, 60, 90) from HEAD in the file explorer.
 
 ## [0.1.3] - 2020-10-31
 ### Added

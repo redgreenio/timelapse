@@ -107,7 +107,7 @@ class FileExplorerPane(
               .getFirstCommitOnOrAfter(startDate)
               .flatMap { gitRepositoryService.getChangedFilePaths(head.name, it) }
               .subscribe(
-                { projectFiles -> buildFileExplorerTree(projectName, projectFiles) },
+                { projectFiles -> buildFileExplorerTree(projectName, projectFiles.map { "$projectName/$it" }) },
                 { it.printStackTrace() }
               )
           }
