@@ -46,6 +46,7 @@ import java.awt.event.KeyEvent.VK_2
 import java.awt.event.KeyEvent.VK_3
 import java.awt.event.KeyEvent.VK_ESCAPE
 import java.io.File
+import java.time.LocalDate
 import javax.swing.BorderFactory
 import javax.swing.JComponent.WHEN_FOCUSED
 import javax.swing.JFrame
@@ -202,11 +203,11 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
   }
 
-  override fun onFilePathSelected(filePath: String) {
+  override fun onFilePathSelected(filePath: String, startDateEndDate: Pair<LocalDate, LocalDate>?) {
     this.filePath = filePath
 
     // Get change history
-    val gitFollowOutput = getCommitHistoryText(project, filePath)
+    val gitFollowOutput = getCommitHistoryText(project, filePath, startDateEndDate)
     changes = parseGitFollowOutput(gitFollowOutput)
       .reversed()
 

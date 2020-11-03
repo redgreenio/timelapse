@@ -20,6 +20,7 @@ import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
 import java.io.File
+import java.time.LocalDate
 import javax.swing.JPanel
 import javax.swing.JScrollPane
 import javax.swing.JTree
@@ -37,8 +38,10 @@ class FileExplorerPane(
   private val fileSelectionListener: FileSelectionListener
 ) : JPanel(BorderLayout()) {
   interface FileSelectionListener {
-    fun onFilePathSelected(filePath: String)
+    fun onFilePathSelected(filePath: String, startDateEndDate: Pair<LocalDate, LocalDate>? = null)
   }
+
+  private var startDateEndDate: Pair<LocalDate, LocalDate>? = null
 
   private val fileExplorerTree = JTree().apply {
     selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
@@ -60,7 +63,7 @@ class FileExplorerPane(
 
         val isLeafNode = (selectedPath.lastPathComponent as? DefaultMutableTreeNode)?.childCount == 0
         if (isLeafNode) {
-          fileSelectionListener.onFilePathSelected(fullFilePath)
+          fileSelectionListener.onFilePathSelected(fullFilePath, startDateEndDate)
         }
       }
     }
@@ -93,6 +96,7 @@ class FileExplorerPane(
         when(newValue) {
           AllFiles -> {
             val projectFiles = gitRepository.getFilePaths().map { "$projectName/$it" }
+            startDateEndDate = null
             buildFileExplorerTree(projectName, projectFiles)
           }
 
@@ -101,6 +105,8 @@ class FileExplorerPane(
 
             val endDate = head.committerIdent.`when`.time.toLocalDateTime().toLocalDate()
             val startDate = endDate.minusDays(newValue.days.toLong())
+
+            startDateEndDate = startDate to endDate
 
             debug { "Attempting to get commits between $startDate and $endDate" }
 

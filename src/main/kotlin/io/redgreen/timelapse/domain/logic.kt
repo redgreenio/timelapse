@@ -1,33 +1,44 @@
 package io.redgreen.timelapse.domain
 
 import java.io.File
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+private val gitDateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy")
 
 fun getCommitHistoryText(
   projectDirectory: String,
-  filePath: String
+  filePath: String,
+  startDateEndDate: Pair<LocalDate, LocalDate>?
 ): String {
   val projectPath = File(projectDirectory).absolutePath
   val gitDirectory = "$projectPath${File.separator}.git"
 
+  val gitLogCommand = gitLogCommand(gitDirectory, filePath, startDateEndDate)
   val process = Runtime
     .getRuntime()
-    .exec(gitLogCommand(gitDirectory, filePath))
+    .exec(gitLogCommand)
 
   return process.inputStream.reader().use { it.readText() }
 }
 
-private fun gitLogCommand(gitDirectory: String, filePath: String): Array<String> {
-  return arrayOf(
-    "git",
-    "--git-dir",
-    gitDirectory,
-    "log",
-    "--oneline",
-    "-M",
-    "--stat",
-    "--no-merges",
-    /* "--follow",*/
-    "--",
-    filePath,
-  )
+private fun gitLogCommand(
+  gitDirectory: String,
+  filePath: String,
+  startDateEndDate: Pair<LocalDate, LocalDate>?
+): Array<String> {
+  return if (startDateEndDate == null) {
+    arrayOf(
+      "git", "--git-dir", gitDirectory, "log", "--oneline", "-M", "--stat", "--no-merges", /* "--follow",*/ "--", filePath,
+    )
+  } else {
+    val (startDate, endDate) = startDateEndDate
+    arrayOf(
+      "git", "--git-dir", gitDirectory, "log", "--oneline", "-M", "--stat", "--no-merges",
+      "--since", startDate.toGitDate(), "--until", endDate.toGitDate(),/* "--follow",*/ "--", filePath,
+    )
+  }
 }
+
+private fun LocalDate.toGitDate(): String =
+  gitDateFormatter.format(this)
