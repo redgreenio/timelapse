@@ -13,12 +13,14 @@ import javafx.collections.FXCollections
 import javafx.embed.swing.JFXPanel
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
+import java.awt.BorderLayout.SOUTH
 import java.io.File
 import java.time.LocalDate
 import javax.swing.JPanel
@@ -80,6 +82,8 @@ class FileExplorerPane(
 
   private val gitRepositoryService by lazy(NONE) { GitRepositoryService(gitRepository) }
 
+  private val fileCountLabel by lazy(NONE) { Label() }
+
   init {
     add(JFXPanel().apply {
       timeSpanComboBox = ComboBox(timeSpans)
@@ -87,6 +91,13 @@ class FileExplorerPane(
       timeSpanComboBox.prefWidthProperty().bind(hBox.widthProperty())
       scene = Scene(hBox.apply { children.add(timeSpanComboBox) })
     }, NORTH)
+
+    add(JFXPanel().apply {
+      val hBox = HBox()
+      fileCountLabel.prefWidthProperty().bind(hBox.widthProperty())
+      fileCountLabel.text = "Hello world!"
+      scene = Scene(hBox.apply { children.add(fileCountLabel) }) 
+    }, SOUTH)
 
     add(JScrollPane(fileExplorerTree), CENTER)
 
@@ -129,7 +140,7 @@ class FileExplorerPane(
   }
 
   private fun buildFileExplorerTree(projectName: String, filePaths: List<String>) {
-    debug { "Found ${filePaths.size} files." }
+    fileCountLabel.text = "${filePaths.size} file(s)"
 
     val filePathsTree = Tree.create(projectName) { filePath -> filePath.split(GIT_PATH_SEPARATOR) }
     filePaths.forEach(filePathsTree::insert)
