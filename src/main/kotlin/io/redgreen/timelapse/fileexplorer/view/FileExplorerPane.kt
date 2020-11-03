@@ -14,6 +14,7 @@ import javafx.embed.swing.JFXPanel
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.layout.HBox
+import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
@@ -96,9 +97,9 @@ class FileExplorerPane(
           }
 
           is TMinusDays -> {
-            val head = gitRepository.resolve("HEAD").let { gitRepository.parseCommit(it) }
+            val head = gitRepository.resolve(HEAD).let { gitRepository.parseCommit(it) }
 
-            val endDate = head.authorIdent.`when`.time.toLocalDateTime().toLocalDate()
+            val endDate = head.committerIdent.`when`.time.toLocalDateTime().toLocalDate()
             val startDate = endDate.minusDays(newValue.days.toLong())
 
             debug { "Attempting to get commits between $startDate and $endDate" }
