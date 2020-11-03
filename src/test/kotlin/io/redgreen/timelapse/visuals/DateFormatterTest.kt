@@ -16,11 +16,11 @@ class DateFormatterTest {
     val committedDate = toUtilDate(2020, OCTOBER, 20, 22, 55)
 
     // when
-    val formattedDateString = formatDate(authoredDate, committedDate)
+    val formattedDateString = getAuthoredAndCommittedText(authoredDate, committedDate)
 
     // then
     assertThat(formattedDateString)
-      .isEqualTo("Tue, 20 Oct 2020 22:49, committed on Tue, 20 Oct 2020 22:55")
+      .isEqualTo("Authored on Tue, 20 Oct 2020 22:49, committed on Tue, 20 Oct 2020 22:55")
   }
 
   @Suppress("SameParameterValue")

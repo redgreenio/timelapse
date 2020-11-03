@@ -5,8 +5,8 @@ import java.util.Date
 
 private val dateFormat = SimpleDateFormat("EEE, d MMM yyyy HH:mm")
 
-fun formatDate(
+fun getAuthoredAndCommittedText(
   authoredDate: Date,
   committedDate: Date
 ): String =
-  "${dateFormat.format(authoredDate)}, committed on ${dateFormat.format(committedDate)}"
+  "Authored on ${dateFormat.format(authoredDate)}, committed on ${dateFormat.format(committedDate)}"

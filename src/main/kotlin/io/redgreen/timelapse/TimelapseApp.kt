@@ -26,7 +26,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
-import io.redgreen.timelapse.visuals.formatDate
+import io.redgreen.timelapse.visuals.getAuthoredAndCommittedText
 import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
@@ -281,7 +281,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     val progressPercent = ((timelapseSlider.value + 1).toDouble() / changes.size) * 100
     val progressPercentText = String.format("%.2f", ceil(progressPercent)).replace(".00", "")
     val committedDate = commit.committerIdent.`when`
-    val authorAndCommitDate = formatDate(commit.authorIdent.`when`, committedDate)
+    val authorAndCommitDate = getAuthoredAndCommittedText(commit.authorIdent.`when`, committedDate)
     val committedNaturalTime = naturalTime(committedDate)
 
     return """
