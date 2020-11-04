@@ -2,25 +2,48 @@ package io.redgreen.timelapse.people.view
 
 import io.redgreen.timelapse.vcs.Contribution
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
+import javafx.beans.property.SimpleObjectProperty
+import javafx.collections.FXCollections
+import javafx.embed.swing.JFXPanel
+import javafx.scene.Scene
+import javafx.scene.control.TableColumn
+import javafx.scene.control.TableView
+import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
+import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
-import java.awt.GridLayout
 import javax.swing.BorderFactory
-import javax.swing.JLabel.RIGHT
-import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.JTable
-import javax.swing.table.DefaultTableCellRenderer
-import javax.swing.table.DefaultTableModel
 import kotlin.LazyThreadSafetyMode.NONE
 
-class PeoplePane(private val gitRepository: Repository) : JPanel(GridLayout()) {
+class PeoplePane(private val gitRepository: Repository) : JFXPanel() {
+  companion object {
+    private const val COLUMN_NAME = "Name"
+    private const val COLUMN_CONTRIBUTION = "Contribution %"
+  }
+
   private val gitRepositoryService by lazy(NONE) { GitRepositoryService(gitRepository) }
 
-  private val contributorsTable = JTable()
-  private val rightAlignmentCellRenderer = DefaultTableCellRenderer().apply { horizontalAlignment = RIGHT }
+  private val contributorsTable by lazy(NONE) {
+    TableView<Contribution>().apply {
+      isEditable = false
+      columnResizePolicy = CONSTRAINED_RESIZE_POLICY;
+
+      val nameColumn = TableColumn<Contribution, String>(COLUMN_NAME).apply {
+        setCellValueFactory { SimpleObjectProperty(it.value.author.name) }
+      }
+
+      val contributionColumn = TableColumn<Contribution, String>(COLUMN_CONTRIBUTION).apply {
+        style = "-fx-alignment: CENTER-RIGHT;"
+        setCellValueFactory { SimpleObjectProperty(String.format("%.02f", it.value.fraction * 100)) }
+      }
+
+      columns.addAll(nameColumn, contributionColumn)
+    }
+  }
 
   init {
-    add(JScrollPane(contributorsTable))
+    scene = Scene(BorderPane().apply {
+      center = contributorsTable
+    })
     setTitle()
   }
 
@@ -30,8 +53,7 @@ class PeoplePane(private val gitRepository: Repository) : JPanel(GridLayout()) {
       .subscribe { contributions ->
         setTitle(contributions.size)
         with(contributorsTable) {
-          model = ContributionsTableModel(contributions)
-          columnModel.getColumn(1).cellRenderer = rightAlignmentCellRenderer
+          items = FXCollections.observableArrayList(*contributions.toTypedArray())
         }
       }
   }
@@ -39,21 +61,5 @@ class PeoplePane(private val gitRepository: Repository) : JPanel(GridLayout()) {
   private fun setTitle(peopleCount: Int = 0) {
     val title = if (peopleCount == 0) "People" else "People ($peopleCount)"
     border = BorderFactory.createTitledBorder(title)
-  }
-
-  class ContributionsTableModel(
-    contributions: List<Contribution>
-  ) : DefaultTableModel() {
-    private val columnNames = arrayOf("Name", "Contribution %")
-
-    init {
-      val contributionRows = contributions
-        .map { (identity, fraction) -> arrayOf(identity.name, String.format("%.02f", fraction * 100)) }
-        .toTypedArray()
-      setDataVector(contributionRows, columnNames)
-    }
-
-    override fun isCellEditable(row: Int, column: Int): Boolean =
-      false
   }
 }
