@@ -2,6 +2,7 @@ package io.redgreen.timelapse.fileexplorer.view
 
 import io.redgreen.timelapse.datastructures.NodeTransformer
 import io.redgreen.timelapse.datastructures.Tree
+import io.redgreen.timelapse.datastructures.Tree.Node
 import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerSelection.AllFiles
@@ -14,21 +15,14 @@ import javafx.embed.swing.JFXPanel
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
-import javafx.scene.layout.HBox
+import javafx.scene.control.SelectionMode.SINGLE
+import javafx.scene.control.TreeItem
+import javafx.scene.control.TreeView
+import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.Repository
-import java.awt.BorderLayout
-import java.awt.BorderLayout.CENTER
-import java.awt.BorderLayout.NORTH
-import java.awt.BorderLayout.SOUTH
 import java.io.File
 import java.time.LocalDate
-import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.JTree
-import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeModel
-import javax.swing.tree.TreeSelectionModel
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.system.measureTimeMillis
 
@@ -38,37 +32,43 @@ class FileExplorerPane(
   private val projectPath: String,
   private val gitRepository: Repository,
   private val fileSelectionListener: FileSelectionListener
-) : JPanel(BorderLayout()) {
+) : JFXPanel() {
   interface FileSelectionListener {
     fun onFilePathSelected(filePath: String, startDateEndDate: Pair<LocalDate, LocalDate>? = null)
   }
 
   private var startDateEndDate: Pair<LocalDate, LocalDate>? = null
 
-  private val fileExplorerTree = JTree().apply {
-    selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
+  private val fileExplorerTreeView by lazy(NONE) {
+    val treeView = TreeView<String>().apply { selectionModel.selectionMode = SINGLE }
 
-    addTreeSelectionListener { selectionEvent ->
-      selectionEvent.path?.let { selectedPath ->
-        val selectedRootNode = selectedPath.parentPath == null
-        if (selectedRootNode) {
-          return@let
+    treeView.selectionModel.selectedItemProperty().addListener { _, _, selectedItem ->
+      val pathBuilder = StringBuilder()
+      var node: TreeItem<String>? = selectedItem
+      while (node != null) {
+        with(pathBuilder) {
+          if (node?.parent != null) {
+            insert(0, node?.value)
+            insert(0, GIT_PATH_SEPARATOR)
+          }
         }
+        node = node?.parent
+      }
 
-        val parentPath = selectedPath.parentPath.path.drop(1).joinToString(GIT_PATH_SEPARATOR.toString())
-        val fullFilePath = if (parentPath.isEmpty()) {
-          selectedPath.lastPathComponent.toString()
-        } else {
-          "$parentPath$GIT_PATH_SEPARATOR${selectedPath.lastPathComponent}"
-        }
-        debug { "Selected path: $fullFilePath" }
+      val rootSelected = pathBuilder.isEmpty()
+      if (rootSelected) {
+        return@addListener
+      }
 
-        val isLeafNode = (selectedPath.lastPathComponent as? DefaultMutableTreeNode)?.childCount == 0
-        if (isLeafNode) {
-          fileSelectionListener.onFilePathSelected(fullFilePath, startDateEndDate)
-        }
+      val fullFilePath = pathBuilder.substring(1).toString()
+      debug { "Selected path: $fullFilePath" }
+
+      if (selectedItem.isLeaf) {
+        fileSelectionListener.onFilePathSelected(fullFilePath, startDateEndDate)
       }
     }
+
+    treeView
   }
 
   private val timeSpanComboBox: ComboBox<FileExplorerSelection>
@@ -85,21 +85,17 @@ class FileExplorerPane(
   private val fileCountLabel by lazy(NONE) { Label() }
 
   init {
-    add(JFXPanel().apply {
-      timeSpanComboBox = ComboBox(timeSpans)
-      val hBox = HBox()
-      timeSpanComboBox.prefWidthProperty().bind(hBox.widthProperty())
-      scene = Scene(hBox.apply { children.add(timeSpanComboBox) })
-    }, NORTH)
+    timeSpanComboBox = ComboBox(timeSpans)
+    scene = Scene(BorderPane().apply {
+      top = timeSpanComboBox
+      timeSpanComboBox.prefWidthProperty().bind(widthProperty())
 
-    add(JFXPanel().apply {
-      val hBox = HBox()
-      fileCountLabel.prefWidthProperty().bind(hBox.widthProperty())
-      fileCountLabel.text = "Hello world!"
-      scene = Scene(hBox.apply { children.add(fileCountLabel) }) 
-    }, SOUTH)
+      bottom = fileCountLabel
+      fileCountLabel.prefWidthProperty().bind(widthProperty())
 
-    add(JScrollPane(fileExplorerTree), CENTER)
+      center = fileExplorerTreeView
+      fileExplorerTreeView.prefWidthProperty().bind(widthProperty())
+    })
 
     timeSpanComboBox.valueProperty().addListener { _, _, newValue ->
       val loadingTimeMillis = measureTimeMillis {
@@ -145,19 +141,18 @@ class FileExplorerPane(
     val filePathsTree = Tree.create(projectName) { filePath -> filePath.split(GIT_PATH_SEPARATOR) }
     filePaths.forEach(filePathsTree::insert)
 
-    val defaultMutableTreeNodeTransformer = object : NodeTransformer<Tree.Node<String>, DefaultMutableTreeNode> {
-      override fun create(node: Tree.Node<String>): DefaultMutableTreeNode {
-        return DefaultMutableTreeNode(node.value, node.children.isNotEmpty()).apply {
-          node.children.map(::create).onEach(this::add)
+    val treeItemNodeTransformer = object : NodeTransformer<Node<String>, TreeItem<String>> {
+      override fun create(node: Node<String>): TreeItem<String> {
+        return TreeItem(node.value).apply {
+          node.children.map(::create).onEach { children.add(it) }
         }
       }
     }
-    val rootTreeNode = filePathsTree.transform(defaultMutableTreeNodeTransformer)
-    fileExplorerTree.model = DefaultTreeModel(rootTreeNode)
+    fileExplorerTreeView.root = filePathsTree.transform(treeItemNodeTransformer)
   }
 
   fun focus() {
-    fileExplorerTree.requestFocus()
+    Platform.runLater { fileExplorerTreeView.requestFocus() }
   }
 
   private fun getProjectName(): String =

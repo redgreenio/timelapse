@@ -4,6 +4,9 @@
 - Prune and display changed files by X days (7, 30, 60, 90) from HEAD in the file explorer.
 - Restrict commits between a start and end date for pruned trees.
 
+### Changed
+- Replace Swing tree component with JavaFx tree component in File Explorer.
+
 ### Fixed
 - Files in initial commit always displayed +1 insertion instead of the actual number of lines.
 
