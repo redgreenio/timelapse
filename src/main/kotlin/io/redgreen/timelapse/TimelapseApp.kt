@@ -246,14 +246,18 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     previousChange: Change?,
     selectedChange: Change
   ) {
-    val noPreviousRevisions = previousChange == null
-    val diffText = if (noPreviousRevisions) {
+    val maybeNoPreviousRevisions = previousChange == null
+    val maybeParentCommit = gitRepository.resolve("${selectedChange.commitId}^")
+    val isInitialCommit = maybeNoPreviousRevisions &&
+        maybeParentCommit?.name?.startsWith(selectedChange.commitId) == true
+
+    val diffText = if (isInitialCommit) {
       gitRepository.getChangeText(filePath, selectedChange.commitId)
     } else {
       gitRepository.getDiff(selectedChange.commitId, filePath)
     }
 
-    val diffSpans = if (noPreviousRevisions) {
+    val diffSpans = if (isInitialCommit) {
       listOf(Insertion(diffText))
     } else {
       FormattedDiff.from(diffText).spans

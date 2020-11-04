@@ -4,6 +4,9 @@
 - Prune and display changed files by X days (7, 30, 60, 90) from HEAD in the file explorer.
 - Restrict commits between a start and end date for pruned trees.
 
+### Fixed
+- Files in initial commit always displayed +1 insertion instead of the actual number of lines.
+
 ## [0.1.3] - 2020-10-31
 ### Added
 - People pane to list contributions to a given file.
