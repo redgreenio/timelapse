@@ -19,21 +19,21 @@ import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.mobius.DeferredEventSource
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
+import javafx.application.Platform
+import javafx.embed.swing.JFXPanel
+import javafx.scene.Scene
+import javafx.scene.control.ListCell
+import javafx.scene.control.ListView
+import javafx.scene.control.SelectionMode.SINGLE
+import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
-import java.awt.BorderLayout
-import java.awt.BorderLayout.CENTER
 import javax.swing.BorderFactory
-import javax.swing.DefaultListModel
-import javax.swing.JList
-import javax.swing.JPanel
-import javax.swing.JScrollPane
-import javax.swing.ListSelectionModel
 import kotlin.LazyThreadSafetyMode.NONE
 
 class ChangedFilesPane(
   gitRepository: Repository,
   private val readingAreaContract: ReadingAreaContract
-) : JPanel(BorderLayout()), ChangedFilesView, Connectable<ChangedFilesModel, ChangedFilesEvent> {
+) : JFXPanel(), ChangedFilesView, Connectable<ChangedFilesModel, ChangedFilesEvent> {
   private val repositoryService = GitRepositoryService(gitRepository)
 
   private val eventSource = DeferredEventSource<ChangedFilesEvent>()
@@ -51,27 +51,44 @@ class ChangedFilesPane(
 
   private val viewRenderer = ChangedFilesViewRenderer(this)
 
-  private val changedFilesList = JList<ChangedFile>().apply {
-    selectionMode = ListSelectionModel.SINGLE_SELECTION
-    cellRenderer = ChangedFileListCellRenderer()
-    model = DefaultListModel()
+  private val changedFilesListView by lazy {
+    ListView<ChangedFile>().apply {
+      isEditable = false
+      selectionModel.selectionMode = SINGLE
+
+      setCellFactory {
+        object : ListCell<ChangedFile>() {
+          override fun updateItem(changedFile: ChangedFile?, empty: Boolean) {
+            super.updateItem(changedFile, empty)
+
+            Platform.runLater {
+              text = if (empty || item == null) {
+                null
+              } else {
+                changedFile?.filePath
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   init {
-    with(changedFilesList) {
-      changedFilesList.addListSelectionListener { event ->
-        val stableSelection = selectedIndex != -1 && !event.valueIsAdjusting
-        if (!stableSelection) return@addListSelectionListener
-        eventSource.notify(ChangedFileSelected(selectedIndex))
+    with(changedFilesListView) {
+      selectionModel.selectedItemProperty().addListener { _, _, _ ->
+        eventSource.notify(ChangedFileSelected(selectionModel.selectedIndex))
       }
     }
-
-    add(JScrollPane(changedFilesList), CENTER)
 
     with(loopController) {
       connect(Connectables.contramap({ it }, this@ChangedFilesPane))
       start()
     }
+
+    scene = Scene(BorderPane().apply {
+      center = changedFilesListView
+    })
 
     border = BorderFactory.createTitledBorder("Changed Files")
   }
@@ -79,7 +96,10 @@ class ChangedFilesPane(
   override fun showMessage(message: ChangedFilesViewMessage) {
     debug { "showMessage stub! $message" }
     if (message == NO_OTHER_FILES_CHANGED) {
-      changedFilesList.model = DefaultListModel()
+      with(changedFilesListView) {
+        items.clear()
+        selectionModel.clearSelection()
+      }
     }
   }
 
@@ -96,15 +116,18 @@ class ChangedFilesPane(
   }
 
   override fun showChangedFiles(changedFiles: List<ChangedFile>) {
-    with((changedFilesList.model as DefaultListModel<ChangedFile>)) {
-      removeAllElements()
-      changedFiles.onEach { addElement(it) }
+    with(changedFilesListView) {
+      Platform.runLater { // TODO View updates should be observed on JavaFx UI thread
+        items.clear()
+        items.addAll(changedFiles)
+        selectionModel.clearSelection()
+        scrollTo(0)
+      }
     }
-    changedFilesList.ensureIndexIsVisible(0)
   }
 
   fun focusOnList() {
-    changedFilesList.requestFocus()
+    Platform.runLater { changedFilesListView.requestFocus() }
   }
 
   fun selectFileAndRevision(filePath: String, commitId: String) {
