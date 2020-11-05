@@ -90,7 +90,7 @@ class ChangedFilesPane(
       center = changedFilesListView
     })
 
-    border = BorderFactory.createTitledBorder("Changed Files")
+    updateTitle()
   }
 
   override fun showMessage(message: ChangedFilesViewMessage) {
@@ -100,6 +100,7 @@ class ChangedFilesPane(
         items.clear()
         selectionModel.clearSelection()
       }
+      updateTitle()
     }
   }
 
@@ -124,6 +125,8 @@ class ChangedFilesPane(
         scrollTo(0)
       }
     }
+
+    updateTitle(changedFiles.size)
   }
 
   fun focusOnList() {
@@ -144,5 +147,10 @@ class ChangedFilesPane(
         // No-op
       }
     }
+  }
+
+  private fun updateTitle(changedFilesCount: Int = 0) {
+    val title = if (changedFilesCount == 0) "Changed Files (None)" else "Changed Files ($changedFilesCount more)"
+    border = BorderFactory.createTitledBorder(title)
   }
 }

@@ -3,9 +3,11 @@
 ### Added
 - Prune and display changed files by X days (7, 30, 60, 90) from HEAD in the file explorer.
 - Restrict commits between a start and end date for pruned trees.
+- Show file count in changed files panel.
 
 ### Changed
-- Replace Swing tree component with JavaFx tree component in File Explorer.
+- Replace Swing tree component with JavaFx tree component in file explorer.
+- Replace Swing list component with JavaFx list component in changed files.
 
 ### Fixed
 - Files in initial commit always displayed +1 insertion instead of the actual number of lines.
