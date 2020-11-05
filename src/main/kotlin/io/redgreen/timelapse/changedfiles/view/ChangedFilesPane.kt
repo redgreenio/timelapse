@@ -18,6 +18,10 @@ import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_
 import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.mobius.DeferredEventSource
 import io.redgreen.timelapse.vcs.ChangedFile
+import io.redgreen.timelapse.vcs.ChangedFile.Addition
+import io.redgreen.timelapse.vcs.ChangedFile.Deletion
+import io.redgreen.timelapse.vcs.ChangedFile.Modification
+import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
@@ -67,6 +71,22 @@ class ChangedFilesPane(
               } else {
                 changedFile?.filePath
               }
+
+              style = if (changedFile != null) {
+                "-fx-control-inner-background: rgba(${colorForChangedFile(changedFile)});"
+              } else {
+                "-fx-control-inner-background: rgba(255, 255, 255, 1.0);"
+              }
+            }
+          }
+
+          private fun colorForChangedFile(changedFile: ChangedFile): String {
+            val alpha = 0.33
+            return when (changedFile) {
+              is Addition -> "94, 186, 125, $alpha"
+              is Modification -> "94, 154, 186, $alpha"
+              is Deletion -> "186, 94, 94, $alpha"
+              is Rename -> "169, 94, 186, $alpha"
             }
           }
         }
