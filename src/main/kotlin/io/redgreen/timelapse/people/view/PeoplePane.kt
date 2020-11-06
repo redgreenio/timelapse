@@ -2,25 +2,26 @@ package io.redgreen.timelapse.people.view
 
 import io.redgreen.timelapse.vcs.Contribution
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
+import javafx.application.Platform
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
-import javafx.embed.swing.JFXPanel
-import javafx.scene.Scene
+import javafx.scene.control.Label
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
-import javax.swing.BorderFactory
 import kotlin.LazyThreadSafetyMode.NONE
 
-class PeoplePane(private val gitRepository: Repository) : JFXPanel() {
+class PeoplePane(private val gitRepository: Repository) : BorderPane() {
   companion object {
     private const val COLUMN_NAME = "Name"
     private const val COLUMN_CONTRIBUTION = "Contribution %"
   }
 
   private val gitRepositoryService by lazy(NONE) { GitRepositoryService(gitRepository) }
+
+  private val titleLabel by lazy(NONE){ Label().apply { style = "-fx-font-weight: bold" } }
 
   private val contributorsTable by lazy(NONE) {
     TableView<Contribution>().apply {
@@ -41,9 +42,8 @@ class PeoplePane(private val gitRepository: Repository) : JFXPanel() {
   }
 
   init {
-    scene = Scene(BorderPane().apply {
-      center = contributorsTable
-    })
+    top = titleLabel
+    center = contributorsTable
     setTitle()
   }
 
@@ -60,6 +60,6 @@ class PeoplePane(private val gitRepository: Repository) : JFXPanel() {
 
   private fun setTitle(peopleCount: Int = 0) {
     val title = if (peopleCount == 0) "People" else "People ($peopleCount)"
-    border = BorderFactory.createTitledBorder(title)
+    Platform.runLater { titleLabel.text = " • $title • " }
   }
 }

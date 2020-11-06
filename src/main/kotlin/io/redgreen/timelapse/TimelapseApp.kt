@@ -27,6 +27,11 @@ import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
 import io.redgreen.timelapse.visuals.getAuthoredAndCommittedText
+import javafx.embed.swing.JFXPanel
+import javafx.scene.Scene
+import javafx.scene.layout.ColumnConstraints
+import javafx.scene.layout.GridPane
+import javafx.scene.layout.RowConstraints
 import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
@@ -39,7 +44,6 @@ import java.awt.GridBagConstraints
 import java.awt.GridBagConstraints.HORIZONTAL
 import java.awt.GridBagConstraints.REMAINDER
 import java.awt.GridBagLayout
-import java.awt.GridLayout
 import java.awt.KeyboardFocusManager
 import java.awt.event.KeyEvent.VK_1
 import java.awt.event.KeyEvent.VK_2
@@ -144,9 +148,9 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
   }
 
-  private val changedFilesPane = ChangedFilesPane(gitRepository, this)
+  private val changedFilesPane by lazy(NONE) { ChangedFilesPane(gitRepository, this) }
 
-  private val peoplePane = PeoplePane(gitRepository)
+  private val peoplePane by lazy(NONE) { PeoplePane(gitRepository) }
 
   private val fileExplorerPane = FileExplorerPane(project, gitRepository, this)
 
@@ -158,12 +162,17 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
       border = BorderFactory.createTitledBorder("File Explorer")
     }, WEST)
 
-    val rightPanel = JPanel().apply {
-      layout = GridLayout(2, 1)
-    }
-    with(rightPanel) {
-      add(changedFilesPane)
-      add(peoplePane)
+    val rightPanel = JFXPanel().apply {
+      scene = Scene(GridPane().apply {
+        add(changedFilesPane, 0, 0)
+        add(peoplePane, 0, 1)
+
+        columnConstraints.add(ColumnConstraints(CHANGES_WIDTH.toDouble()))
+        with(rowConstraints) {
+          add(RowConstraints().apply { percentHeight = 50.0 }) // Row 1 (Changed Files)
+          add(RowConstraints().apply { percentHeight = 50.0 }) // Row 2 (People)
+        }
+      })
     }
     add(rightPanel.apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }

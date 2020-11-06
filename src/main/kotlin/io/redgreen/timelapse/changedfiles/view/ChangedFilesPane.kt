@@ -24,20 +24,18 @@ import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import javafx.application.Platform
-import javafx.embed.swing.JFXPanel
-import javafx.scene.Scene
+import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode.SINGLE
 import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
-import javax.swing.BorderFactory
 import kotlin.LazyThreadSafetyMode.NONE
 
 class ChangedFilesPane(
   gitRepository: Repository,
   private val readingAreaContract: ReadingAreaContract
-) : JFXPanel(), ChangedFilesView, Connectable<ChangedFilesModel, ChangedFilesEvent> {
+) : BorderPane(), ChangedFilesView, Connectable<ChangedFilesModel, ChangedFilesEvent> {
   private val repositoryService = GitRepositoryService(gitRepository)
 
   private val eventSource = DeferredEventSource<ChangedFilesEvent>()
@@ -54,6 +52,8 @@ class ChangedFilesPane(
   }
 
   private val viewRenderer = ChangedFilesViewRenderer(this)
+
+  private val titleLabel by lazy(NONE) { Label().apply { style = "-fx-font-weight: bold" } }
 
   private val changedFilesListView by lazy {
     ListView<ChangedFile>().apply {
@@ -114,10 +114,8 @@ class ChangedFilesPane(
       start()
     }
 
-    scene = Scene(BorderPane().apply {
-      center = changedFilesListView
-    })
-
+    top = titleLabel
+    center = changedFilesListView
     updateTitle()
   }
 
@@ -178,7 +176,12 @@ class ChangedFilesPane(
   }
 
   private fun updateTitle(changedFilesCount: Int = 0) {
-    val title = if (changedFilesCount == 0) "Changed Files (None)" else "Changed Files ($changedFilesCount more)"
-    border = BorderFactory.createTitledBorder(title)
+    val title = if (changedFilesCount == 0) {
+      "Changed Files (None)"
+    } else {
+      "Changed Files ($changedFilesCount more)"
+    }
+
+    Platform.runLater { titleLabel.text = " • $title • " }
   }
 }
