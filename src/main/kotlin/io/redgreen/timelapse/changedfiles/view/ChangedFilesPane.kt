@@ -95,9 +95,17 @@ class ChangedFilesPane(
   }
 
   init {
+    fun sendChangedFileSelectedEvent(selectedIndex: Int) {
+      eventSource.notify(ChangedFileSelected(selectedIndex))
+    }
+
     with(changedFilesListView) {
       selectionModel.selectedItemProperty().addListener { _, _, _ ->
-        eventSource.notify(ChangedFileSelected(selectionModel.selectedIndex))
+        sendChangedFileSelectedEvent(selectionModel.selectedIndex)
+      }
+
+      setOnMouseClicked {
+        sendChangedFileSelectedEvent(selectionModel.selectedIndex)
       }
     }
 
