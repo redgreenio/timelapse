@@ -5,6 +5,7 @@
 - Restrict commits between a start and end date for pruned trees.
 - Show file count in changed files panel.
 - Color code changed file row based on the type of change.
+- Click on commit ID to copy information to clipboard.
 
 ### Changed
 - Replace Swing tree component with JavaFx tree component in file explorer.

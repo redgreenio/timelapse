@@ -1,11 +1,15 @@
 package io.redgreen.timelapse.readingarea
 
 import humanize.Humanize
+import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.getCommit
 import io.redgreen.timelapse.visuals.getAuthoredAndCommittedText
+import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Label
+import javafx.scene.input.Clipboard
+import javafx.scene.input.ClipboardContent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import org.eclipse.jgit.lib.Repository
@@ -24,7 +28,15 @@ class CommitInformationPane(private val gitRepository: Repository) : BorderPane(
   private val countProgressInformationLabel = Label().apply {
     padding = Insets(PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
   }
-  private val idAuthorInformationLabel = Label()
+  private val idAuthorInformationLabel = Label().apply {
+    onMouseClicked = EventHandler {
+      if (text.isEmpty()) {
+        return@EventHandler
+      }
+
+      copyCommitIdToClipboard(text)
+    }
+  }
 
   init {
     padding = Insets(PADDING)
@@ -48,5 +60,15 @@ class CommitInformationPane(private val gitRepository: Repository) : BorderPane(
     dateTimeInformationLabel.text = "$authorAndCommitDate ($committedNaturalTime)"
     countProgressInformationLabel.text = "Commit $position $COMMIT_INFORMATION_SEPARATOR $progressPercentText%"
     idAuthorInformationLabel.text = "${commit.name} $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  <${commit.authorIdent.emailAddress}>"
+  }
+
+  private fun copyCommitIdToClipboard(text: String) {
+    val clipboard = Clipboard.getSystemClipboard()
+    val commitId = text.substring(0, text.indexOf(COMMIT_INFORMATION_SEPARATOR) - 1)
+    val clipboardContent = ClipboardContent().apply {
+      debug { "Copied [$commitId] to clipboard!" }
+      putString(commitId)
+    }
+    clipboard.setContent(clipboardContent)
   }
 }
