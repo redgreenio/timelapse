@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased]
+
+## [0.1.4] - 2020-11-07
 ### Added
 - Prune and display changed files by X days (7, 30, 60, 90) from HEAD in the file explorer.
 - Restrict commits between a start and end date for pruned trees.
