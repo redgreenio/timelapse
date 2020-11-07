@@ -29,3 +29,6 @@ gradlew demoJar
 ```
 
 After creating a build, copy the `mapping-<version>.txt` and `timelapse-<version>-demo.jar` into the designated Google Drive directory.
+
+### Quirks
+The binary does not ship with JavaFx and will run only on JVMs that include JavaFx library jars.

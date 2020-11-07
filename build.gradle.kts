@@ -66,9 +66,13 @@ tasks {
     dependsOn("shadowJar")
     val shadowJar = "build/libs/timelapse-${version}-all.jar"
     val demoJar = "build/libs/timelapse-${version}-demo.jar"
-    val javaRuntime = "${System.getProperty("java.home")}/lib/rt.jar"
-    val javaCryptographicExtensions = "${System.getProperty("java.home")}/lib/jce.jar"
     val mappingFile = "build/libs/mapping-${version}.txt"
+
+    // Library jars
+    val javaHome = System.getProperty("java.home")
+    val javaRuntime = "$javaHome/lib/rt.jar"
+    val javaCryptographicExtensions = "$javaHome/lib/jce.jar"
+    val javaFx = "$javaHome/lib/ext/jfxrt.jar"
 
     configuration("proguard-rules.pro")
 
@@ -77,11 +81,10 @@ tasks {
 
     libraryjars(javaRuntime)
     libraryjars(javaCryptographicExtensions)
+    libraryjars(javaFx)
 
     printmapping(mappingFile)
 
-    doLast {
-      delete(shadowJar)
-    }
+    doLast { delete(shadowJar) }
   }
 }
