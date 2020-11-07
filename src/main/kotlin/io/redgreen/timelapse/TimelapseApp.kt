@@ -159,7 +159,6 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     add(centerPanel, CENTER)
     add(fileExplorerPane.apply {
       preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT)
-      border = BorderFactory.createTitledBorder("File Explorer")
     }, WEST)
 
     val rightPanel = JFXPanel().apply {

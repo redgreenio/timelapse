@@ -19,6 +19,7 @@ import javafx.scene.control.SelectionMode.SINGLE
 import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.VBox
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.Repository
 import java.io.File
@@ -87,7 +88,8 @@ class FileExplorerPane(
   init {
     timeSpanComboBox = ComboBox(timeSpans)
     scene = Scene(BorderPane().apply {
-      top = timeSpanComboBox
+      val vBox = VBox(Label(" • File Explorer • "), timeSpanComboBox)
+      top = vBox
       timeSpanComboBox.prefWidthProperty().bind(widthProperty())
 
       bottom = fileCountLabel
