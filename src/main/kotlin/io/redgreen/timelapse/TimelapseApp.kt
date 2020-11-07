@@ -1,11 +1,10 @@
 package io.redgreen.timelapse
 
-import humanize.Humanize.naturalTime
+//import javafx.scene.Scene
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
-import io.redgreen.timelapse.domain.getCommit
 import io.redgreen.timelapse.domain.getCommitHistoryText
 import io.redgreen.timelapse.domain.getDiff
 import io.redgreen.timelapse.domain.openGitRepository
@@ -14,6 +13,7 @@ import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
 import io.redgreen.timelapse.people.view.PeoplePane
+import io.redgreen.timelapse.readingarea.CommitInformationPane
 import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
 import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
 import io.redgreen.timelapse.ui.KEY_STROKE_UP
@@ -26,7 +26,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
-import io.redgreen.timelapse.visuals.getAuthoredAndCommittedText
+import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
 import javafx.scene.Scene
 import javafx.scene.layout.ColumnConstraints
@@ -56,15 +56,12 @@ import javax.swing.JComponent.WHEN_FOCUSED
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JFrame.MAXIMIZED_BOTH
-import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.JSlider
 import javax.swing.KeyStroke
 import kotlin.LazyThreadSafetyMode.NONE
-import kotlin.math.ceil
 
 private const val APP_NAME = "Timelapse"
-private const val COMMIT_INFORMATION_SEPARATOR = " • "
 
 private const val WIDTH = 1024
 private const val HEIGHT = 768
@@ -106,9 +103,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
   }
 
-  private val commitInformationLabel = JLabel().apply {
-    border = BorderFactory.createEmptyBorder(PADDING, PADDING, NO_PADDING, PADDING)
-  }
+  private val commitInformationPane by lazy(NONE) { CommitInformationPane(gitRepository) }
 
   private val insertionsAreaChart by lazy(NONE) {
     AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
@@ -116,7 +111,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
 
   private val readingPane = ReadingPane()
 
-  private val sliderPanel by lazy(NONE) {
+  private val sliderPanel by lazy(NONE) {  // TODO: 07-11-2020 create a `fastLazy` extension function
     val sliderAndInformationPanel = JPanel(GridBagLayout()).apply {
       val constraints = GridBagConstraints().apply {
         weightx = 1.0
@@ -124,7 +119,11 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
         gridwidth = REMAINDER
       }
       add(timelapseSlider, constraints)
-      add(commitInformationLabel, constraints)
+
+      add(JFXPanel().apply {
+        scene = Scene(commitInformationPane)
+      }, constraints)
+
       border = BorderFactory.createEmptyBorder(NO_PADDING, NO_PADDING, PADDING, NO_PADDING)
     }
 
@@ -272,7 +271,9 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
     readingPane.showMainDiff(filePath, diffSpans)
 
-    commitInformationLabel.text = getCommitInformation(gitRepository, selectedChange)
+    Platform.runLater {
+      commitInformationPane.showCommitInformation(selectedChange, timelapseSlider.value + 1, changes.size)
+    }
 
     changedFilesPane.selectFileAndRevision(filePath, selectedChange.commitId)
     peoplePane.selectFileAndRevision(filePath, selectedChange.commitId)
@@ -283,28 +284,6 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     commitId: String
   ): String {
     return readFileFromCommitId(commitId, filePath)
-  }
-
-  private fun getCommitInformation(
-    gitRepository: Repository,
-    selectedChange: Change
-  ): String {
-    val commit = gitRepository.getCommit(selectedChange.commitId)
-    val position = "${timelapseSlider.value + 1}/${changes.size}"
-    val progressPercent = ((timelapseSlider.value + 1).toDouble() / changes.size) * 100
-    val progressPercentText = String.format("%.2f", ceil(progressPercent)).replace(".00", "")
-    val committedDate = commit.committerIdent.`when`
-    val authorAndCommitDate = getAuthoredAndCommittedText(commit.authorIdent.`when`, committedDate)
-    val committedNaturalTime = naturalTime(committedDate)
-
-    return """
-      <html>
-        ${selectedChange.message}<br />
-        $authorAndCommitDate ($committedNaturalTime)<br /><br />
-        Commit $position $COMMIT_INFORMATION_SEPARATOR $progressPercentText%<br />
-        <code>${commit.name}</code> $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  &lt;${commit.authorIdent.emailAddress}&gt;
-      </html>
-    """.trimIndent()
   }
 
   override fun showChangedFileDiff(commitId: String, changedFile: ChangedFile) {
