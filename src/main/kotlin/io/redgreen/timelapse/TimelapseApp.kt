@@ -1,6 +1,5 @@
 package io.redgreen.timelapse
 
-//import javafx.scene.Scene
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
 import io.redgreen.timelapse.domain.Change
@@ -14,9 +13,6 @@ import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.readingarea.CommitInformationPane
-import io.redgreen.timelapse.ui.ACTION_MAP_KEY_NO_OP
-import io.redgreen.timelapse.ui.KEY_STROKE_DOWN
-import io.redgreen.timelapse.ui.KEY_STROKE_UP
 import io.redgreen.timelapse.ui.ReadingPane
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
@@ -28,9 +24,12 @@ import io.redgreen.timelapse.visuals.DiffSpan.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
 import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
+import javafx.geometry.Insets
 import javafx.scene.Scene
+import javafx.scene.control.Slider
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
+import javafx.scene.layout.Pane
 import javafx.scene.layout.RowConstraints
 import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
@@ -52,14 +51,12 @@ import java.awt.event.KeyEvent.VK_ESCAPE
 import java.io.File
 import java.time.LocalDate
 import javax.swing.BorderFactory
-import javax.swing.JComponent.WHEN_FOCUSED
 import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JFrame.MAXIMIZED_BOTH
 import javax.swing.JPanel
-import javax.swing.JSlider
-import javax.swing.KeyStroke
 import kotlin.LazyThreadSafetyMode.NONE
+import kotlin.math.round
 
 private const val APP_NAME = "Timelapse"
 
@@ -70,36 +67,36 @@ private const val FILE_EXPLORER_WIDTH = 320
 private const val CHANGES_WIDTH = 400
 private const val MATCH_PARENT = 0
 
-private const val NO_PADDING = 0
-private const val PADDING = 10
+private const val NO_PADDING = 0.0
+private const val PADDING = 10.0
 
 class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract, FileSelectionListener {
   private val gitRepository by lazy { openGitRepository(File(project)) }
   private lateinit var changes: List<Change>
   private lateinit var filePath: String
 
-  private val timelapseSlider = JSlider().apply {
-    maximum = 0
-    border = BorderFactory.createEmptyBorder(PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
+  private val timelapseSlider by lazy(NONE) {
+    Slider().apply {
+      min = 0.0
+      padding = Insets(PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
+      blockIncrement = 1.0
+      majorTickUnit = 1.0
+      minorTickCount = 0
 
-    addChangeListener {
-      if (!::changes.isInitialized) {
-        return@addChangeListener
+      valueProperty().addListener { _, _, value ->
+        if (!::changes.isInitialized) {
+          return@addListener
+        }
+
+        val changeIndex = value.toInt()
+        val (previousChange, selectedChange) = getChanges(changes, changeIndex)
+
+        // Show code on slider move
+        showCode(filePath, previousChange, selectedChange)
+
+        // Update anchor in area chart
+        insertionsAreaChart.setAnchorIndex(changeIndex)
       }
-
-      val changeIndex = this.value
-      val (previousChange, selectedChange) = getChanges(changes, changeIndex)
-
-      // Show code on slider move
-      showCode(filePath, previousChange, selectedChange)
-
-      // Update anchor in area chart
-      insertionsAreaChart.setAnchorIndex(changeIndex)
-    }
-
-    with(getInputMap(WHEN_FOCUSED)) {
-      put(KeyStroke.getKeyStroke(KEY_STROKE_UP), ACTION_MAP_KEY_NO_OP)
-      put(KeyStroke.getKeyStroke(KEY_STROKE_DOWN), ACTION_MAP_KEY_NO_OP)
     }
   }
 
@@ -118,13 +115,16 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
         fill = HORIZONTAL
         gridwidth = REMAINDER
       }
-      add(timelapseSlider, constraints)
 
-      add(JFXPanel().apply {
-        scene = Scene(commitInformationPane)
+      add(JFXPanel().apply { 
+        val pane = Pane(timelapseSlider)
+        scene = Scene(pane)
+        timelapseSlider.prefWidthProperty().bind(pane.widthProperty())
       }, constraints)
 
-      border = BorderFactory.createEmptyBorder(NO_PADDING, NO_PADDING, PADDING, NO_PADDING)
+      add(JFXPanel().apply { scene = Scene(commitInformationPane) }, constraints)
+
+      border = BorderFactory.createEmptyBorder(NO_PADDING.toInt(), NO_PADDING.toInt(), PADDING.toInt(), NO_PADDING.toInt())
     }
 
     JPanel(BorderLayout()).apply {
@@ -229,9 +229,9 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
 
     // Pair slider with change history
     with(timelapseSlider) {
-      maximum = changes.lastIndex
-      value = 0
-      debug { "Setting slider's maximum to $maximum, value to $value" }
+      max = changes.lastIndex.toDouble()
+      value = 0.0
+      debug { "Setting slider's maximum to $max, value to $value" }
     }
 
     // Show code now
@@ -272,7 +272,11 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     readingPane.showMainDiff(filePath, diffSpans)
 
     Platform.runLater {
-      commitInformationPane.showCommitInformation(selectedChange, timelapseSlider.value + 1, changes.size)
+      commitInformationPane.showCommitInformation(
+        selectedChange,
+        round(timelapseSlider.value + 1).toInt(),
+        changes.size
+      )
     }
 
     changedFilesPane.selectFileAndRevision(filePath, selectedChange.commitId)
