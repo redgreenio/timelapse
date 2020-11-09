@@ -109,9 +109,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     return Single.create { emitter ->
       val allRefs = gitRepository.refDatabase.refs
       RevWalk(gitRepository).use { revWalk ->
-        allRefs.forEach { ref ->
-          revWalk.markStart(revWalk.parseCommit(ref.objectId))
-        }
+        revWalk.markStart(revWalk.parseCommit(allRefs.first().objectId))
 
         var commitId: String? = null
         for (commit in revWalk) {

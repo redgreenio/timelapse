@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased]
+### Fixed
+* `IncorrectObjectException` while pruning the file tree by date.
 
 ## [0.1.4] - 2020-11-07
 ### Added
