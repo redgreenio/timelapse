@@ -2,6 +2,7 @@
 ## [Unreleased]
 ### Fixed
 * `IncorrectObjectException` while pruning the file tree by date.
+* Crash when selecting a modified file from the most recent commit in a pruned tree. 
 
 ## [0.1.4] - 2020-11-07
 ### Added
