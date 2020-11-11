@@ -30,7 +30,6 @@ private const val TITLE_BORDER_THICKNESS = 10
 
 internal const val KEY_STROKE_UP = "UP"
 internal const val KEY_STROKE_DOWN = "DOWN"
-internal const val ACTION_MAP_KEY_NO_OP = ""
 
 private const val ACTION_MAP_KEY_POSITIVE_INCREMENT = "positiveUnitIncrement"
 private const val ACTION_MAP_KEY_NEGATIVE_INCREMENT = "negativeUnitIncrement"
