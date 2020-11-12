@@ -40,11 +40,14 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
         for (line in rawDiffLinesWithoutHeader) {
           val diffLine = toDiffLine(line, oldLineNumber, newLineNumber)
           diffLines.add(diffLine)
-          oldLineNumber++
+          if (diffLine !is Insertion) {
+            oldLineNumber++
+          }
           if (diffLine !is Deletion) {
             newLineNumber++
           }
           if (diffLine is Marker) {
+            oldLineNumber = diffLine.oldLineNumber
             newLineNumber = diffLine.newLineNumber
           }
         }
@@ -73,7 +76,7 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
         diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker(diffLine)
         diffLine.startsWith('+') -> Insertion(diffLine.safelyTrimFirstSpaceChar(), newLineNumber)
         diffLine.startsWith('-') -> Deletion(diffLine.safelyTrimFirstSpaceChar(), oldLineNumber)
-        else -> Unmodified(diffLine.safelyTrimFirstSpaceChar())
+        else -> Unmodified(diffLine.safelyTrimFirstSpaceChar(), oldLineNumber, newLineNumber)
       }
     }
 

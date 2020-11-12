@@ -4,7 +4,11 @@ import java.awt.Color
 import kotlin.LazyThreadSafetyMode.NONE
 
 sealed class DiffLine {
-  data class Unmodified(val text: String) : DiffLine()
+  data class Unmodified(
+    val text: String,
+    val oldLineNumber: Int = NON_EXISTENT,
+    val newLineNumber: Int = NON_EXISTENT
+  ) : DiffLine()
 
   data class Deletion(
     val text: String,

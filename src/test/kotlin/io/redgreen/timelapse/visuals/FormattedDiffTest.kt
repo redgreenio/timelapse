@@ -35,13 +35,13 @@ class FormattedDiffTest {
     assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -1,6 +1,6 @@"),
-        Unmodified("buildscript {"),
-        Unmodified("  apply from: 'buildscripts/plugins.gradle'"),
+        Unmodified("buildscript {", 1, 1),
+        Unmodified("  apply from: 'buildscripts/plugins.gradle'", 2, 2),
         Deletion("  ext.kotlin_version = '1.3.70'", 3),
         Insertion("  ext.kotlin_version = '1.3.72'", 3),
         Blank,
-        Unmodified("  repositories {"),
-        Unmodified("    mavenCentral()"),
+        Unmodified("  repositories {", 5, 5),
+        Unmodified("    mavenCentral()", 6, 6),
       )
       .inOrder()
   }
@@ -179,22 +179,22 @@ class FormattedDiffTest {
     assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -25,6 +25,7 @@"),
-        Unmodified("import retrofit.mime.FormUrlEncodedTypedOutput;"),
-        Unmodified("import retrofit.mime.MultipartTypedOutput;"),
-        Unmodified("import retrofit.mime.TypedOutput;"),
+        Unmodified("import retrofit.mime.FormUrlEncodedTypedOutput;", 25, 25),
+        Unmodified("import retrofit.mime.MultipartTypedOutput;", 26, 26),
+        Unmodified("import retrofit.mime.TypedOutput;", 27, 27),
         Insertion("import retrofit.mime.TypedString;", 28),
         Blank,
-        Unmodified("final class RequestBuilder implements RequestInterceptor.RequestFacade {"),
-        Unmodified("  private final Converter converter;"),
+        Unmodified("final class RequestBuilder implements RequestInterceptor.RequestFacade {", 29, 30),
+        Unmodified("  private final Converter converter;", 30, 31),
         Marker("@@ -170,6 +171,8 @@"),
-        Unmodified("          if (value != null) { // Skip null values."),
-        Unmodified("            if (value instanceof TypedOutput) {"),
-        Unmodified("              multipartBody.addPart(name, (TypedOutput) value);"),
+        Unmodified("          if (value != null) { // Skip null values.", 170, 171),
+        Unmodified("            if (value instanceof TypedOutput) {", 171, 172),
+        Unmodified("              multipartBody.addPart(name, (TypedOutput) value);", 172, 173),
         Insertion("            } else if (value instanceof String) {", 174),
         Insertion("              multipartBody.addPart(name, new TypedString((String) value));", 175),
-        Unmodified("            } else {"),
-        Unmodified("              multipartBody.addPart(name, converter.toBody(value));"),
-        Unmodified("            }"),
+        Unmodified("            } else {", 173, 176),
+        Unmodified("              multipartBody.addPart(name, converter.toBody(value));", 174, 177),
+        Unmodified("            }", 175, 178),
       )
       .inOrder()
   }
