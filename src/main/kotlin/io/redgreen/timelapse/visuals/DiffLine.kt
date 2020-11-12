@@ -5,7 +5,12 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 sealed class DiffLine {
   data class Unmodified(val text: String) : DiffLine()
-  data class Deletion(val text: String) : DiffLine()
+
+  data class Deletion(
+    val text: String,
+    val oldLineNumber: Int = NON_EXISTENT
+  ) : DiffLine()
+
   data class Insertion(val text: String) : DiffLine()
 
   object Blank : DiffLine() {
@@ -20,17 +25,25 @@ sealed class DiffLine {
 
   data class Marker(val text: String) : DiffLine() {
     val oldLineNumber by lazy(NONE) {
-      val oldLineNumberPart = text.drop(4)
-      oldLineNumberPart.substring(0, oldLineNumberPart.indexOf(',')).toInt()
+      val (oldLineNumberPart, _) = text.drop(4).dropLast(3).split(' ')
+
+      val endIndex = if (oldLineNumberPart.contains(',')) {
+        oldLineNumberPart.indexOf(',')
+      } else {
+        oldLineNumberPart.length
+      }
+      oldLineNumberPart.substring(0, endIndex).toInt()
     }
 
     val newLineNumber by lazy(NONE) {
-      val newLineNumberPart = text.drop(4).split(' ').first()
-      newLineNumberPart.substring(0, newLineNumberPart.indexOf(',')).toInt()
+      val (_, newLineNumberPart)= text.drop(4).dropLast(3).split(' ')
+      newLineNumberPart.substring(1, newLineNumberPart.indexOf(',')).toInt()
     }
   }
 
+  // FIXME: 12-11-2020 Get rid of this companion object, it should not contain presentation information!
   companion object {
+    private const val NON_EXISTENT = 0
     private val insertionColor = Color(198, 240, 194)
     private val deletionColor = Color(240, 194, 194)
     private val unmodifiedColor = Color(255, 255, 255)

@@ -37,7 +37,7 @@ class FormattedDiffTest {
         Marker("@@ -1,6 +1,6 @@"),
         Unmodified("buildscript {"),
         Unmodified("  apply from: 'buildscripts/plugins.gradle'"),
-        Deletion("  ext.kotlin_version = '1.3.70'"),
+        Deletion("  ext.kotlin_version = '1.3.70'", 3),
         Insertion("  ext.kotlin_version = '1.3.72'"),
         Blank,
         Unmodified("  repositories {"),
@@ -67,7 +67,7 @@ class FormattedDiffTest {
     assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -1 +0,0 @@"),
-        Deletion("Hello World!"),
+        Deletion("Hello World!", 1),
         Blank,
       )
       .inOrder()

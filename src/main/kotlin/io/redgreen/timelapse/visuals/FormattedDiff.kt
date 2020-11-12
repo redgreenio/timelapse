@@ -24,14 +24,25 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
       val rawDiffLines = rawDiff.lines()
       val headerLineCount = headerLineCount(rawDiffLines[DIFF_TYPE_LINE_INDEX])
 
-      val spans = rawDiffLines
+      val rawDiffLinesWithoutHeader = rawDiffLines
         .drop(headerLineCount)
-        .map(::toSpan)
 
-      return if (spans == contentsEmpty) {
+      val contentsEmpty = rawDiffLinesWithoutHeader.size == 1 && rawDiffLinesWithoutHeader.first().isEmpty()
+
+      return if (contentsEmpty) {
         FormattedDiff(listOf(ContentsEmpty))
       } else {
-        FormattedDiff(spans)
+        val marker = Marker(rawDiffLinesWithoutHeader.first())
+
+        val diffLines = mutableListOf<DiffLine>()
+        var oldLineNumber = marker.oldLineNumber - 1 /* Because the first line is a marker, hence offsetting by 1 */
+        for (line in rawDiffLinesWithoutHeader) {
+          val diffLine = toDiffLine(line, oldLineNumber)
+          diffLines.add(diffLine)
+          oldLineNumber++
+        }
+
+        FormattedDiff(diffLines.toList())
       }
     }
 
@@ -45,12 +56,12 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
       }
     }
 
-    private fun toSpan(diffLine: String): DiffLine {
+    private fun toDiffLine(diffLine: String, oldLineNumber: Int): DiffLine {
       return when {
         diffLine.length == 1 && diffLine.isBlank() -> Blank
         diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker(diffLine)
         diffLine.startsWith('+') -> Insertion(diffLine.safelyTrimFirstSpaceChar())
-        diffLine.startsWith('-') -> Deletion(diffLine.safelyTrimFirstSpaceChar())
+        diffLine.startsWith('-') -> Deletion(diffLine.safelyTrimFirstSpaceChar(), oldLineNumber)
         else -> Unmodified(diffLine.safelyTrimFirstSpaceChar())
       }
     }
