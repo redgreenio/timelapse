@@ -15,10 +15,6 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
     private const val HEADER_LINES_COUNT_NEW_OR_DELETED_FILE = 5
     private const val HEADER_LINES_COUNT_MODIFIED_FILE = 4
 
-    private const val EMPTY_STRING = ""
-
-    private val contentsEmpty = listOf(Unmodified(EMPTY_STRING))
-
     fun from(rawDiff: String): FormattedDiff {
       val rawDiffLines = rawDiff.lines()
       val headerLineCount = headerLineCount(rawDiffLines[DIFF_TYPE_LINE_INDEX])

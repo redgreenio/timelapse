@@ -6,8 +6,8 @@ import kotlin.LazyThreadSafetyMode.NONE
 sealed class DiffLine {
   data class Unmodified(
     val text: String,
-    val oldLineNumber: Int = NON_EXISTENT,
-    val newLineNumber: Int = NON_EXISTENT
+    val oldLineNumber: Int,
+    val newLineNumber: Int
   ) : DiffLine()
 
   data class Deletion(
