@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.ui
 
-import io.redgreen.timelapse.visuals.DiffSpan
+import io.redgreen.timelapse.visuals.DiffLine
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.NORTH
@@ -82,7 +82,7 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
     }
   }
 
-  override fun showDiff(diffSpans: List<DiffSpan>) {
+  override fun showDiff(diffLines: List<DiffLine>) {
     with(textPane) {
       // Set attributes
       val attributeSet = SimpleAttributeSet()
@@ -95,7 +95,7 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
         this.styledDocument.remove(0, this.document.length)
 
         // Add new text
-        diffSpans
+        diffLines
           .onEach { span ->
             StyleConstants.setBackground(style, span.backgroundColor())
             styledDocument.insertString(styledDocument.length, span.text(), style)
@@ -114,5 +114,5 @@ class CodeTextPane private constructor(private val textPane: JTextPane) : JScrol
 
 interface DiffDisplay {
   val codeComponent: JComponent
-  fun showDiff(diffSpans: List<DiffSpan>)
+  fun showDiff(diffLines: List<DiffLine>)
 }

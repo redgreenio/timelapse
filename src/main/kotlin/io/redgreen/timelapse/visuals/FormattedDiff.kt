@@ -1,13 +1,13 @@
 package io.redgreen.timelapse.visuals
 
-import io.redgreen.timelapse.visuals.DiffSpan.Blank
-import io.redgreen.timelapse.visuals.DiffSpan.ContentsEmpty
-import io.redgreen.timelapse.visuals.DiffSpan.Deletion
-import io.redgreen.timelapse.visuals.DiffSpan.Insertion
-import io.redgreen.timelapse.visuals.DiffSpan.Marker
-import io.redgreen.timelapse.visuals.DiffSpan.Unmodified
+import io.redgreen.timelapse.visuals.DiffLine.Blank
+import io.redgreen.timelapse.visuals.DiffLine.ContentsEmpty
+import io.redgreen.timelapse.visuals.DiffLine.Deletion
+import io.redgreen.timelapse.visuals.DiffLine.Insertion
+import io.redgreen.timelapse.visuals.DiffLine.Marker
+import io.redgreen.timelapse.visuals.DiffLine.Unmodified
 
-class FormattedDiff private constructor(val spans: List<DiffSpan>) {
+class FormattedDiff private constructor(val lines: List<DiffLine>) {
   companion object {
     private const val DIFF_TYPE_LINE_INDEX = 1
     private const val DIFF_TYPE_NEW_FILE = "new file"
@@ -45,7 +45,7 @@ class FormattedDiff private constructor(val spans: List<DiffSpan>) {
       }
     }
 
-    private fun toSpan(diffLine: String): DiffSpan {
+    private fun toSpan(diffLine: String): DiffLine {
       return when {
         diffLine.length == 1 && diffLine.isBlank() -> Blank
         diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker(diffLine)

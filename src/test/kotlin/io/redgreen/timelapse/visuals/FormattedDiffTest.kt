@@ -1,12 +1,12 @@
 package io.redgreen.timelapse.visuals
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.visuals.DiffSpan.Blank
-import io.redgreen.timelapse.visuals.DiffSpan.ContentsEmpty
-import io.redgreen.timelapse.visuals.DiffSpan.Deletion
-import io.redgreen.timelapse.visuals.DiffSpan.Insertion
-import io.redgreen.timelapse.visuals.DiffSpan.Marker
-import io.redgreen.timelapse.visuals.DiffSpan.Unmodified
+import io.redgreen.timelapse.visuals.DiffLine.Blank
+import io.redgreen.timelapse.visuals.DiffLine.ContentsEmpty
+import io.redgreen.timelapse.visuals.DiffLine.Deletion
+import io.redgreen.timelapse.visuals.DiffLine.Insertion
+import io.redgreen.timelapse.visuals.DiffLine.Marker
+import io.redgreen.timelapse.visuals.DiffLine.Unmodified
 import org.junit.jupiter.api.Test
 
 class FormattedDiffTest {
@@ -32,7 +32,7 @@ class FormattedDiffTest {
     val formattedDiff = FormattedDiff.from(rawDiff)
 
     // then
-    assertThat(formattedDiff.spans)
+    assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -1,6 +1,6 @@"),
         Unmodified("buildscript {"),
@@ -64,7 +64,7 @@ class FormattedDiffTest {
     val formattedDiff = FormattedDiff.from(rawDiff)
 
     // then
-    assertThat(formattedDiff.spans)
+    assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -1 +0,0 @@"),
         Deletion("Hello World!"),
@@ -91,7 +91,7 @@ class FormattedDiffTest {
     val formattedDiff = FormattedDiff.from(rawDiff)
 
     // then
-    assertThat(formattedDiff.spans)
+    assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -0,0 +1 @@"),
         Insertion("I'm new in town :)"),
@@ -116,7 +116,7 @@ class FormattedDiffTest {
     val formattedDiff = FormattedDiff.from(rawDiff)
 
     // then
-    assertThat(formattedDiff.spans)
+    assertThat(formattedDiff.lines)
       .containsExactly(
         ContentsEmpty,
       )
@@ -138,7 +138,7 @@ class FormattedDiffTest {
     val formattedDiff = FormattedDiff.from(rawDiff)
 
     // then
-    assertThat(formattedDiff.spans)
+    assertThat(formattedDiff.lines)
       .containsExactly(
         ContentsEmpty
       )
@@ -176,7 +176,7 @@ class FormattedDiffTest {
     val formattedDiff = FormattedDiff.from(rawDiff)
 
     // then
-    assertThat(formattedDiff.spans)
+    assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -25,6 +25,7 @@"),
         Unmodified("import retrofit.mime.FormUrlEncodedTypedOutput;"),

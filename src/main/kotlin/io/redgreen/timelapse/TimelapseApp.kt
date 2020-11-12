@@ -20,7 +20,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
-import io.redgreen.timelapse.visuals.DiffSpan.Insertion
+import io.redgreen.timelapse.visuals.DiffLine.Insertion
 import io.redgreen.timelapse.visuals.FormattedDiff
 import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
@@ -267,7 +267,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     val diffSpans = if (isInitialCommit) {
       listOf(Insertion(diffText))
     } else {
-      FormattedDiff.from(diffText).spans
+      FormattedDiff.from(diffText).lines
     }
     readingPane.showMainDiff(filePath, diffSpans)
 
@@ -291,7 +291,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
   }
 
   override fun showChangedFileDiff(commitId: String, changedFile: ChangedFile) {
-    val spans = FormattedDiff.from(gitRepository.getDiff(commitId, changedFile.filePath)).spans
+    val spans = FormattedDiff.from(gitRepository.getDiff(commitId, changedFile.filePath)).lines
     readingPane.showOverlappingDiff(getTitle(changedFile), spans)
   }
 }

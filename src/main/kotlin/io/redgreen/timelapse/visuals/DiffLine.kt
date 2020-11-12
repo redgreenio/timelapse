@@ -2,22 +2,22 @@ package io.redgreen.timelapse.visuals
 
 import java.awt.Color
 
-sealed class DiffSpan {
-  data class Unmodified(val text: String) : DiffSpan()
-  data class Deletion(val text: String) : DiffSpan()
-  data class Insertion(val text: String) : DiffSpan()
+sealed class DiffLine {
+  data class Unmodified(val text: String) : DiffLine()
+  data class Deletion(val text: String) : DiffLine()
+  data class Insertion(val text: String) : DiffLine()
 
-  object Blank : DiffSpan() {
+  object Blank : DiffLine() {
     override fun toString(): String =
       Blank::class.java.simpleName
   }
 
-  object ContentsEmpty : DiffSpan() {
+  object ContentsEmpty : DiffLine() {
     override fun toString(): String =
       ContentsEmpty::class.java.simpleName
   }
 
-  data class Marker(val text: String) : DiffSpan()
+  data class Marker(val text: String) : DiffLine()
 
   companion object {
     private val insertionColor = Color(198, 240, 194)

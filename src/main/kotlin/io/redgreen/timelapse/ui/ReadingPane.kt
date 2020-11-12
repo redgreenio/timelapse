@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.ui
 
-import io.redgreen.timelapse.visuals.DiffSpan
-import io.redgreen.timelapse.visuals.DiffSpan.Deletion
-import io.redgreen.timelapse.visuals.DiffSpan.Insertion
+import io.redgreen.timelapse.visuals.DiffLine
+import io.redgreen.timelapse.visuals.DiffLine.Deletion
+import io.redgreen.timelapse.visuals.DiffLine.Insertion
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.WEST
@@ -39,21 +39,21 @@ class ReadingPane : JLayeredPane() {
     add(overlappingModalPanel, MODAL_LAYER)
   }
 
-  fun showMainDiff(filePath: String, diffSpans: List<DiffSpan>) {
+  fun showMainDiff(filePath: String, diffLines: List<DiffLine>) {
     moveToFront(mainCodeTextPane)
     with(mainCodeTextPane) {
-      setTitle("$filePath [${getInsertionsDeletionsSummaryText(diffSpans)}]")
-      showDiff(diffSpans)
+      setTitle("$filePath [${getInsertionsDeletionsSummaryText(diffLines)}]")
+      showDiff(diffLines)
     }
   }
 
-  fun showOverlappingDiff(title: String, diffSpans: List<DiffSpan>) {
+  fun showOverlappingDiff(title: String, diffLines: List<DiffLine>) {
     overlappingModalPanel.isVisible = true
     moveToFront(overlappingModalPanel)
 
     with(overlappingCodeTextPane) {
-      setTitle("$title [${getInsertionsDeletionsSummaryText(diffSpans)}]")
-      showDiff(diffSpans)
+      setTitle("$title [${getInsertionsDeletionsSummaryText(diffLines)}]")
+      showDiff(diffLines)
     }
   }
 
@@ -71,9 +71,9 @@ class ReadingPane : JLayeredPane() {
     overlappingCodeTextPane.requestFocus()
   }
 
-  private fun getInsertionsDeletionsSummaryText(diffSpans: List<DiffSpan>): String {
-    val deletionsCount = diffSpans.filterIsInstance<Deletion>().count()
-    val insertionsCount = diffSpans.filterIsInstance<Insertion>().count()
+  private fun getInsertionsDeletionsSummaryText(diffLines: List<DiffLine>): String {
+    val deletionsCount = diffLines.filterIsInstance<Deletion>().count()
+    val insertionsCount = diffLines.filterIsInstance<Insertion>().count()
 
     return when {
       deletionsCount > 0 && insertionsCount > 0 -> "+$insertionsCount, -$deletionsCount"
