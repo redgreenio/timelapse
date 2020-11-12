@@ -45,6 +45,7 @@ dependencies {
   testImplementation("com.spotify.mobius:mobius-test:$mobius")
   testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
   testImplementation("com.google.truth:truth:1.0.1")
+  testImplementation("com.approvaltests:approvaltests:9.3.0")
 }
 
 application.mainClassName = "LauncherKt"
