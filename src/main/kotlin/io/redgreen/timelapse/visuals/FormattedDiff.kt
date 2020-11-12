@@ -36,10 +36,17 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
 
         val diffLines = mutableListOf<DiffLine>()
         var oldLineNumber = marker.oldLineNumber - 1 /* Because the first line is a marker, hence offsetting by 1 */
+        var newLineNumber = marker.newLineNumber - 1 /* Because the first line is a marker, hence offsetting by 1 */
         for (line in rawDiffLinesWithoutHeader) {
-          val diffLine = toDiffLine(line, oldLineNumber)
+          val diffLine = toDiffLine(line, oldLineNumber, newLineNumber)
           diffLines.add(diffLine)
           oldLineNumber++
+          if (diffLine !is Deletion) {
+            newLineNumber++
+          }
+          if (diffLine is Marker) {
+            newLineNumber = diffLine.newLineNumber
+          }
         }
 
         FormattedDiff(diffLines.toList())
@@ -56,11 +63,15 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
       }
     }
 
-    private fun toDiffLine(diffLine: String, oldLineNumber: Int): DiffLine {
+    private fun toDiffLine(
+      diffLine: String,
+      oldLineNumber: Int,
+      newLineNumber: Int
+    ): DiffLine {
       return when {
         diffLine.length == 1 && diffLine.isBlank() -> Blank
         diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker(diffLine)
-        diffLine.startsWith('+') -> Insertion(diffLine.safelyTrimFirstSpaceChar())
+        diffLine.startsWith('+') -> Insertion(diffLine.safelyTrimFirstSpaceChar(), newLineNumber)
         diffLine.startsWith('-') -> Deletion(diffLine.safelyTrimFirstSpaceChar(), oldLineNumber)
         else -> Unmodified(diffLine.safelyTrimFirstSpaceChar())
       }

@@ -8,10 +8,13 @@ sealed class DiffLine {
 
   data class Deletion(
     val text: String,
-    val oldLineNumber: Int = NON_EXISTENT
+    val oldLineNumber: Int
   ) : DiffLine()
 
-  data class Insertion(val text: String) : DiffLine()
+  data class Insertion(
+    val text: String,
+    val newLineNumber: Int = NON_EXISTENT // TODO: 12-11-2020 Remove default parameter
+  ) : DiffLine()
 
   object Blank : DiffLine() {
     override fun toString(): String =
@@ -37,7 +40,12 @@ sealed class DiffLine {
 
     val newLineNumber by lazy(NONE) {
       val (_, newLineNumberPart)= text.drop(4).dropLast(3).split(' ')
-      newLineNumberPart.substring(1, newLineNumberPart.indexOf(',')).toInt()
+      val endIndex = if (newLineNumberPart.contains(',')) {
+        newLineNumberPart.indexOf(',')
+      } else {
+        newLineNumberPart.length
+      }
+      newLineNumberPart.substring(1, endIndex).toInt()
     }
   }
 

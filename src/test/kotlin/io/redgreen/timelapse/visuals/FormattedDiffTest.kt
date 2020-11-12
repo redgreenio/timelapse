@@ -38,7 +38,7 @@ class FormattedDiffTest {
         Unmodified("buildscript {"),
         Unmodified("  apply from: 'buildscripts/plugins.gradle'"),
         Deletion("  ext.kotlin_version = '1.3.70'", 3),
-        Insertion("  ext.kotlin_version = '1.3.72'"),
+        Insertion("  ext.kotlin_version = '1.3.72'", 3),
         Blank,
         Unmodified("  repositories {"),
         Unmodified("    mavenCentral()"),
@@ -94,7 +94,7 @@ class FormattedDiffTest {
     assertThat(formattedDiff.lines)
       .containsExactly(
         Marker("@@ -0,0 +1 @@"),
-        Insertion("I'm new in town :)"),
+        Insertion("I'm new in town :)", 1),
         Blank,
       )
       .inOrder()
@@ -182,7 +182,7 @@ class FormattedDiffTest {
         Unmodified("import retrofit.mime.FormUrlEncodedTypedOutput;"),
         Unmodified("import retrofit.mime.MultipartTypedOutput;"),
         Unmodified("import retrofit.mime.TypedOutput;"),
-        Insertion("import retrofit.mime.TypedString;"),
+        Insertion("import retrofit.mime.TypedString;", 28),
         Blank,
         Unmodified("final class RequestBuilder implements RequestInterceptor.RequestFacade {"),
         Unmodified("  private final Converter converter;"),
@@ -190,8 +190,8 @@ class FormattedDiffTest {
         Unmodified("          if (value != null) { // Skip null values."),
         Unmodified("            if (value instanceof TypedOutput) {"),
         Unmodified("              multipartBody.addPart(name, (TypedOutput) value);"),
-        Insertion("            } else if (value instanceof String) {"),
-        Insertion("              multipartBody.addPart(name, new TypedString((String) value));"),
+        Insertion("            } else if (value instanceof String) {", 174),
+        Insertion("              multipartBody.addPart(name, new TypedString((String) value));", 175),
         Unmodified("            } else {"),
         Unmodified("              multipartBody.addPart(name, converter.toBody(value));"),
         Unmodified("            }"),
