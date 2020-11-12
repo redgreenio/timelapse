@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.visuals
 
 import java.awt.Color
+import kotlin.LazyThreadSafetyMode.NONE
 
 sealed class DiffLine {
   data class Unmodified(val text: String) : DiffLine()
@@ -17,7 +18,17 @@ sealed class DiffLine {
       ContentsEmpty::class.java.simpleName
   }
 
-  data class Marker(val text: String) : DiffLine()
+  data class Marker(val text: String) : DiffLine() {
+    val oldLineNumber by lazy(NONE) {
+      val oldLineNumberPart = text.drop(4)
+      oldLineNumberPart.substring(0, oldLineNumberPart.indexOf(',')).toInt()
+    }
+
+    val newLineNumber by lazy(NONE) {
+      val newLineNumberPart = text.drop(4).split(' ').first()
+      newLineNumberPart.substring(0, newLineNumberPart.indexOf(',')).toInt()
+    }
+  }
 
   companion object {
     private val insertionColor = Color(198, 240, 194)
