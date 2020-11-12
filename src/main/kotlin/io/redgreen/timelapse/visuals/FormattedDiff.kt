@@ -16,15 +16,15 @@ class FormattedDiff(val spans: List<DiffSpan>) {
 
     fun from(rawDiff: String): FormattedDiff {
       val diffTypeLine = rawDiff.lines().take(2).last()
-      val deletedOrNewFile = with(diffTypeLine) { startsWith(DIFF_TYPE_NEW_FILE) || startsWith(DIFF_TYPE_DELETED) }
-      val skipLines = if (deletedOrNewFile) { 5 } else { 4 }
+      val newOrDeletedFile = with(diffTypeLine) { startsWith(DIFF_TYPE_NEW_FILE) || startsWith(DIFF_TYPE_DELETED) }
+      val skipLines = if (newOrDeletedFile) { 4 } else { 3 }
 
       val spans = rawDiff
         .lines()
         .filterIndexed { index, _ -> index > skipLines }
         .map(::toSpan)
 
-      return if (spans.isEmpty()) {
+      return if (spans.containsAll(listOf(Unmodified("")))) {
         contentsEmpty
       } else {
         FormattedDiff(spans)

@@ -34,6 +34,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.spans)
       .containsExactly(
+        Marker("@@ -1,6 +1,6 @@"),
         Unmodified("buildscript {"),
         Unmodified("  apply from: 'buildscripts/plugins.gradle'"),
         Deletion("  ext.kotlin_version = '1.3.70'"),
@@ -65,6 +66,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.spans)
       .containsExactly(
+        Marker("@@ -1 +0,0 @@"),
         Deletion("Hello World!"),
         Blank,
       )
@@ -91,6 +93,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.spans)
       .containsExactly(
+        Marker("@@ -0,0 +1 @@"),
         Insertion("I'm new in town :)"),
         Blank,
       )
@@ -175,6 +178,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.spans)
       .containsExactly(
+        Marker("@@ -25,6 +25,7 @@"),
         Unmodified("import retrofit.mime.FormUrlEncodedTypedOutput;"),
         Unmodified("import retrofit.mime.MultipartTypedOutput;"),
         Unmodified("import retrofit.mime.TypedOutput;"),
