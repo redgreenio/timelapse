@@ -1,7 +1,6 @@
 package io.redgreen.timelapse.visuals
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.visuals.DiffLine.Blank
 import io.redgreen.timelapse.visuals.DiffLine.ContentsEmpty
 import io.redgreen.timelapse.visuals.DiffLine.Deletion
 import io.redgreen.timelapse.visuals.DiffLine.Insertion
@@ -39,7 +38,7 @@ class FormattedDiffTest {
         Unmodified("  apply from: 'buildscripts/plugins.gradle'", 2, 2),
         Deletion("  ext.kotlin_version = '1.3.70'", 3),
         Insertion("  ext.kotlin_version = '1.3.72'", 3),
-        Blank,
+        Unmodified("", 4, 4),
         Unmodified("  repositories {", 5, 5),
         Unmodified("    mavenCentral()", 6, 6),
       )
@@ -68,7 +67,7 @@ class FormattedDiffTest {
       .containsExactly(
         Marker("@@ -1 +0,0 @@"),
         Deletion("Hello World!", 1),
-        Blank,
+        Unmodified("", 2, 0),
       )
       .inOrder()
   }
@@ -95,7 +94,7 @@ class FormattedDiffTest {
       .containsExactly(
         Marker("@@ -0,0 +1 @@"),
         Insertion("I'm new in town :)", 1),
-        Blank,
+        Unmodified("", 0, 2),
       )
       .inOrder()
   }
@@ -183,7 +182,7 @@ class FormattedDiffTest {
         Unmodified("import retrofit.mime.MultipartTypedOutput;", 26, 26),
         Unmodified("import retrofit.mime.TypedOutput;", 27, 27),
         Insertion("import retrofit.mime.TypedString;", 28),
-        Blank,
+        Unmodified("", 28, 29),
         Unmodified("final class RequestBuilder implements RequestInterceptor.RequestFacade {", 29, 30),
         Unmodified("  private final Converter converter;", 30, 31),
         Marker("@@ -170,6 +171,8 @@"),

@@ -1,6 +1,5 @@
 package io.redgreen.timelapse.visuals
 
-import io.redgreen.timelapse.visuals.DiffLine.Blank
 import io.redgreen.timelapse.visuals.DiffLine.ContentsEmpty
 import io.redgreen.timelapse.visuals.DiffLine.Deletion
 import io.redgreen.timelapse.visuals.DiffLine.Insertion
@@ -72,7 +71,6 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
       newLineNumber: Int
     ): DiffLine {
       return when {
-        diffLine.length == 1 && diffLine.isBlank() -> Blank
         diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker(diffLine)
         diffLine.startsWith('+') -> Insertion(diffLine.safelyTrimFirstSpaceChar(), newLineNumber)
         diffLine.startsWith('-') -> Deletion(diffLine.safelyTrimFirstSpaceChar(), oldLineNumber)

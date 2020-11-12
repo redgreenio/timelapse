@@ -20,11 +20,6 @@ sealed class DiffLine {
     val newLineNumber: Int = NON_EXISTENT // TODO: 12-11-2020 Remove default parameter
   ) : DiffLine()
 
-  object Blank : DiffLine() {
-    override fun toString(): String =
-      Blank::class.java.simpleName
-  }
-
   object ContentsEmpty : DiffLine() {
     override fun toString(): String =
       ContentsEmpty::class.java.simpleName
@@ -79,7 +74,6 @@ sealed class DiffLine {
       is Unmodified -> "${this.text}\n"
       is Deletion -> "${this.text}\n"
       is Insertion -> "${this.text}\n"
-      Blank -> "\n"
       ContentsEmpty -> "<contents empty>"
       is Marker -> sectionBlocks
     }
