@@ -36,6 +36,10 @@ class JavaFxApp : Application() {
                 font-size: 15px;
               }
 
+              table tr td:first-child {
+                padding-left: 24px;
+              }
+
               .deletion {
                 background-color: #ffeef0;
               }
@@ -57,7 +61,7 @@ class JavaFxApp : Application() {
                 white-space:nowrap;
                 text-align: right;
                 vertical-align: top;
-                padding: 2px 8px 2px 30px;
+                padding: 2px 8px 2px 8px;
                 color: rgba(27, 31, 35, 0.4);
               }
 
@@ -81,19 +85,19 @@ class JavaFxApp : Application() {
           <table>
             <tbody>
               <tr class="diff-section">
-                <td class="line-number">​</td><td class="blob"></td>
+                <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
               </tr>
               <tr class="unmodified">
-                <td class="line-number">9</td><td class="blob">&nbsp;&nbsp;fun main() {</td>
+                <td class="line-number">9</td><td class="line-number">9</td><td class="blob">&nbsp;&nbsp;fun main() {</td>
               </tr>
               <tr class="deletion">
-                <td class="line-number">10</td><td class="blob">-&nbsp;&nbsp;&nbsp;println("Hello, world!")</td>
+                <td class="line-number">10</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;println("Hello, world!")</td>
               </tr>
               <tr class="insertion">
-                <td class="line-number">10</td><td class="blob">+&nbsp;&nbsp;&nbsp;println("Hola, mundo!")</td>
+                <td class="line-number"></td><td class="line-number">10</td><td class="blob">+&nbsp;&nbsp;&nbsp;println("Hola, mundo!")</td>
               </tr>
               <tr class="unmodified">
-                <td class="line-number">11</td><td class="blob">&nbsp;&nbsp;}</td>
+                <td class="line-number">11</td><td class="line-number">11</td><td class="blob">&nbsp;&nbsp;}</td>
               </tr>
             </tbody>
           </table>
