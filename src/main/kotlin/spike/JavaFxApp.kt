@@ -1,10 +1,10 @@
 package spike
 
+import io.redgreen.timelapse.diff.DiffViewer
 import javafx.application.Application
 import javafx.application.Application.launch
 import javafx.scene.Scene
 import javafx.scene.text.Font
-import javafx.scene.web.WebView
 import javafx.stage.Stage
 
 fun main(args: Array<String>) {
@@ -21,8 +21,7 @@ class JavaFxApp : Application() {
       Font.loadFont(JavaFxApp::class.java.getResource(it).toExternalForm(), 15.0)
     }
 
-    val webView = WebView().apply {
-      engine.loadContent("""
+    val htmlContent = """
         <html>
           <head>
             <style>
@@ -102,12 +101,13 @@ class JavaFxApp : Application() {
             </tbody>
           </table>
         </html>
-      """.trimIndent())
-    }
+      """.trimIndent()
+
+    val diffViewer = DiffViewer().apply { showContent(htmlContent) }
 
     with(primaryStage) {
       title = "Diff Viewer"
-      scene = Scene(webView, 800.0, 400.0)
+      scene = Scene(diffViewer, 800.0, 400.0)
       show()
     }
   }
