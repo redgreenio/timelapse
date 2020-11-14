@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.ui
 
-import io.redgreen.timelapse.visuals.DiffLine
+import io.redgreen.timelapse.diff.DiffLine
 import java.awt.Color
 import java.awt.Font
 import java.awt.Font.PLAIN

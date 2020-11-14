@@ -1,7 +1,7 @@
-package io.redgreen.timelapse.visuals
+package io.redgreen.timelapse.diff
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.visuals.DiffLine.Marker
+import io.redgreen.timelapse.diff.DiffLine.Marker
 import org.junit.jupiter.api.Test
 
 class MarkerTest {

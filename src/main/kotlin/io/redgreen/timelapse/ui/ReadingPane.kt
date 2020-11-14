@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.ui
 
-import io.redgreen.timelapse.visuals.DiffLine
-import io.redgreen.timelapse.visuals.DiffLine.Deletion
-import io.redgreen.timelapse.visuals.DiffLine.Insertion
+import io.redgreen.timelapse.diff.DiffLine
+import io.redgreen.timelapse.diff.DiffLine.Deletion
+import io.redgreen.timelapse.diff.DiffLine.Insertion
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.WEST

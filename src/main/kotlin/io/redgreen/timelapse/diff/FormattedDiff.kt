@@ -1,10 +1,10 @@
-package io.redgreen.timelapse.visuals
+package io.redgreen.timelapse.diff
 
-import io.redgreen.timelapse.visuals.DiffLine.ContentsEmpty
-import io.redgreen.timelapse.visuals.DiffLine.Deletion
-import io.redgreen.timelapse.visuals.DiffLine.Insertion
-import io.redgreen.timelapse.visuals.DiffLine.Marker
-import io.redgreen.timelapse.visuals.DiffLine.Unmodified
+import io.redgreen.timelapse.diff.DiffLine.ContentsEmpty
+import io.redgreen.timelapse.diff.DiffLine.Deletion
+import io.redgreen.timelapse.diff.DiffLine.Insertion
+import io.redgreen.timelapse.diff.DiffLine.Marker
+import io.redgreen.timelapse.diff.DiffLine.Unmodified
 
 class FormattedDiff private constructor(val lines: List<DiffLine>) {
   companion object {

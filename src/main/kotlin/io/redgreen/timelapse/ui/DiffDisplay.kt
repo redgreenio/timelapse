@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.ui
 
-import io.redgreen.timelapse.visuals.DiffLine
+import io.redgreen.timelapse.diff.DiffLine
 import javax.swing.JComponent
 
 interface DiffDisplay {

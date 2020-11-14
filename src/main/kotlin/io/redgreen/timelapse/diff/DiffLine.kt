@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.visuals
+package io.redgreen.timelapse.diff
 
 import java.awt.Color
 import kotlin.LazyThreadSafetyMode.NONE

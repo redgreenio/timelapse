@@ -2,6 +2,8 @@ package io.redgreen.timelapse
 
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
+import io.redgreen.timelapse.diff.DiffLine.Insertion
+import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommitHistoryText
@@ -20,8 +22,6 @@ import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
-import io.redgreen.timelapse.visuals.DiffLine.Insertion
-import io.redgreen.timelapse.visuals.FormattedDiff
 import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
 import javafx.geometry.Insets
