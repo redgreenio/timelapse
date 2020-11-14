@@ -264,12 +264,12 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
       gitRepository.getDiff(selectedChange.commitId, filePath)
     }
 
-    val diffSpans = if (isInitialCommit) {
-      listOf(Insertion(diffText))
+    val formattedDiff = if (isInitialCommit) {
+      FormattedDiff(listOf(Insertion(diffText)))
     } else {
-      FormattedDiff.from(diffText).lines
+      FormattedDiff.from(diffText)
     }
-    readingPane.showMainDiff(filePath, diffSpans)
+    readingPane.showMainDiff(filePath, formattedDiff)
 
     Platform.runLater {
       commitInformationPane.showCommitInformation(
@@ -291,8 +291,8 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
   }
 
   override fun showChangedFileDiff(commitId: String, changedFile: ChangedFile) {
-    val spans = FormattedDiff.from(gitRepository.getDiff(commitId, changedFile.filePath)).lines
-    readingPane.showOverlappingDiff(getTitle(changedFile), spans)
+    val diff = FormattedDiff.from(gitRepository.getDiff(commitId, changedFile.filePath))
+    readingPane.showOverlappingDiff(getTitle(changedFile), diff)
   }
 }
 

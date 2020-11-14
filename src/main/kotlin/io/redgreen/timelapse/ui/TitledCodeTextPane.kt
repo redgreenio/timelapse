@@ -12,7 +12,7 @@ private const val TITLE_BACKGROUND_COLOR = 0x808080
 private const val TITLE_FOREGROUND_COLOR = 0xffffff
 private const val TITLE_BORDER_THICKNESS = 10
 
-class TitledCodeTextPane : JPanel(BorderLayout()), DiffDisplay by CodeTextPane() {
+class TitledCodeTextPane : JPanel(BorderLayout()), DiffDisplay by CodeViewer() {
   private val titleLabel = JLabel().apply {
     isOpaque = true
     foreground = Color(TITLE_FOREGROUND_COLOR)

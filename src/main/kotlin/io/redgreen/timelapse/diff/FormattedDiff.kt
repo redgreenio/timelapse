@@ -6,7 +6,7 @@ import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.DiffLine.Marker
 import io.redgreen.timelapse.diff.DiffLine.Unmodified
 
-class FormattedDiff private constructor(val lines: List<DiffLine>) {
+class FormattedDiff internal constructor(val lines: List<DiffLine>) {
   companion object {
     private const val DIFF_TYPE_LINE_INDEX = 1
     private const val DIFF_TYPE_NEW_FILE = "new file"

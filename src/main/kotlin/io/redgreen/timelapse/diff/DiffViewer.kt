@@ -10,8 +10,7 @@ class DiffViewer : StackPane() {
     children.add(webView)
   }
 
-  // TODO: 14-11-2020 Change this to accept a formatted diff object
-  fun showContent(html: String) {
-    webView.engine.loadContent(html)
+  fun showDiff(diff: FormattedDiff) {
+    webView.engine.loadContent(diff.toHtml())
   }
 }

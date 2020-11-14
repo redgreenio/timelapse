@@ -112,7 +112,7 @@ class JavaFxApp : Application() {
       </html>
       """.trimIndent()
 
-    val diffViewer = DiffViewer().apply { showContent(htmlContent) }
+    val diffViewer = DiffViewer()
 
     with(primaryStage) {
       title = "Diff Viewer"

@@ -3,6 +3,7 @@ package io.redgreen.timelapse.ui
 import io.redgreen.timelapse.diff.DiffLine
 import io.redgreen.timelapse.diff.DiffLine.Deletion
 import io.redgreen.timelapse.diff.DiffLine.Insertion
+import io.redgreen.timelapse.diff.FormattedDiff
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.WEST
@@ -39,21 +40,21 @@ class ReadingPane : JLayeredPane() {
     add(overlappingModalPanel, MODAL_LAYER)
   }
 
-  fun showMainDiff(filePath: String, diffLines: List<DiffLine>) {
+  fun showMainDiff(filePath: String, diff: FormattedDiff) {
     moveToFront(mainCodeTextPane)
     with(mainCodeTextPane) {
-      setTitle("$filePath [${getInsertionsDeletionsSummaryText(diffLines)}]")
-      showDiff(diffLines)
+      setTitle("$filePath [${getInsertionsDeletionsSummaryText(diff.lines)}]")
+      showDiff(diff)
     }
   }
 
-  fun showOverlappingDiff(title: String, diffLines: List<DiffLine>) {
+  fun showOverlappingDiff(title: String, diff: FormattedDiff) {
     overlappingModalPanel.isVisible = true
     moveToFront(overlappingModalPanel)
 
     with(overlappingCodeTextPane) {
-      setTitle("$title [${getInsertionsDeletionsSummaryText(diffLines)}]")
-      showDiff(diffLines)
+      setTitle("$title [${getInsertionsDeletionsSummaryText(diff.lines)}]")
+      showDiff(diff)
     }
   }
 
