@@ -27,27 +27,7 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
       return if (contentsEmpty) {
         FormattedDiff(listOf(ContentsEmpty))
       } else {
-        val marker = Marker(rawDiffLinesWithoutHeader.first())
-
-        val diffLines = mutableListOf<DiffLine>()
-        var oldLineNumber = marker.oldLineNumber - 1 /* Because the first line is a marker, hence offsetting by 1 */
-        var newLineNumber = marker.newLineNumber - 1 /* Because the first line is a marker, hence offsetting by 1 */
-        for (line in rawDiffLinesWithoutHeader) {
-          val diffLine = toDiffLine(line, oldLineNumber, newLineNumber)
-          diffLines.add(diffLine)
-          if (diffLine !is Insertion) {
-            oldLineNumber++
-          }
-          if (diffLine !is Deletion) {
-            newLineNumber++
-          }
-          if (diffLine is Marker) {
-            oldLineNumber = diffLine.oldLineNumber
-            newLineNumber = diffLine.newLineNumber
-          }
-        }
-
-        FormattedDiff(diffLines.toList())
+        createFormattedDiff(rawDiffLinesWithoutHeader)
       }
     }
 
@@ -59,6 +39,32 @@ class FormattedDiff private constructor(val lines: List<DiffLine>) {
       } else {
         HEADER_LINES_COUNT_MODIFIED_FILE
       }
+    }
+
+    private fun createFormattedDiff(
+      rawDiffLinesWithoutHeader: List<String>
+    ): FormattedDiff {
+      val marker = Marker(rawDiffLinesWithoutHeader.first())
+      var oldLineNumber = marker.oldLineNumber - 1 /* ^ the first line is a marker, hence offsetting by 1 */
+      var newLineNumber = marker.newLineNumber - 1
+
+      val diffLines = mutableListOf<DiffLine>()
+      for (rawDiffLine in rawDiffLinesWithoutHeader) {
+        val diffLine = toDiffLine(rawDiffLine, oldLineNumber, newLineNumber)
+        diffLines.add(diffLine)
+        if (diffLine !is Insertion) {
+          oldLineNumber++
+        }
+        if (diffLine !is Deletion) {
+          newLineNumber++
+        }
+        if (diffLine is Marker) {
+          oldLineNumber = diffLine.oldLineNumber
+          newLineNumber = diffLine.newLineNumber
+        }
+      }
+
+      return FormattedDiff(diffLines.toList())
     }
 
     private fun toDiffLine(
