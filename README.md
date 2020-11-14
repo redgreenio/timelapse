@@ -14,6 +14,7 @@ git clone git@github.com:redgreenio/git-testbed.git
 git clone git@github.com:simpledotorg/simple-android.git
 ```
 ```shell script
+cd simple-android
 git checkout d26b2b56696e63bffa5700488dcfe0154ad8cecd
 ```
 
