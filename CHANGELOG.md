@@ -1,5 +1,11 @@
 # Changelog
 ## [Unreleased]
+## Added
+* Show line number in diff viewer.
+
+## Changed
+* Replace legacy diff viewer with an improved version.
+
 ### Fixed
 * `IncorrectObjectException` while pruning the file tree by date.
 * Crash when selecting a modified file from the most recent commit in a pruned tree. 
