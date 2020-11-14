@@ -1,6 +1,5 @@
 package io.redgreen.timelapse.diff
 
-import java.awt.Color
 import kotlin.LazyThreadSafetyMode.NONE
 
 sealed class DiffLine {
@@ -9,6 +8,9 @@ sealed class DiffLine {
     val oldLineNumber: Int,
     val newLineNumber: Int
   ) : DiffLine()
+  companion object {
+    private const val NON_EXISTENT_LINE_NUMBER = 0
+  }
 
   data class Deletion(
     val text: String,
@@ -17,7 +19,7 @@ sealed class DiffLine {
 
   data class Insertion(
     val text: String,
-    val newLineNumber: Int = NON_EXISTENT // TODO: 12-11-2020 Remove default parameter
+    val newLineNumber: Int = NON_EXISTENT_LINE_NUMBER // TODO: 12-11-2020 Remove default parameter
   ) : DiffLine()
 
   object ContentsEmpty : DiffLine() {
@@ -45,37 +47,6 @@ sealed class DiffLine {
         newLineNumberPart.length
       }
       newLineNumberPart.substring(1, endIndex).toInt()
-    }
-  }
-
-  // FIXME: 12-11-2020 Get rid of this companion object, it should not contain presentation information!
-  companion object {
-    private const val NON_EXISTENT = 0
-    private val insertionColor = Color(198, 240, 194)
-    private val deletionColor = Color(240, 194, 194)
-    private val unmodifiedColor = Color(255, 255, 255)
-
-    private val sectionBlocks = (0..100)
-      .fold(StringBuilder(), { builder, _ -> builder.append('▓') })
-      .append('\n')
-      .toString() 
-  }
-
-  fun backgroundColor(): Color {
-    return when (this) {
-      is Insertion -> insertionColor
-      is Deletion -> deletionColor
-      else -> unmodifiedColor
-    }
-  }
-
-  fun text(): String {
-    return when (this) {
-      is Unmodified -> "${this.text}\n"
-      is Deletion -> "${this.text}\n"
-      is Insertion -> "${this.text}\n"
-      ContentsEmpty -> "<contents empty>"
-      is Marker -> sectionBlocks
     }
   }
 }
