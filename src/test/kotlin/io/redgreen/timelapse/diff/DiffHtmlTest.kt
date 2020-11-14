@@ -28,4 +28,23 @@ class DiffHtmlTest {
     // then
     Approvals.verify(diffHtml)
   }
+
+  @Test
+  fun `it should create HTML for empty file contents`() {
+    // given
+    val newEmptyFileDiff = """
+      diff --git a/file-b.txt b/file-b.txt
+      new file mode 100644
+      index 0000000..e69de29
+      --- /dev/null
+      +++ b/file-b.txt
+      
+    """.trimIndent()
+
+    // when
+    val diffHtml = FormattedDiff.from(newEmptyFileDiff).toHtml()
+
+    // then
+    Approvals.verify(diffHtml)
+  }
 }

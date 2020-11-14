@@ -130,7 +130,13 @@ private fun mapToTableRow(diffLine: DiffLine): String {
       """.trimMargin("|")
     }
 
-    ContentsEmpty -> ""
+    ContentsEmpty -> {
+      """
+        |      <tr>
+        |        <td>&lt;contents empty&gt;</td>
+        |      </tr>
+      """.trimMargin("|")
+    }
   }
 }
 
