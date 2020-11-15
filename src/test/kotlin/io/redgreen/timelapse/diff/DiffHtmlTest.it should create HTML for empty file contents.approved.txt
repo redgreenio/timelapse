@@ -59,9 +59,6 @@
   </head>
   <table>
     <tbody>
-      <tr class="diff-section">
-        <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
-      </tr>
       <tr>
         <td>&lt;contents empty&gt;</td>
       </tr>
