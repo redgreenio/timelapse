@@ -18,6 +18,13 @@ cd simple-android
 git checkout d26b2b56696e63bffa5700488dcfe0154ad8cecd
 ```
 
+**ProGuard**
+
+Create an empty directory for de-obfuscating ProGuard traces from production.
+```shell script
+mkdir proguard-lab
+```
+
 ### Helpful commands
 ```shell script
 git log --oneline -M --stat --follow <file-path>
