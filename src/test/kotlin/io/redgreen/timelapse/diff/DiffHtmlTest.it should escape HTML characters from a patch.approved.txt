@@ -78,7 +78,7 @@
         <td class="line-number"></td><td class="line-number">5</td><td class="blob">+&nbsp;&lt;/shape&gt;</td>
       </tr>
       <tr class="unmodified">
-        <td class="line-number">0</td><td class="line-number">6</td><td class="blob">&nbsp;&nbsp;</td>
+        <td class="line-number"></td><td class="line-number">6</td><td class="blob">&nbsp;&nbsp;</td>
       </tr>
     </tbody>
   </table>

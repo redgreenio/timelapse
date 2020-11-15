@@ -98,7 +98,7 @@ private fun mapToTableRow(diffLine: DiffLine): String {
     }
 
     is Unmodified -> {
-      val oldLineNumber = diffLine.oldLineNumber
+      val oldLineNumber = if (diffLine.oldLineNumber == 0) "" else diffLine.oldLineNumber.toString()
       val newLineNumber = diffLine.newLineNumber
       val nbspPaddedLine = padWithNbsp(diffLine.text)
       """
