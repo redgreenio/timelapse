@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class DiffHtmlTest {
   @Test
-  fun `it should create a HTML diff for diff with a single section`() {
+  fun `single diff section`() {
     // given
     val diffWithSingleSection = """
       diff --git a/build.gradle b/build.gradle
@@ -30,7 +30,7 @@ class DiffHtmlTest {
   }
 
   @Test
-  fun `it should create HTML for empty file contents`() {
+  fun `diff empty file`() {
     // given
     val newEmptyFileDiff = """
       diff --git a/file-b.txt b/file-b.txt
@@ -49,7 +49,7 @@ class DiffHtmlTest {
   }
 
   @Test
-  fun `it should escape HTML characters from a patch`() {
+  fun `escape HTML characters`() {
     // given
     val rawXmlDiff = """
       diff --git a/app/src/main/res/drawable/background_facility_progress_shimmer.xml b/app/src/main/res/drawable/background_facility_progress_shimmer.xml
@@ -74,7 +74,7 @@ class DiffHtmlTest {
   }
 
   @Test
-  fun `it should not take up additional space for insertions`() {
+  fun `insertion padding space`() {
     // given
     val insertionRawDiff = """
       diff --git a/.codeclimate.yml b/.codeclimate.yml
