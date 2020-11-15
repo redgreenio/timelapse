@@ -25,6 +25,8 @@ class CodeViewer : JFXPanel(), DiffDisplay { // FIXME: 14-11-2020 Consider getti
   }
 
   override fun showDiff(diff: FormattedDiff) {
-    diffViewer.showDiff(diff)
+    Platform.runLater {
+      diffViewer.showDiff(diff)
+    }
   }
 }
