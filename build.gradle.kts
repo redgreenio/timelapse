@@ -37,6 +37,7 @@ dependencies {
   implementation("com.spotify.mobius:mobius-core:$mobius")
   implementation("com.spotify.mobius:mobius-rx3:$mobius")
   implementation("com.spotify.mobius:mobius-extras:$mobius")
+  implementation("org.apache.commons:commons-text:1.4")
 
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")

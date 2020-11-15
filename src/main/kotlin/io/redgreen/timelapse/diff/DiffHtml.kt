@@ -5,6 +5,7 @@ import io.redgreen.timelapse.diff.DiffLine.Deletion
 import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.DiffLine.Marker
 import io.redgreen.timelapse.diff.DiffLine.Unmodified
+import org.apache.commons.text.StringEscapeUtils
 
 private val template = """
 <html>
@@ -143,5 +144,7 @@ private fun mapToTableRow(diffLine: DiffLine): String {
 private fun padWithNbsp(line: String): String {
   val startSpaceCharsTrimmedLine = line.trimStart(' ')
   val nStartSpaceChars = line.length - startSpaceCharsTrimmedLine.length
-  return (1..nStartSpaceChars).joinToString("") { "&nbsp;" } + startSpaceCharsTrimmedLine
+
+  val htmlEscapedLine = StringEscapeUtils.escapeHtml4(line).trimStart(' ')
+  return (1..nStartSpaceChars).joinToString("") { "&nbsp;" } + htmlEscapedLine
 }
