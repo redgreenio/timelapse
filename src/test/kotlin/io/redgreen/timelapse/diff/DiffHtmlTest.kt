@@ -95,4 +95,35 @@ class DiffHtmlTest {
     // then
     Approvals.verify(diffHtml)
   }
+
+  @Test
+  fun `deleted file diff`() {
+    // given
+    val deletedFileRawDiff = """
+      diff --git a/app/src/main/res/values/omegacenterbutton.xml b/app/src/main/res/values/omegacenterbutton.xml
+      deleted file mode 100644
+      index 3754d57..0000000
+      --- a/app/src/main/res/values/omegacenterbutton.xml
+      +++ /dev/null
+      @@ -1,11 +0,0 @@
+      -<?xml version="1.0" encoding="utf-8"?>
+      -<resources>
+      -
+      -  <declare-styleable name="OmegaCenterIconButton">
+      -    <attr name="drawableTint" format="color"/>
+      -    <attr name="android:drawablePadding"/>
+      -  </declare-styleable>
+      -
+      -  <dimen name="omega_default_drawable_padding">4dp</dimen>
+      -
+      -</resources>
+      
+    """.trimIndent()
+
+    // when
+    val diffHtml = FormattedDiff.from(deletedFileRawDiff).toHtml()
+
+    // then
+    Approvals.verify(diffHtml)
+  }
 }

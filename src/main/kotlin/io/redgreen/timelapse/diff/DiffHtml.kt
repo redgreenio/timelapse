@@ -99,7 +99,7 @@ private fun mapToTableRow(diffLine: DiffLine): String {
 
     is Unmodified -> {
       val oldLineNumber = if (diffLine.oldLineNumber == 0) "" else diffLine.oldLineNumber.toString()
-      val newLineNumber = diffLine.newLineNumber
+      val newLineNumber = if (diffLine.newLineNumber == 0) "" else diffLine.newLineNumber.toString()
       val nbspPaddedLine = padWithNbsp(diffLine.text)
       """
         |      <tr class="unmodified">
