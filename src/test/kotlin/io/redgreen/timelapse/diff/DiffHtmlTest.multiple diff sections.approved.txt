@@ -1,0 +1,112 @@
+<html>
+  <head>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table td {
+        font-family: "Fira Code", "JetBrains Mono", "Lucida Console";
+        font-size: 15px;
+      }
+
+      table tr td:first-child {
+        padding-left: 24px;
+      }
+
+      .deletion {
+        background-color: #ffeef0;
+      }
+
+      .insertion {
+        background-color: #e6ffed;
+      }
+
+      .blob {
+        padding-left: 10px;
+      }
+
+      .diff-section {
+        background-color: #f1f8ff;
+      }
+
+      .line-number {
+        width:1%;
+        white-space:nowrap;
+        text-align: right;
+        vertical-align: top;
+        padding: 2px 8px 2px 8px;
+        color: rgba(27, 31, 35, 0.4);
+      }
+
+      .deletion .line-number {
+        background-color: #ffdce0;
+      }
+
+      .insertion .line-number {
+        background-color: #bef5cb;
+      }
+
+      .unmodified .line-number {
+        background-color: rgba(230, 230, 230, 0.1);
+      }
+
+      .diff-section .line-number {
+        background-color: #dbedff;
+      }
+    </style>
+  </head>
+  <table>
+    <tbody>
+      <tr class="diff-section">
+        <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">1</td><td class="line-number">1</td><td class="blob">&nbsp;&nbsp;apply plugin: 'com.android.application'</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">2</td><td class="line-number">2</td><td class="blob">&nbsp;&nbsp;apply plugin: 'kotlin-android'</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">3</td><td class="line-number">3</td><td class="blob">&nbsp;&nbsp;apply plugin: 'kotlin-android-extensions'</td>
+      </tr>
+      <tr class="insertion">
+        <td class="line-number"></td><td class="line-number">4</td><td class="blob">+&nbsp;apply plugin: 'kotlin-kapt'</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">4</td><td class="line-number">5</td><td class="blob">&nbsp;&nbsp;</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">5</td><td class="line-number">6</td><td class="blob">&nbsp;&nbsp;android {</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">6</td><td class="line-number">7</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;compileSdkVersion versions.compileSdk</td>
+      </tr>
+      <tr class="diff-section">
+        <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">28</td><td class="line-number">29</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;implementation &quot;com.android.support:recyclerview-v7:$versions.supportLib&quot;</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">29</td><td class="line-number">30</td><td class="blob">&nbsp;&nbsp;</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">30</td><td class="line-number">31</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;implementation &quot;com.jakewharton.timber:timber:$versions.timber&quot;</td>
+      </tr>
+      <tr class="insertion">
+        <td class="line-number"></td><td class="line-number">32</td><td class="blob">+&nbsp;&nbsp;&nbsp;implementation &quot;com.google.dagger:dagger:$versions.dagger&quot;</td>
+      </tr>
+      <tr class="insertion">
+        <td class="line-number"></td><td class="line-number">33</td><td class="blob">+&nbsp;&nbsp;&nbsp;kapt &quot;com.google.dagger:dagger-compiler:$versions.dagger&quot;</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">31</td><td class="line-number">34</td><td class="blob">&nbsp;&nbsp;}</td>
+      </tr>
+      <tr class="unmodified">
+        <td class="line-number">32</td><td class="line-number">35</td><td class="blob">&nbsp;&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+</html>

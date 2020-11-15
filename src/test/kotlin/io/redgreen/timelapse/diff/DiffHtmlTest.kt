@@ -126,4 +126,37 @@ class DiffHtmlTest {
     // then
     Approvals.verify(diffHtml)
   }
+
+  @Test
+  fun `multiple diff sections`() {
+    // given
+    val multipleSectionsDiff = """
+      diff --git a/app/build.gradle b/app/build.gradle
+      index 6c5c13b..20bdbd6 100644
+      --- a/app/build.gradle
+      +++ b/app/build.gradle
+      @@ -1,6 +1,7 @@
+       apply plugin: 'com.android.application'
+       apply plugin: 'kotlin-android'
+       apply plugin: 'kotlin-android-extensions'
+      +apply plugin: 'kotlin-kapt'
+       
+       android {
+         compileSdkVersion versions.compileSdk
+      @@ -28,4 +29,6 @@
+         implementation "com.android.support:recyclerview-v7:${'$'}versions.supportLib"
+       
+         implementation "com.jakewharton.timber:timber:${'$'}versions.timber"
+      +  implementation "com.google.dagger:dagger:${'$'}versions.dagger"
+      +  kapt "com.google.dagger:dagger-compiler:${'$'}versions.dagger"
+       }
+      
+    """.trimIndent()
+
+    // when
+    val diffHtml = FormattedDiff.from(multipleSectionsDiff).toHtml()
+
+    // then
+    Approvals.verify(diffHtml)
+  }
 }
