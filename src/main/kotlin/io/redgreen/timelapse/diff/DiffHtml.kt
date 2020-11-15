@@ -103,7 +103,7 @@ private fun mapToTableRow(diffLine: DiffLine): String {
       val nbspPaddedLine = padWithNbsp(diffLine.text)
       """
         |      <tr class="unmodified">
-        |        <td class="line-number">$oldLineNumber</td><td class="line-number">$newLineNumber</td><td class="blob">&nbsp;$nbspPaddedLine</td>
+        |        <td class="line-number">$oldLineNumber</td><td class="line-number">$newLineNumber</td><td class="blob">&nbsp;&nbsp;$nbspPaddedLine</td>
         |      </tr>
         |
       """.trimMargin("|")

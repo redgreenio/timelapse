@@ -50,6 +50,7 @@ class DiffHtmlTest {
 
   @Test
   fun `it should escape HTML characters from a patch`() {
+    // given
     val rawXmlDiff = """
       diff --git a/app/src/main/res/drawable/background_facility_progress_shimmer.xml b/app/src/main/res/drawable/background_facility_progress_shimmer.xml
       new file mode 100644
@@ -67,6 +68,29 @@ class DiffHtmlTest {
 
     // when
     val diffHtml = FormattedDiff.from(rawXmlDiff).toHtml()
+
+    // then
+    Approvals.verify(diffHtml)
+  }
+
+  @Test
+  fun `it should not take up additional space for insertions`() {
+    // given
+    val insertionRawDiff = """
+      diff --git a/.codeclimate.yml b/.codeclimate.yml
+      index 4a85e39..62c22dc 100644
+      --- a/.codeclimate.yml
+      +++ b/.codeclimate.yml
+      @@ -46,3 +46,4 @@
+         - "**/src/main/java/org/simple/clinic/storage/Migration_*.kt"
+         - "**/build/"
+         - "**/src/main/java/org/simple/clinic/widgets/OmegaCenterIconButton.java"
+      +  - "router/"
+      
+    """.trimIndent()
+
+    // when
+    val diffHtml = FormattedDiff.from(insertionRawDiff).toHtml()
 
     // then
     Approvals.verify(diffHtml)
