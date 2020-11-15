@@ -100,10 +100,10 @@ private fun mapToTableRow(diffLine: DiffLine): String {
     is Unmodified -> {
       val oldLineNumber = if (diffLine.oldLineNumber == 0) "" else diffLine.oldLineNumber.toString()
       val newLineNumber = if (diffLine.newLineNumber == 0) "" else diffLine.newLineNumber.toString()
-      val nbspPaddedLine = padWithNbsp(diffLine.text)
+      val escapedHtmlLine = escapeHtml(diffLine.text)
       """
         |      <tr class="unmodified">
-        |        <td class="line-number">$oldLineNumber</td><td class="line-number">$newLineNumber</td><td class="blob">&nbsp;&nbsp;$nbspPaddedLine</td>
+        |        <td class="line-number">$oldLineNumber</td><td class="line-number">$newLineNumber</td><td class="blob">&nbsp;&nbsp;$escapedHtmlLine</td>
         |      </tr>
         |
       """.trimMargin("|")
@@ -111,10 +111,10 @@ private fun mapToTableRow(diffLine: DiffLine): String {
 
     is Deletion -> {
       val oldLineNumber = diffLine.oldLineNumber
-      val nbspPaddedLine = padWithNbsp(diffLine.text)
+      val escapedHtmlLine = escapeHtml(diffLine.text)
       """
         |      <tr class="deletion">
-        |        <td class="line-number">$oldLineNumber</td><td class="line-number"></td><td class="blob">-&nbsp;$nbspPaddedLine</td>
+        |        <td class="line-number">$oldLineNumber</td><td class="line-number"></td><td class="blob">-&nbsp;$escapedHtmlLine</td>
         |      </tr>
         |
       """.trimMargin("|")
@@ -122,10 +122,10 @@ private fun mapToTableRow(diffLine: DiffLine): String {
 
     is Insertion -> {
       val newLineNumber = diffLine.newLineNumber
-      val nbspPaddedLine = padWithNbsp(diffLine.text)
+      val escapedHtmlLine = escapeHtml(diffLine.text)
       """
         |      <tr class="insertion">
-        |        <td class="line-number"></td><td class="line-number">$newLineNumber</td><td class="blob">+&nbsp;$nbspPaddedLine</td>
+        |        <td class="line-number"></td><td class="line-number">$newLineNumber</td><td class="blob">+&nbsp;$escapedHtmlLine</td>
         |      </tr>
         |
       """.trimMargin("|")
@@ -141,7 +141,7 @@ private fun mapToTableRow(diffLine: DiffLine): String {
   }
 }
 
-private fun padWithNbsp(line: String): String {
+private fun escapeHtml(line: String): String {
   val startSpaceCharsTrimmedLine = line.trimStart(' ')
   val nStartSpaceChars = line.length - startSpaceCharsTrimmedLine.length
 
