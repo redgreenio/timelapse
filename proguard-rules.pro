@@ -16,3 +16,6 @@
 # Humanize
 -keep class humanize.** { *; }
 -keep class org.ocpsoft.** { *; }
+
+# Commons Text
+-keep class org.apache.commons.text.** { *; }
