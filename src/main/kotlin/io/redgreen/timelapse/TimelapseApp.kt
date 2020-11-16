@@ -25,9 +25,11 @@ import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import javafx.application.Platform
 import javafx.embed.swing.JFXPanel
+import javafx.embed.swing.SwingNode
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.Slider
+import javafx.scene.layout.BorderPane
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Pane
@@ -36,7 +38,6 @@ import org.eclipse.jgit.lib.Repository
 import java.awt.BorderLayout
 import java.awt.BorderLayout.CENTER
 import java.awt.BorderLayout.EAST
-import java.awt.BorderLayout.NORTH
 import java.awt.BorderLayout.SOUTH
 import java.awt.BorderLayout.WEST
 import java.awt.Dimension
@@ -136,11 +137,13 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
   }
 
   private val centerPanel by fastLazy {
-    JPanel(BorderLayout()).apply {
-      Platform.runLater {
-        add(readingPane, CENTER)
-        add(sliderPanel, NORTH)
-      }
+    JFXPanel().apply {
+      scene = Scene(BorderPane().apply {
+        top = SwingNode().apply {
+          content = sliderPanel
+        }
+        center = readingPane
+      })
     }
   }
 
@@ -161,7 +164,10 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
 
   private val rootPanel = JPanel().apply {
     layout = BorderLayout()
-    add(centerPanel, CENTER)
+    Platform.runLater {
+      add(centerPanel, CENTER)
+    }
+
     add(fileExplorerPane.apply {
       preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT)
     }, WEST)
