@@ -1,31 +1,37 @@
 package io.redgreen.timelapse.ui
 
-import java.awt.BorderLayout
-import java.awt.BorderLayout.CENTER
-import java.awt.BorderLayout.NORTH
-import java.awt.Color
-import javax.swing.JLabel
-import javax.swing.JPanel
-import javax.swing.border.LineBorder
+import javafx.application.Platform
+import javafx.embed.swing.JFXPanel
+import javafx.geometry.Insets
+import javafx.scene.Scene
+import javafx.scene.control.Label
+import javafx.scene.layout.BorderPane
+import javafx.scene.paint.Color.WHITE
 
-private const val TITLE_BACKGROUND_COLOR = 0x808080
-private const val TITLE_FOREGROUND_COLOR = 0xffffff
-private const val TITLE_BORDER_THICKNESS = 10
+private const val TITLE_BACKGROUND_COLOR = "#808080"
+private const val TITLE_PADDING = 10.0
 
-class TitledCodeTextPane : JPanel(BorderLayout()), DiffDisplay by CodeViewer() {
-  private val titleLabel = JLabel().apply {
+private val TITLE_FOREGROUND_COLOR = WHITE
+
+class TitledCodeTextPane : JFXPanel(), DiffDisplay by CodeViewer() {
+  private val titleLabel = Label().apply {
     isOpaque = true
-    foreground = Color(TITLE_FOREGROUND_COLOR)
-    background = Color(TITLE_BACKGROUND_COLOR)
-    border = LineBorder(Color(TITLE_BACKGROUND_COLOR), TITLE_BORDER_THICKNESS)
+    textFill = TITLE_FOREGROUND_COLOR
+    padding = Insets(TITLE_PADDING)
+    style = "-fx-background-color: $TITLE_BACKGROUND_COLOR; -fx-font-weight: bold"
   }
 
   init {
-    add(titleLabel, NORTH)
-    add(codeComponent, CENTER)
+    scene = Scene(BorderPane().apply {
+      val borderPane = this
+      top = titleLabel.apply { prefWidthProperty().bind(borderPane.widthProperty()) }
+      center = codeNode
+    })
   }
 
   fun setTitle(title: String) {
-    titleLabel.text = title
+    Platform.runLater {
+      titleLabel.text = title
+    }
   }
 }

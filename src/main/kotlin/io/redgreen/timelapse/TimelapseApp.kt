@@ -106,7 +106,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
   }
 
-  private val readingPane = ReadingPane()
+  private val readingPane by lazy(NONE) { ReadingPane() }
 
   private val sliderPanel by lazy(NONE) {  // TODO: 07-11-2020 create a `fastLazy` extension function
     val sliderAndInformationPanel = JPanel(GridBagLayout()).apply {
@@ -133,9 +133,13 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
   }
 
-  private val centerPanel = JPanel(BorderLayout()).apply {
-    add(readingPane, CENTER)
-    add(sliderPanel, NORTH)
+  private val centerPanel by lazy(NONE) {
+    JPanel(BorderLayout()).apply {
+      Platform.runLater {
+        add(readingPane, CENTER)
+        add(sliderPanel, NORTH)
+      }
+    }
   }
 
   private fun getTitle(changedFile: ChangedFile): String {

@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.ui
 
 import io.redgreen.timelapse.diff.FormattedDiff
-import javax.swing.JComponent
+import javafx.scene.Node
 
 interface DiffDisplay {
-  val codeComponent: JComponent
+  val codeNode: Node
   fun showDiff(diff: FormattedDiff)
 }
