@@ -16,6 +16,7 @@ import io.redgreen.timelapse.changedfiles.FileAndRevisionSelected
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
 import io.redgreen.timelapse.debug
+import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.mobius.DeferredEventSource
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
@@ -30,7 +31,6 @@ import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode.SINGLE
 import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
-import kotlin.LazyThreadSafetyMode.NONE
 
 class ChangedFilesPane(
   gitRepository: Repository,
@@ -40,7 +40,7 @@ class ChangedFilesPane(
 
   private val eventSource = DeferredEventSource<ChangedFilesEvent>()
 
-  private val loopController by lazy(NONE) {
+  private val loopController by fastLazy {
     val effectHandler = ChangedFilesEffectHandler
       .from(repositoryService, readingAreaContract)
 
@@ -53,7 +53,7 @@ class ChangedFilesPane(
 
   private val viewRenderer = ChangedFilesViewRenderer(this)
 
-  private val titleLabel by lazy(NONE) { Label().apply { style = "-fx-font-weight: bold" } }
+  private val titleLabel by fastLazy { Label().apply { style = "-fx-font-weight: bold" } }
 
   private val changedFilesListView by lazy {
     ListView<ChangedFile>().apply {

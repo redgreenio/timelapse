@@ -13,6 +13,7 @@ import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
+import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.readingarea.CommitInformationPane
 import io.redgreen.timelapse.ui.ReadingPane
@@ -55,7 +56,6 @@ import javax.swing.JFrame
 import javax.swing.JFrame.EXIT_ON_CLOSE
 import javax.swing.JFrame.MAXIMIZED_BOTH
 import javax.swing.JPanel
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.math.round
 
 private const val APP_NAME = "Timelapse"
@@ -75,7 +75,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
   private lateinit var changes: List<Change>
   private lateinit var filePath: String
 
-  private val timelapseSlider by lazy(NONE) {
+  private val timelapseSlider by fastLazy {
     Slider().apply {
       min = 0.0
       padding = Insets(PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
@@ -100,15 +100,15 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
   }
 
-  private val commitInformationPane by lazy(NONE) { CommitInformationPane(gitRepository) }
+  private val commitInformationPane by fastLazy { CommitInformationPane(gitRepository) }
 
-  private val insertionsAreaChart by lazy(NONE) {
+  private val insertionsAreaChart by fastLazy {
     AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
   }
 
-  private val readingPane by lazy(NONE) { ReadingPane() }
+  private val readingPane by fastLazy { ReadingPane() }
 
-  private val sliderPanel by lazy(NONE) {  // TODO: 07-11-2020 create a `fastLazy` extension function
+  private val sliderPanel by fastLazy {  // TODO: 07-11-2020 create a `fastLazy` extension function
     val sliderAndInformationPanel = JPanel(GridBagLayout()).apply {
       val constraints = GridBagConstraints().apply {
         weightx = 1.0
@@ -133,7 +133,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
   }
 
-  private val centerPanel by lazy(NONE) {
+  private val centerPanel by fastLazy {
     JPanel(BorderLayout()).apply {
       Platform.runLater {
         add(readingPane, CENTER)
@@ -151,9 +151,9 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     }
   }
 
-  private val changedFilesPane by lazy(NONE) { ChangedFilesPane(gitRepository, this) }
+  private val changedFilesPane by fastLazy { ChangedFilesPane(gitRepository, this) }
 
-  private val peoplePane by lazy(NONE) { PeoplePane(gitRepository) }
+  private val peoplePane by fastLazy { PeoplePane(gitRepository) }
 
   private val fileExplorerPane = FileExplorerPane(project, gitRepository, this)
 

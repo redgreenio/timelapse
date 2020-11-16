@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.diff
 
-import kotlin.LazyThreadSafetyMode.NONE
+import io.redgreen.timelapse.foo.fastLazy
 
 sealed class DiffLine {
   data class Unmodified(
@@ -28,7 +28,7 @@ sealed class DiffLine {
   }
 
   data class Marker(val text: String) : DiffLine() {
-    val oldLineNumber by lazy(NONE) {
+    val oldLineNumber by fastLazy {
       val (oldLineNumberPart, _) = text.drop(4).dropLast(3).split(' ')
 
       val endIndex = if (oldLineNumberPart.contains(',')) {
@@ -39,7 +39,7 @@ sealed class DiffLine {
       oldLineNumberPart.substring(0, endIndex).toInt()
     }
 
-    val newLineNumber by lazy(NONE) {
+    val newLineNumber by fastLazy {
       val (_, newLineNumberPart)= text.drop(4).dropLast(3).split(' ')
       val endIndex = if (newLineNumberPart.contains(',')) {
         newLineNumberPart.indexOf(',')

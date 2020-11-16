@@ -7,6 +7,7 @@ import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerSelection.AllFiles
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerSelection.TMinusDays
+import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.foo.toLocalDateTime
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import javafx.application.Platform
@@ -24,7 +25,6 @@ import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.Repository
 import java.io.File
 import java.time.LocalDate
-import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.system.measureTimeMillis
 
 private const val GIT_PATH_SEPARATOR = '/'
@@ -40,7 +40,7 @@ class FileExplorerPane(
 
   private var startDateEndDate: Pair<LocalDate, LocalDate>? = null
 
-  private val fileExplorerTreeView by lazy(NONE) {
+  private val fileExplorerTreeView by fastLazy {
     val treeView = TreeView<String>().apply { selectionModel.selectionMode = SINGLE }
 
     treeView.selectionModel.selectedItemProperty().addListener { _, _, selectedItem ->
@@ -81,9 +81,9 @@ class FileExplorerPane(
     TMinusDays(90),
   )
 
-  private val gitRepositoryService by lazy(NONE) { GitRepositoryService(gitRepository) }
+  private val gitRepositoryService by fastLazy { GitRepositoryService(gitRepository) }
 
-  private val fileCountLabel by lazy(NONE) { Label() }
+  private val fileCountLabel by fastLazy { Label() }
 
   init {
     timeSpanComboBox = ComboBox(timeSpans)

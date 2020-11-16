@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.people.view
 
+import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.vcs.Contribution
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import javafx.application.Platform
@@ -11,7 +12,6 @@ import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY
 import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
-import kotlin.LazyThreadSafetyMode.NONE
 
 class PeoplePane(private val gitRepository: Repository) : BorderPane() {
   companion object {
@@ -19,11 +19,11 @@ class PeoplePane(private val gitRepository: Repository) : BorderPane() {
     private const val COLUMN_CONTRIBUTION = "Contribution %"
   }
 
-  private val gitRepositoryService by lazy(NONE) { GitRepositoryService(gitRepository) }
+  private val gitRepositoryService by fastLazy { GitRepositoryService(gitRepository) }
 
-  private val titleLabel by lazy(NONE){ Label().apply { style = "-fx-font-weight: bold" } }
+  private val titleLabel by fastLazy { Label().apply { style = "-fx-font-weight: bold" } }
 
-  private val contributorsTable by lazy(NONE) {
+  private val contributorsTable by fastLazy {
     TableView<Contribution>().apply {
       isEditable = false
       columnResizePolicy = CONSTRAINED_RESIZE_POLICY;
