@@ -75,13 +75,6 @@ class ReadingPane : JLayeredPane() {
   private fun getInsertionsDeletionsSummaryText(diffLines: List<DiffLine>): String {
     val deletionsCount = diffLines.filterIsInstance<Deletion>().count()
     val insertionsCount = diffLines.filterIsInstance<Insertion>().count()
-
-    return when {
-      deletionsCount > 0 && insertionsCount > 0 -> "+$insertionsCount, -$deletionsCount"
-      deletionsCount == 0 && insertionsCount == 0 -> "?? Empty Commit ??"
-      deletionsCount == 0 -> "+$insertionsCount"
-      insertionsCount == 0 -> "-$deletionsCount"
-      else -> throw IllegalStateException("Insertions $insertionsCount, Deletions $deletionsCount")
-    }
+    return "-$deletionsCount, +$insertionsCount"
   }
 }
