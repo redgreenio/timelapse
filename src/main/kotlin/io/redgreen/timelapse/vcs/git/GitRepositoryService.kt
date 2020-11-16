@@ -305,7 +305,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
 
     RevWalk(this).use { revWalk ->
       val commit = revWalk.parseCommit(commitId)
-      TreeWalk(this).use { treeWalk ->  
+      TreeWalk(this).use { treeWalk ->
         with(treeWalk) {
           addTree(commit.tree)
           isRecursive = true

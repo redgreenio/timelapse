@@ -13,16 +13,16 @@ class EffectHandlerTestCase<F, E>(effectHandler: ObservableTransformer<F, E>) {
 
   fun assertOutgoingEvents(vararg events: E) {
     outgoingEffectsTestObserver
-        .assertValues(*events)
-        .assertNoErrors()
-        .assertNotComplete()
+      .assertValues(*events)
+      .assertNoErrors()
+      .assertNotComplete()
   }
 
   fun assertNoOutgoingEvents() {
     outgoingEffectsTestObserver
-        .assertNoValues()
-        .assertNoErrors()
-        .assertNotComplete()
+      .assertNoValues()
+      .assertNoErrors()
+      .assertNotComplete()
   }
 
   fun dispose() {

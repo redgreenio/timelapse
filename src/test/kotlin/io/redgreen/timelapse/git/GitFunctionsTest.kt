@@ -120,60 +120,68 @@ class GitFunctionsTest {
 
     // then
     assertThat(newlyAddedFileDiff)
-      .isEqualTo("""
-        diff --git a/file-1-copy.txt b/file-1-copy.txt
-        new file mode 100644
-        index 0000000..980a0d5
-        --- /dev/null
-        +++ b/file-1-copy.txt
-        @@ -0,0 +1 @@
-        +Hello World!
-        
-      """.trimIndent())
+      .isEqualTo(
+        """
+          diff --git a/file-1-copy.txt b/file-1-copy.txt
+          new file mode 100644
+          index 0000000..980a0d5
+          --- /dev/null
+          +++ b/file-1-copy.txt
+          @@ -0,0 +1 @@
+          +Hello World!
+          
+        """.trimIndent()
+      )
   }
 
   @Test
   fun `it should get the diff of a deleted file`() {
     // given
-    val deletedFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val deletedFileCommitId =
+      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
     val deletedFileDiff = repository.getDiff(deletedFileCommitId, "file-4.txt")
 
     // then
     assertThat(deletedFileDiff)
-      .isEqualTo("""
-        diff --git a/file-4.txt b/file-4.txt
-        deleted file mode 100644
-        index 980a0d5..0000000
-        --- a/file-4.txt
-        +++ /dev/null
-        @@ -1 +0,0 @@
-        -Hello World!
-        
-      """.trimIndent())
+      .isEqualTo(
+        """
+          diff --git a/file-4.txt b/file-4.txt
+          deleted file mode 100644
+          index 980a0d5..0000000
+          --- a/file-4.txt
+          +++ /dev/null
+          @@ -1 +0,0 @@
+          -Hello World!
+          
+        """.trimIndent()
+      )
   }
 
   @Test
   fun `it should get diff of a modified file`() {
     // given
-    val modifiedFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val modifiedFileCommitId =
+      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
     val modifiedFileDiff = repository.getDiff(modifiedFileCommitId, "file-1.txt")
 
     // then
     assertThat(modifiedFileDiff)
-      .isEqualTo("""
-        diff --git a/file-1.txt b/file-1.txt
-        index 980a0d5..d502583 100644
-        --- a/file-1.txt
-        +++ b/file-1.txt
-        @@ -1 +1 @@
-        -Hello World!
-        +Hello Universe!
-        
-      """.trimIndent())
+      .isEqualTo(
+        """
+          diff --git a/file-1.txt b/file-1.txt
+          index 980a0d5..d502583 100644
+          --- a/file-1.txt
+          +++ b/file-1.txt
+          @@ -1 +1 @@
+          -Hello World!
+          +Hello Universe!
+          
+        """.trimIndent()
+      )
   }
 
   @Test
@@ -186,16 +194,18 @@ class GitFunctionsTest {
 
     // then
     assertThat(renamedFileDiff)
-      .isEqualTo("""
-        diff --git a/file-4.txt b/file-4.txt
-        new file mode 100644
-        index 0000000..980a0d5
-        --- /dev/null
-        +++ b/file-4.txt
-        @@ -0,0 +1 @@
-        +Hello World!
-        
-        """.trimIndent())
+      .isEqualTo(
+        """
+          diff --git a/file-4.txt b/file-4.txt
+          new file mode 100644
+          index 0000000..980a0d5
+          --- /dev/null
+          +++ b/file-4.txt
+          @@ -0,0 +1 @@
+          +Hello World!
+          
+        """.trimIndent()
+      )
   }
 
   @Test
@@ -208,53 +218,61 @@ class GitFunctionsTest {
 
     // then
     assertThat(newFileDiff)
-      .isEqualTo("""
-        diff --git a/file-1.txt b/file-1.txt
-        new file mode 100644
-        index 0000000..e69de29
-        --- /dev/null
-        +++ b/file-1.txt
-        
-      """.trimIndent())
+      .isEqualTo(
+        """
+          diff --git a/file-1.txt b/file-1.txt
+          new file mode 100644
+          index 0000000..e69de29
+          --- /dev/null
+          +++ b/file-1.txt
+          
+        """.trimIndent()
+      )
   }
 
   @Test
   fun `it should get the diff of a deleted file with no content`() {
     // given
-    val deletedFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val deletedFileCommitId =
+      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
     val deletedEmptyFileDiff = repository.getDiff(deletedFileCommitId, "file-3.txt")
 
     // then
     assertThat(deletedEmptyFileDiff)
-      .isEqualTo("""
-        diff --git a/file-3.txt b/file-3.txt
-        deleted file mode 100644
-        index e69de29..0000000
-        --- a/file-3.txt
-        +++ /dev/null
-        
-      """.trimIndent())
+      .isEqualTo(
+        """
+          diff --git a/file-3.txt b/file-3.txt
+          deleted file mode 100644
+          index e69de29..0000000
+          --- a/file-3.txt
+          +++ /dev/null
+          
+        """.trimIndent()
+      )
   }
 
   @Test
   fun `it should get the diff of a new file with no content`() {
     // given
-    val newEmptyFileCommitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val newEmptyFileCommitId =
+      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
     val newEmptyFileDiff = repository.getDiff(newEmptyFileCommitId, "file-b.txt")
 
     // then
     assertThat(newEmptyFileDiff)
-      .isEqualTo("""
-        diff --git a/file-b.txt b/file-b.txt
-        new file mode 100644
-        index 0000000..e69de29
-        --- /dev/null
-        +++ b/file-b.txt
-        
-      """.trimIndent())
+      .isEqualTo(
+        """
+          diff --git a/file-b.txt b/file-b.txt
+          new file mode 100644
+          index 0000000..e69de29
+          --- /dev/null
+          +++ b/file-b.txt
+          
+        """.trimIndent()
+      )
   }
 }

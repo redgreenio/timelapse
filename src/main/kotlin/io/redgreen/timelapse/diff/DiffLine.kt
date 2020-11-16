@@ -8,6 +8,7 @@ sealed class DiffLine {
     val oldLineNumber: Int,
     val newLineNumber: Int
   ) : DiffLine()
+
   companion object {
     private const val NON_EXISTENT_LINE_NUMBER = 0
   }
@@ -40,7 +41,7 @@ sealed class DiffLine {
     }
 
     val newLineNumber by fastLazy {
-      val (_, newLineNumberPart)= text.drop(4).dropLast(3).split(' ')
+      val (_, newLineNumberPart) = text.drop(4).dropLast(3).split(' ')
       val endIndex = if (newLineNumberPart.contains(',')) {
         newLineNumberPart.indexOf(',')
       } else {

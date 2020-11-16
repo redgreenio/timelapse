@@ -20,7 +20,7 @@ fun parseGitFollowOutput(output: String): List<Change> {
 
   val commitIdMessageLines = lines.filterIndexed { index, _ -> index == 0 || index % 3 == 0 }
   val insertionDeletionLines = lines.filterIndexed { index, _ -> (index + 1) % 3 == 0 }
-  val fileNameLines = lines.filterIndexed { index, _ -> index != 0 && (index - 1) % 3 == 0}
+  val fileNameLines = lines.filterIndexed { index, _ -> index != 0 && (index - 1) % 3 == 0 }
 
   return commitIdMessageLines.zip(insertionDeletionLines).zip(fileNameLines, ::extractCommitInformation)
 }

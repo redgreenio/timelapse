@@ -116,7 +116,7 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
         gridwidth = REMAINDER
       }
 
-      add(JFXPanel().apply { 
+      add(JFXPanel().apply {
         val pane = Pane(timelapseSlider)
         scene = Scene(pane)
         timelapseSlider.prefWidthProperty().bind(pane.widthProperty())
@@ -124,7 +124,9 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
 
       add(JFXPanel().apply { scene = Scene(commitInformationPane) }, constraints)
 
-      border = BorderFactory.createEmptyBorder(NO_PADDING.toInt(), NO_PADDING.toInt(), PADDING.toInt(), NO_PADDING.toInt())
+      // FIXME: 16-11-2020 Get rid of the .toInt() calls after replacing Swing with JavaFx.
+      border = BorderFactory
+        .createEmptyBorder(NO_PADDING.toInt(), NO_PADDING.toInt(), PADDING.toInt(), NO_PADDING.toInt())
     }
 
     JPanel(BorderLayout()).apply {
@@ -191,10 +193,21 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
       .getCurrentKeyboardFocusManager()
       .addKeyEventDispatcher { event ->
         val action: (() -> Unit)? = when {
-          event.keyCode == VK_ESCAPE -> { { readingPane.dismissOverlap(); timelapseSlider.requestFocus() } }
-          event.isAltDown && event.keyCode == VK_1 -> { { fileExplorerPane.focus() } }
-          event.isAltDown && event.keyCode == VK_2 -> this@TimelapseApp::moveFocusToReadingPane
-          event.isAltDown && event.keyCode == VK_3 -> { { changedFilesPane.focusOnList() } }
+          event.keyCode == VK_ESCAPE -> {
+            { readingPane.dismissOverlap(); timelapseSlider.requestFocus() }
+          }
+
+          event.isAltDown && event.keyCode == VK_1 -> {
+            { fileExplorerPane.focus() }
+          }
+
+          event.isAltDown && event.keyCode == VK_2 ->
+            this@TimelapseApp::moveFocusToReadingPane
+
+          event.isAltDown && event.keyCode == VK_3 -> {
+            { changedFilesPane.focusOnList() }
+          }
+
           else -> null
         }
         action?.invoke()

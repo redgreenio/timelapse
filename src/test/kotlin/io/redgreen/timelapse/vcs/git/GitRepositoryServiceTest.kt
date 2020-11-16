@@ -38,7 +38,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should get changed files from a non-initial commit`() {
       // given
-      val nonInitialCommit = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+      val nonInitialCommit =
+        "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
       // when
       val testObserver = repositoryService.getChangedFiles(nonInitialCommit).test()
@@ -106,20 +107,22 @@ class GitRepositoryServiceTest {
 
       // then
       testObserver
-        .assertValue(listOf(
-          Contribution(Identity("Vinay Shenoy", "vinay@obvious.in"), 0.26956521739130435),
-          Contribution(Identity("Vinay S Shenoy", "vinay@obvious.in"), 0.17391304347826086),
-          Contribution(Identity("Pratul Kalia", "pratul@uncommon.is"), 0.10434782608695652),
-          Contribution(Identity("Saket Narayan", "saket@saket.me"), 0.0782608695652174),
-          Contribution(Identity("Saket Narayan", "saket@uncommon.is"), 0.0782608695652174),
-          Contribution(Identity("Sasikanth Miriyampalli", "sasikanth@obvious.in"), 0.06956521739130435),
-          Contribution(Identity("Rakshak R.Hegde", "rakshak@obvious.in"), 0.05217391304347826),
-          Contribution(Identity("Sanchita Agarwal", "sanchita@uncommon.is"), 0.05217391304347826),
-          Contribution(Identity("Honey Sonwani", "honey@obvious.in"), 0.05217391304347826),
-          Contribution(Identity("Vinay S Shenoy", "vinay.sh@uncommon.is"), 0.034782608695652174),
-          Contribution(Identity("Sanchita Agarwal", "sanchita@obvious.in"), 0.017391304347826087),
-          Contribution(Identity("Sasikanth Miriyampalli", "sasikanthmiriyampalli@gmail.com"), 0.017391304347826087),
-        ))
+        .assertValue(
+          listOf(
+            Contribution(Identity("Vinay Shenoy", "vinay@obvious.in"), 0.26956521739130435),
+            Contribution(Identity("Vinay S Shenoy", "vinay@obvious.in"), 0.17391304347826086),
+            Contribution(Identity("Pratul Kalia", "pratul@uncommon.is"), 0.10434782608695652),
+            Contribution(Identity("Saket Narayan", "saket@saket.me"), 0.0782608695652174),
+            Contribution(Identity("Saket Narayan", "saket@uncommon.is"), 0.0782608695652174),
+            Contribution(Identity("Sasikanth Miriyampalli", "sasikanth@obvious.in"), 0.06956521739130435),
+            Contribution(Identity("Rakshak R.Hegde", "rakshak@obvious.in"), 0.05217391304347826),
+            Contribution(Identity("Sanchita Agarwal", "sanchita@uncommon.is"), 0.05217391304347826),
+            Contribution(Identity("Honey Sonwani", "honey@obvious.in"), 0.05217391304347826),
+            Contribution(Identity("Vinay S Shenoy", "vinay.sh@uncommon.is"), 0.034782608695652174),
+            Contribution(Identity("Sanchita Agarwal", "sanchita@obvious.in"), 0.017391304347826087),
+            Contribution(Identity("Sasikanth Miriyampalli", "sasikanthmiriyampalli@gmail.com"), 0.017391304347826087),
+          )
+        )
         .assertNoErrors()
         .assertComplete()
     }

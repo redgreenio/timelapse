@@ -102,7 +102,7 @@ class FileExplorerPane(
     timeSpanComboBox.valueProperty().addListener { _, _, newValue ->
       val loadingTimeMillis = measureTimeMillis {
         val projectName = getProjectName()
-        when(newValue) {
+        when (newValue) {
           AllFiles -> {
             val projectFiles = gitRepository.getFilePaths().map { "$projectName/$it" }
             startDateEndDate = null

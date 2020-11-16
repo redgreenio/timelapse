@@ -15,7 +15,9 @@ import javafx.scene.layout.VBox
 import org.eclipse.jgit.lib.Repository
 import kotlin.math.ceil
 
-class CommitInformationPane(private val gitRepository: Repository) : BorderPane() {
+class CommitInformationPane(
+  private val gitRepository: Repository
+) : BorderPane() {
   companion object {
     private const val COMMIT_INFORMATION_SEPARATOR = " • "
 
@@ -59,7 +61,8 @@ class CommitInformationPane(private val gitRepository: Repository) : BorderPane(
     messageLabel.text = selectedChange.message
     dateTimeInformationLabel.text = "$authorAndCommitDate ($committedNaturalTime)"
     countProgressInformationLabel.text = "Commit $position $COMMIT_INFORMATION_SEPARATOR $progressPercentText%"
-    idAuthorInformationLabel.text = "${commit.name} $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name}  <${commit.authorIdent.emailAddress}>"
+    idAuthorInformationLabel.text =
+      "${commit.name} $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name} <${commit.authorIdent.emailAddress}>"
   }
 
   private fun copyCommitIdToClipboard(text: String) {
