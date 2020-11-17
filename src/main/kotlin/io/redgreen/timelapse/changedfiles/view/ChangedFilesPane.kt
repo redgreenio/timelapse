@@ -96,6 +96,9 @@ class ChangedFilesPane(
 
   init {
     fun sendChangedFileSelectedEvent(selectedIndex: Int) {
+      if (selectedIndex == -1) {
+        return
+      }
       eventSource.notify(ChangedFileSelected(selectedIndex))
     }
 
