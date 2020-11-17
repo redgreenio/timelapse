@@ -139,7 +139,13 @@ private fun mapToTableRow(diffLine: DiffLine): String {
       """.trimMargin("|")
     }
 
-    is Marker.Binary -> TODO("Unsupported `DiffLine` type :(")
+    is Marker.Binary -> {
+      """
+        |      <tr>
+        |        <td>&lt;binary files differ&gt;</td>
+        |      </tr>
+      """.trimMargin("|")
+    }
   }
 }
 

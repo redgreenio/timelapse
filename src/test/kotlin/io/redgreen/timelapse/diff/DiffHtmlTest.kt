@@ -159,4 +159,24 @@ class DiffHtmlTest {
     // then
     Approvals.verify(diffHtml)
   }
+
+  @Test
+  fun `binary files differ`() {
+    // given
+    val binaryFileDiff = """
+      diff --git a/gradle/wrapper/gradle-wrapper.jar b/gradle/wrapper/gradle-wrapper.jar
+      new file mode 100644
+      index 0000000..7a3265e
+      --- /dev/null
+      +++ b/gradle/wrapper/gradle-wrapper.jar
+      Binary files differ
+      
+    """.trimIndent()
+
+    // when
+    val diffHtml = FormattedDiff.from(binaryFileDiff).toHtml()
+
+    // then
+    Approvals.verify(diffHtml)
+  }
 }
