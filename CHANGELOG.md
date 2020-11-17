@@ -1,14 +1,19 @@
 # Changelog
 ## [Unreleased]
 ## Added
+* Enhanced diff viewer.
 * Show line number in diff viewer.
+* Show binary diff message on selecting a binary file.
 
 ## Changed
 * Replace legacy diff viewer with an improved version.
+* Always show deleted lines count when showing diff.
 
 ### Fixed
 * `IncorrectObjectException` while pruning the file tree by date.
-* Crash when selecting a modified file from the most recent commit in a pruned tree. 
+* Crash when selecting a modified file from the most recent commit in a pruned tree.
+* Moving the slider after selecting a changed file throws an exception.
+* Changed files pane freezes after selecting a binary file.
 
 ## [0.1.4] - 2020-11-07
 ### Added
