@@ -33,7 +33,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.lines)
       .containsExactly(
-        Marker("@@ -1,6 +1,6 @@"),
+        Marker.Text("@@ -1,6 +1,6 @@"),
         Unmodified("buildscript {", 1, 1),
         Unmodified("  apply from: 'buildscripts/plugins.gradle'", 2, 2),
         Deletion("  ext.kotlin_version = '1.3.70'", 3),
@@ -65,7 +65,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.lines)
       .containsExactly(
-        Marker("@@ -1 +0,0 @@"),
+        Marker.Text("@@ -1 +0,0 @@"),
         Deletion("Hello World!", 1),
         Unmodified("", 2, 0),
       )
@@ -92,7 +92,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.lines)
       .containsExactly(
-        Marker("@@ -0,0 +1 @@"),
+        Marker.Text("@@ -0,0 +1 @@"),
         Insertion("I'm new in town :)", 1),
         Unmodified("", 0, 2),
       )
@@ -177,7 +177,7 @@ class FormattedDiffTest {
     // then
     assertThat(formattedDiff.lines)
       .containsExactly(
-        Marker("@@ -25,6 +25,7 @@"),
+        Marker.Text("@@ -25,6 +25,7 @@"),
         Unmodified("import retrofit.mime.FormUrlEncodedTypedOutput;", 25, 25),
         Unmodified("import retrofit.mime.MultipartTypedOutput;", 26, 26),
         Unmodified("import retrofit.mime.TypedOutput;", 27, 27),
@@ -185,7 +185,7 @@ class FormattedDiffTest {
         Unmodified("", 28, 29),
         Unmodified("final class RequestBuilder implements RequestInterceptor.RequestFacade {", 29, 30),
         Unmodified("  private final Converter converter;", 30, 31),
-        Marker("@@ -170,6 +171,8 @@"),
+        Marker.Text("@@ -170,6 +171,8 @@"),
         Unmodified("          if (value != null) { // Skip null values.", 170, 171),
         Unmodified("            if (value instanceof TypedOutput) {", 171, 172),
         Unmodified("              multipartBody.addPart(name, (TypedOutput) value);", 172, 173),
@@ -196,5 +196,28 @@ class FormattedDiffTest {
         Unmodified("            }", 175, 178),
       )
       .inOrder()
+  }
+
+  @Test
+  fun `it should understand binary file diffs`() {
+    // given
+    val rawBinaryFileDiff = """
+      diff --git a/gradle/wrapper/gradle-wrapper.jar b/gradle/wrapper/gradle-wrapper.jar
+      new file mode 100644
+      index 0000000..7a3265e
+      --- /dev/null
+      +++ b/gradle/wrapper/gradle-wrapper.jar
+      Binary files differ
+      
+    """.trimIndent()
+
+    // when
+    val formattedDiff = FormattedDiff.from(rawBinaryFileDiff)
+
+    // then
+    assertThat(formattedDiff.lines)
+      .containsExactly(
+        Marker.Binary("Binary files differ")
+      )
   }
 }

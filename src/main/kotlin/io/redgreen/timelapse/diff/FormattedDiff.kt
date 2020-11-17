@@ -44,7 +44,12 @@ class FormattedDiff internal constructor(val lines: List<DiffLine>) {
     private fun createFormattedDiff(
       rawDiffLinesWithoutHeader: List<String>
     ): FormattedDiff {
-      val marker = Marker(rawDiffLinesWithoutHeader.first())
+      val line = rawDiffLinesWithoutHeader.first()
+      if (line == "Binary files differ") {
+        return FormattedDiff(listOf(Marker.Binary(line)))
+      }
+
+      val marker = Marker.Text(line)
       var oldLineNumber = marker.oldLineNumber - 1 /* ^ the first line is a marker, hence offsetting by 1 */
       var newLineNumber = marker.newLineNumber - 1
 
@@ -58,7 +63,7 @@ class FormattedDiff internal constructor(val lines: List<DiffLine>) {
         if (diffLine !is Deletion) {
           newLineNumber++
         }
-        if (diffLine is Marker) {
+        if (diffLine is Marker.Text) {
           oldLineNumber = diffLine.oldLineNumber
           newLineNumber = diffLine.newLineNumber
         }
@@ -73,7 +78,7 @@ class FormattedDiff internal constructor(val lines: List<DiffLine>) {
       newLineNumber: Int
     ): DiffLine {
       return when {
-        diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker(diffLine)
+        diffLine.startsWith("@@") && diffLine.endsWith("@@") -> Marker.Text(diffLine)
         diffLine.startsWith('+') -> Insertion(diffLine.safelyTrimFirstSpaceChar(), newLineNumber)
         diffLine.startsWith('-') -> Deletion(diffLine.safelyTrimFirstSpaceChar(), oldLineNumber)
         else -> Unmodified(diffLine.safelyTrimFirstSpaceChar(), oldLineNumber, newLineNumber)

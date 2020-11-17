@@ -28,26 +28,30 @@ sealed class DiffLine {
       ContentsEmpty::class.java.simpleName
   }
 
-  data class Marker(val text: String) : DiffLine() {
-    val oldLineNumber by fastLazy {
-      val (oldLineNumberPart, _) = text.drop(4).dropLast(3).split(' ')
+  sealed class Marker(open val text: String) : DiffLine() {
+    data class Text(override val text: String) : Marker(text) {
+      val oldLineNumber by fastLazy {
+        val (oldLineNumberPart, _) = text.drop(4).dropLast(3).split(' ')
 
-      val endIndex = if (oldLineNumberPart.contains(',')) {
-        oldLineNumberPart.indexOf(',')
-      } else {
-        oldLineNumberPart.length
+        val endIndex = if (oldLineNumberPart.contains(',')) {
+          oldLineNumberPart.indexOf(',')
+        } else {
+          oldLineNumberPart.length
+        }
+        oldLineNumberPart.substring(0, endIndex).toInt()
       }
-      oldLineNumberPart.substring(0, endIndex).toInt()
+
+      val newLineNumber by fastLazy {
+        val (_, newLineNumberPart) = text.drop(4).dropLast(3).split(' ')
+        val endIndex = if (newLineNumberPart.contains(',')) {
+          newLineNumberPart.indexOf(',')
+        } else {
+          newLineNumberPart.length
+        }
+        newLineNumberPart.substring(1, endIndex).toInt()
+      }
     }
 
-    val newLineNumber by fastLazy {
-      val (_, newLineNumberPart) = text.drop(4).dropLast(3).split(' ')
-      val endIndex = if (newLineNumberPart.contains(',')) {
-        newLineNumberPart.indexOf(',')
-      } else {
-        newLineNumberPart.length
-      }
-      newLineNumberPart.substring(1, endIndex).toInt()
-    }
+    data class Binary(override val text: String) : Marker(text)
   }
 }

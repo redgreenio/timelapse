@@ -88,7 +88,7 @@ fun FormattedDiff.toHtml(): String {
 
 private fun mapToTableRow(diffLine: DiffLine): String {
   return when (diffLine) {
-    is Marker -> {
+    is Marker.Text -> {
       """
         |      <tr class="diff-section">
         |        <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
@@ -138,6 +138,8 @@ private fun mapToTableRow(diffLine: DiffLine): String {
         |      </tr>
       """.trimMargin("|")
     }
+
+    is Marker.Binary -> TODO("Unsupported `DiffLine` type :(")
   }
 }
 

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 class MarkerTest {
   @Test
   fun `it should compute old and new start lines for a modified file`() {
-    val marker = Marker("@@ -1,6 +1,6 @@")
+    val marker = Marker.Text("@@ -1,6 +1,6 @@")
 
     assertThat(marker.oldLineNumber)
       .isEqualTo(1)
@@ -17,7 +17,7 @@ class MarkerTest {
 
   @Test
   fun `it should compute old and new start lines for a deleted file`() {
-    val marker = Marker("@@ -1 +0,0 @@")
+    val marker = Marker.Text("@@ -1 +0,0 @@")
 
     assertThat(marker.oldLineNumber)
       .isEqualTo(1)
@@ -27,7 +27,7 @@ class MarkerTest {
 
   @Test
   fun `it should compute old and new start lines for a new file`() {
-    val marker = Marker("@@ -0,0 +1 @@")
+    val marker = Marker.Text("@@ -0,0 +1 @@")
 
     assertThat(marker.oldLineNumber)
       .isEqualTo(0)
