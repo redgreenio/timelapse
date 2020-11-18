@@ -15,7 +15,6 @@ import io.redgreen.timelapse.changedfiles.ChangedFilesUpdate
 import io.redgreen.timelapse.changedfiles.FileAndRevisionSelected
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
-import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.mobius.DeferredEventSource
 import io.redgreen.timelapse.vcs.ChangedFile
@@ -123,7 +122,7 @@ class ChangedFilesPane(
   }
 
   override fun showMessage(message: ChangedFilesViewMessage) {
-    debug { "showMessage stub! $message" }
+    // TODO: 18-11-2020, Define and refine UI
     if (message == NO_OTHER_FILES_CHANGED) {
       with(changedFilesListView) {
         items.clear()
@@ -134,15 +133,15 @@ class ChangedFilesPane(
   }
 
   override fun hideMessage() {
-    debug { "hideMessage stub!" }
+    // TODO: 18-11-2020, Define and refine UI
   }
 
   override fun setLoadingVisibility(visible: Boolean) {
-    debug { "showLoading stub! $visible" }
+    // TODO: 18-11-2020, Define and refine UI
   }
 
   override fun setChangedFilesListVisibility(visible: Boolean) {
-    debug { "showChangedFilesList stub! $visible" }
+    // TODO: 18-11-2020, Define and refine UI
   }
 
   override fun showChangedFiles(changedFiles: List<ChangedFile>) {
