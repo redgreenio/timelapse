@@ -179,4 +179,21 @@ class DiffHtmlTest {
     // then
     Approvals.verify(diffHtml)
   }
+
+  @Test
+  fun `file mode changed`() {
+    // given
+    val fileModeChangedDiff = """
+      diff --git a/.gitignore b/.gitignore
+      old mode 100755
+      new mode 100644
+      
+    """.trimIndent()
+
+    // when
+    val diffHtml = FormattedDiff.from(fileModeChangedDiff).toHtml()
+
+    // then
+    Approvals.verify(diffHtml)
+  }
 }

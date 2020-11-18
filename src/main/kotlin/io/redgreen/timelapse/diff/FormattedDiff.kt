@@ -2,22 +2,29 @@ package io.redgreen.timelapse.diff
 
 import io.redgreen.timelapse.diff.DiffLine.ContentsEmpty
 import io.redgreen.timelapse.diff.DiffLine.Deletion
+import io.redgreen.timelapse.diff.DiffLine.FileModeChanged
 import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.DiffLine.Marker
 import io.redgreen.timelapse.diff.DiffLine.Unmodified
 
 class FormattedDiff internal constructor(val lines: List<DiffLine>) {
   companion object {
-    private const val DIFF_TYPE_LINE_INDEX = 1
-    private const val DIFF_TYPE_NEW_FILE = "new file"
-    private const val DIFF_TYPE_DELETED = "deleted"
+    private const val DIFF_MODE_LINE_INDEX = 1
+
+    private const val DIFF_MODE_NEW_FILE = "new file mode"
+    private const val DIFF_MODE_DELETED = "deleted file mode"
+
+    private const val DIFF_FILE_MODE_CHANGED = "old mode"
+    private const val DIFF_OLD_MODE_LINE_INDEX = 1
+    private const val DIFF_NEW_MODE_LINE_INDEX = 2
 
     private const val HEADER_LINES_COUNT_NEW_OR_DELETED_FILE = 5
     private const val HEADER_LINES_COUNT_MODIFIED_FILE = 4
 
     fun from(rawDiff: String): FormattedDiff {
       val rawDiffLines = rawDiff.lines()
-      val headerLineCount = headerLineCount(rawDiffLines[DIFF_TYPE_LINE_INDEX])
+      val diffModeLine = rawDiffLines[DIFF_MODE_LINE_INDEX]
+      val headerLineCount = headerLineCount(diffModeLine)
 
       val rawDiffLinesWithoutHeader = rawDiffLines
         .drop(headerLineCount)
@@ -26,14 +33,20 @@ class FormattedDiff internal constructor(val lines: List<DiffLine>) {
 
       return if (contentsEmpty) {
         FormattedDiff(listOf(ContentsEmpty))
+      } else if (diffModeLine.startsWith(DIFF_FILE_MODE_CHANGED)) {
+        val oldModeLine = rawDiffLines[DIFF_OLD_MODE_LINE_INDEX]
+        val oldMode = oldModeLine.substring(oldModeLine.lastIndexOf(' ') + 1).toInt()
+        val newModeLine = rawDiffLines[DIFF_NEW_MODE_LINE_INDEX]
+        val newMode = newModeLine.substring(newModeLine.lastIndexOf(' ') + 1).toInt()
+        FormattedDiff(listOf(FileModeChanged(oldMode, newMode)))
       } else {
         createFormattedDiff(rawDiffLinesWithoutHeader)
       }
     }
 
-    private fun headerLineCount(diffTypeLine: String): Int {
-      val newOrDeletedFile = diffTypeLine.startsWith(DIFF_TYPE_NEW_FILE) ||
-          diffTypeLine.startsWith(DIFF_TYPE_DELETED)
+    private fun headerLineCount(diffModeLine: String): Int {
+      val newOrDeletedFile = diffModeLine.startsWith(DIFF_MODE_NEW_FILE) ||
+          diffModeLine.startsWith(DIFF_MODE_DELETED)
       return if (newOrDeletedFile) {
         HEADER_LINES_COUNT_NEW_OR_DELETED_FILE
       } else {

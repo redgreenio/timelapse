@@ -3,15 +3,15 @@ package io.redgreen.timelapse.diff
 import io.redgreen.timelapse.foo.fastLazy
 
 sealed class DiffLine {
+  companion object {
+    private const val NON_EXISTENT_LINE_NUMBER = 0
+  }
+
   data class Unmodified(
     val text: String,
     val oldLineNumber: Int,
     val newLineNumber: Int
   ) : DiffLine()
-
-  companion object {
-    private const val NON_EXISTENT_LINE_NUMBER = 0
-  }
 
   data class Deletion(
     val text: String,
@@ -54,4 +54,9 @@ sealed class DiffLine {
 
     data class Binary(override val text: String) : Marker(text)
   }
+
+  data class FileModeChanged(
+    val oldMode: Int,
+    val newMode: Int
+  ) : DiffLine()
 }

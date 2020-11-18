@@ -3,6 +3,7 @@ package io.redgreen.timelapse.diff
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.diff.DiffLine.ContentsEmpty
 import io.redgreen.timelapse.diff.DiffLine.Deletion
+import io.redgreen.timelapse.diff.DiffLine.FileModeChanged
 import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.DiffLine.Marker
 import io.redgreen.timelapse.diff.DiffLine.Unmodified
@@ -218,6 +219,26 @@ class FormattedDiffTest {
     assertThat(formattedDiff.lines)
       .containsExactly(
         Marker.Binary("Binary files differ")
+      )
+  }
+
+  @Test
+  fun `it should understand file mode changes`() {
+    // given
+    val fileModeChangedDiff = """
+      diff --git a/.gitignore b/.gitignore
+      old mode 100755
+      new mode 100644
+      
+    """.trimIndent()
+
+    // when
+    val formattedDiff = FormattedDiff.from(fileModeChangedDiff)
+
+    // then
+    assertThat(formattedDiff.lines)
+      .containsExactly(
+        FileModeChanged(100755, 100644)
       )
   }
 }

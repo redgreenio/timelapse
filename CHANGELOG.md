@@ -4,6 +4,7 @@
 * Enhanced diff viewer.
 * Show line number in diff viewer.
 * Show binary diff message on selecting a binary file.
+* Support for file mode changes diff.
 
 ## Changed
 * Replace legacy diff viewer with an improved version.

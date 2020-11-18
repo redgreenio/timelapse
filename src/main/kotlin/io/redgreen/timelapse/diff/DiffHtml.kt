@@ -2,6 +2,7 @@ package io.redgreen.timelapse.diff
 
 import io.redgreen.timelapse.diff.DiffLine.ContentsEmpty
 import io.redgreen.timelapse.diff.DiffLine.Deletion
+import io.redgreen.timelapse.diff.DiffLine.FileModeChanged
 import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.DiffLine.Marker
 import io.redgreen.timelapse.diff.DiffLine.Unmodified
@@ -143,6 +144,14 @@ private fun mapToTableRow(diffLine: DiffLine): String {
       """
         |      <tr>
         |        <td>&lt;binary files differ&gt;</td>
+        |      </tr>
+      """.trimMargin("|")
+    }
+
+    is FileModeChanged -> {
+      """
+        |      <tr>
+        |        <td>&lt;file mode changed&gt;</td>
         |      </tr>
       """.trimMargin("|")
     }
