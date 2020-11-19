@@ -1,5 +1,6 @@
 import io.redgreen.timelapse.TimelapseApp
+import javafx.application.Application
 
 fun main(args: Array<String>) {
-  TimelapseApp(args[0]).run()
+  Application.launch(TimelapseApp::class.java, args[0])
 }

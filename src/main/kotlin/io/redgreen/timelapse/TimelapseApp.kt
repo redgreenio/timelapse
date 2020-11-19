@@ -24,8 +24,8 @@ import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
+import javafx.application.Application
 import javafx.application.Platform
-import javafx.embed.swing.JFXPanel
 import javafx.embed.swing.SwingNode
 import javafx.geometry.Insets
 import javafx.scene.Scene
@@ -33,46 +33,30 @@ import javafx.scene.control.Slider
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.Pane
 import javafx.scene.layout.RowConstraints
+import javafx.scene.layout.VBox
+import javafx.stage.Stage
 import org.eclipse.jgit.lib.Repository
-import java.awt.BorderLayout
-import java.awt.BorderLayout.CENTER
-import java.awt.BorderLayout.EAST
-import java.awt.BorderLayout.SOUTH
-import java.awt.BorderLayout.WEST
 import java.awt.Dimension
-import java.awt.GridBagConstraints
-import java.awt.GridBagConstraints.HORIZONTAL
-import java.awt.GridBagConstraints.REMAINDER
-import java.awt.GridBagLayout
-import java.awt.KeyboardFocusManager
-import java.awt.event.KeyEvent.VK_1
-import java.awt.event.KeyEvent.VK_2
-import java.awt.event.KeyEvent.VK_3
-import java.awt.event.KeyEvent.VK_ESCAPE
 import java.io.File
 import java.time.LocalDate
-import javax.swing.BorderFactory
-import javax.swing.JFrame
-import javax.swing.JFrame.EXIT_ON_CLOSE
-import javax.swing.JFrame.MAXIMIZED_BOTH
-import javax.swing.JPanel
+import kotlin.Double.Companion.MAX_VALUE
 import kotlin.math.round
 
 private const val APP_NAME = "Timelapse"
 
-private const val WIDTH = 1024
-private const val HEIGHT = 768
+private const val WIDTH = 1024.0
+private const val HEIGHT = 768.0
 private const val AREA_CHART_HEIGHT = 100
-private const val FILE_EXPLORER_WIDTH = 320
-private const val CHANGES_WIDTH = 400
-private const val MATCH_PARENT = 0
+private const val FILE_EXPLORER_WIDTH = 320.0
+private const val RIGHT_PANEL_WIDTH = 400.0
+private const val MATCH_PARENT = MAX_VALUE
 
 private const val NO_PADDING = 0.0
 private const val PADDING = 10.0
 
-class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract, FileSelectionListener {
+class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
+  private lateinit var project: String
   private val gitRepository by lazy { openGitRepository(File(project)) }
   private lateinit var changes: List<Change>
   private lateinit var filePath: String
@@ -105,46 +89,27 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
   private val commitInformationPane by fastLazy { CommitInformationPane(gitRepository) }
 
   private val insertionsAreaChart by fastLazy {
-    AreaChart().apply { preferredSize = Dimension(WIDTH, AREA_CHART_HEIGHT) }
+    AreaChart().apply { preferredSize = Dimension(WIDTH.toInt(), AREA_CHART_HEIGHT) }
   }
 
   private val readingPane by fastLazy { ReadingPane() }
 
-  private val sliderPanel by fastLazy {  // TODO: 07-11-2020 create a `fastLazy` extension function
-    val sliderAndInformationPanel = JPanel(GridBagLayout()).apply {
-      val constraints = GridBagConstraints().apply {
-        weightx = 1.0
-        fill = HORIZONTAL
-        gridwidth = REMAINDER
-      }
-
-      add(JFXPanel().apply {
-        val pane = Pane(timelapseSlider)
-        scene = Scene(pane)
-        timelapseSlider.prefWidthProperty().bind(pane.widthProperty())
-      }, constraints)
-
-      add(JFXPanel().apply { scene = Scene(commitInformationPane) }, constraints)
-
-      // FIXME: 16-11-2020 Get rid of the .toInt() calls after replacing Swing with JavaFx.
-      border = BorderFactory
-        .createEmptyBorder(NO_PADDING.toInt(), NO_PADDING.toInt(), PADDING.toInt(), NO_PADDING.toInt())
+  private val sliderPane by fastLazy {
+    val sliderAndInformationPane = VBox().apply {
+      timelapseSlider.prefWidthProperty().bind(widthProperty())
+      children.addAll(timelapseSlider, commitInformationPane)
     }
 
-    JPanel(BorderLayout()).apply {
-      add(insertionsAreaChart, CENTER)
-      add(sliderAndInformationPanel, SOUTH)
+    BorderPane().apply {
+      center = SwingNode().apply { content = insertionsAreaChart }
+      bottom = sliderAndInformationPane
     }
   }
 
-  private val centerPanel by fastLazy {
-    JFXPanel().apply {
-      scene = Scene(BorderPane().apply {
-        top = SwingNode().apply {
-          content = sliderPanel
-        }
-        center = readingPane
-      })
+  private val centerPane by fastLazy {
+    BorderPane().apply {
+      top = sliderPane
+      center = readingPane
     }
   }
 
@@ -161,69 +126,45 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
 
   private val peoplePane by fastLazy { PeoplePane(gitRepository) }
 
-  private val fileExplorerPane = FileExplorerPane(project, gitRepository, this)
-
-  private val rootPanel = JPanel().apply {
-    layout = BorderLayout()
-    Platform.runLater {
-      add(centerPanel, CENTER)
+  private val fileExplorerPane by fastLazy {
+    FileExplorerPane(project, gitRepository, this).apply {
+      prefWidth = FILE_EXPLORER_WIDTH
+      prefHeight = MATCH_PARENT
     }
-
-    add(fileExplorerPane.apply {
-      preferredSize = Dimension(FILE_EXPLORER_WIDTH, MATCH_PARENT)
-    }, WEST)
-
-    val rightPanel = JFXPanel().apply {
-      scene = Scene(GridPane().apply {
-        add(changedFilesPane, 0, 0)
-        add(peoplePane, 0, 1)
-
-        columnConstraints.add(ColumnConstraints(CHANGES_WIDTH.toDouble()))
-        with(rowConstraints) {
-          add(RowConstraints().apply { percentHeight = 50.0 }) // Row 1 (Changed Files)
-          add(RowConstraints().apply { percentHeight = 50.0 }) // Row 2 (People)
-        }
-      })
-    }
-    add(rightPanel.apply { preferredSize = Dimension(CHANGES_WIDTH, MATCH_PARENT) }, EAST)
   }
 
-  private val timelapseFrame = JFrame(APP_NAME).apply {
-    minimumSize = Dimension(WIDTH, HEIGHT)
-    defaultCloseOperation = EXIT_ON_CLOSE
-    extendedState = MAXIMIZED_BOTH
-    setLocationRelativeTo(null)
-    contentPane.add(rootPanel)
+  private val rightPane by fastLazy {
+    GridPane().apply {
+      add(changedFilesPane, 0, 0)
+      add(peoplePane, 0, 1)
 
-    // Key listener
-    KeyboardFocusManager
-      .getCurrentKeyboardFocusManager()
-      .addKeyEventDispatcher { event ->
-        val action: (() -> Unit)? = when {
-          event.keyCode == VK_ESCAPE -> {
-            { readingPane.dismissOverlap(); timelapseSlider.requestFocus() }
-          }
-
-          event.isAltDown && event.keyCode == VK_1 -> {
-            { fileExplorerPane.focus() }
-          }
-
-          event.isAltDown && event.keyCode == VK_2 ->
-            this@TimelapseApp::moveFocusToReadingPane
-
-          event.isAltDown && event.keyCode == VK_3 -> {
-            { changedFilesPane.focusOnList() }
-          }
-
-          else -> null
-        }
-        action?.invoke()
-        action != null
+      columnConstraints.add(ColumnConstraints(RIGHT_PANEL_WIDTH))
+      with(rowConstraints) {
+        add(RowConstraints().apply { percentHeight = 50.0 }) // Row 1 (Changed Files)
+        add(RowConstraints().apply { percentHeight = 50.0 }) // Row 2 (People)
       }
+
+      prefWidth = RIGHT_PANEL_WIDTH
+      prefHeight = MATCH_PARENT
+    }
   }
 
-  override fun run() {
-    timelapseFrame.isVisible = true
+  override fun start(primaryStage: Stage) {
+    project = parameters.raw.first()
+    debug { "Project: $project" }
+
+    val rootPane = BorderPane().apply {
+      left = fileExplorerPane
+      center = centerPane
+      right = rightPane
+    }
+
+    with(primaryStage) {
+      scene = Scene(rootPane, WIDTH, HEIGHT)
+      title = APP_NAME
+      isMaximized = true
+      show()
+    }
   }
 
   private fun moveFocusToReadingPane() {
@@ -318,4 +259,32 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     val diff = FormattedDiff.from(gitRepository.getDiff(commitId, changedFile.filePath))
     readingPane.showOverlappingDiff(getTitle(changedFile), diff)
   }
+
+  /*
+  // Key listener
+  KeyboardFocusManager
+    .getCurrentKeyboardFocusManager()
+    .addKeyEventDispatcher { event ->
+      val action: (() -> Unit)? = when {
+        event.keyCode == VK_ESCAPE -> {
+          { readingPane.dismissOverlap(); timelapseSlider.requestFocus() }
+        }
+
+        event.isAltDown && event.keyCode == VK_1 -> {
+          { fileExplorerPane.focus() }
+        }
+
+        event.isAltDown && event.keyCode == VK_2 ->
+          this@TimelapseApp::moveFocusToReadingPane
+
+        event.isAltDown && event.keyCode == VK_3 -> {
+          { changedFilesPane.focusOnList() }
+        }
+
+        else -> null
+      }
+      action?.invoke()
+      action != null
+    }
+  */
 }

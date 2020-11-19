@@ -12,8 +12,6 @@ import io.redgreen.timelapse.foo.toLocalDateTime
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import javafx.application.Platform
 import javafx.collections.FXCollections
-import javafx.embed.swing.JFXPanel
-import javafx.scene.Scene
 import javafx.scene.control.ComboBox
 import javafx.scene.control.Label
 import javafx.scene.control.SelectionMode.SINGLE
@@ -33,7 +31,7 @@ class FileExplorerPane(
   private val projectPath: String,
   private val gitRepository: Repository,
   private val fileSelectionListener: FileSelectionListener
-) : JFXPanel() {
+) : BorderPane() {
   interface FileSelectionListener {
     fun onFilePathSelected(filePath: String, startDateEndDate: Pair<LocalDate, LocalDate>? = null)
   }
@@ -87,17 +85,15 @@ class FileExplorerPane(
 
   init {
     timeSpanComboBox = ComboBox(timeSpans)
-    scene = Scene(BorderPane().apply {
-      val vBox = VBox(Label(" • File Explorer • "), timeSpanComboBox)
-      top = vBox
-      timeSpanComboBox.prefWidthProperty().bind(widthProperty())
+    val vBox = VBox(Label(" • File Explorer • "), timeSpanComboBox)
+    top = vBox
+    timeSpanComboBox.prefWidthProperty().bind(widthProperty())
 
-      bottom = fileCountLabel
-      fileCountLabel.prefWidthProperty().bind(widthProperty())
+    bottom = fileCountLabel
+    fileCountLabel.prefWidthProperty().bind(widthProperty())
 
-      center = fileExplorerTreeView
-      fileExplorerTreeView.prefWidthProperty().bind(widthProperty())
-    })
+    center = fileExplorerTreeView
+    fileExplorerTreeView.prefWidthProperty().bind(widthProperty())
 
     timeSpanComboBox.valueProperty().addListener { _, _, newValue ->
       val loadingTimeMillis = measureTimeMillis {
