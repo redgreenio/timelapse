@@ -31,6 +31,13 @@ import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.Slider
 import javafx.scene.control.SplitPane
+import javafx.scene.input.KeyCode.DIGIT1
+import javafx.scene.input.KeyCode.DIGIT2
+import javafx.scene.input.KeyCode.DIGIT3
+import javafx.scene.input.KeyCode.ESCAPE
+import javafx.scene.input.KeyCodeCombination
+import javafx.scene.input.KeyCombination.CONTROL_ANY
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.RowConstraints
@@ -47,7 +54,6 @@ import kotlin.system.exitProcess
 private const val APP_NAME = "Timelapse"
 
 private const val WIDTH = 1024.0
-private const val HEIGHT = 768.0
 private const val AREA_CHART_HEIGHT = 100
 
 private const val NO_PADDING = 0.0
@@ -159,6 +165,8 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
       isMaximized = true
       show()
 
+      setupHotKeys(scene)
+
       setOnCloseRequest {
         // FIXME: 19-11-2020 The application does not exit due to running thread pool executors? Shut down Mobius loops?
         Platform.exit()
@@ -260,31 +268,18 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     readingPane.showOverlappingDiff(getTitle(changedFile), diff)
   }
 
-  /*
-  // Key listener
-  KeyboardFocusManager
-    .getCurrentKeyboardFocusManager()
-    .addKeyEventDispatcher { event ->
-      val action: (() -> Unit)? = when {
-        event.keyCode == VK_ESCAPE -> {
-          { readingPane.dismissOverlap(); timelapseSlider.requestFocus() }
-        }
-
-        event.isAltDown && event.keyCode == VK_1 -> {
-          { fileExplorerPane.focus() }
-        }
-
-        event.isAltDown && event.keyCode == VK_2 ->
-          this@TimelapseApp::moveFocusToReadingPane
-
-        event.isAltDown && event.keyCode == VK_3 -> {
-          { changedFilesPane.focusOnList() }
-        }
-
-        else -> null
-      }
-      action?.invoke()
-      action != null
+  private fun setupHotKeys(scene: Scene) {
+    with(scene) {
+      accelerators[KeyCodeCombination(DIGIT1, CONTROL_ANY)] = Runnable { fileExplorerPane.focus() }
+      accelerators[KeyCodeCombination(DIGIT2, CONTROL_ANY)] = Runnable { moveFocusToReadingPane() }
+      accelerators[KeyCodeCombination(DIGIT3, CONTROL_ANY)] = Runnable { changedFilesPane.focusOnList() }
     }
-  */
+
+    scene.addEventHandler(KeyEvent.KEY_RELEASED) { event ->
+      if (event.code == ESCAPE) {
+        readingPane.dismissOverlap()
+        timelapseSlider.requestFocus()
+      }
+    }
+  }
 }
