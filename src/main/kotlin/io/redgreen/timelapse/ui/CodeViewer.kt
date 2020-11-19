@@ -5,9 +5,9 @@ import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.foo.fastLazy
 import javafx.application.Platform
 import javafx.scene.Node
-import javafx.scene.layout.StackPane
+import javafx.scene.layout.Region
 
-class CodeViewer : StackPane(), DiffDisplay { // FIXME: 14-11-2020 Consider getting rid of this shell class!
+class CodeViewer : Region(), DiffDisplay { // FIXME: 14-11-2020 Consider getting rid of this shell class!
   override val codeNode: Node by lazy { this }
 
   private val diffViewer by fastLazy { DiffViewer() }
