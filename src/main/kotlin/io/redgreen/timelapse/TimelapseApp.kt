@@ -42,6 +42,7 @@ import java.awt.Dimension
 import java.io.File
 import java.time.LocalDate
 import kotlin.math.round
+import kotlin.system.exitProcess
 
 private const val APP_NAME = "Timelapse"
 
@@ -157,6 +158,12 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
       title = APP_NAME
       isMaximized = true
       show()
+
+      setOnCloseRequest {
+        // FIXME: 19-11-2020 The application does not exit due to running thread pool executors? Shut down Mobius loops?
+        Platform.exit()
+        exitProcess(0)
+      }
     }
   }
 
