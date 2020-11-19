@@ -1,6 +1,11 @@
 <html>
   <head>
     <style>
+      #page {
+        padding: 0;
+        margin: 0;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -57,26 +62,28 @@
       }
     </style>
   </head>
-  <table>
-    <tbody>
-      <tr class="diff-section">
-        <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
-      </tr>
-      <tr class="unmodified">
-        <td class="line-number">46</td><td class="line-number">46</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;- &quot;**/src/main/java/org/simple/clinic/storage/Migration_*.kt&quot;</td>
-      </tr>
-      <tr class="unmodified">
-        <td class="line-number">47</td><td class="line-number">47</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;- &quot;**/build/&quot;</td>
-      </tr>
-      <tr class="unmodified">
-        <td class="line-number">48</td><td class="line-number">48</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;- &quot;**/src/main/java/org/simple/clinic/widgets/OmegaCenterIconButton.java&quot;</td>
-      </tr>
-      <tr class="insertion">
-        <td class="line-number"></td><td class="line-number">49</td><td class="blob">+&nbsp;&nbsp;&nbsp;- &quot;router/&quot;</td>
-      </tr>
-      <tr class="unmodified">
-        <td class="line-number">49</td><td class="line-number">50</td><td class="blob">&nbsp;&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
+  <body id="page">
+    <table>
+      <tbody>
+        <tr class="diff-section">
+          <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
+        </tr>
+        <tr class="unmodified">
+          <td class="line-number">46</td><td class="line-number">46</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;- &quot;**/src/main/java/org/simple/clinic/storage/Migration_*.kt&quot;</td>
+        </tr>
+        <tr class="unmodified">
+          <td class="line-number">47</td><td class="line-number">47</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;- &quot;**/build/&quot;</td>
+        </tr>
+        <tr class="unmodified">
+          <td class="line-number">48</td><td class="line-number">48</td><td class="blob">&nbsp;&nbsp;&nbsp;&nbsp;- &quot;**/src/main/java/org/simple/clinic/widgets/OmegaCenterIconButton.java&quot;</td>
+        </tr>
+        <tr class="insertion">
+          <td class="line-number"></td><td class="line-number">49</td><td class="blob">+&nbsp;&nbsp;&nbsp;- &quot;router/&quot;</td>
+        </tr>
+        <tr class="unmodified">
+          <td class="line-number">49</td><td class="line-number">50</td><td class="blob">&nbsp;&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>

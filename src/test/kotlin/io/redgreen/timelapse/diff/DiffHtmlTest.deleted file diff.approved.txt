@@ -1,6 +1,11 @@
 <html>
   <head>
     <style>
+      #page {
+        padding: 0;
+        margin: 0;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -57,47 +62,49 @@
       }
     </style>
   </head>
-  <table>
-    <tbody>
-      <tr class="diff-section">
-        <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">1</td><td class="line-number"></td><td class="blob">-&nbsp;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">2</td><td class="line-number"></td><td class="blob">-&nbsp;&lt;resources&gt;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">3</td><td class="line-number"></td><td class="blob">-&nbsp;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">4</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&lt;declare-styleable name=&quot;OmegaCenterIconButton&quot;&gt;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">5</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;attr name=&quot;drawableTint&quot; format=&quot;color&quot;/&gt;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">6</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;attr name=&quot;android:drawablePadding&quot;/&gt;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">7</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&lt;/declare-styleable&gt;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">8</td><td class="line-number"></td><td class="blob">-&nbsp;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">9</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&lt;dimen name=&quot;omega_default_drawable_padding&quot;&gt;4dp&lt;/dimen&gt;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">10</td><td class="line-number"></td><td class="blob">-&nbsp;</td>
-      </tr>
-      <tr class="deletion">
-        <td class="line-number">11</td><td class="line-number"></td><td class="blob">-&nbsp;&lt;/resources&gt;</td>
-      </tr>
-      <tr class="unmodified">
-        <td class="line-number">12</td><td class="line-number"></td><td class="blob">&nbsp;&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
+  <body id="page">
+    <table>
+      <tbody>
+        <tr class="diff-section">
+          <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">1</td><td class="line-number"></td><td class="blob">-&nbsp;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">2</td><td class="line-number"></td><td class="blob">-&nbsp;&lt;resources&gt;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">3</td><td class="line-number"></td><td class="blob">-&nbsp;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">4</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&lt;declare-styleable name=&quot;OmegaCenterIconButton&quot;&gt;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">5</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;attr name=&quot;drawableTint&quot; format=&quot;color&quot;/&gt;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">6</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;attr name=&quot;android:drawablePadding&quot;/&gt;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">7</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&lt;/declare-styleable&gt;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">8</td><td class="line-number"></td><td class="blob">-&nbsp;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">9</td><td class="line-number"></td><td class="blob">-&nbsp;&nbsp;&nbsp;&lt;dimen name=&quot;omega_default_drawable_padding&quot;&gt;4dp&lt;/dimen&gt;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">10</td><td class="line-number"></td><td class="blob">-&nbsp;</td>
+        </tr>
+        <tr class="deletion">
+          <td class="line-number">11</td><td class="line-number"></td><td class="blob">-&nbsp;&lt;/resources&gt;</td>
+        </tr>
+        <tr class="unmodified">
+          <td class="line-number">12</td><td class="line-number"></td><td class="blob">&nbsp;&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>

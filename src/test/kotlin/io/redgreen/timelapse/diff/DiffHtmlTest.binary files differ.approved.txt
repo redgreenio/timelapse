@@ -1,6 +1,11 @@
 <html>
   <head>
     <style>
+      #page {
+        padding: 0;
+        margin: 0;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -57,11 +62,13 @@
       }
     </style>
   </head>
-  <table>
-    <tbody>
-      <tr>
-        <td>&lt;binary files differ&gt;</td>
-      </tr>
-    </tbody>
-  </table>
+  <body id="page">
+    <table>
+      <tbody>
+        <tr>
+          <td>&lt;binary files differ&gt;</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>

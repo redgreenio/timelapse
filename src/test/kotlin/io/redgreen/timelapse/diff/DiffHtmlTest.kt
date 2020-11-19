@@ -3,6 +3,8 @@ package io.redgreen.timelapse.diff
 import org.approvaltests.Approvals
 import org.junit.jupiter.api.Test
 
+// FIXME: 19-11-2020 Approved files are too large and styling changes affect all tests,
+// consider tests that separate structure and style.
 class DiffHtmlTest {
   @Test
   fun `single diff section`() {

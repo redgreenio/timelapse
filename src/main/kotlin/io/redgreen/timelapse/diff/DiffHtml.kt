@@ -12,6 +12,11 @@ private val template = """
 <html>
   <head>
     <style>
+      #page {
+        padding: 0;
+        margin: 0;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -68,11 +73,13 @@ private val template = """
       }
     </style>
   </head>
-  <table>
-    <tbody>
+  <body id="page">
+    <table>
+      <tbody>
 <!-- Replace -->
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </body>
 </html>
 
 """.trimIndent()
@@ -91,9 +98,9 @@ private fun mapToTableRow(diffLine: DiffLine): String {
   return when (diffLine) {
     is Marker.Text -> {
       """
-        |      <tr class="diff-section">
-        |        <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
-        |      </tr>
+        |        <tr class="diff-section">
+        |          <td class="line-number">​</td><td class="line-number">​</td><td class="blob"></td>
+        |        </tr>
         |
       """.trimMargin("|")
     }
@@ -103,9 +110,9 @@ private fun mapToTableRow(diffLine: DiffLine): String {
       val newLineNumber = if (diffLine.newLineNumber == 0) "" else diffLine.newLineNumber.toString()
       val escapedHtmlLine = escapeHtml(diffLine.text)
       """
-        |      <tr class="unmodified">
-        |        <td class="line-number">$oldLineNumber</td><td class="line-number">$newLineNumber</td><td class="blob">&nbsp;&nbsp;$escapedHtmlLine</td>
-        |      </tr>
+        |        <tr class="unmodified">
+        |          <td class="line-number">$oldLineNumber</td><td class="line-number">$newLineNumber</td><td class="blob">&nbsp;&nbsp;$escapedHtmlLine</td>
+        |        </tr>
         |
       """.trimMargin("|")
     }
@@ -114,9 +121,9 @@ private fun mapToTableRow(diffLine: DiffLine): String {
       val oldLineNumber = diffLine.oldLineNumber
       val escapedHtmlLine = escapeHtml(diffLine.text)
       """
-        |      <tr class="deletion">
-        |        <td class="line-number">$oldLineNumber</td><td class="line-number"></td><td class="blob">-&nbsp;$escapedHtmlLine</td>
-        |      </tr>
+        |        <tr class="deletion">
+        |          <td class="line-number">$oldLineNumber</td><td class="line-number"></td><td class="blob">-&nbsp;$escapedHtmlLine</td>
+        |        </tr>
         |
       """.trimMargin("|")
     }
@@ -125,34 +132,34 @@ private fun mapToTableRow(diffLine: DiffLine): String {
       val newLineNumber = diffLine.newLineNumber
       val escapedHtmlLine = escapeHtml(diffLine.text)
       """
-        |      <tr class="insertion">
-        |        <td class="line-number"></td><td class="line-number">$newLineNumber</td><td class="blob">+&nbsp;$escapedHtmlLine</td>
-        |      </tr>
+        |        <tr class="insertion">
+        |          <td class="line-number"></td><td class="line-number">$newLineNumber</td><td class="blob">+&nbsp;$escapedHtmlLine</td>
+        |        </tr>
         |
       """.trimMargin("|")
     }
 
     ContentsEmpty -> {
       """
-        |      <tr>
-        |        <td>&lt;contents empty&gt;</td>
-        |      </tr>
+        |        <tr>
+        |          <td>&lt;contents empty&gt;</td>
+        |        </tr>
       """.trimMargin("|")
     }
 
     is Marker.Binary -> {
       """
-        |      <tr>
-        |        <td>&lt;binary files differ&gt;</td>
-        |      </tr>
+        |        <tr>
+        |          <td>&lt;binary files differ&gt;</td>
+        |        </tr>
       """.trimMargin("|")
     }
 
     is FileModeChanged -> {
       """
-        |      <tr>
-        |        <td>&lt;file mode changed&gt;</td>
-        |      </tr>
+        |        <tr>
+        |          <td>&lt;file mode changed&gt;</td>
+        |        </tr>
       """.trimMargin("|")
     }
   }
