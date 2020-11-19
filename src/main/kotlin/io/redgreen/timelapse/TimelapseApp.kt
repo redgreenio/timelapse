@@ -13,6 +13,7 @@ import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
+import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.readingarea.CommitInformationPane
@@ -317,8 +318,4 @@ class TimelapseApp(private val project: String) : Runnable, ReadingAreaContract,
     val diff = FormattedDiff.from(gitRepository.getDiff(commitId, changedFile.filePath))
     readingPane.showOverlappingDiff(getTitle(changedFile), diff)
   }
-}
-
-internal fun debug(message: () -> String) {
-  println(message())
 }

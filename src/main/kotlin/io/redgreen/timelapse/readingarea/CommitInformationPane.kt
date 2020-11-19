@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.readingarea
 
 import humanize.Humanize
-import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.getCommit
+import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.visuals.getAuthoredAndCommittedText
 import javafx.event.EventHandler
 import javafx.geometry.Insets

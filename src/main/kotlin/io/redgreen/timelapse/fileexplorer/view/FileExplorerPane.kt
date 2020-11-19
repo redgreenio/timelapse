@@ -3,10 +3,10 @@ package io.redgreen.timelapse.fileexplorer.view
 import io.redgreen.timelapse.datastructures.NodeTransformer
 import io.redgreen.timelapse.datastructures.Tree
 import io.redgreen.timelapse.datastructures.Tree.Node
-import io.redgreen.timelapse.debug
 import io.redgreen.timelapse.domain.getFilePaths
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerSelection.AllFiles
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerSelection.TMinusDays
+import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.foo.toLocalDateTime
 import io.redgreen.timelapse.vcs.git.GitRepositoryService

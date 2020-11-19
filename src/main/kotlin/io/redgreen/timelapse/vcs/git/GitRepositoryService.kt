@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.vcs.git
 
 import io.reactivex.rxjava3.core.Single
-import io.redgreen.timelapse.debug
+import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
