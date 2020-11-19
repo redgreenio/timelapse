@@ -5,6 +5,7 @@
 - Show line number in diff viewer.
 - Show binary diff message on selecting a binary file.
 - Support for file mode changes diff.
+- Enable resizing the left (file explorer) and right (changed files & people) panels.
 
 ## Changed
 - Always show deleted lines count when showing diff.

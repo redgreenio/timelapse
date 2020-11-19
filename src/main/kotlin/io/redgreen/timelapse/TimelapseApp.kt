@@ -30,17 +30,17 @@ import javafx.embed.swing.SwingNode
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.Slider
+import javafx.scene.control.SplitPane
 import javafx.scene.layout.BorderPane
-import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.RowConstraints
 import javafx.scene.layout.VBox
+import javafx.stage.Screen
 import javafx.stage.Stage
 import org.eclipse.jgit.lib.Repository
 import java.awt.Dimension
 import java.io.File
 import java.time.LocalDate
-import kotlin.Double.Companion.MAX_VALUE
 import kotlin.math.round
 
 private const val APP_NAME = "Timelapse"
@@ -48,9 +48,6 @@ private const val APP_NAME = "Timelapse"
 private const val WIDTH = 1024.0
 private const val HEIGHT = 768.0
 private const val AREA_CHART_HEIGHT = 100
-private const val FILE_EXPLORER_WIDTH = 320.0
-private const val RIGHT_PANEL_WIDTH = 400.0
-private const val MATCH_PARENT = MAX_VALUE
 
 private const val NO_PADDING = 0.0
 private const val PADDING = 10.0
@@ -127,25 +124,21 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
   private val peoplePane by fastLazy { PeoplePane(gitRepository) }
 
   private val fileExplorerPane by fastLazy {
-    FileExplorerPane(project, gitRepository, this).apply {
-      prefWidth = FILE_EXPLORER_WIDTH
-      prefHeight = MATCH_PARENT
-    }
+    FileExplorerPane(project, gitRepository, this)
   }
 
   private val rightPane by fastLazy {
     GridPane().apply {
+      changedFilesPane.prefWidthProperty().bind(widthProperty())
+      peoplePane.prefWidthProperty().bind(widthProperty())
+
       add(changedFilesPane, 0, 0)
       add(peoplePane, 0, 1)
 
-      columnConstraints.add(ColumnConstraints(RIGHT_PANEL_WIDTH))
       with(rowConstraints) {
         add(RowConstraints().apply { percentHeight = 50.0 }) // Row 1 (Changed Files)
         add(RowConstraints().apply { percentHeight = 50.0 }) // Row 2 (People)
       }
-
-      prefWidth = RIGHT_PANEL_WIDTH
-      prefHeight = MATCH_PARENT
     }
   }
 
@@ -153,14 +146,14 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     project = parameters.raw.first()
     debug { "Project: $project" }
 
-    val rootPane = BorderPane().apply {
-      left = fileExplorerPane
-      center = centerPane
-      right = rightPane
+    val rootPane = SplitPane().apply {
+      items.addAll(fileExplorerPane, centerPane, rightPane)
+      setDividerPositions(0.18, 0.82)
     }
 
     with(primaryStage) {
-      scene = Scene(rootPane, WIDTH, HEIGHT)
+      val screenBounds = Screen.getPrimary().bounds
+      scene = Scene(rootPane, screenBounds.width, screenBounds.height)
       title = APP_NAME
       isMaximized = true
       show()
