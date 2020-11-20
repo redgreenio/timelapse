@@ -170,5 +170,7 @@ private fun escapeHtml(line: String): String {
   val nStartSpaceChars = line.length - startSpaceCharsTrimmedLine.length
 
   val htmlEscapedLine = StringEscapeUtils.escapeHtml4(line).trimStart(' ')
-  return (1..nStartSpaceChars).joinToString("") { "&nbsp;" } + htmlEscapedLine
+  return (1..nStartSpaceChars)
+    .joinToString("") { "&nbsp;" } + htmlEscapedLine
+    .replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
 }

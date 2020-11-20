@@ -9,7 +9,7 @@ class DiffHtmlTest {
   @Test
   fun `single diff section`() {
     // given
-    val diffWithSingleSection = """
+    val singleSelectionDiff = """
       diff --git a/build.gradle b/build.gradle
       index 4604741..2bc696d 100644
       --- a/build.gradle
@@ -25,7 +25,7 @@ class DiffHtmlTest {
     """.trimIndent()
 
     // when
-    val diffHtml = FormattedDiff.from(diffWithSingleSection).toHtml()
+    val diffHtml = FormattedDiff.from(singleSelectionDiff).toHtml()
 
     // then
     Approvals.verify(diffHtml)
@@ -194,6 +194,33 @@ class DiffHtmlTest {
 
     // when
     val diffHtml = FormattedDiff.from(fileModeChangedDiff).toHtml()
+
+    // then
+    Approvals.verify(diffHtml)
+  }
+
+  @Test
+  fun `replace tabs with 4 spaces`() {
+    // given
+    val tabsDiff = """
+      diff --git a/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java b/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java
+      index 1d7187a..9f9d459 100644
+      --- a/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java
+      +++ b/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java
+      @@ -66,7 +66,7 @@
+       	@Before
+       	public void before() throws IOException {
+       		dest = createTempFile();
+      -		FS.getFsTimerResolution(dest.toPath().getParent());
+      +		FS.getFileStoreAttributeCache(dest.toPath().getParent());
+       		project = new Project();
+       		project.init();
+       		enableLogging();
+      
+    """.trimIndent()
+
+    // then
+    val diffHtml = FormattedDiff.from(tabsDiff).toHtml()
 
     // then
     Approvals.verify(diffHtml)
