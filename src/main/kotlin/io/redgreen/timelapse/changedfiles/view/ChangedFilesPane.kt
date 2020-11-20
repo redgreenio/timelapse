@@ -28,6 +28,8 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode.SINGLE
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyCode.ENTER
 import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
 
@@ -90,17 +92,16 @@ class ChangedFilesPane(
           }
         }
       }
+
+      setOnKeyPressed { event ->
+        if (event.code == ENTER) {
+          sendChangedFileSelectedEvent(selectionModel.selectedIndex)
+        }
+      }
     }
   }
 
   init {
-    fun sendChangedFileSelectedEvent(selectedIndex: Int) {
-      if (selectedIndex == -1) {
-        return
-      }
-      eventSource.notify(ChangedFileSelected(selectedIndex))
-    }
-
     with(changedFilesListView) {
       selectionModel.selectedItemProperty().addListener { _, _, _ ->
         sendChangedFileSelectedEvent(selectionModel.selectedIndex)
@@ -157,14 +158,6 @@ class ChangedFilesPane(
     updateTitle(changedFiles.size)
   }
 
-  fun focusOnList() {
-    Platform.runLater { changedFilesListView.requestFocus() }
-  }
-
-  fun selectFileAndRevision(filePath: String, commitId: String) {
-    eventSource.notify(FileAndRevisionSelected(filePath, commitId))
-  }
-
   override fun connect(output: Consumer<ChangedFilesEvent>): Connection<ChangedFilesModel> {
     return object : Connection<ChangedFilesModel> {
       override fun accept(value: ChangedFilesModel) {
@@ -175,6 +168,21 @@ class ChangedFilesPane(
         // No-op
       }
     }
+  }
+
+  fun focusOnList() {
+    Platform.runLater { changedFilesListView.requestFocus() }
+  }
+
+  fun selectFileAndRevision(filePath: String, commitId: String) {
+    eventSource.notify(FileAndRevisionSelected(filePath, commitId))
+  }
+
+  private fun sendChangedFileSelectedEvent(selectedIndex: Int) {
+    if (selectedIndex == -1) {
+      return
+    }
+    eventSource.notify(ChangedFileSelected(selectedIndex))
   }
 
   private fun updateTitle(changedFilesCount: Int = 0) {
