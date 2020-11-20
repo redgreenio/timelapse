@@ -24,7 +24,7 @@ private val template = """
 
       table td {
         font-family: "Fira Code", "JetBrains Mono", "Lucida Console";
-        font-size: 15px;
+        font-size: small;
       }
 
       table tr td:first-child {
