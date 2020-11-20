@@ -23,4 +23,8 @@ class CodeViewer : Region(), DiffDisplay { // FIXME: 14-11-2020 Consider getting
       diffViewer.showDiff(diff)
     }
   }
+
+  override fun focusOnDiff() {
+    diffViewer.webView.requestFocus()
+  }
 }

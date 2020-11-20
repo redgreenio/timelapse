@@ -5,7 +5,7 @@ import javafx.scene.layout.StackPane
 import javafx.scene.web.WebView
 
 class DiffViewer : StackPane() {
-  private val webView by fastLazy { WebView() }
+  internal val webView by fastLazy { WebView() }
 
   init {
     children.add(webView)

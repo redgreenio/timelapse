@@ -6,4 +6,5 @@ import javafx.scene.Node
 interface DiffDisplay {
   val codeNode: Node
   fun showDiff(diff: FormattedDiff)
+  fun focusOnDiff()
 }

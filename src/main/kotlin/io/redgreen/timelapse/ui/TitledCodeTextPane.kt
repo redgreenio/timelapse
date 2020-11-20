@@ -28,4 +28,8 @@ class TitledCodeTextPane : BorderPane(), DiffDisplay by CodeViewer() {
       titleLabel.text = title
     }
   }
+
+  override fun requestFocus() {
+    focusOnDiff()
+  }
 }
