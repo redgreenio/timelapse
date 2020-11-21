@@ -26,7 +26,6 @@ import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import javafx.application.Application
 import javafx.application.Platform
-import javafx.embed.swing.SwingNode
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.control.Slider
@@ -45,7 +44,6 @@ import javafx.scene.layout.VBox
 import javafx.stage.Screen
 import javafx.stage.Stage
 import org.eclipse.jgit.lib.Repository
-import java.awt.Dimension
 import java.io.File
 import java.time.LocalDate
 import kotlin.math.round
@@ -53,8 +51,7 @@ import kotlin.system.exitProcess
 
 private const val APP_NAME = "Timelapse"
 
-private const val WIDTH = 1024.0
-private const val AREA_CHART_HEIGHT = 100
+private const val AREA_CHART_HEIGHT = 100.0
 
 private const val NO_PADDING = 0.0
 private const val PADDING = 10.0
@@ -93,7 +90,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
   private val commitInformationPane by fastLazy { CommitInformationPane(gitRepository) }
 
   private val insertionsAreaChart by fastLazy {
-    AreaChart().apply { preferredSize = Dimension(WIDTH.toInt(), AREA_CHART_HEIGHT) }
+    AreaChart().apply { prefHeight = AREA_CHART_HEIGHT }
   }
 
   private val readingPane by fastLazy { ReadingPane() }
@@ -105,7 +102,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     }
 
     BorderPane().apply {
-      center = SwingNode().apply { content = insertionsAreaChart }
+      center = insertionsAreaChart
       bottom = sliderAndInformationPane
     }
   }

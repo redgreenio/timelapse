@@ -28,7 +28,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.control.SelectionMode.SINGLE
-import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyCode.ENTER
 import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository

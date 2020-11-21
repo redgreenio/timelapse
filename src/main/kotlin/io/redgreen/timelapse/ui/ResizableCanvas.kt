@@ -14,11 +14,11 @@ abstract class ResizableCanvas : Pane() {
   init {
     children.add(canvas)
     with(canvas) {
-      widthProperty().addListener { _ -> draw() }
-      heightProperty().addListener { _ -> draw() }
-
       canvas.widthProperty().bind(this@ResizableCanvas.widthProperty())
       canvas.heightProperty().bind(this@ResizableCanvas.heightProperty())
+
+      widthProperty().addListener { _ -> draw() }
+      heightProperty().addListener { _ -> draw() }
     }
   }
 

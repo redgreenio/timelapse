@@ -2,9 +2,10 @@ package io.redgreen.timelapse.visuals
 
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.geometry.calculateSlope
-import io.redgreen.timelapse.visuals.AreaChart.Companion.TOTAL_VERTICAL_PADDING_RATIO
-import io.redgreen.timelapse.visuals.AreaChart.Companion.X_ORIGIN
 import java.awt.Point
+
+private const val X_ORIGIN = 0
+private const val TOTAL_VERTICAL_PADDING_RATIO = 0.2F
 
 @Suppress("SameParameterValue")
 internal fun computePolygonPoints(
