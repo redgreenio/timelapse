@@ -7,6 +7,7 @@
 - Support for file mode changes diff.
 - Enable resizing the left (file explorer) and right (changed files & people) panels.
 - 'Enter' key brings up diff after changed files pane regains focus.
+- Support for non-english languages in the diff viewer.
 
 ## Changed
 - Always show deleted lines count when showing diff.
