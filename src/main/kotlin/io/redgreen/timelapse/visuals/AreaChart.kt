@@ -7,7 +7,6 @@ import io.redgreen.timelapse.visuals.debug.drawDebugGrid
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.WHITE
-import java.awt.Point
 
 class AreaChart : ResizableCanvas() {
   companion object {

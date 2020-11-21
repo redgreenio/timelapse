@@ -2,7 +2,6 @@ package io.redgreen.timelapse.visuals
 
 import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.geometry.calculateSlope
-import java.awt.Point
 
 private const val X_ORIGIN = 0
 private const val TOTAL_VERTICAL_PADDING_RATIO = 0.2F
