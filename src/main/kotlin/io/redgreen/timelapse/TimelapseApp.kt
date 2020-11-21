@@ -13,6 +13,7 @@ import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
+import io.redgreen.timelapse.foo.NaiveTimeCheck
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.people.view.PeoplePane
@@ -169,6 +170,8 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
         Platform.exit()
         exitProcess(0)
       }
+
+      NaiveTimeCheck.runCheck(project)
     }
   }
 
