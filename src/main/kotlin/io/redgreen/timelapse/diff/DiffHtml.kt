@@ -34,7 +34,7 @@ private val template = """
       }
 
       table td {
-        font-family: "Fira Code", "JetBrains Mono", "Lucida Console";
+        font-family: "Fira Code";
         font-size: small;
       }
 
