@@ -1,6 +1,10 @@
 # Changelog
 ## [Unreleased]
 
+## [0.1.6] - 2020-11-22
+### Fixed
+- An application crash due to a non-`URLClassLoader` used in Mac runtime.
+
 ## [0.1.5] - 2020-11-21
 ## Added
 - Enhanced diff viewer.
