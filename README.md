@@ -38,5 +38,17 @@ gradlew demoJar
 
 After creating a build, copy the `mapping-<version>.txt` and `timelapse-<version>-demo.jar` into the designated Google Drive directory.
 
+### Running on Java 9 and above
+Add an environment variable pointing to the JavaFx SDK.
+
+```shell script
+export JAVA_FX=/path/to/javafx-sdk-<version>/lib
+```
+
+Specify the required JavaFx modules to launch the application.
+```shell script
+java --module-path $JAVA_FX --add-modules javafx.controls,javafx.web -jar timelapse-<version>.jar /path/to/repo
+```
+
 ### Quirks
 The binary does not ship with JavaFx and will run only on JVMs that include JavaFx library jars.
