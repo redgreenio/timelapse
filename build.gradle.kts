@@ -1,8 +1,6 @@
 import Build_gradle.DependencyVersions.junit
 import Build_gradle.DependencyVersions.mobius
 import proguard.gradle.ProGuardTask
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
 
 buildscript {
   repositories {
@@ -90,12 +88,5 @@ tasks {
     printmapping(mappingFile)
 
     doLast { delete(shadowJar) }
-  }
-
-  withType<Jar> {
-    manifest {
-      val validForDays = 18L
-      attributes["Valid-Till"] = LocalDate.now().plusDays(validForDays).format(ISO_LOCAL_DATE)
-    }
   }
 }

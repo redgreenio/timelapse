@@ -125,6 +125,9 @@ class FileExplorerPane(
           }
         }
       }
+
+      debug { "Selected $newValue from the file explorer combo box." }
+      debug { "Building file explorer took ${loadingTimeMillis}ms." }
     }
 
     Platform.runLater { timeSpanComboBox.selectionModel.select(0) }
