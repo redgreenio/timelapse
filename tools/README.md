@@ -1,11 +1,13 @@
 # Retrace
 This tool is used to deobfuscate and understand ProGuard stack traces. The version of the base and retrace jars should match the version used in the gradle plugin.
 
-### Example usage
+### Usage
+#### Syntax
 ```shell script
 java -jar tools/proguard-retrace-6.2.2.jar <mapping-file> <exception-file>
 ```
 
+#### Example
 ```shell script
 java -jar tools/proguard-retrace-6.2.2.jar proguard-lab/mapping-0.1.2.txt proguard-lab/exception-0.1.2.txt
 ```
