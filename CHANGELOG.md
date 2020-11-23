@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased]
+### Fixed
+- Seekbar does not move on selecting a file with fewer commits than the previous file.
 
 ## [0.1.6] - 2020-11-22
 ### Fixed
