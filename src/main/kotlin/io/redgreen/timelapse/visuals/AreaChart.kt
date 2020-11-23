@@ -36,6 +36,7 @@ class AreaChart : ResizableCanvas() {
       points.clear()
       xPoints = DoubleArray(0)
       yPoints = DoubleArray(0)
+      anchorIndex = 0
       invalidate()
     }
 
@@ -85,7 +86,7 @@ class AreaChart : ResizableCanvas() {
     // anchor
     stroke = anchorStrokeColor
     lineWidth = ANCHOR_LINE_WIDTH
-    val anchorX = xPoints[anchorIndex].toDouble()
+    val anchorX = xPoints[anchorIndex]
     strokeLine(anchorX, Y_ORIGIN, anchorX, height)
   }
 
