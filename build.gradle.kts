@@ -15,6 +15,7 @@ plugins {
   application
   kotlin("jvm") version "1.4.0"
   id("com.github.johnrengelman.shadow") version "6.1.0"
+  id("org.openjfx.javafxplugin") version "0.0.9"
 }
 
 group = "io.redgreen"
@@ -22,6 +23,11 @@ version = "0.1.7"
 
 repositories {
   mavenCentral()
+}
+
+javafx {
+  version = "11"
+  modules("javafx.controls", "javafx.web")
 }
 
 object DependencyVersions {
@@ -38,6 +44,9 @@ dependencies {
   implementation("com.spotify.mobius:mobius-rx3:$mobius")
   implementation("com.spotify.mobius:mobius-extras:$mobius")
   implementation("org.apache.commons:commons-text:1.4")
+  implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359") {
+    because("Humanize requires this dependency explicitly after Java 11 upgrade.")
+  }
 
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
@@ -72,9 +81,8 @@ tasks {
 
     // Library jars
     val javaHome = System.getProperty("java.home")
-    val javaRuntime = "$javaHome/lib/rt.jar"
+    val javaRuntime = "$javaHome/jmods"
     val javaCryptographicExtensions = "$javaHome/lib/jce.jar"
-    val javaFx = "$javaHome/lib/ext/jfxrt.jar"
 
     configuration("proguard-rules.pro")
 
@@ -83,7 +91,6 @@ tasks {
 
     libraryjars(javaRuntime)
     libraryjars(javaCryptographicExtensions)
-    libraryjars(javaFx)
 
     printmapping(mappingFile)
 

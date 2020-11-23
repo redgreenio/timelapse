@@ -10,7 +10,7 @@ import io.redgreen.timelapse.mobius.EffectHandlerTestCase
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.VcsRepositoryService
-import org.junit.After
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
 class ChangedFilesEffectHandlerTest {
@@ -19,7 +19,7 @@ class ChangedFilesEffectHandlerTest {
   private val effectHandler = ChangedFilesEffectHandler.from(vcsRepositoryService, readingAreaContract)
   private val testCase = EffectHandlerTestCase(effectHandler)
 
-  @After
+  @AfterEach
   fun teardown() {
     verifyNoMoreInteractions(readingAreaContract)
   }
