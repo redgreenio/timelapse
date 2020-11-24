@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 
 class GitFunctionsTest {
-  private val repository = openGitRepository(File("git-testbed"))
+  private val repository = openGitRepository(File("../git-testbed"))
 
   @Test
   fun `it should get a list of files from initial commit`() {

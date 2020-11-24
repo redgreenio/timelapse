@@ -16,7 +16,7 @@ import java.time.Month.OCTOBER
 class GitRepositoryServiceTest {
   @Nested
   inner class GetChangedFiles {
-    private val gitTestbedRepository = openGitRepository(File("git-testbed"))
+    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
@@ -78,7 +78,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetContributions {
-    private val simpleAndroidRepository = openGitRepository(File("simple-android"))
+    private val simpleAndroidRepository = openGitRepository(File("../simple-android"))
     private val repositoryService = GitRepositoryService(simpleAndroidRepository)
     private val commitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd"
 
@@ -165,7 +165,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetCommitOnOrAfter {
-    private val simpleAndroidRepository = openGitRepository(File("simple-android"))
+    private val simpleAndroidRepository = openGitRepository(File("../simple-android"))
     private val repositoryService = GitRepositoryService(simpleAndroidRepository)
 
     @Test
@@ -201,7 +201,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetChangedFilePaths {
-    private val gitTestbedRepository = openGitRepository(File("git-testbed"))
+    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
@@ -267,7 +267,7 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should ignore deleted file paths between an ancestor and a descendant (simple-android)`() {
       // given
-      val repositoryService = GitRepositoryService(openGitRepository(File("simple-android")))
+      val repositoryService = GitRepositoryService(openGitRepository(File("../simple-android")))
       val ancestorCommitId = "f7a3080ee72869bd9925eaef49cb0de75acc7083" // Update CHANGELOG (#2037)
       val descendantCommitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd" // Update CHANGELOG (#2043)
 
