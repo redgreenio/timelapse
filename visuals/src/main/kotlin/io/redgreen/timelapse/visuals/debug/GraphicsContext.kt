@@ -3,7 +3,7 @@ package io.redgreen.timelapse.visuals.debug
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color
 
-var debug = false
+var debug = true
 
 private const val LINE_WIDTH = 0.5
 private const val WIDER_LINE_WIDTH = 1.0

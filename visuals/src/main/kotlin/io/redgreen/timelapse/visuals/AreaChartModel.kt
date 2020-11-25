@@ -8,44 +8,40 @@ private const val TOTAL_VERTICAL_PADDING_RATIO = 0.2F
 @Suppress("SameParameterValue")
 internal fun computePolygonPoints(
   commits: List<Commit>,
-  totalWidth: Int,
-  totalHeight: Int,
-  pointRadius: Int,
+  viewportWidth: Int,
+  viewportHeight: Int,
   outPoints: MutableList<Point>
 ) {
   outPoints.clear()
 
-  val horizontalSpacing = (totalWidth - pointRadius) / commits.lastIndex.toDouble()
-  val graphHeight = totalHeight - (pointRadius * 2)
+  val horizontalSpacing = viewportWidth / commits.lastIndex.toDouble()
   val lowestValue = commits.map(Commit::insertions).minOrNull()!!
   val highestValue = commits.map(Commit::insertions).maxOrNull()!!
   val yScale = highestValue - lowestValue
 
   commits.onEachIndexed { index, commit ->
     val px = getX(index, horizontalSpacing)
-    val py = getY(commit.insertions, graphHeight, lowestValue, yScale)
+    val py = getY(commit.insertions, viewportHeight, lowestValue, yScale)
 
     if (index > 0) {
-      val x1 = getX(index - 1, horizontalSpacing) + pointRadius
-      val y1 = getY(commits[index - 1].insertions, graphHeight, lowestValue, yScale) + pointRadius
-      val x2 = px + pointRadius
-      val y2 = py + pointRadius
+      val x1 = getX(index - 1, horizontalSpacing)
+      val y1 = getY(commits[index - 1].insertions, viewportHeight, lowestValue, yScale)
+      val x2 = px
+      val y2 = py
       val m = calculateSlope(x1, y1, x2, y2)
 
       when (index) {
         1 -> {
           val c = y1 - m * x1
           val newY1 = m * x1 + c
-          val delta = if (y2 == newY1.toInt()) 0 else if (m > 0) -pointRadius else pointRadius
-          outPoints.add(Point(X_ORIGIN, newY1.toInt() + delta))
+          outPoints.add(Point(X_ORIGIN, newY1.toInt()))
         }
 
         commits.lastIndex -> {
           val c = y2 - m * x2
           val newY2 = m * x2 + c
-          val delta = if (y1 == newY2.toInt()) 0 else if (c > 0) -pointRadius else pointRadius
           outPoints.add(Point(x1.toInt(), y1))
-          outPoints.add(Point(totalWidth, newY2.toInt() + delta))
+          outPoints.add(Point(viewportWidth, newY2.toInt()))
         }
 
         else -> outPoints.add(Point(x1.toInt(), y1))
@@ -53,8 +49,8 @@ internal fun computePolygonPoints(
     }
   }
 
-  outPoints.add(Point(totalWidth, totalHeight))
-  outPoints.add(Point(X_ORIGIN, totalHeight))
+  outPoints.add(Point(viewportWidth, viewportHeight))
+  outPoints.add(Point(X_ORIGIN, viewportHeight))
 }
 
 private fun getX(

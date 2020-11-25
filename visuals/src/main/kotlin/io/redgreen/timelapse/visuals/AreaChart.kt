@@ -47,7 +47,7 @@ class AreaChart : ResizableCanvas() {
     prepareGraphics()
 
     // -- begin: Logic
-    computePolygonPoints(commits, width.toInt(), height.toInt(), POINT_RADIUS.toInt(), insertionPoints)
+    computePolygonPoints(commits, width.toInt(), height.toInt(), insertionPoints)
     xInsertionPoints = insertionPoints.map(Point::x).map { it.toDouble() }.toDoubleArray()
     yInsertionPoints = insertionPoints.map(Point::y).map { it.toDouble() }.toDoubleArray()
     // -- end: Logic
