@@ -47,7 +47,7 @@ class AreaChartModelTest {
   }
 
   @Test
-  fun `negative numbers`() {
+  fun `negative insertion numbers`() {
     // given
     val side = 100
     val commits = listOf(-3 ,-2, -1, 0, 1, 2, 3).map(::Commit)
@@ -59,6 +59,21 @@ class AreaChartModelTest {
     // then
     Approvals.verify(outPoints.humanize())
   }
+
+  @Test
+  fun `insertions with no vertical padding`() {
+    // given
+    val side = 100
+    val commits = listOf(0, 1, 2, 3, 4, 5).map(::Commit)
+    val outPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, side, side, outPoints, 0.0)
+
+    // then
+    Approvals.verify(outPoints.humanize())
+  }
+
 
   private fun MutableList<Point>.humanize() =
     this.joinToString("\n") { "x=${it.x}, y=${it.y}" }

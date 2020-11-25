@@ -3,14 +3,15 @@ package io.redgreen.timelapse.visuals
 import io.redgreen.timelapse.geometry.calculateSlope
 
 private const val X_ORIGIN = 0
-private const val TOTAL_VERTICAL_PADDING_RATIO = 0.2F
+private const val TOTAL_VERTICAL_PADDING_FRACTION = 0.2
 
 @Suppress("SameParameterValue")
 internal fun computePolygonPoints(
   commits: List<Commit>,
   viewportWidth: Int,
   viewportHeight: Int,
-  outPoints: MutableList<Point>
+  outPoints: MutableList<Point>,
+  verticalPaddingFraction: Double = TOTAL_VERTICAL_PADDING_FRACTION,
 ) {
   outPoints.clear()
 
@@ -21,11 +22,11 @@ internal fun computePolygonPoints(
 
   commits.onEachIndexed { index, commit ->
     val px = getX(index, horizontalSpacing)
-    val py = getY(commit.insertions, viewportHeight, lowestValue, yScale)
+    val py = getY(commit.insertions, viewportHeight, lowestValue, yScale, verticalPaddingFraction)
 
     if (index > 0) {
       val x1 = getX(index - 1, horizontalSpacing)
-      val y1 = getY(commits[index - 1].insertions, viewportHeight, lowestValue, yScale)
+      val y1 = getY(commits[index - 1].insertions, viewportHeight, lowestValue, yScale, verticalPaddingFraction)
       val x2 = px
       val y2 = py
       val m = calculateSlope(x1, y1, x2, y2)
@@ -63,9 +64,10 @@ private fun getY(
   insertions: Int,
   graphHeight: Int,
   lowestValue: Int,
-  yScale: Int
+  yScale: Int,
+  verticalPaddingFraction: Double
 ): Int {
-  val totalVerticalPadding = (graphHeight * TOTAL_VERTICAL_PADDING_RATIO).toInt()
+  val totalVerticalPadding = (graphHeight * verticalPaddingFraction).toInt()
   val actualGraphHeight = graphHeight - totalVerticalPadding
   val scaledY = (insertions - lowestValue).toDouble() / yScale
   return (actualGraphHeight + totalVerticalPadding / 2) - (scaledY * (actualGraphHeight)).toInt()
