@@ -21,6 +21,7 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit")
   testImplementation("com.google.truth:truth:1.0.1")
+  testImplementation("com.approvaltests:approvaltests:9.3.0")
 }
 
 tasks {
