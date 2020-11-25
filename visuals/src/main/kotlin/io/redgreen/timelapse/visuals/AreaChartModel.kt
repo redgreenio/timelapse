@@ -10,23 +10,61 @@ internal fun computePolygonPoints(
   commits: List<Commit>,
   viewportWidth: Int,
   viewportHeight: Int,
-  outPoints: MutableList<Point>,
+  outInsertionPoints: MutableList<Point>,
+  outDeletionPoints: MutableList<Point> = mutableListOf(),
   verticalPaddingFraction: Double = TOTAL_VERTICAL_PADDING_FRACTION,
 ) {
-  outPoints.clear()
+  outInsertionPoints.clear()
+  outDeletionPoints.clear()
 
-  val horizontalSpacing = viewportWidth / commits.lastIndex.toDouble()
-  val lowestValue = commits.map(Commit::insertions).minOrNull()!!
-  val highestValue = commits.map(Commit::insertions).maxOrNull()!!
-  val yScale = highestValue - lowestValue
+  val distanceBetweenValues = viewportWidth / commits.lastIndex.toDouble()
+  val lowestInsertionValue = commits.map(Commit::insertions).minOrNull()!!
+  val highestInsertionValue = commits.map(Commit::insertions).maxOrNull()!!
+  val insertionsYScale = highestInsertionValue - lowestInsertionValue
 
-  commits.onEachIndexed { index, commit ->
-    val px = getX(index, horizontalSpacing)
-    val py = getY(commit.insertions, viewportHeight, lowestValue, yScale, verticalPaddingFraction)
+  computePolygon(
+    commits.map(Commit::insertions),
+    viewportWidth,
+    viewportHeight,
+    lowestInsertionValue,
+    insertionsYScale,
+    distanceBetweenValues,
+    verticalPaddingFraction,
+    outInsertionPoints
+  )
+
+  val lowestDeletionValue = commits.map(Commit::deletions).minOrNull()!!
+  val highestDeletionValue = commits.map(Commit::deletions).maxOrNull()!!
+  val deletionsYScale = highestDeletionValue - lowestDeletionValue
+  computePolygon(
+    commits.map(Commit::deletions),
+    viewportWidth,
+    viewportHeight,
+    lowestDeletionValue,
+    deletionsYScale,
+    distanceBetweenValues,
+    verticalPaddingFraction,
+    outDeletionPoints
+  )
+}
+
+private fun computePolygon(
+  values: List<Int>,
+  viewportWidth: Int,
+  viewportHeight: Int,
+  lowestValue: Int,
+  yScale: Int,
+  distanceBetweenValues: Double,
+  verticalPaddingFraction: Double,
+  outPoints: MutableList<Point>,
+) {
+  values.onEachIndexed { index, value ->
+    val px = getX(index, distanceBetweenValues)
+    val py = getY(value, viewportHeight, lowestValue, yScale, verticalPaddingFraction)
 
     if (index > 0) {
-      val x1 = getX(index - 1, horizontalSpacing)
-      val y1 = getY(commits[index - 1].insertions, viewportHeight, lowestValue, yScale, verticalPaddingFraction)
+      val x1 = getX(index - 1, distanceBetweenValues)
+      val y1 = getY(values[index - 1], viewportHeight, lowestValue, yScale, verticalPaddingFraction)
       val x2 = px
       val y2 = py
       val m = calculateSlope(x1, y1, x2, y2)
@@ -38,7 +76,7 @@ internal fun computePolygonPoints(
           outPoints.add(Point(X_ORIGIN, newY1.toInt()))
         }
 
-        commits.lastIndex -> {
+        values.lastIndex -> {
           val c = y2 - m * x2
           val newY2 = m * x2 + c
           outPoints.add(Point(x1.toInt(), y1))

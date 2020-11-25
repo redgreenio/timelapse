@@ -4,76 +4,88 @@ import org.approvaltests.Approvals
 import org.junit.jupiter.api.Test
 
 class AreaChartModelTest {
+  companion object {
+    private const val HUNDRED = 100
+  }
+
   @Test
   fun `increasing insertions`() {
     // given
-    val side = 100
-    val commits = listOf(1, 2, 3, 4, 5).map(::Commit)
-    val outPoints = mutableListOf<Point>()
+    val insertionsOnlyCommits = listOf(1, 2, 3, 4, 5).map(::Commit)
+    val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(commits, side, side, outPoints)
+    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints)
 
     // then
-    Approvals.verify(outPoints.humanize())
+    Approvals.verify(outInsertionPoints.humanize())
   }
 
   @Test
   fun `increasing insertions in a 0x0 area with 0 point radius`() {
     // given
     val side = 0
-    val commits = listOf(1, 2, 3, 4, 5).map(::Commit)
-    val outPoints = mutableListOf<Point>()
+    val insertionsOnlyCommits = listOf(1, 2, 3, 4, 5).map(::Commit)
+    val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(commits, side, side, outPoints)
+    computePolygonPoints(insertionsOnlyCommits, side, side, outInsertionPoints)
 
     // then
-    Approvals.verify(outPoints.humanize())
+    Approvals.verify(outInsertionPoints.humanize())
   }
 
   @Test
   fun `varying insertions`() {
     // given
-    val side = 100
-    val commits = listOf(8, 7, 5, 4, 6).map(::Commit)
-    val outPoints = mutableListOf<Point>()
+    val insertionsOnlyCommits = listOf(8, 7, 5, 4, 6).map(::Commit)
+    val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(commits, side, side, outPoints)
+    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints)
 
     // then
-    Approvals.verify(outPoints.humanize())
+    Approvals.verify(outInsertionPoints.humanize())
   }
 
   @Test
   fun `negative insertion numbers`() {
     // given
-    val side = 100
-    val commits = listOf(-3 ,-2, -1, 0, 1, 2, 3).map(::Commit)
-    val outPoints = mutableListOf<Point>()
+    val insertionsOnlyCommits = listOf(-3 ,-2, -1, 0, 1, 2, 3).map(::Commit)
+    val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(commits, side, side, outPoints)
+    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints)
 
     // then
-    Approvals.verify(outPoints.humanize())
+    Approvals.verify(outInsertionPoints.humanize())
   }
 
   @Test
   fun `insertions with no vertical padding`() {
     // given
-    val side = 100
-    val commits = listOf(0, 1, 2, 3, 4, 5).map(::Commit)
-    val outPoints = mutableListOf<Point>()
+    val insertionsOnlyCommits = listOf(0, 1, 2, 3, 4, 5).map(::Commit)
+    val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(commits, side, side, outPoints, 0.0)
+    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints, mutableListOf(), 0.0)
 
     // then
-    Approvals.verify(outPoints.humanize())
+    Approvals.verify(outInsertionPoints.humanize())
   }
 
+  @Test
+  fun `deletions with no vertical padding`() {
+    // given
+    val deletionsOnlyCommits = listOf(0, 1, 2, 3, 4, 5).map { Commit(0, it) }
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(deletionsOnlyCommits, HUNDRED, HUNDRED, mutableListOf(), outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(outDeletionPoints.humanize())
+  }
 
   private fun MutableList<Point>.humanize() =
     this.joinToString("\n") { "x=${it.x}, y=${it.y}" }
