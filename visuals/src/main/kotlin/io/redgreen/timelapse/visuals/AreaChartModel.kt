@@ -1,6 +1,5 @@
 package io.redgreen.timelapse.visuals
 
-import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.geometry.calculateSlope
 
 private const val X_ORIGIN = 0

@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.ui
+package io.redgreen.javafx
 
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext

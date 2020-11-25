@@ -1,8 +1,7 @@
-package io.redgreen.timelapse
+package io.redgreen.timelapse.geometry
 
 import arrow.core.Tuple5
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.geometry.calculateSlope
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments

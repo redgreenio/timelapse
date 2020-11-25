@@ -5,7 +5,6 @@ import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
 import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.domain.Change
-import io.redgreen.timelapse.domain.Commit
 import io.redgreen.timelapse.domain.getCommitHistoryText
 import io.redgreen.timelapse.domain.getDiff
 import io.redgreen.timelapse.domain.openGitRepository
@@ -24,6 +23,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
+import io.redgreen.timelapse.visuals.Commit
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.geometry.Insets

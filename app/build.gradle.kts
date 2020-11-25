@@ -1,7 +1,6 @@
 import Build_gradle.DependencyVersions.junit
 import Build_gradle.DependencyVersions.mobius
 import proguard.gradle.ProGuardTask
-import kotlin.with
 
 plugins {
   application
@@ -24,6 +23,8 @@ object DependencyVersions {
 }
 
 dependencies {
+  implementation(project(":visuals"))
+
   implementation(kotlin("stdlib-jdk8"))
   implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")
   implementation("org.slf4j:slf4j-simple:1.7.30")

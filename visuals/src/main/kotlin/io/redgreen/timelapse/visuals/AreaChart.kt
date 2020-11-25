@@ -1,7 +1,6 @@
 package io.redgreen.timelapse.visuals
 
-import io.redgreen.timelapse.domain.Commit
-import io.redgreen.timelapse.ui.ResizableCanvas
+import io.redgreen.javafx.ResizableCanvas
 import io.redgreen.timelapse.visuals.debug.debug
 import io.redgreen.timelapse.visuals.debug.drawDebugGrid
 import javafx.scene.canvas.GraphicsContext
