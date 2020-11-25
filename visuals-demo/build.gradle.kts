@@ -11,6 +11,10 @@ javafx {
 
 application.mainClassName = "io.redgreen.visuals.demo.VisualsDemoApp"
 
+dependencies {
+  implementation(project(":visuals"))
+}
+
 tasks {
   compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
