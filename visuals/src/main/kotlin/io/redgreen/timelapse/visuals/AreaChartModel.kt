@@ -30,10 +30,10 @@ internal fun computePolygonPoints(
       val y1 = getY(commits[index - 1].insertions, graphHeight, lowestValue, yScale) + pointRadius
       val x2 = px + pointRadius
       val y2 = py + pointRadius
+      val m = calculateSlope(x1, y1, x2, y2)
 
       when (index) {
         1 -> {
-          val m = calculateSlope(x1, y1, x2, y2)
           val c = y1 - m * x1
           val newY1 = m * x1 + c
           val delta = if (y2 == newY1.toInt()) 0 else if (m > 0) -pointRadius else pointRadius
@@ -41,7 +41,6 @@ internal fun computePolygonPoints(
         }
 
         commits.lastIndex -> {
-          val m = calculateSlope(x1, y1, x2, y2)
           val c = y2 - m * x2
           val newY2 = m * x2 + c
           val delta = if (y1 == newY2.toInt()) 0 else if (c > 0) -pointRadius else pointRadius
