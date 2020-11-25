@@ -89,3 +89,11 @@ tasks {
     doLast { delete(shadowJar) }
   }
 }
+
+tasks.jacocoTestReport {
+  reports {
+    xml.isEnabled = true
+  }
+
+  dependsOn(tasks.test)
+}

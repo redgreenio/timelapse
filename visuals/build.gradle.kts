@@ -37,3 +37,11 @@ tasks {
     useJUnitPlatform()
   }
 }
+
+tasks.jacocoTestReport {
+  reports {
+    xml.isEnabled = true
+  }
+
+  dependsOn(tasks.test)
+}
