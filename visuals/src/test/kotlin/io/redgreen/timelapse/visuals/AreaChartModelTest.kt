@@ -87,6 +87,37 @@ class AreaChartModelTest {
     Approvals.verify(outDeletionPoints.humanize())
   }
 
+  @Test
+  fun `insertions and deletions with no vertical padding`() {
+    // given
+    val commits = listOf(
+      Commit(0, 0), // 0
+      Commit(0, 1), // 1
+      Commit(1, 1), // 2
+      Commit(2, 1), // 3
+      Commit(2, 2), // 4
+      Commit(2, 3), // 5
+    )
+    val outInsertionPoints = mutableListOf<Point>()
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(
+      """
+        |Deletions
+        |=========
+        |${outDeletionPoints.humanize()}
+        |
+        |Insertions
+        |==========
+        |${outInsertionPoints.humanize()}
+      """.trimMargin("|")
+    )
+  }
+
   private fun MutableList<Point>.humanize() =
     this.joinToString("\n") { "x=${it.x}, y=${it.y}" }
 }

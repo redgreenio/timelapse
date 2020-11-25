@@ -1,6 +1,8 @@
 package io.redgreen.timelapse.visuals
 
 import io.redgreen.timelapse.geometry.calculateSlope
+import kotlin.math.max
+import kotlin.math.min
 
 private const val X_ORIGIN = 0
 private const val TOTAL_VERTICAL_PADDING_FRACTION = 0.2
@@ -16,11 +18,27 @@ internal fun computePolygonPoints(
 ) {
   outInsertionPoints.clear()
   outDeletionPoints.clear()
-
   val distanceBetweenValues = viewportWidth / commits.lastIndex.toDouble()
+
+  val insertionsAndDeletions = commits.map { it.insertions + it.deletions }
+
+  val lowestDeletionValue = insertionsAndDeletions.minOrNull()!!
+  val highestDeletionValue = insertionsAndDeletions.maxOrNull()!!
+  val deletionsYScale = highestDeletionValue - lowestDeletionValue
+  computePolygon(
+    insertionsAndDeletions,
+    viewportWidth,
+    viewportHeight,
+    lowestDeletionValue,
+    deletionsYScale,
+    distanceBetweenValues,
+    verticalPaddingFraction,
+    outDeletionPoints
+  )
+
   val lowestInsertionValue = commits.map(Commit::insertions).minOrNull()!!
   val highestInsertionValue = commits.map(Commit::insertions).maxOrNull()!!
-  val insertionsYScale = highestInsertionValue - lowestInsertionValue
+  val insertionsYScale = max(highestInsertionValue, highestDeletionValue) - min(lowestInsertionValue, lowestDeletionValue)
 
   computePolygon(
     commits.map(Commit::insertions),
@@ -31,20 +49,6 @@ internal fun computePolygonPoints(
     distanceBetweenValues,
     verticalPaddingFraction,
     outInsertionPoints
-  )
-
-  val lowestDeletionValue = commits.map(Commit::deletions).minOrNull()!!
-  val highestDeletionValue = commits.map(Commit::deletions).maxOrNull()!!
-  val deletionsYScale = highestDeletionValue - lowestDeletionValue
-  computePolygon(
-    commits.map(Commit::deletions),
-    viewportWidth,
-    viewportHeight,
-    lowestDeletionValue,
-    deletionsYScale,
-    distanceBetweenValues,
-    verticalPaddingFraction,
-    outDeletionPoints
   )
 }
 
