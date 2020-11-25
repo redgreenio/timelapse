@@ -23,18 +23,18 @@ class AreaChart : ResizableCanvas() {
   private val guideStrokeColor = Color.grayRgb(219)
   private val anchorStrokeColor = Color.rgb(94, 186, 125, 0.4)
 
-  private val points = mutableListOf<Point>()
-  private var xPoints = DoubleArray(0)
-  private var yPoints = DoubleArray(0)
+  private val insertionPoints = mutableListOf<Point>()
+  private var xInsertionPoints = DoubleArray(0)
+  private var yInsertionPoints = DoubleArray(0)
   private var anchorIndex = 0
 
   var commits: List<Commit> = emptyList()
     set(value) {
       field = value
 
-      points.clear()
-      xPoints = DoubleArray(0)
-      yPoints = DoubleArray(0)
+      insertionPoints.clear()
+      xInsertionPoints = DoubleArray(0)
+      yInsertionPoints = DoubleArray(0)
       anchorIndex = 0
       invalidate()
     }
@@ -47,9 +47,9 @@ class AreaChart : ResizableCanvas() {
     prepareGraphics()
 
     // -- begin: Logic
-    computePolygonPoints(commits, width.toInt(), height.toInt(), POINT_RADIUS.toInt(), points)
-    xPoints = points.map(Point::x).map { it.toDouble() }.toDoubleArray()
-    yPoints = points.map(Point::y).map { it.toDouble() }.toDoubleArray()
+    computePolygonPoints(commits, width.toInt(), height.toInt(), POINT_RADIUS.toInt(), insertionPoints)
+    xInsertionPoints = insertionPoints.map(Point::x).map { it.toDouble() }.toDoubleArray()
+    yInsertionPoints = insertionPoints.map(Point::y).map { it.toDouble() }.toDoubleArray()
     // -- end: Logic
 
     drawChartPolygon()
@@ -71,7 +71,7 @@ class AreaChart : ResizableCanvas() {
   private fun GraphicsContext.drawChartPolygon() {
     with(this) {
       fill = areaChartPolygonColor
-      fillPolygon(xPoints, yPoints, points.size)
+      fillPolygon(xInsertionPoints, yInsertionPoints, insertionPoints.size)
     }
   }
 
@@ -80,12 +80,12 @@ class AreaChart : ResizableCanvas() {
     stroke = guideStrokeColor
     lineWidth = GUIDE_LINE_WIDTH
 
-    xPoints.forEach { x -> strokeLine(x, Y_ORIGIN, x, height) }
+    xInsertionPoints.forEach { x -> strokeLine(x, Y_ORIGIN, x, height) }
 
     // anchor
     stroke = anchorStrokeColor
     lineWidth = ANCHOR_LINE_WIDTH
-    val anchorX = xPoints[anchorIndex]
+    val anchorX = xInsertionPoints[anchorIndex]
     strokeLine(anchorX, Y_ORIGIN, anchorX, height)
   }
 
@@ -93,7 +93,7 @@ class AreaChart : ResizableCanvas() {
     debug {
       stroke = Color.RED
       lineWidth = 0.5
-      points.onEach { point ->
+      insertionPoints.onEach { point ->
         strokeOval(point.x - POINT_RADIUS, point.y - POINT_RADIUS, POINT_DIAMETER, POINT_DIAMETER)
       }
     }

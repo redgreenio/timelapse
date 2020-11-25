@@ -64,13 +64,13 @@ private fun getX(
   index * horizontalSpacing
 
 private fun getY(
-  additions: Int,
+  insertions: Int,
   graphHeight: Int,
   lowestValue: Int,
   yScale: Int
 ): Int {
   val totalVerticalPadding = (graphHeight * TOTAL_VERTICAL_PADDING_RATIO).toInt()
   val actualGraphHeight = graphHeight - totalVerticalPadding
-  val scaledY = (additions - lowestValue).toDouble() / yScale
+  val scaledY = (insertions - lowestValue).toDouble() / yScale
   return (actualGraphHeight + totalVerticalPadding / 2) - (scaledY * (actualGraphHeight)).toInt()
 }
