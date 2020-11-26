@@ -13,7 +13,7 @@ internal fun computePolygonPoints(
   viewportWidth: Int,
   viewportHeight: Int,
   outInsertionPoints: MutableList<Point>,
-  outDeletionPoints: MutableList<Point> = mutableListOf(),
+  outDeletionPoints: MutableList<Point>,
   verticalPaddingFraction: Double = TOTAL_VERTICAL_PADDING_FRACTION,
 ) {
   outInsertionPoints.clear()

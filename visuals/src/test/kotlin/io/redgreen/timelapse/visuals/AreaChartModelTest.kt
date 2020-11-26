@@ -15,7 +15,7 @@ class AreaChartModelTest {
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints)
+    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints, mutableListOf())
 
     // then
     Approvals.verify(outInsertionPoints.humanize())
@@ -29,7 +29,7 @@ class AreaChartModelTest {
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(insertionsOnlyCommits, side, side, outInsertionPoints)
+    computePolygonPoints(insertionsOnlyCommits, side, side, outInsertionPoints, mutableListOf())
 
     // then
     Approvals.verify(outInsertionPoints.humanize())
@@ -42,7 +42,7 @@ class AreaChartModelTest {
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints)
+    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints, mutableListOf())
 
     // then
     Approvals.verify(outInsertionPoints.humanize())
@@ -55,7 +55,7 @@ class AreaChartModelTest {
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
-    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints)
+    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints, mutableListOf())
 
     // then
     Approvals.verify(outInsertionPoints.humanize())

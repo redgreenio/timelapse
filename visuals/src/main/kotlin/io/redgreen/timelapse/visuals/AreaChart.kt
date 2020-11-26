@@ -19,13 +19,19 @@ class AreaChart : ResizableCanvas() {
     private const val ANCHOR_LINE_WIDTH = 2.0
   }
 
-  private val areaChartPolygonColor = Color.rgb(94, 186, 125, 0.4)
+  private val insertionsPolygonColor = Color.rgb(198, 240, 194)
+  private val deletionsPolygonColor = Color.rgb(240, 194, 194)
   private val guideStrokeColor = Color.grayRgb(219)
   private val anchorStrokeColor = Color.rgb(94, 186, 125, 0.4)
 
   private val insertionPoints = mutableListOf<Point>()
   private var xInsertionPoints = DoubleArray(0)
   private var yInsertionPoints = DoubleArray(0)
+
+  private val deletionPoints = mutableListOf<Point>()
+  private var xDeletionPoints = DoubleArray(0)
+  private var yDeletionPoints = DoubleArray(0)
+
   private var anchorIndex = 0
 
   var commits: List<Commit> = emptyList()
@@ -35,6 +41,11 @@ class AreaChart : ResizableCanvas() {
       insertionPoints.clear()
       xInsertionPoints = DoubleArray(0)
       yInsertionPoints = DoubleArray(0)
+
+      deletionPoints.clear()
+      xDeletionPoints = DoubleArray(0)
+      yDeletionPoints = DoubleArray(0)
+
       anchorIndex = 0
       invalidate()
     }
@@ -47,9 +58,12 @@ class AreaChart : ResizableCanvas() {
     prepareGraphics()
 
     // -- begin: Logic
-    computePolygonPoints(commits, width.toInt(), height.toInt(), insertionPoints)
+    computePolygonPoints(commits, width.toInt(), height.toInt(), insertionPoints, deletionPoints)
     xInsertionPoints = insertionPoints.map(Point::x).map { it.toDouble() }.toDoubleArray()
     yInsertionPoints = insertionPoints.map(Point::y).map { it.toDouble() }.toDoubleArray()
+
+    xDeletionPoints = deletionPoints.map(Point::x).map { it.toDouble() }.toDoubleArray()
+    yDeletionPoints = deletionPoints.map(Point::y).map { it.toDouble() }.toDoubleArray()
     // -- end: Logic
 
     drawChartPolygon()
@@ -70,7 +84,12 @@ class AreaChart : ResizableCanvas() {
 
   private fun GraphicsContext.drawChartPolygon() {
     with(this) {
-      fill = areaChartPolygonColor
+      fill = deletionsPolygonColor
+      fillPolygon(xDeletionPoints, yDeletionPoints, deletionPoints.size)
+    }
+
+    with(this) {
+      fill = insertionsPolygonColor
       fillPolygon(xInsertionPoints, yInsertionPoints, insertionPoints.size)
     }
   }
