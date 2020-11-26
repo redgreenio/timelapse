@@ -49,19 +49,6 @@ class AreaChartModelTest {
   }
 
   @Test
-  fun `negative insertion numbers`() {
-    // given
-    val insertionsOnlyCommits = listOf(-3 ,-2, -1, 0, 1, 2, 3).map { Commit(it, 0) }
-    val outInsertionPoints = mutableListOf<Point>()
-
-    // when
-    computePolygonPoints(insertionsOnlyCommits, HUNDRED, HUNDRED, outInsertionPoints, mutableListOf())
-
-    // then
-    Approvals.verify(outInsertionPoints.humanize())
-  }
-
-  @Test
   fun `insertions with no vertical padding`() {
     // given
     val insertionsOnlyCommits = listOf(0, 1, 2, 3, 4, 5).map { Commit(it, 0) }
@@ -105,17 +92,44 @@ class AreaChartModelTest {
     computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
 
     // then
-    Approvals.verify(
-      """
-        |Deletions
-        |=========
-        |${outDeletionPoints.humanize()}
-        |
-        |Insertions
-        |==========
-        |${outInsertionPoints.humanize()}
-      """.trimMargin("|")
+    Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
+  }
+
+  @Test
+  fun `insertions and deletions with alternating zeros and no vertical padding`() {
+    // given
+    val commits = listOf(
+      Commit(5, 0),
+      Commit(1, 0),
+      Commit(1, 4),
+      Commit(2, 0),
+      Commit(0, 1),
+      Commit(1, 0),
+      Commit(1, 0),
     )
+    val outInsertionPoints = mutableListOf<Point>()
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
+  }
+
+  private fun humanizeDeletionsInsertions(
+    outDeletionPoints: MutableList<Point>,
+    outInsertionPoints: MutableList<Point>
+  ): String {
+    return """
+      |Deletions
+      |=========
+      |${outDeletionPoints.humanize()}
+      |
+      |Insertions
+      |==========
+      |${outInsertionPoints.humanize()}
+    """.trimMargin("|")
   }
 
   private fun MutableList<Point>.humanize() =

@@ -18,35 +18,35 @@ internal fun computePolygonPoints(
 ) {
   outInsertionPoints.clear()
   outDeletionPoints.clear()
-  val distanceBetweenValues = viewportWidth / commits.lastIndex.toDouble()
+  val xAxisDistanceBetweenValues = viewportWidth / commits.lastIndex.toDouble()
+
+  val insertions = commits.map(Commit::insertions)
+  val deletions = commits.map(Commit::deletions)
+  val maximum = commits.map { it.insertions + it.deletions }.maxOrNull()!!
+  val minimum = min(insertions.minOrNull()!!, deletions.minOrNull()!!)
+    .coerceAtLeast(max(insertions.minOrNull()!!, deletions.minOrNull()!!))
+  val yScale = maximum - minimum
 
   val insertionsAndDeletions = commits.map { it.insertions + it.deletions }
 
-  val lowestDeletionValue = insertionsAndDeletions.minOrNull()!!
-  val highestDeletionValue = insertionsAndDeletions.maxOrNull()!!
-  val deletionsYScale = highestDeletionValue - lowestDeletionValue
   computePolygon(
     insertionsAndDeletions,
     viewportWidth,
     viewportHeight,
-    lowestDeletionValue,
-    deletionsYScale,
-    distanceBetweenValues,
+    minimum,
+    yScale,
+    xAxisDistanceBetweenValues,
     verticalPaddingFraction,
     outDeletionPoints
   )
 
-  val lowestInsertionValue = commits.map(Commit::insertions).minOrNull()!!
-  val highestInsertionValue = commits.map(Commit::insertions).maxOrNull()!!
-  val insertionsYScale = max(highestInsertionValue, highestDeletionValue) - min(lowestInsertionValue, lowestDeletionValue)
-
   computePolygon(
-    commits.map(Commit::insertions),
+    insertions,
     viewportWidth,
     viewportHeight,
-    lowestInsertionValue,
-    insertionsYScale,
-    distanceBetweenValues,
+    minimum,
+    yScale,
+    xAxisDistanceBetweenValues,
     verticalPaddingFraction,
     outInsertionPoints
   )
@@ -56,19 +56,19 @@ private fun computePolygon(
   values: List<Int>,
   viewportWidth: Int,
   viewportHeight: Int,
-  lowestValue: Int,
+  minimumValue: Int,
   yScale: Int,
-  distanceBetweenValues: Double,
+  xAxisDistanceBetweenValues: Double,
   verticalPaddingFraction: Double,
   outPoints: MutableList<Point>,
 ) {
   values.onEachIndexed { index, value ->
-    val px = getX(index, distanceBetweenValues)
-    val py = getY(value, viewportHeight, lowestValue, yScale, verticalPaddingFraction)
+    val px = getX(index, xAxisDistanceBetweenValues)
+    val py = getY(value, viewportHeight, minimumValue, yScale, verticalPaddingFraction)
 
     if (index > 0) {
-      val x1 = getX(index - 1, distanceBetweenValues)
-      val y1 = getY(values[index - 1], viewportHeight, lowestValue, yScale, verticalPaddingFraction)
+      val x1 = getX(index - 1, xAxisDistanceBetweenValues)
+      val y1 = getY(values[index - 1], viewportHeight, minimumValue, yScale, verticalPaddingFraction)
       val x2 = px
       val y2 = py
       val m = calculateSlope(x1, y1, x2, y2)
