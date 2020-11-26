@@ -1,5 +1,8 @@
 # Changelog
 ## [Unreleased]
+## Added
+- Show deletions in the area chart.
+
 ### Fixed
 - Seekbar does not move on selecting a file with fewer commits than the previous file.
 

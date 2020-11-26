@@ -11,7 +11,7 @@ class AreaChartModelTest {
   @Test
   fun `increasing insertions`() {
     // given
-    val insertionsOnlyCommits = listOf(1, 2, 3, 4, 5).map(::Commit)
+    val insertionsOnlyCommits = listOf(1, 2, 3, 4, 5).map { Commit(it, 0) }
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
@@ -25,7 +25,7 @@ class AreaChartModelTest {
   fun `increasing insertions in a 0x0 area with 0 point radius`() {
     // given
     val side = 0
-    val insertionsOnlyCommits = listOf(1, 2, 3, 4, 5).map(::Commit)
+    val insertionsOnlyCommits = listOf(1, 2, 3, 4, 5).map { Commit(it, 0) }
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
@@ -38,7 +38,7 @@ class AreaChartModelTest {
   @Test
   fun `varying insertions`() {
     // given
-    val insertionsOnlyCommits = listOf(8, 7, 5, 4, 6).map(::Commit)
+    val insertionsOnlyCommits = listOf(8, 7, 5, 4, 6).map { Commit(it, 0) }
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
@@ -51,7 +51,7 @@ class AreaChartModelTest {
   @Test
   fun `negative insertion numbers`() {
     // given
-    val insertionsOnlyCommits = listOf(-3 ,-2, -1, 0, 1, 2, 3).map(::Commit)
+    val insertionsOnlyCommits = listOf(-3 ,-2, -1, 0, 1, 2, 3).map { Commit(it, 0) }
     val outInsertionPoints = mutableListOf<Point>()
 
     // when
@@ -64,7 +64,7 @@ class AreaChartModelTest {
   @Test
   fun `insertions with no vertical padding`() {
     // given
-    val insertionsOnlyCommits = listOf(0, 1, 2, 3, 4, 5).map(::Commit)
+    val insertionsOnlyCommits = listOf(0, 1, 2, 3, 4, 5).map { Commit(it, 0) }
     val outInsertionPoints = mutableListOf<Point>()
 
     // when

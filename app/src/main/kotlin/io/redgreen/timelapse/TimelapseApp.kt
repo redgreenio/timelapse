@@ -193,8 +193,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     // Pair area chart with insertions
     with(insertionsAreaChart) {
       commits = changes
-        .map { it.insertions }
-        .map(::Commit)
+        .map { Commit(it.insertions, it.deletions) }
     }
 
     // Pair slider with change history
