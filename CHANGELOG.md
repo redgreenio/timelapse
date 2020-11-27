@@ -2,9 +2,11 @@
 ## [Unreleased]
 ## Added
 - Show deletions in the area chart.
+- Display area chart for single commits.
 
 ### Fixed
 - Seekbar does not move on selecting a file with fewer commits than the previous file.
+- Quite a few bugs that went unnoticed in the old area chart.
 
 ## [0.1.6] - 2020-11-22
 ### Fixed
