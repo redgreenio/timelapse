@@ -9,7 +9,7 @@ import javafx.stage.Stage
 
 class VisualsDemoApp : Application() {
   override fun start(primaryStage: Stage) {
-    val sampleCommits = listOf(-3 ,-2, -1, 0, 1, 2, 3).map { Commit(it, 0) }
+    val sampleCommits = listOf(1, 2, 3, 4, 5).map { Commit(it, 0) }
 
     val areaChart = AreaChart().apply {
       commits = sampleCommits

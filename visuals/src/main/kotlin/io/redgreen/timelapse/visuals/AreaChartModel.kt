@@ -23,8 +23,8 @@ internal fun computePolygonPoints(
   val insertions = commits.map(Commit::insertions)
   val deletions = commits.map(Commit::deletions)
   val maximum = commits.map { it.insertions + it.deletions }.maxOrNull()!!
-  val minimum = min(insertions.minOrNull()!!, deletions.minOrNull()!!)
-    .coerceAtLeast(max(insertions.minOrNull()!!, deletions.minOrNull()!!))
+  val minimumThreshold = (max(insertions.minOrNull()!!, deletions.minOrNull()!!) - 1).coerceAtLeast(0)
+  val minimum = min(insertions.minOrNull()!!, deletions.minOrNull()!!).coerceAtLeast(minimumThreshold)
   val yScale = maximum - minimum
 
   val insertionsAndDeletions = commits.map { it.insertions + it.deletions }
