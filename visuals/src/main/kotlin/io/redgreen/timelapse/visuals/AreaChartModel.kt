@@ -18,23 +18,24 @@ internal fun computePolygonPoints(
 ) {
   outInsertionPoints.clear()
   outDeletionPoints.clear()
-  val xAxisDistanceBetweenValues = viewportWidth / commits.lastIndex.toDouble()
+  val isSingleCommit = commits.size == 1
+  val sanitizedCommits = if (isSingleCommit) commits.flatMap { listOf(it, it, it) } else commits
+  val xAxisDistanceBetweenValues = viewportWidth / sanitizedCommits.lastIndex.toDouble()
 
-  val insertions = commits.map(Commit::insertions)
-  val deletions = commits.map(Commit::deletions)
-  val maximum = commits.map { it.insertions + it.deletions }.maxOrNull()!!
-  val minimumThreshold = (max(insertions.minOrNull()!!, deletions.minOrNull()!!) - 1).coerceAtLeast(0)
-  val minimum = min(insertions.minOrNull()!!, deletions.minOrNull()!!).coerceAtLeast(minimumThreshold)
-  val yScale = maximum - minimum
+  val insertions = sanitizedCommits.map(Commit::insertions)
+  val deletions = sanitizedCommits.map(Commit::deletions)
+  val maximum = sanitizedCommits.map { it.insertions + it.deletions }.maxOrNull()!!
+  val minimum = calculateMinimum(insertions, deletions, isSingleCommit)
+  val deletionsYScale = maximum - minimum
 
-  val insertionsAndDeletions = commits.map { it.insertions + it.deletions }
+  val insertionsAndDeletions = sanitizedCommits.map { it.insertions + it.deletions }
 
   computePolygon(
     insertionsAndDeletions,
     viewportWidth,
     viewportHeight,
     minimum,
-    yScale,
+    deletionsYScale,
     xAxisDistanceBetweenValues,
     verticalPaddingFraction,
     outDeletionPoints
@@ -45,11 +46,24 @@ internal fun computePolygonPoints(
     viewportWidth,
     viewportHeight,
     minimum,
-    yScale,
+    deletionsYScale,
     xAxisDistanceBetweenValues,
     verticalPaddingFraction,
     outInsertionPoints
   )
+}
+
+private fun calculateMinimum(
+  insertions: List<Int>,
+  deletions: List<Int>,
+  isSingleCommit: Boolean
+): Int {
+  return if (isSingleCommit) {
+    0
+  } else {
+    val minimumThreshold = (max(insertions.minOrNull()!!, deletions.minOrNull()!!) - 1).coerceAtLeast(0)
+    min(insertions.minOrNull()!!, deletions.minOrNull()!!).coerceAtLeast(minimumThreshold)
+  }
 }
 
 private fun computePolygon(
@@ -98,19 +112,20 @@ private fun computePolygon(
 
 private fun getX(
   index: Int,
-  horizontalSpacing: Double
+  xAxisDistanceBetweenValues: Double
 ): Double =
-  index * horizontalSpacing
+  index * xAxisDistanceBetweenValues
 
 private fun getY(
   insertions: Int,
-  graphHeight: Int,
+  viewportHeight: Int,
   lowestValue: Int,
   yScale: Int,
   verticalPaddingFraction: Double
 ): Int {
-  val totalVerticalPadding = (graphHeight * verticalPaddingFraction).toInt()
-  val actualGraphHeight = graphHeight - totalVerticalPadding
+  val totalVerticalPadding = (viewportHeight * verticalPaddingFraction).toInt()
+  val actualGraphHeight = viewportHeight - totalVerticalPadding
   val scaledY = (insertions - lowestValue).toDouble() / yScale
-  return (actualGraphHeight + totalVerticalPadding / 2) - (scaledY * (actualGraphHeight)).toInt()
+  return ((actualGraphHeight + totalVerticalPadding / 2) - (scaledY * (actualGraphHeight)).toInt())
+    .coerceAtMost(viewportHeight)
 }

@@ -142,6 +142,70 @@ class AreaChartModelTest {
     Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
   }
 
+  @Test
+  fun `single commit insertion`() {
+    // given
+    val commits = listOf(
+      Commit(400, 0)
+    )
+    val outInsertionPoints = mutableListOf<Point>()
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
+  }
+
+  @Test
+  fun `single empty commit`() {
+    // given
+    val commits = listOf(
+      Commit(0, 0)
+    )
+    val outInsertionPoints = mutableListOf<Point>()
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
+  }
+
+  @Test
+  fun `single commit deletion`() {
+    // given
+    val commits = listOf(
+      Commit(0, 10)
+    )
+    val outInsertionPoints = mutableListOf<Point>()
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
+  }
+
+  @Test
+  fun `single commit equal parts insertions and deletions`() {
+    // given
+    val commits = listOf(
+      Commit(2, 2)
+    )
+    val outInsertionPoints = mutableListOf<Point>()
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
+  }
+
   private fun humanizeDeletionsInsertions(
     outDeletionPoints: MutableList<Point>,
     outInsertionPoints: MutableList<Point>
