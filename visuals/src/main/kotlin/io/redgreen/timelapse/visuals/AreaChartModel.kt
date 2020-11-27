@@ -88,17 +88,17 @@ private fun computePolygon(
       val m = calculateSlope(x1, y1, x2, y2)
 
       when (index) {
-        1 -> {
-          val c = y1 - m * x1
-          val newY1 = m * x1 + c
-          outPoints.add(Point(X_ORIGIN, newY1.toInt()))
-        }
-
         values.lastIndex -> {
           val c = y2 - m * x2
           val newY2 = m * x2 + c
           outPoints.add(Point(x1.toInt(), y1))
           outPoints.add(Point(viewportWidth, newY2.toInt()))
+        }
+
+        1 -> {
+          val c = y1 - m * x1
+          val newY1 = m * x1 + c
+          outPoints.add(Point(X_ORIGIN, newY1.toInt()))
         }
 
         else -> outPoints.add(Point(x1.toInt(), y1))

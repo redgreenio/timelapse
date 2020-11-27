@@ -206,6 +206,23 @@ class AreaChartModelTest {
     Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
   }
 
+  @Test
+  fun `two commits when upperbound sums are the same`() {
+    // given
+    val commits = listOf(
+      Commit(1, 1),
+      Commit(2, 0),
+    )
+    val outInsertionPoints = mutableListOf<Point>()
+    val outDeletionPoints = mutableListOf<Point>()
+
+    // when
+    computePolygonPoints(commits, HUNDRED, HUNDRED, outInsertionPoints, outDeletionPoints, 0.0)
+
+    // then
+    Approvals.verify(humanizeDeletionsInsertions(outDeletionPoints, outInsertionPoints))
+  }
+
   private fun humanizeDeletionsInsertions(
     outDeletionPoints: MutableList<Point>,
     outInsertionPoints: MutableList<Point>
