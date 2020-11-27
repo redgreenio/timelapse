@@ -5,7 +5,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 private const val X_ORIGIN = 0
-private const val TOTAL_VERTICAL_PADDING_FRACTION = 0.2
+private const val TOTAL_VERTICAL_PADDING_FRACTION = 0.0
 
 @Suppress("SameParameterValue")
 internal fun computePolygonPoints(
@@ -14,7 +14,6 @@ internal fun computePolygonPoints(
   viewportHeight: Int,
   outInsertionPoints: MutableList<Point>,
   outDeletionPoints: MutableList<Point>,
-  verticalPaddingFraction: Double = TOTAL_VERTICAL_PADDING_FRACTION,
 ) {
   outInsertionPoints.clear()
   outDeletionPoints.clear()
@@ -37,7 +36,6 @@ internal fun computePolygonPoints(
     minimum,
     deletionsYScale,
     xAxisDistanceBetweenValues,
-    verticalPaddingFraction,
     outDeletionPoints
   )
 
@@ -48,7 +46,6 @@ internal fun computePolygonPoints(
     minimum,
     deletionsYScale,
     xAxisDistanceBetweenValues,
-    verticalPaddingFraction,
     outInsertionPoints
   )
 }
@@ -73,16 +70,15 @@ private fun computePolygon(
   minimumValue: Int,
   yScale: Int,
   xAxisDistanceBetweenValues: Double,
-  verticalPaddingFraction: Double,
   outPoints: MutableList<Point>,
 ) {
   values.onEachIndexed { index, value ->
     val px = getX(index, xAxisDistanceBetweenValues)
-    val py = getY(value, viewportHeight, minimumValue, yScale, verticalPaddingFraction)
+    val py = getY(value, viewportHeight, minimumValue, yScale)
 
     if (index > 0) {
       val x1 = getX(index - 1, xAxisDistanceBetweenValues)
-      val y1 = getY(values[index - 1], viewportHeight, minimumValue, yScale, verticalPaddingFraction)
+      val y1 = getY(values[index - 1], viewportHeight, minimumValue, yScale)
       val x2 = px
       val y2 = py
       val m = calculateSlope(x1, y1, x2, y2)
@@ -120,10 +116,9 @@ private fun getY(
   insertions: Int,
   viewportHeight: Int,
   lowestValue: Int,
-  yScale: Int,
-  verticalPaddingFraction: Double
+  yScale: Int
 ): Int {
-  val totalVerticalPadding = (viewportHeight * verticalPaddingFraction).toInt()
+  val totalVerticalPadding = (viewportHeight * TOTAL_VERTICAL_PADDING_FRACTION).toInt()
   val actualGraphHeight = viewportHeight - totalVerticalPadding
   val scaledY = (insertions - lowestValue).toDouble() / yScale
   return ((actualGraphHeight + totalVerticalPadding / 2) - (scaledY * (actualGraphHeight)).toInt())
