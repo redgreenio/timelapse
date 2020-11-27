@@ -34,6 +34,8 @@ import javafx.scene.input.KeyCode.DIGIT1
 import javafx.scene.input.KeyCode.DIGIT2
 import javafx.scene.input.KeyCode.DIGIT3
 import javafx.scene.input.KeyCode.ESCAPE
+import javafx.scene.input.KeyCode.LEFT
+import javafx.scene.input.KeyCode.RIGHT
 import javafx.scene.input.KeyCodeCombination
 import javafx.scene.input.KeyCombination.CONTROL_ANY
 import javafx.scene.input.KeyEvent
@@ -83,6 +85,15 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
 
         // Update anchor in area chart
         insertionsAreaChart.setAnchorIndex(changeIndex)
+
+        // Keyboard shortcuts
+        val newestCommitKeyCodeCombination = KeyCodeCombination(RIGHT, CONTROL_ANY)
+        val oldestCommitKeyCodeCombination = KeyCodeCombination(LEFT, CONTROL_ANY)
+
+        with(scene.accelerators) {
+          put(newestCommitKeyCodeCombination) { if (max != 0.0) setValue(max) }
+          put(oldestCommitKeyCodeCombination) { if (max != 0.0) setValue(min) }
+        }
       }
     }
   }

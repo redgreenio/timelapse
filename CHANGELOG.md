@@ -3,6 +3,7 @@
 ## Added
 - Show deletions in the area chart.
 - Display area chart for single commits.
+- From the slider, use `Ctrl + Left Arrow` and `Ctrl + Right Arrow` to navigate to the oldest, and the newest commits in one go!
 
 ### Fixed
 - Seekbar does not move on selecting a file with fewer commits than the previous file.
