@@ -67,7 +67,7 @@ tasks {
 
   register<ProGuardTask>("demoJar") {
     dependsOn("shadowJar")
-    val shadowJar = "build/libs/timelapse-${version}-all.jar"
+    val shadowJar = "build/libs/app-${version}-all.jar"
     val demoJar = "build/libs/timelapse-${version}-demo.jar"
     val mappingFile = "build/libs/mapping-${version}.txt"
 
