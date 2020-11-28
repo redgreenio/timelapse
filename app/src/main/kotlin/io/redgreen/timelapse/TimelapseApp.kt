@@ -24,6 +24,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.Commit
+import io.sentry.Sentry
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.geometry.Insets
@@ -288,6 +289,13 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
         readingPane.dismissOverlap()
         timelapseSlider.requestFocus()
       }
+    }
+  }
+
+  override fun init() {
+    super.init()
+    Sentry.init { options ->
+      options.dsn = "https://9ccbeb20047c42e49a9fbe6094cd9896@o483785.ingest.sentry.io/5536123"
     }
   }
 }

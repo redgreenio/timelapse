@@ -36,6 +36,7 @@ dependencies {
   implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359") {
     because("Humanize requires this dependency explicitly after Java 11 upgrade.")
   }
+  implementation("io.sentry:sentry:3.1.0")
 
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
