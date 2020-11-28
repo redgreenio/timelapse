@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased]
+
+## [0.1.7] - 2020-11-28
 ## Added
 - Show deletions in the area chart.
 - Display area chart for single commits.

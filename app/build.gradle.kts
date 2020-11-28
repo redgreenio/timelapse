@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.redgreen"
-version = "0.1.7"
+version = "0.1.8"
 
 javafx {
   version = "11"
