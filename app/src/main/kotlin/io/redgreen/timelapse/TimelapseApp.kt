@@ -243,7 +243,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     val diffText = if (isInitialCommit) {
       gitRepository.getChangeText(filePath, selectedChange.commitId)
     } else {
-      gitRepository.getBlobDiff(selectedChange.commitId, filePath)
+      gitRepository.getBlobDiff(selectedChange.commitId, filePath).rawDiff
     }
 
     val formattedDiff = if (isInitialCommit) {
@@ -273,7 +273,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
   }
 
   override fun showChangedFileDiff(commitId: String, changedFile: ChangedFile) {
-    val diff = FormattedDiff.from(gitRepository.getBlobDiff(commitId, changedFile.filePath))
+    val diff = FormattedDiff.from(gitRepository.getBlobDiff(commitId, changedFile.filePath).rawDiff)
     readingPane.showOverlappingDiff(getTitle(changedFile), diff)
   }
 

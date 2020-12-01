@@ -119,7 +119,7 @@ class GitFunctionsTest {
     val newlyAddedFileDiff = repository.getBlobDiff(newlyAddedFileCommitId, "file-1-copy.txt")
 
     // then
-    assertThat(newlyAddedFileDiff)
+    assertThat(newlyAddedFileDiff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-1-copy.txt b/file-1-copy.txt
@@ -144,7 +144,7 @@ class GitFunctionsTest {
     val deletedFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-4.txt")
 
     // then
-    assertThat(deletedFileDiff)
+    assertThat(deletedFileDiff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-4.txt b/file-4.txt
@@ -169,7 +169,7 @@ class GitFunctionsTest {
     val modifiedFileDiff = repository.getBlobDiff(modifiedFileCommitId, "file-1.txt")
 
     // then
-    assertThat(modifiedFileDiff)
+    assertThat(modifiedFileDiff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-1.txt b/file-1.txt
@@ -193,7 +193,7 @@ class GitFunctionsTest {
     val renamedFileDiff = repository.getBlobDiff(renamedFileCommitId, "file-4.txt")
 
     // then
-    assertThat(renamedFileDiff)
+    assertThat(renamedFileDiff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-4.txt b/file-4.txt
@@ -217,7 +217,7 @@ class GitFunctionsTest {
     val newFileDiff = repository.getBlobDiff(initialCommit, "file-1.txt")
 
     // then
-    assertThat(newFileDiff)
+    assertThat(newFileDiff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-1.txt b/file-1.txt
@@ -240,7 +240,7 @@ class GitFunctionsTest {
     val deletedEmptyFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-3.txt")
 
     // then
-    assertThat(deletedEmptyFileDiff)
+    assertThat(deletedEmptyFileDiff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-3.txt b/file-3.txt
@@ -263,7 +263,7 @@ class GitFunctionsTest {
     val newEmptyFileDiff = repository.getBlobDiff(newEmptyFileCommitId, "file-b.txt")
 
     // then
-    assertThat(newEmptyFileDiff)
+    assertThat(newEmptyFileDiff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-b.txt b/file-b.txt

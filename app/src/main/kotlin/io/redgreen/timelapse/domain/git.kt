@@ -56,11 +56,12 @@ fun Repository.readFileFromCommitId(
 fun Repository.getBlobDiff(
   commitId: String,
   filePath: String
-): String {
+): BlobDiff {
   val commit = getCommit(commitId)
   val isInitialCommit = commit.parentCount == 0
   val parentCommitId = if (isInitialCommit) commitId else commit.getParent(0).name
-  return getBlobDiffBetweenCommits(filePath, parentCommitId, commit.name)
+  val rawDiff = getBlobDiffBetweenCommits(filePath, parentCommitId, commit.name)
+  return BlobDiff(rawDiff)
 }
 
 private fun Repository.getBlobDiffBetweenCommits(
