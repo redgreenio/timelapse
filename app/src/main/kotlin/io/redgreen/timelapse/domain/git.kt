@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.domain
 
+import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.lib.Constants.HEAD
@@ -59,10 +60,19 @@ fun Repository.getBlobDiff(
   filePath: String
 ): BlobDiff {
   val commit = getCommit(commitId)
-  val isInitialCommit = commit.parentCount == 0
-  val parentCommitId = if (isInitialCommit) commitId else commit.getParent(0).name
-  val rawDiff = getBlobDiffBetweenCommits(filePath, parentCommitId, commit.name)
-  return Simple(rawDiff)
+  val parentCount = commit.parentCount
+  val isInitialCommit = parentCount == 0
+  val isMergeCommit = parentCount > 1
+
+  val parentCommitIds = if (isInitialCommit) listOf(commitId) else commit.parents.map(RevCommit::name).toList()
+  val simpleDiffs = parentCommitIds
+    .map { parentCommitId -> Simple(parentCommitId, getBlobDiffBetweenCommits(filePath, parentCommitId, commit.name)) }
+
+  return if (isMergeCommit) {
+    Merge(simpleDiffs)
+  } else {
+    simpleDiffs.first()
+  }
 }
 
 private fun Repository.getBlobDiffBetweenCommits(

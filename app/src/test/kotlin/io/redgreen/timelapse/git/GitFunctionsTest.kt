@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.git
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
@@ -283,10 +284,17 @@ class GitFunctionsTest {
     val mergeCommitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
 
     // when
-    val mergeCommitDiff = repository.getBlobDiff(mergeCommitId, "file-1.txt") as Simple
+    val mergeCommitDiff = repository.getBlobDiff(mergeCommitId, "file-1.txt") as Merge
 
     // then
-    assertThat(mergeCommitDiff.rawDiff)
+    assertThat(mergeCommitDiff.diffs)
+      .hasSize(2)
+
+    // then - parent 1
+    val parent1Diff = mergeCommitDiff.diffs[0]
+    assertThat(parent1Diff.parentCommitId)
+      .isEqualTo("1865160d483f9b22dfa9b49d0305c167746d9f7a") // exhibit i: pre-merge modification (Spanish)
+    assertThat(parent1Diff.rawDiff)
       .isEqualTo(
         """
           diff --git a/file-1.txt b/file-1.txt
@@ -295,6 +303,24 @@ class GitFunctionsTest {
           +++ b/file-1.txt
           @@ -1 +1 @@
           -Hola, mundo!
+          +Hola, world!
+          
+        """.trimIndent()
+      )
+
+    // then - parent 2
+    val parent2Diff = mergeCommitDiff.diffs[1]
+    assertThat(parent2Diff.parentCommitId)
+      .isEqualTo("6ad80c13f9d08fdfc1bd0ab7299a2178183326a1") // exhibit h: pre-merge modification (English)
+    assertThat(parent2Diff.rawDiff)
+      .isEqualTo(
+        """
+          diff --git a/file-1.txt b/file-1.txt
+          index af5626b..f17d600 100644
+          --- a/file-1.txt
+          +++ b/file-1.txt
+          @@ -1 +1 @@
+          -Hello, world!
           +Hola, world!
           
         """.trimIndent()
