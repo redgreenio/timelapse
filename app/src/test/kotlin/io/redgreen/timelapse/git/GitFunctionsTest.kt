@@ -275,4 +275,28 @@ class GitFunctionsTest {
         """.trimIndent()
       )
   }
+
+  @Test
+  fun `it should get the diff for a merge commit`() {
+    // given
+    val mergeCommitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
+
+    // when
+    val mergeCommitDiff = repository.getBlobDiff(mergeCommitId, "file-1.txt")
+
+    // then
+    assertThat(mergeCommitDiff.rawDiff)
+      .isEqualTo(
+        """
+          diff --git a/file-1.txt b/file-1.txt
+          index 265d673..f17d600 100644
+          --- a/file-1.txt
+          +++ b/file-1.txt
+          @@ -1 +1 @@
+          -Hola, mundo!
+          +Hola, world!
+          
+        """.trimIndent()
+      )
+  }
 }
