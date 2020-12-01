@@ -53,7 +53,17 @@ fun Repository.readFileFromCommitId(
   return text
 }
 
-private fun Repository.getDiff(
+fun Repository.getBlobDiff(
+  commitId: String,
+  filePath: String
+): String {
+  val commit = getCommit(commitId)
+  val isInitialCommit = commit.parentCount == 0
+  val parentCommitId = if (isInitialCommit) commitId else commit.getParent(0).name
+  return getBlobDiffBetweenCommits(filePath, parentCommitId, commit.name)
+}
+
+private fun Repository.getBlobDiffBetweenCommits(
   filePath: String,
   oldCommitId: String,
   newCommitId: String
@@ -108,14 +118,4 @@ private fun Repository.getHead(): ObjectId {
 private fun Repository.getTree(commitId: String): RevTree {
   val revWalk = RevWalk(this)
   return revWalk.parseCommit(this.resolve(commitId)).tree
-}
-
-fun Repository.getDiff(
-  commitId: String,
-  filePath: String
-): String {
-  val commit = getCommit(commitId)
-  val isInitialCommit = commit.parentCount == 0
-  val parentCommitId = if (isInitialCommit) commitId else commit.getParent(0).name
-  return getDiff(filePath, parentCommitId, commit.name)
 }
