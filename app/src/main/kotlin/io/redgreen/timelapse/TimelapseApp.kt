@@ -4,6 +4,7 @@ import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
 import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.FormattedDiff
+import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.domain.getCommitHistoryText
@@ -243,7 +244,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     val diffText = if (isInitialCommit) {
       gitRepository.getChangeText(filePath, selectedChange.commitId)
     } else {
-      gitRepository.getBlobDiff(selectedChange.commitId, filePath).rawDiff
+      (gitRepository.getBlobDiff(selectedChange.commitId, filePath) as Simple).rawDiff
     }
 
     val formattedDiff = if (isInitialCommit) {
@@ -273,7 +274,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
   }
 
   override fun showChangedFileDiff(commitId: String, changedFile: ChangedFile) {
-    val diff = FormattedDiff.from(gitRepository.getBlobDiff(commitId, changedFile.filePath).rawDiff)
+    val diff = FormattedDiff.from((gitRepository.getBlobDiff(commitId, changedFile.filePath) as Simple).rawDiff)
     readingPane.showOverlappingDiff(getTitle(changedFile), diff)
   }
 

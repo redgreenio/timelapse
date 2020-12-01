@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.git
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
@@ -116,7 +117,7 @@ class GitFunctionsTest {
     val newlyAddedFileCommitId = "0e298ab233af0e283edff96772c75a42a21b1479" // exhibit e: copy a file
 
     // when
-    val newlyAddedFileDiff = repository.getBlobDiff(newlyAddedFileCommitId, "file-1-copy.txt")
+    val newlyAddedFileDiff = repository.getBlobDiff(newlyAddedFileCommitId, "file-1-copy.txt") as Simple
 
     // then
     assertThat(newlyAddedFileDiff.rawDiff)
@@ -141,7 +142,7 @@ class GitFunctionsTest {
       "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
-    val deletedFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-4.txt")
+    val deletedFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-4.txt") as Simple
 
     // then
     assertThat(deletedFileDiff.rawDiff)
@@ -166,7 +167,7 @@ class GitFunctionsTest {
       "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
-    val modifiedFileDiff = repository.getBlobDiff(modifiedFileCommitId, "file-1.txt")
+    val modifiedFileDiff = repository.getBlobDiff(modifiedFileCommitId, "file-1.txt") as Simple
 
     // then
     assertThat(modifiedFileDiff.rawDiff)
@@ -190,7 +191,7 @@ class GitFunctionsTest {
     val renamedFileCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
 
     // when
-    val renamedFileDiff = repository.getBlobDiff(renamedFileCommitId, "file-4.txt")
+    val renamedFileDiff = repository.getBlobDiff(renamedFileCommitId, "file-4.txt") as Simple
 
     // then
     assertThat(renamedFileDiff.rawDiff)
@@ -214,7 +215,7 @@ class GitFunctionsTest {
     val initialCommit = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
 
     // when
-    val newFileDiff = repository.getBlobDiff(initialCommit, "file-1.txt")
+    val newFileDiff = repository.getBlobDiff(initialCommit, "file-1.txt") as Simple
 
     // then
     assertThat(newFileDiff.rawDiff)
@@ -237,7 +238,7 @@ class GitFunctionsTest {
       "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
-    val deletedEmptyFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-3.txt")
+    val deletedEmptyFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-3.txt") as Simple
 
     // then
     assertThat(deletedEmptyFileDiff.rawDiff)
@@ -260,7 +261,7 @@ class GitFunctionsTest {
       "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
 
     // when
-    val newEmptyFileDiff = repository.getBlobDiff(newEmptyFileCommitId, "file-b.txt")
+    val newEmptyFileDiff = repository.getBlobDiff(newEmptyFileCommitId, "file-b.txt") as Simple
 
     // then
     assertThat(newEmptyFileDiff.rawDiff)
@@ -282,7 +283,7 @@ class GitFunctionsTest {
     val mergeCommitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
 
     // when
-    val mergeCommitDiff = repository.getBlobDiff(mergeCommitId, "file-1.txt")
+    val mergeCommitDiff = repository.getBlobDiff(mergeCommitId, "file-1.txt") as Simple
 
     // then
     assertThat(mergeCommitDiff.rawDiff)

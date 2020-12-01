@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.domain
 
+import io.redgreen.timelapse.domain.BlobDiff.Simple
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.ObjectId
@@ -61,7 +62,7 @@ fun Repository.getBlobDiff(
   val isInitialCommit = commit.parentCount == 0
   val parentCommitId = if (isInitialCommit) commitId else commit.getParent(0).name
   val rawDiff = getBlobDiffBetweenCommits(filePath, parentCommitId, commit.name)
-  return BlobDiff(rawDiff)
+  return Simple(rawDiff)
 }
 
 private fun Repository.getBlobDiffBetweenCommits(

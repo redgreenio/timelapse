@@ -1,3 +1,5 @@
 package io.redgreen.timelapse.domain
 
-data class BlobDiff(val rawDiff: String)
+sealed class BlobDiff {
+  data class Simple(val rawDiff: String) : BlobDiff()
+}
