@@ -9,7 +9,6 @@ import com.spotify.mobius.rx3.RxMobius
 import io.redgreen.timelapse.changedfiles.ChangedFileSelected
 import io.redgreen.timelapse.changedfiles.ChangedFilesEffectHandler
 import io.redgreen.timelapse.changedfiles.ChangedFilesEvent
-import io.redgreen.timelapse.changedfiles.ChangedFilesInit
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel
 import io.redgreen.timelapse.changedfiles.ChangedFilesUpdate
 import io.redgreen.timelapse.changedfiles.FileAndRevisionSelected
@@ -48,7 +47,7 @@ class ChangedFilesPane(
       .loop(ChangedFilesUpdate, effectHandler)
       .eventSource(eventSource)
 
-    Mobius.controller(loop, ChangedFilesModel.noFileAndRevisionSelected(), ChangedFilesInit)
+    Mobius.controller(loop, ChangedFilesModel.noFileAndRevisionSelected())
   }
 
   private val viewRenderer = ChangedFilesViewRenderer(this)
