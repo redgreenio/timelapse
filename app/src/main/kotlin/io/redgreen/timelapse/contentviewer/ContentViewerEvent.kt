@@ -21,7 +21,7 @@ data class BlobDiffInformationLoaded(
 object UnableToLoadBlobDiffInformation : ContentViewerEvent()
 
 @EffectEvent(LoadBlobDiff::class)
-class BlobDiffLoaded(
+data class BlobDiffLoaded(
   val blobDiff: BlobDiff
 ) : ContentViewerEvent()
 

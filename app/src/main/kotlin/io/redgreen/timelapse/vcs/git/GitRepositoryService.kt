@@ -1,6 +1,8 @@
 package io.redgreen.timelapse.vcs.git
 
 import io.reactivex.rxjava3.core.Single
+import io.redgreen.timelapse.contentviewer.BlobDiffInformation
+import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
@@ -175,6 +177,20 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
 
       emitter.onSuccess(changedFilePaths)
     }
+  }
+
+  override fun getBlobDiff(
+    selectedFilePath: String,
+    commitId: String
+  ): Single<BlobDiff> {
+    TODO("not implemented")
+  }
+
+  override fun getBlobDiffInformation(
+    selectedFilePath: String,
+    commitId: String
+  ): Single<BlobDiffInformation> {
+    TODO("not implemented")
   }
 
   private fun Repository.getRevCommit(commitId: String): Optional<RevCommit> {

@@ -29,7 +29,7 @@ class ChangedFilesEffectHandler private constructor() {
         getChangedFilesEvents
           .flatMapSingle { event -> repositoryService.getChangedFiles(event.commitId) }
           .map(::toChangedFilesEvent)
-          .doOnError { logger.debug("Get changed files failed.", it) }
+          .doOnError { logger.error("Get changed files failed.", it) }
           .onErrorReturn { GettingChangedFilesFailed }
       }
     }
