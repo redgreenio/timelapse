@@ -6,8 +6,6 @@ import com.spotify.mobius.test.NextMatchers.hasModel
 import com.spotify.mobius.test.NextMatchers.hasNoEffects
 import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
-import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure
-import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure.Unknown
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
 import io.redgreen.timelapse.mobius.spec
 import io.redgreen.timelapse.vcs.ChangedFile
@@ -89,7 +87,7 @@ class ChangedFilesUpdateTest {
         )
       )
     assertThat(gettingChangedFilesFailedModel.getChangedFilesAsyncOp)
-      .isEqualTo(failure<List<ChangedFile>, GetChangedFilesFailure>(Unknown))
+      .isEqualTo(failure<List<ChangedFile>, GetChangedFiles.Failure>(GetChangedFiles.Failure.Unknown))
   }
 
   @Test

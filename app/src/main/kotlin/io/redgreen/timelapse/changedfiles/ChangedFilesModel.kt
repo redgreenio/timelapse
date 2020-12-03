@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.changedfiles
 
-import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure
-import io.redgreen.timelapse.changedfiles.GetChangedFiles.GetChangedFilesFailure.Unknown
+import io.redgreen.timelapse.changedfiles.GetChangedFiles.Failure
+import io.redgreen.timelapse.changedfiles.GetChangedFiles.Failure.Unknown
 import io.redgreen.timelapse.mobius.AsyncOp
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.content
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
@@ -12,7 +12,7 @@ import io.redgreen.timelapse.vcs.ChangedFile
 data class ChangedFilesModel(
   val commitId: String?,
   val selectedFilePath: String?,
-  val getChangedFilesAsyncOp: AsyncOp<List<ChangedFile>, GetChangedFilesFailure> = idle(),
+  val getChangedFilesAsyncOp: AsyncOp<List<ChangedFile>, Failure> = idle(),
 ) {
   companion object {
     fun noFileAndRevisionSelected(): ChangedFilesModel =

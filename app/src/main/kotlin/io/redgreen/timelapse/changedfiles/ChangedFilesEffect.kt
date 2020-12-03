@@ -8,8 +8,8 @@ data class GetChangedFiles(
   val commitId: String,
   val selectedFilePath: String
 ) : ChangedFilesEffect() {
-  sealed class GetChangedFilesFailure {
-    object Unknown : GetChangedFilesFailure()
+  sealed class Failure {
+    object Unknown : Failure()
   }
 }
 
