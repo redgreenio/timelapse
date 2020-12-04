@@ -12,35 +12,56 @@ object ContentViewerUpdate : Update<ContentViewerModel, ContentViewerEvent, Cont
     event: ContentViewerEvent
   ): Next<ContentViewerModel, ContentViewerEffect> {
     return when (event) {
-      is FileAndRevisionSelected -> {
-        val (selectedFilePath, commitId) = event
-        next(
-          model.fileAndRevisionSelected(selectedFilePath, commitId),
-          setOf(LoadBlobDiffInformation(selectedFilePath, commitId), LoadBlobDiff(selectedFilePath, commitId))
+      is FileAndRevisionSelected -> attemptToLoadBlobDiffAndInformation(event, model)
+      is BlobDiffInformationLoaded -> next(model.blobDiffInformationLoaded(event.blobDiffInformation))
+      is UnableToLoadBlobDiffInformation -> next(model.unableToLoadBlobDiffInformation())
+      is BlobDiffLoaded -> next(model.blobDiffLoaded(event.blobDiff))
+      is UnableToLoadBlobDiff -> next(model.unableToLoadBlobDiff())
+      is Retry -> retryFailedEffects(model)
+      is CommitIdClicked -> dispatch(setOf(CopyCommitIdToClipboard(model.commitId!!)))
+    }
+  }
+
+  private fun retryFailedEffects(model: ContentViewerModel): Next<ContentViewerModel, ContentViewerEffect> {
+    val selectedFilePath = model.selectedFilePath!!
+    val commitId = model.commitId!!
+
+    val loadBlobDiffInformationFailed = model.loadBlobDiffInformationAsyncOp is AsyncOp.Failure
+    val loadBlobDiffFailed = model.loadBlobDiffAsyncOp is AsyncOp.Failure
+
+    val nextModel: ContentViewerModel
+    val nextEffects: Set<ContentViewerEffect>
+    when {
+      loadBlobDiffInformationFailed && loadBlobDiffFailed -> {
+        nextModel = model.loadBlobDiff().loadBlobDiffInformation()
+        nextEffects = setOf(
+          LoadBlobDiffInformation(selectedFilePath, commitId),
+          LoadBlobDiff(model.selectedFilePath, model.commitId)
         )
       }
 
-      is BlobDiffInformationLoaded -> next(model.blobDiffInformationLoaded(event.blobDiffInformation))
-
-      is UnableToLoadBlobDiffInformation -> next(model.unableToLoadBlobDiffInformation())
-
-      is BlobDiffLoaded -> next(model.blobDiffLoaded(event.blobDiff))
-
-      is UnableToLoadBlobDiff -> next(model.unableToLoadBlobDiff())
-
-      is Retry -> {
-        val next = if (model.loadBlobDiffAsyncOp is AsyncOp.Failure && model.loadBlobDiffInformationAsyncOp is AsyncOp.Failure) {
-          model.loadBlobDiff().loadBlobDiffInformation() to setOf(LoadBlobDiffInformation(model.selectedFilePath!!, model.commitId!!), LoadBlobDiff(model.selectedFilePath!!, model.commitId!!))
-        } else if (model.loadBlobDiffAsyncOp is AsyncOp.Failure) {
-          model.loadBlobDiff() to setOf(LoadBlobDiff(model.selectedFilePath!!, model.commitId!!))
-        } else {
-          model.loadBlobDiffInformation() to setOf(LoadBlobDiffInformation(model.selectedFilePath!!, model.commitId!!))
-        }
-
-        next(next.first, next.second)
+      loadBlobDiffFailed -> {
+        nextModel = model.loadBlobDiff()
+        nextEffects = setOf(LoadBlobDiff(selectedFilePath, commitId))
       }
 
-      is CommitIdClicked -> dispatch(setOf(CopyCommitIdToClipboard(model.commitId!!)))
+      else -> {
+        nextModel = model.loadBlobDiffInformation()
+        nextEffects = setOf(LoadBlobDiffInformation(selectedFilePath, commitId))
+      }
     }
+
+    return next(nextModel, nextEffects)
+  }
+
+  private fun attemptToLoadBlobDiffAndInformation(
+    event: FileAndRevisionSelected,
+    model: ContentViewerModel
+  ): Next<ContentViewerModel, ContentViewerEffect> {
+    val (selectedFilePath, commitId) = event
+    return next(
+      model.fileAndRevisionSelected(selectedFilePath, commitId),
+      setOf(LoadBlobDiffInformation(selectedFilePath, commitId), LoadBlobDiff(selectedFilePath, commitId))
+    )
   }
 }
