@@ -2,9 +2,12 @@ package io.redgreen.timelapse.vcs.git
 
 import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.contentviewer.BlobDiffInformation
+import io.redgreen.timelapse.diff.DiffLine.Insertion
+import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.foo.debug
+import io.redgreen.timelapse.git.getChangedFilesInCommit
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
@@ -200,7 +203,28 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
     selectedFilePath: String,
     commitId: String
   ): Single<BlobDiffInformation> {
-    TODO("not implemented")
+    return Single.create { emitter ->
+      try {
+        val changedFilesCount = gitRepository.getChangedFilesInCommit(commitId).size
+        val message = gitRepository.getRevCommit(commitId).get().shortMessage
+        val blobDiff = getBlobDiff(selectedFilePath, commitId).blockingGet()
+        val diffLines = FormattedDiff.from((blobDiff as BlobDiff.Simple).rawDiff).lines
+        val deletions = diffLines.filterIsInstance<Deletion>().size
+        val insertions = diffLines.filterIsInstance<Insertion>().size
+
+        val blobDiffInformation = BlobDiffInformation(
+          selectedFilePath,
+          commitId,
+          message,
+          deletions,
+          insertions,
+          changedFilesCount
+        )
+        emitter.onSuccess(blobDiffInformation)
+      } catch (e: NullPointerException) {
+        emitter.onError(IllegalArgumentException("Invalid commit ID: $commitId", e))
+      }
+    }
   }
 
   private fun Repository.getRevCommit(commitId: String): Optional<RevCommit> {

@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.vcs.git
 
+import io.redgreen.timelapse.contentviewer.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
@@ -369,7 +370,7 @@ class GitRepositoryServiceTest {
     }
 
     @Test
-    fun `it should return an error if the selected commit id is invalid`() {
+    fun `it should return an error if the selected commit ID is invalid`() {
       // given
       val selectedFilePath = "file-1-copy.txt"
       val commitId = "invalid-commit-id"
@@ -419,6 +420,65 @@ class GitRepositoryServiceTest {
           )
         )
       )
+    }
+  }
+
+  @Nested
+  inner class GetBlobDiffInformation {
+    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
+    private val repositoryService = GitRepositoryService(gitTestbedRepository)
+
+    @Test
+    fun `it should fetch blob diff information for a simple commit`() {
+      // given
+      val selectedFilePath = "file-1.txt"
+      val commitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiffInformation(selectedFilePath, commitId)
+        .test()
+
+      // then
+      val message = "exhibit a: add three new files"
+      testObserver
+        .assertValue(BlobDiffInformation(selectedFilePath, commitId, message, 0, 0, 3))
+    }
+
+    @Test
+    fun `it should return an error if the selected path is invalid`() {
+      // given
+      val selectedFilePath = "non-existent-file.txt"
+      val commitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiffInformation(selectedFilePath, commitId)
+        .test()
+
+      // then
+      testObserver
+        .assertError {
+          it is IllegalArgumentException && it.message == "File path does not exist: $selectedFilePath"
+        }
+    }
+
+    @Test
+    fun `it should return an error if the commit ID is invalid`() {
+      // given
+      val selectedFilePath = "non-existent-file.txt"
+      val commitId = "invalid-commit-id"
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiffInformation(selectedFilePath, commitId)
+        .test()
+
+      // then
+      testObserver
+        .assertError {
+          it is IllegalArgumentException && it.message == "Invalid commit ID: $commitId"
+        }
     }
   }
 }

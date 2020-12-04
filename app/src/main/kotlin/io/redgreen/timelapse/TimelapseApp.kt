@@ -54,7 +54,7 @@ import kotlin.math.round
 import kotlin.system.exitProcess
 
 private const val ALPHA = "\uD835\uDEFC"
-private val APP_NAME = "Timelapse (Pre-$ALPHA)"
+private const val APP_NAME = "Timelapse (Pre-$ALPHA)"
 
 private const val AREA_CHART_HEIGHT = 100.0
 
