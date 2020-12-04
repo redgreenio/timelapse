@@ -4,12 +4,11 @@ import humanize.Humanize
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.getCommit
 import io.redgreen.timelapse.foo.debug
+import io.redgreen.timelapse.platform.JavaFxClipboardService
 import io.redgreen.timelapse.visuals.getAuthoredAndCommittedText
 import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Label
-import javafx.scene.input.Clipboard
-import javafx.scene.input.ClipboardContent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
 import org.eclipse.jgit.lib.Repository
@@ -66,12 +65,8 @@ class CommitInformationPane(
   }
 
   private fun copyCommitIdToClipboard(text: String) {
-    val clipboard = Clipboard.getSystemClipboard()
     val commitId = text.substring(0, text.indexOf(COMMIT_INFORMATION_SEPARATOR) - 1)
-    val clipboardContent = ClipboardContent().apply {
-      debug { "Copied [$commitId] to clipboard!" }
-      putString(commitId)
-    }
-    clipboard.setContent(clipboardContent)
+    JavaFxClipboardService().copy(commitId)
+    debug { "Copied [$commitId] to clipboard!" }
   }
 }
