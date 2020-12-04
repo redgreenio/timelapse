@@ -30,3 +30,6 @@ object UnableToLoadBlobDiff : ContentViewerEvent()
 
 @UiEvent
 object Retry : ContentViewerEvent()
+
+@UiEvent
+object CommitIdClicked : ContentViewerEvent()

@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.contentviewer
 
 import com.spotify.mobius.Next
+import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
 import io.redgreen.timelapse.mobius.AsyncOp
@@ -39,7 +40,7 @@ object ContentViewerUpdate : Update<ContentViewerModel, ContentViewerEvent, Cont
         next(next.first, next.second)
       }
 
-      else -> TODO("Unknown event: $event")
+      is CommitIdClicked -> dispatch(setOf(CopyCommitIdToClipboard(model.commitId!!)))
     }
   }
 }

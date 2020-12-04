@@ -3,6 +3,7 @@ package io.redgreen.timelapse.contentviewer
 import com.spotify.mobius.test.NextMatchers.hasEffects
 import com.spotify.mobius.test.NextMatchers.hasModel
 import com.spotify.mobius.test.NextMatchers.hasNoEffects
+import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.mobius.spec
@@ -169,6 +170,23 @@ class ContentViewerUpdateTest {
         assertThatNext(
           hasModel(loadBlobDiffAndInformation),
           hasEffects(LoadBlobDiffInformation(selectedFilePath, commitId), LoadBlobDiff(selectedFilePath, commitId))
+        )
+      )
+  }
+
+  @Test
+  fun `when user clicks on the commit ID, copy it to the clipboard`() {
+    val fileAndRevisionSelected = ContentViewerModel
+      .noFileAndRevisionSelected()
+      .fileAndRevisionSelected(selectedFilePath, commitId)
+
+    withUpdateSpec
+      .given(fileAndRevisionSelected)
+      .whenEvent(CommitIdClicked)
+      .then(
+        assertThatNext(
+          hasNoModel(),
+          hasEffects(CopyCommitIdToClipboard(commitId))
         )
       )
   }

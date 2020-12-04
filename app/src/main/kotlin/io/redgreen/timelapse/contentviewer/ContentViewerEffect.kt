@@ -19,3 +19,7 @@ data class LoadBlobDiff(
     object Unknown : Failure()
   }
 }
+
+data class CopyCommitIdToClipboard(
+  val commitId: String
+) : ContentViewerEffect()
