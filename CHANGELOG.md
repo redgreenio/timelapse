@@ -1,5 +1,8 @@
 # Changelog
 ## [Unreleased]
+## Changed
+- Highlight deletions and insertions in main diff viewer
+- Put commit message below file name in the main diff viewer
 
 ## [0.1.7] - 2020-11-28
 ## Added
