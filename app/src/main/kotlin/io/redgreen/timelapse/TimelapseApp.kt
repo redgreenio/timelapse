@@ -83,7 +83,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
         val (previousChange, selectedChange) = getChanges(changes, changeIndex)
 
         // Show code on slider move
-        showCode(filePath, previousChange, selectedChange)
+        showCode(filePath, selectedChange)
 
         // Update anchor in area chart
         insertionsAreaChart.setAnchorIndex(changeIndex)
@@ -217,8 +217,8 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     }
 
     // Show code now
-    val (previousChange, selectedChange) = getChanges(changes, 0)
-    showCode(filePath, previousChange, selectedChange)
+    val (_, selectedChange) = getChanges(changes, 0)
+    showCode(filePath, selectedChange)
   }
 
   private fun getChanges(
@@ -232,20 +232,8 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
 
   private fun showCode(
     filePath: String,
-    previousChange: Change?,
     selectedChange: Change
   ) {
-    val maybeNoPreviousRevisions = previousChange == null
-    val maybeParentCommit = gitRepository.resolve("${selectedChange.commitId}^")
-    val isInitialCommit = maybeNoPreviousRevisions &&
-        maybeParentCommit?.name?.startsWith(selectedChange.commitId) == true
-
-    val diffText = if (isInitialCommit) {
-      gitRepository.getChangeText(filePath, selectedChange.commitId)
-    } else {
-      (gitRepository.getBlobDiff(selectedChange.commitId, filePath) as Simple).rawDiff
-    }
-
     readingPane.showMainDiff(filePath, selectedChange.commitId)
 
     Platform.runLater {
