@@ -9,6 +9,7 @@ import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.mobius.view.ViewRenderer
+import javafx.application.Platform
 
 class MobiusDelegate<M, E, F>(
   private val initialModel: M,
@@ -30,7 +31,9 @@ class MobiusDelegate<M, E, F>(
     Connectable<M, E> {
       object : Connection<M> {
         override fun accept(model: M) {
-          viewRenderer.render(model)
+          Platform.runLater {
+            viewRenderer.render(model)
+          }
         }
 
         override fun dispose() {

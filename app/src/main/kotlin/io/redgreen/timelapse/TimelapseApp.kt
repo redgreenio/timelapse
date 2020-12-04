@@ -2,7 +2,6 @@ package io.redgreen.timelapse
 
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesPane
-import io.redgreen.timelapse.diff.DiffLine.Insertion
 import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.Change
@@ -107,7 +106,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     AreaChart().apply { prefHeight = AREA_CHART_HEIGHT }
   }
 
-  private val readingPane by fastLazy { ReadingPane() }
+  private val readingPane by fastLazy { ReadingPane(gitRepository) }
 
   private val sliderPane by fastLazy {
     val sliderAndInformationPane = VBox().apply {
@@ -247,12 +246,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
       (gitRepository.getBlobDiff(selectedChange.commitId, filePath) as Simple).rawDiff
     }
 
-    val formattedDiff = if (isInitialCommit) {
-      FormattedDiff(listOf(Insertion(diffText)))
-    } else {
-      FormattedDiff.from(diffText)
-    }
-    readingPane.showMainDiff(filePath, formattedDiff)
+    readingPane.showMainDiff(filePath, selectedChange.commitId)
 
     Platform.runLater {
       commitInformationPane.showCommitInformation(

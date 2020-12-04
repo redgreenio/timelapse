@@ -22,10 +22,10 @@ class ContentViewerViewRendererTest {
     viewRenderer.render(noFileAndRevisionSelected)
 
     // then
-    verify(view).showFileNameLabel(false)
-    verify(view).showDeletionsInsertionsAndFilesChangedLabels(false)
-    verify(view).showCommitIdLabel(false)
-    verify(view).showCommitMessageLabel(false)
+    verify(view).fileNameLabelVisible(false)
+    verify(view).deletionsInsertionsAndFilesChangedLabelsVisible(false)
+    verify(view).commitIdLabelVisible(false)
+    verify(view).commitMessageLabelVisible(false)
     verify(view).displaySelectFileMessage()
     verifyNoMoreInteractions(view)
   }
@@ -44,9 +44,9 @@ class ContentViewerViewRendererTest {
     viewRenderer.render(fileAndRevisionSelected)
 
     // then
-    verify(view).showFileNameLabel(true)
-    verify(view).showDeletionsInsertionsAndFilesChangedLabels(true)
-    verify(view).showCommitIdLabel(true)
+    verify(view).fileNameLabelVisible(true)
+    verify(view).deletionsInsertionsAndFilesChangedLabelsVisible(true)
+    verify(view).commitIdLabelVisible(true)
     verify(view).setFileName(selectedFilePath)
     verify(view).setCommitId(commitId)
     verify(view).displayLoadingMessage()
@@ -96,7 +96,7 @@ class ContentViewerViewRendererTest {
 
     // then
     verify(view).setDeletionsInsertionsAndFilesChanged(deletions, insertions, changedFiles - 1)
-    verify(view).showCommitMessageLabel(true)
+    verify(view).commitMessageLabelVisible(true)
     verify(view).setCommitMessage(message)
     verify(view).displayContent(blobDiff)
     verifyNoMoreInteractions(view)

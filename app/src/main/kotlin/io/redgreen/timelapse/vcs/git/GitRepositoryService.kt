@@ -2,9 +2,11 @@ package io.redgreen.timelapse.vcs.git
 
 import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.contentviewer.BlobDiffInformation
-import io.redgreen.timelapse.diff.DiffLine.Insertion
+import io.redgreen.timelapse.diff.DiffLine
 import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.domain.BlobDiff
+import io.redgreen.timelapse.domain.BlobDiff.Merge
+import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.git.getChangedFilesInCommit
@@ -208,9 +210,13 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
         val changedFilesCount = gitRepository.getChangedFilesInCommit(commitId).size
         val message = gitRepository.getRevCommit(commitId).get().shortMessage
         val blobDiff = getBlobDiff(selectedFilePath, commitId).blockingGet()
-        val diffLines = FormattedDiff.from((blobDiff as BlobDiff.Simple).rawDiff).lines
-        val deletions = diffLines.filterIsInstance<Deletion>().size
-        val insertions = diffLines.filterIsInstance<Insertion>().size
+        val diffLines = if (blobDiff is Simple) {
+          FormattedDiff.from(blobDiff.rawDiff).lines
+        } else {
+          FormattedDiff.from((blobDiff as Merge).diffs.first().rawDiff).lines
+        }
+        val deletions = diffLines.filterIsInstance<DiffLine.Deletion>().size
+        val insertions = diffLines.filterIsInstance<DiffLine.Insertion>().size
 
         val blobDiffInformation = BlobDiffInformation(
           selectedFilePath,

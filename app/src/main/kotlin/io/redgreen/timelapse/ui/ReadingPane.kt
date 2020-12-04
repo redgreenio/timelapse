@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.ui
 
+import io.redgreen.timelapse.contentviewer.view.ContentViewerPane
 import io.redgreen.timelapse.diff.DiffLine
 import io.redgreen.timelapse.diff.DiffLine.Deletion
 import io.redgreen.timelapse.diff.DiffLine.Insertion
@@ -7,11 +8,14 @@ import io.redgreen.timelapse.diff.FormattedDiff
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.StackPane
+import org.eclipse.jgit.lib.Repository
 
 private const val TRANSLUCENT_MODAL_WIDTH = 150.0
 
-class ReadingPane : StackPane() {
-  private val mainCodeTextPane = TitledCodeTextPane()
+class ReadingPane(
+  gitRepository: Repository
+) : StackPane() {
+  private val mainCodeTextPane = ContentViewerPane(gitRepository)
   private val overlappingCodeTextPane = TitledCodeTextPane()
 
   private val modalPane = BorderPane().apply {
@@ -28,12 +32,9 @@ class ReadingPane : StackPane() {
     children.addAll(mainCodeTextPane, modalPane)
   }
 
-  fun showMainDiff(filePath: String, diff: FormattedDiff) {
+  fun showMainDiff(selectedFilePath: String, commitId: String) {
     modalPane.isVisible = false
-    with(mainCodeTextPane) {
-      setTitle("$filePath [${getInsertionsDeletionsSummaryText(diff.lines)}]")
-      showDiff(diff)
-    }
+    mainCodeTextPane.selectFileAndCommitId(selectedFilePath, commitId)
   }
 
   fun showOverlappingDiff(title: String, diff: FormattedDiff) {

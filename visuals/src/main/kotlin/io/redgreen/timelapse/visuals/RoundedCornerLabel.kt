@@ -10,9 +10,8 @@ import javafx.scene.layout.CornerRadii
 import javafx.scene.paint.Color
 
 class RoundedCornerLabel(
-  backgroundColor: Color,
-  text: String
-): Label(text) {
+  backgroundColor: Color
+): Label() {
   companion object {
     private const val MIN_WIDTH = 24.0
     private const val CORNER_RADII = 3.5

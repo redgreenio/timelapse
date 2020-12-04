@@ -7,7 +7,7 @@ class VisualsDemoApp : Application() {
   override fun start(primaryStage: Stage) {
     with(primaryStage) {
       title = "Visuals Demo"
-      scene = fileSummaryBar()
+      scene = areaChartScene()
       show()
     }
   }

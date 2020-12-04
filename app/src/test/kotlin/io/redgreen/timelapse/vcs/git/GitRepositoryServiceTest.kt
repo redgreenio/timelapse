@@ -446,6 +446,23 @@ class GitRepositoryServiceTest {
     }
 
     @Test
+    fun `it should fetch blob diff information for a simple commit with non-zero deletions and insertions`() {
+      // given
+      val selectedFilePath = "file-1.txt"
+      val commitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiffInformation(selectedFilePath, commitId)
+        .test()
+
+      // then
+      val message = "Merge branch 'english' into spanish"
+      testObserver
+        .assertValue(BlobDiffInformation(selectedFilePath, commitId, message, 1, 1, 1))
+    }
+
+    @Test
     fun `it should return an error if the selected path is invalid`() {
       // given
       val selectedFilePath = "non-existent-file.txt"

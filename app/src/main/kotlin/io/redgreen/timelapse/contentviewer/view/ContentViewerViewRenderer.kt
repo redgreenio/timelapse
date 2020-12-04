@@ -21,9 +21,9 @@ class ContentViewerViewRenderer(
     asyncOp.value is AsyncOp.InFlight
 
   private fun ContentViewerView.showLoading(model: ContentViewerModel) {
-    showFileNameLabel(true)
-    showDeletionsInsertionsAndFilesChangedLabels(true)
-    showCommitIdLabel(true)
+    fileNameLabelVisible(true)
+    deletionsInsertionsAndFilesChangedLabelsVisible(true)
+    commitIdLabelVisible(true)
     setFileName(model.selectedFilePath!!)
     setCommitId(model.commitId!!)
     displayLoadingMessage()
@@ -38,16 +38,16 @@ class ContentViewerViewRenderer(
     val (_, _, message, deletions, insertions, changedFiles) = blobDiffInformation
 
     setDeletionsInsertionsAndFilesChanged(deletions, insertions, changedFiles - 1)
-    showCommitMessageLabel(true)
+    commitMessageLabelVisible(true)
     setCommitMessage(message)
     displayContent(blobDiff)
   }
 
   private fun ContentViewerView.showNothingSelected() {
-    showFileNameLabel(false)
-    showDeletionsInsertionsAndFilesChangedLabels(false)
-    showCommitIdLabel(false)
-    showCommitMessageLabel(false)
+    fileNameLabelVisible(false)
+    deletionsInsertionsAndFilesChangedLabelsVisible(false)
+    commitIdLabelVisible(false)
+    commitMessageLabelVisible(false)
     displaySelectFileMessage()
   }
 }

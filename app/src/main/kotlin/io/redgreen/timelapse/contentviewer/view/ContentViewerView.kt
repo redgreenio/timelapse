@@ -3,14 +3,14 @@ package io.redgreen.timelapse.contentviewer.view
 import io.redgreen.timelapse.domain.BlobDiff
 
 interface ContentViewerView {
-  fun showCommitMessageLabel(show: Boolean)
-  fun showDeletionsInsertionsAndFilesChangedLabels(show: Boolean)
-  fun showFileNameLabel(show: Boolean)
-  fun showCommitIdLabel(show: Boolean)
-  fun displaySelectFileMessage()
+  fun fileNameLabelVisible(visible: Boolean)
+
+  fun deletionsInsertionsAndFilesChangedLabelsVisible(visible: Boolean)
+
+  fun commitIdLabelVisible(visible: Boolean)
+  fun commitMessageLabelVisible(visible: Boolean)
+
   fun setFileName(filePath: String)
-  fun setCommitId(commitId: String)
-  fun displayLoadingMessage()
 
   fun setDeletionsInsertionsAndFilesChanged(
     deletions: Int,
@@ -18,6 +18,10 @@ interface ContentViewerView {
     changedFiles: Int
   )
 
+  fun setCommitId(commitId: String)
   fun setCommitMessage(message: String)
+
+  fun displaySelectFileMessage()
+  fun displayLoadingMessage()
   fun displayContent(blobDiff: BlobDiff)
 }
