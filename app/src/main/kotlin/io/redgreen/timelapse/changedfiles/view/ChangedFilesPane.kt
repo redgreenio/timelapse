@@ -1,21 +1,14 @@
 package io.redgreen.timelapse.changedfiles.view
 
-import com.spotify.mobius.Connectable
-import com.spotify.mobius.Connection
-import com.spotify.mobius.Mobius
-import com.spotify.mobius.extras.Connectables
-import com.spotify.mobius.functions.Consumer
-import com.spotify.mobius.rx3.RxMobius
 import io.redgreen.timelapse.changedfiles.ChangedFileSelected
 import io.redgreen.timelapse.changedfiles.ChangedFilesEffectHandler
-import io.redgreen.timelapse.changedfiles.ChangedFilesEvent
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel
 import io.redgreen.timelapse.changedfiles.ChangedFilesUpdate
 import io.redgreen.timelapse.changedfiles.FileAndRevisionSelected
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
 import io.redgreen.timelapse.foo.fastLazy
-import io.redgreen.timelapse.mobius.DeferredEventSource
+import io.redgreen.timelapse.mobius.MobiusDelegate
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
@@ -34,23 +27,17 @@ import org.eclipse.jgit.lib.Repository
 class ChangedFilesPane(
   gitRepository: Repository,
   private val readingAreaContract: ReadingAreaContract
-) : BorderPane(), ChangedFilesView, Connectable<ChangedFilesModel, ChangedFilesEvent> {
+) : BorderPane(), ChangedFilesView {
   private val repositoryService = GitRepositoryService(gitRepository)
 
-  private val eventSource = DeferredEventSource<ChangedFilesEvent>()
-
-  private val loopController by fastLazy {
-    val effectHandler = ChangedFilesEffectHandler
-      .from(repositoryService, readingAreaContract)
-
-    val loop = RxMobius
-      .loop(ChangedFilesUpdate, effectHandler)
-      .eventSource(eventSource)
-
-    Mobius.controller(loop, ChangedFilesModel.noFileAndRevisionSelected())
+  private val mobiusDelegate by fastLazy {
+    MobiusDelegate(
+      ChangedFilesModel.noFileAndRevisionSelected(),
+      ChangedFilesUpdate,
+      ChangedFilesEffectHandler.from(repositoryService, readingAreaContract),
+      ChangedFilesViewRenderer(this)
+    )
   }
-
-  private val viewRenderer = ChangedFilesViewRenderer(this)
 
   private val titleLabel by fastLazy { Label().apply { style = "-fx-font-weight: bold" } }
 
@@ -110,10 +97,7 @@ class ChangedFilesPane(
       }
     }
 
-    with(loopController) {
-      connect(Connectables.contramap({ it }, this@ChangedFilesPane))
-      start()
-    }
+    mobiusDelegate.start()
 
     top = titleLabel
     center = changedFilesListView
@@ -156,31 +140,19 @@ class ChangedFilesPane(
     updateTitle(changedFiles.size)
   }
 
-  override fun connect(output: Consumer<ChangedFilesEvent>): Connection<ChangedFilesModel> {
-    return object : Connection<ChangedFilesModel> {
-      override fun accept(value: ChangedFilesModel) {
-        viewRenderer.render(value)
-      }
-
-      override fun dispose() {
-        // No-op
-      }
-    }
-  }
-
   fun focusOnList() {
     Platform.runLater { changedFilesListView.requestFocus() }
   }
 
   fun selectFileAndRevision(filePath: String, commitId: String) {
-    eventSource.notify(FileAndRevisionSelected(filePath, commitId))
+    mobiusDelegate.notify(FileAndRevisionSelected(filePath, commitId))
   }
 
   private fun sendChangedFileSelectedEvent(selectedIndex: Int) {
     if (selectedIndex == -1) {
       return
     }
-    eventSource.notify(ChangedFileSelected(selectedIndex))
+    mobiusDelegate.notify(ChangedFileSelected(selectedIndex))
   }
 
   private fun updateTitle(changedFilesCount: Int = 0) {
