@@ -38,6 +38,18 @@ dependencies {
   }
   implementation("io.sentry:sentry:3.1.0")
 
+  // FIXME: 05-12-2020
+  // Begin Circus: We are pulling in RxJava 2 and RxJava 3 Bridge libraries just because we need the JavaFx scheduler.
+  // Something to consider is to port the `JavaFxScheduler` class to RxJava 3 so that we can remove these dependencies.
+  implementation("io.reactivex.rxjava2:rxjavafx:2.2.2")
+  implementation("io.reactivex.rxjava2:rxjava:2.2.20") {
+    because("JavaFx bindings requires the library.")
+  }
+  implementation("com.github.akarnokd:rxjava3-bridge:3.0.0") {
+    because("JavaFx bindings for RxJava 3 is not available.")
+  }
+  // End Circus
+
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
   testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")

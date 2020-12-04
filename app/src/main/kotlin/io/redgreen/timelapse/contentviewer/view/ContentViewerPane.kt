@@ -12,6 +12,7 @@ import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.mobius.MobiusDelegate
 import io.redgreen.timelapse.platform.JavaFxClipboardService
+import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
 import javafx.scene.layout.BorderPane
 import org.eclipse.jgit.lib.Repository
@@ -25,7 +26,7 @@ class ContentViewerPane(
     MobiusDelegate(
       ContentViewerModel.noFileAndRevisionSelected(),
       ContentViewerUpdate,
-      ContentViewerEffectHandler.from(repositoryService, JavaFxClipboardService()),
+      ContentViewerEffectHandler.from(repositoryService, JavaFxClipboardService(), JavaFxSchedulersProvider),
       ContentViewerViewRenderer(this)
     )
   }

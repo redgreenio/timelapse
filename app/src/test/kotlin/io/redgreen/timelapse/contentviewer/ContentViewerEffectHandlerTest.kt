@@ -9,6 +9,7 @@ import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.mobius.EffectHandlerTestCase
 import io.redgreen.timelapse.platform.ClipboardService
+import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
 import io.redgreen.timelapse.vcs.VcsRepositoryService
 import org.junit.jupiter.api.Test
 
@@ -18,7 +19,13 @@ class ContentViewerEffectHandlerTest {
 
   private val vcsRepositoryService = mock<VcsRepositoryService>()
   private val clipboardService = mock<ClipboardService>()
-  private val effectHandler = ContentViewerEffectHandler.from(vcsRepositoryService, clipboardService)
+
+  private val effectHandler = ContentViewerEffectHandler.from(
+    vcsRepositoryService,
+    clipboardService,
+    ImmediateSchedulersProvider
+  )
+
   private val testCase = EffectHandlerTestCase(effectHandler)
 
   @Test
