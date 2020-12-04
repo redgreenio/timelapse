@@ -41,7 +41,7 @@ data class ContentViewerModel(
 
   fun blobDiffLoaded(blobDiff: BlobDiff): ContentViewerModel {
     return copy(
-      loadBlobDiffInformationAsyncOp = content(blobDiff)
+      loadBlobDiffAsyncOp = content(blobDiff)
     )
   }
 
