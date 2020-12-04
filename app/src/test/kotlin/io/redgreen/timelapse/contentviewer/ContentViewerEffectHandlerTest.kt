@@ -1,11 +1,14 @@
 package io.redgreen.timelapse.contentviewer
 
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.mobius.EffectHandlerTestCase
+import io.redgreen.timelapse.platform.ClipboardService
 import io.redgreen.timelapse.vcs.VcsRepositoryService
 import org.junit.jupiter.api.Test
 
@@ -14,7 +17,8 @@ class ContentViewerEffectHandlerTest {
   private val commitId = "commit-id"
 
   private val vcsRepositoryService = mock<VcsRepositoryService>()
-  private val effectHandler = ContentViewerEffectHandler.from(vcsRepositoryService)
+  private val clipboardService = mock<ClipboardService>()
+  private val effectHandler = ContentViewerEffectHandler.from(vcsRepositoryService, clipboardService)
   private val testCase = EffectHandlerTestCase(effectHandler)
 
   @Test
@@ -85,6 +89,19 @@ class ContentViewerEffectHandlerTest {
     // then
     testCase
       .assertOutgoingEvents(UnableToLoadBlobDiffInformation)
+  }
+
+  @Test
+  fun `it should copy commit id to clipboard`() {
+    // when
+    testCase.dispatch(CopyCommitIdToClipboard(commitId))
+
+    // then
+    verify(clipboardService).copy(commitId)
+    verifyNoMoreInteractions(clipboardService)
+
+    testCase
+      .assertNoOutgoingEvents()
   }
 
   private fun getSimpleBlobDiff(): Simple {
