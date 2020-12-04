@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.vcs.git
 
+import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
@@ -300,6 +301,124 @@ class GitRepositoryServiceTest {
         )
         .assertNoErrors()
         .assertComplete()
+    }
+  }
+
+  @Nested
+  inner class GetBlobDiff {
+    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
+    private val repositoryService = GitRepositoryService(gitTestbedRepository)
+
+    @Test
+    fun `it should get the blob diff of a simple commit`() {
+      // given
+      val selectedFilePath = "file-1-copy.txt"
+      val commitId = "0e298ab233af0e283edff96772c75a42a21b1479" // exhibit e: copy a file
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiff(selectedFilePath, commitId)
+        .test()
+
+      // then
+      testObserver
+        .assertValue(BlobDiff.Simple("68958540148efb4dd0dbfbb181df330deaffbe13", """
+          diff --git a/file-1-copy.txt b/file-1-copy.txt
+          new file mode 100644
+          index 0000000..980a0d5
+          --- /dev/null
+          +++ b/file-1-copy.txt
+          @@ -0,0 +1 @@
+          +Hello World!
+          
+        """.trimIndent()))
+    }
+
+    @Test
+    fun `it should get the blob diff for a merge commit`() {
+      // given
+      val selectedFilePath = "file-1.txt"
+      val commitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiff(selectedFilePath, commitId)
+        .test()
+
+      // then
+      testObserver
+        .assertValue(getMergeBlobDiff())
+    }
+
+    @Test
+    fun `it should return an error if the selected file path is invalid`() {
+      // given
+      val selectedFilePath = "non-existent-file-path"
+      val commitId = "0e298ab233af0e283edff96772c75a42a21b1479" // exhibit e: copy a file
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiff(selectedFilePath, commitId)
+        .test()
+
+      // then
+      testObserver
+        .assertError {
+          it is IllegalArgumentException && it.message == "File path does not exist: $selectedFilePath"
+        }
+    }
+
+    @Test
+    fun `it should return an error if the selected commit id is invalid`() {
+      // given
+      val selectedFilePath = "file-1-copy.txt"
+      val commitId = "invalid-commit-id"
+
+      // when
+      val testObserver = repositoryService
+        .getBlobDiff(selectedFilePath, commitId)
+        .test()
+
+      // then
+      testObserver
+        .assertError {
+          it is IllegalArgumentException && it.message == "Invalid commit ID: $commitId"
+        }
+    }
+
+    // FIXME: 04-12-2020 This is duplicated code. Consider moving these into a Gradle Test Fixtures project
+    private fun getMergeBlobDiff(): BlobDiff.Merge {
+      return BlobDiff.Merge(
+        listOf(
+          BlobDiff.Simple(
+            "1865160d483f9b22dfa9b49d0305c167746d9f7a",
+            """
+            diff --git a/file-1.txt b/file-1.txt
+            index 265d673..f17d600 100644
+            --- a/file-1.txt
+            +++ b/file-1.txt
+            @@ -1 +1 @@
+            -Hola, mundo!
+            +Hola, world!
+            
+          """.trimIndent()
+          ),
+
+          BlobDiff.Simple(
+            "6ad80c13f9d08fdfc1bd0ab7299a2178183326a1",
+            """
+            diff --git a/file-1.txt b/file-1.txt
+            index af5626b..f17d600 100644
+            --- a/file-1.txt
+            +++ b/file-1.txt
+            @@ -1 +1 @@
+            -Hello, world!
+            +Hola, world!
+            
+          """.trimIndent()
+          )
+        )
+      )
     }
   }
 }
