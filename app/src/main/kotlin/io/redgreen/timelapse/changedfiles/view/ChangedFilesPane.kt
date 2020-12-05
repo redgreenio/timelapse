@@ -15,7 +15,6 @@ import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
-import javafx.application.Platform
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
@@ -51,18 +50,16 @@ class ChangedFilesPane(
           override fun updateItem(changedFile: ChangedFile?, empty: Boolean) {
             super.updateItem(changedFile, empty)
 
-            Platform.runLater {
-              text = if (empty || item == null) {
-                null
-              } else {
-                changedFile?.filePath
-              }
+            text = if (empty || item == null) {
+              null
+            } else {
+              changedFile?.filePath
+            }
 
-              style = if (changedFile != null) {
-                "-fx-control-inner-background: rgba(${colorForChangedFile(changedFile)});"
-              } else {
-                "-fx-control-inner-background: rgba(255, 255, 255, 1.0);"
-              }
+            style = if (changedFile != null) {
+              "-fx-control-inner-background: rgba(${colorForChangedFile(changedFile)});"
+            } else {
+              "-fx-control-inner-background: rgba(255, 255, 255, 1.0);"
             }
           }
 
@@ -129,19 +126,17 @@ class ChangedFilesPane(
 
   override fun showChangedFiles(changedFiles: List<ChangedFile>) {
     with(changedFilesListView) {
-      Platform.runLater { // TODO View updates should be observed on JavaFx UI thread
-        items.clear()
-        items.addAll(changedFiles)
-        selectionModel.clearSelection()
-        scrollTo(0)
-      }
+      items.clear()
+      items.addAll(changedFiles)
+      selectionModel.clearSelection()
+      scrollTo(0)
     }
 
     updateTitle(changedFiles.size)
   }
 
   fun focusOnList() {
-    Platform.runLater { changedFilesListView.requestFocus() }
+    changedFilesListView.requestFocus()
   }
 
   fun selectFileAndRevision(filePath: String, commitId: String) {
@@ -162,6 +157,6 @@ class ChangedFilesPane(
       "Changed Files ($changedFilesCount more)"
     }
 
-    Platform.runLater { titleLabel.text = " • $title • " }
+    titleLabel.text = " • $title • "
   }
 }
