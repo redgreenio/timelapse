@@ -80,7 +80,7 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
         }
 
         val changeIndex = value.toInt()
-        val (previousChange, selectedChange) = getChanges(changes, changeIndex)
+        val (_, selectedChange) = getChanges(changes, changeIndex)
 
         // Show code on slider move
         showCode(filePath, selectedChange)
