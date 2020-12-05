@@ -17,11 +17,12 @@ import javafx.scene.text.TextFlow
 class SummaryBar : VBox() {
   companion object {
     private const val NO_PADDING = 0.0
-    private const val TEXT_FLOW_TOP_PADDING = 2.0
+    private const val ROW_2_TOP_PADDING = 2.0
     private const val LABEL_SPACING = 4.0
-    private const val PADDING = 8.0
-    private const val VISIBLE_COMMIT_ID_CHAR_COUNT = 8
+    private const val DEFAULT_PADDING = 8.0
     private const val PREFERRED_BAR_HEIGHT = 52.0
+
+    private const val VISIBLE_COMMIT_ID_CHAR_COUNT = 8
 
     // TODO: 05-12-2020 Extract to a `Theme` class
     private val barBackgroundColor = Color.LIGHTGREY
@@ -55,12 +56,12 @@ class SummaryBar : VBox() {
 
     val hBoxRow = HBox(fileNameLabel, deletionsLabel, insertionsLabel, filesChangedLabel).apply {
       spacing = LABEL_SPACING
-      padding = Insets(PADDING, PADDING, NO_PADDING, PADDING)
+      padding = Insets(DEFAULT_PADDING, DEFAULT_PADDING, NO_PADDING, DEFAULT_PADDING)
       prefWidthProperty().bind(widthProperty())
     }
 
     val textFlowRow = TextFlow(commitIdText, commitMessageText).apply {
-      padding = Insets(TEXT_FLOW_TOP_PADDING, PADDING, NO_PADDING, PADDING)
+      padding = Insets(ROW_2_TOP_PADDING, DEFAULT_PADDING, NO_PADDING, DEFAULT_PADDING)
     }
 
     commitIdText.setOnMouseClicked { onCommitIdClicked?.invoke() }
