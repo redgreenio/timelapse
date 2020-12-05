@@ -3,10 +3,7 @@ package io.redgreen.timelapse.readingarea
 import humanize.Humanize
 import io.redgreen.timelapse.domain.Change
 import io.redgreen.timelapse.domain.getCommit
-import io.redgreen.timelapse.foo.debug
-import io.redgreen.timelapse.platform.JavaFxClipboardService
 import io.redgreen.timelapse.visuals.getAuthoredAndCommittedText
-import javafx.event.EventHandler
 import javafx.geometry.Insets
 import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
@@ -26,22 +23,16 @@ class CommitInformationPane(
 
   private val messageLabel = Label()
   private val dateTimeInformationLabel = Label()
+
   private val countProgressInformationLabel = Label().apply {
     padding = Insets(PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
   }
-  private val idAuthorInformationLabel = Label().apply {
-    onMouseClicked = EventHandler {
-      if (text.isEmpty()) {
-        return@EventHandler
-      }
 
-      copyCommitIdToClipboard(text)
-    }
-  }
+  private val authorLabel = Label()
 
   init {
     padding = Insets(PADDING)
-    center = VBox(messageLabel, dateTimeInformationLabel, countProgressInformationLabel, idAuthorInformationLabel)
+    center = VBox(messageLabel, dateTimeInformationLabel, countProgressInformationLabel, authorLabel)
   }
 
   fun showCommitInformation(
@@ -60,13 +51,6 @@ class CommitInformationPane(
     messageLabel.text = selectedChange.message
     dateTimeInformationLabel.text = "$authorAndCommitDate ($committedNaturalTime)"
     countProgressInformationLabel.text = "Commit $position $COMMIT_INFORMATION_SEPARATOR $progressPercentText%"
-    idAuthorInformationLabel.text =
-      "${commit.name} $COMMIT_INFORMATION_SEPARATOR ${commit.authorIdent.name} <${commit.authorIdent.emailAddress}>"
-  }
-
-  private fun copyCommitIdToClipboard(text: String) {
-    val commitId = text.substring(0, text.indexOf(COMMIT_INFORMATION_SEPARATOR) - 1)
-    JavaFxClipboardService().copy(commitId)
-    debug { "Copied [$commitId] to clipboard!" }
+    authorLabel.text = "${commit.authorIdent.name} <${commit.authorIdent.emailAddress}>"
   }
 }
