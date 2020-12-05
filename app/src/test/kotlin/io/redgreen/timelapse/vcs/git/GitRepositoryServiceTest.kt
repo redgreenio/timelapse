@@ -322,8 +322,9 @@ class GitRepositoryServiceTest {
         .test()
 
       // then
-      testObserver
-        .assertValue(BlobDiff.Simple("68958540148efb4dd0dbfbb181df330deaffbe13", """
+      val blobDiff = BlobDiff.Simple(
+        "68958540148efb4dd0dbfbb181df330deaffbe13",
+        """
           diff --git a/file-1-copy.txt b/file-1-copy.txt
           new file mode 100644
           index 0000000..980a0d5
@@ -332,7 +333,10 @@ class GitRepositoryServiceTest {
           @@ -0,0 +1 @@
           +Hello World!
           
-        """.trimIndent()))
+        """.trimIndent()
+      )
+      testObserver
+        .assertValue(blobDiff)
     }
 
     @Test

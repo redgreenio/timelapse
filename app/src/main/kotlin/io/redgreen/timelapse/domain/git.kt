@@ -88,7 +88,9 @@ private fun Repository.getBlobDiffBetweenCommits(
       diffFormatter.setRepository(this)
       diffFormatter.pathFilter = filePathFilter
 
-      val isFirstCommit = /* oldCommitId == newCommitId || */ newCommitId.startsWith(oldCommitId /* This is a hack because git log output gives short commit hashes. */)
+      /* This is a hack because git log output gives short commit hashes. */
+      val isFirstCommit = /* oldCommitId == newCommitId || */ newCommitId.startsWith(oldCommitId)
+
       val oldTree = if (isFirstCommit) null else getTree(oldCommitId)
       val newTree = getTree(newCommitId)
 

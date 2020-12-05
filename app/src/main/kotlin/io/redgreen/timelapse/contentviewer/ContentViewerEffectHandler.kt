@@ -20,7 +20,11 @@ class ContentViewerEffectHandler private constructor() {
         .subtypeEffectHandler<ContentViewerEffect, ContentViewerEvent>()
         .addTransformer(LoadBlobDiff::class.java, loadBlobDiffTransformer(vcsRepositoryService))
         .addTransformer(LoadBlobDiffInformation::class.java, loadBlobDiffInformation(vcsRepositoryService))
-        .addConsumer(CopyCommitIdToClipboard::class.java, { clipboardService.copy(it.commitId) }, schedulersProvider.ui())
+        .addConsumer(
+          CopyCommitIdToClipboard::class.java,
+          { clipboardService.copy(it.commitId) },
+          schedulersProvider.ui()
+        )
         .build()
     }
 

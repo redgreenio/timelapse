@@ -29,7 +29,16 @@ private fun gitLogCommand(
 ): Array<String> {
   return if (startDateEndDate == null) {
     arrayOf(
-      "git", "--git-dir", gitDirectory, "log", "--oneline", "-M", "--stat", "--no-merges", /* "--follow",*/ "--", filePath,
+      "git",
+      "--git-dir",
+      gitDirectory,
+      "log",
+      "--oneline",
+      "-M",
+      "--stat",
+      "--no-merges", /* "--follow",*/
+      "--",
+      filePath,
     )
   } else {
     val (startDate, endDate) = startDateEndDate
