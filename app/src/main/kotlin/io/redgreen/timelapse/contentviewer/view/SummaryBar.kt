@@ -2,7 +2,6 @@ package io.redgreen.timelapse.contentviewer.view
 
 import io.redgreen.timelapse.visuals.RoundedCornerLabel
 import javafx.geometry.Insets
-import javafx.scene.control.Label
 import javafx.scene.control.Tooltip
 import javafx.scene.layout.Background
 import javafx.scene.layout.BackgroundFill
@@ -32,9 +31,12 @@ class SummaryBar : VBox() {
     private val commitIdTextColor = Color.CORNFLOWERBLUE
   }
 
-  private val fileNameLabel = Label().apply {
+  private val directoryPathText = Text().apply {
+    style = "-fx-font-weight: bold; -fx-fill: #696969;"
+  }
+
+  private val fileNameText = Text().apply {
     style = "-fx-font-weight: bold;"
-    padding = Insets(NO_PADDING, LABEL_SPACING, NO_PADDING, NO_PADDING)
   }
 
   private val deletionsLabel = RoundedCornerLabel(deletionsBackgroundColor)
@@ -54,7 +56,11 @@ class SummaryBar : VBox() {
   init {
     background = Background(BackgroundFill(barBackgroundColor, CornerRadii.EMPTY, Insets.EMPTY))
 
-    val hBoxRow = HBox(fileNameLabel, deletionsLabel, insertionsLabel, filesChangedLabel).apply {
+    val fileNameTextFlow = TextFlow(directoryPathText, fileNameText).apply {
+      padding = Insets(NO_PADDING, LABEL_SPACING, NO_PADDING, NO_PADDING)
+    }
+
+    val hBoxRow = HBox(fileNameTextFlow, deletionsLabel, insertionsLabel, filesChangedLabel).apply {
       spacing = LABEL_SPACING
       padding = Insets(DEFAULT_PADDING, DEFAULT_PADDING, NO_PADDING, DEFAULT_PADDING)
       prefWidthProperty().bind(widthProperty())
@@ -72,7 +78,15 @@ class SummaryBar : VBox() {
   }
 
   fun setFileName(filePath: String) {
-    fileNameLabel.text = filePath
+    val fileNameStartIndex = filePath.lastIndexOf("/")
+    val fileInRootDirectory = fileNameStartIndex == -1
+    if (fileInRootDirectory) {
+      directoryPathText.text = ""
+      fileNameText.text = filePath
+    } else {
+      directoryPathText.text = filePath.substring(0, fileNameStartIndex + 1)
+      fileNameText.text = filePath.substring(fileNameStartIndex + 1)
+    }
   }
 
   fun setDeletions(deletions: Int) {
