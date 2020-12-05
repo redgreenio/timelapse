@@ -19,7 +19,6 @@ class SummaryBar : VBox() {
     private const val ROW_2_TOP_PADDING = 2.0
     private const val LABEL_SPACING = 4.0
     private const val DEFAULT_PADDING = 8.0
-    private const val PREFERRED_BAR_HEIGHT = 52.0
 
     private const val VISIBLE_COMMIT_ID_CHAR_COUNT = 8
 
@@ -55,26 +54,27 @@ class SummaryBar : VBox() {
 
   init {
     background = Background(BackgroundFill(barBackgroundColor, CornerRadii.EMPTY, Insets.EMPTY))
+    padding = Insets(DEFAULT_PADDING)
 
+    // Row 1
     val fileNameTextFlow = TextFlow(directoryPathText, fileNameText).apply {
       padding = Insets(NO_PADDING, LABEL_SPACING, NO_PADDING, NO_PADDING)
     }
 
     val hBoxRow = HBox(fileNameTextFlow, deletionsLabel, insertionsLabel, filesChangedLabel).apply {
       spacing = LABEL_SPACING
-      padding = Insets(DEFAULT_PADDING, DEFAULT_PADDING, NO_PADDING, DEFAULT_PADDING)
       prefWidthProperty().bind(widthProperty())
     }
 
+    // Row 2
     val textFlowRow = TextFlow(commitIdText, commitMessageText).apply {
-      padding = Insets(ROW_2_TOP_PADDING, DEFAULT_PADDING, NO_PADDING, DEFAULT_PADDING)
+      padding = Insets(ROW_2_TOP_PADDING, NO_PADDING, NO_PADDING, NO_PADDING)
     }
-
-    commitIdText.setOnMouseClicked { onCommitIdClicked?.invoke() }
 
     children.addAll(hBoxRow, textFlowRow)
 
-    prefHeight = PREFERRED_BAR_HEIGHT
+    // Event listener
+    commitIdText.setOnMouseClicked { onCommitIdClicked?.invoke() }
   }
 
   fun setFileName(filePath: String) {
