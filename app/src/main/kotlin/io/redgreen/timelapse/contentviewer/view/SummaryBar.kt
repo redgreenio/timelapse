@@ -43,7 +43,7 @@ class SummaryBar : VBox() {
 
   private val commitIdText = Text().apply {
     fill = commitIdTextColor
-    style = "-fx-font-weight: bold;"
+    style = "-fx-font-weight: bold; -fx-cursor: hand;"
     font = Font.font("monospace")
   }
 
