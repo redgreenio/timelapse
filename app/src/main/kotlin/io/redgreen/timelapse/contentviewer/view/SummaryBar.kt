@@ -95,8 +95,8 @@ class SummaryBar : VBox() {
       text = "$filesChanged"
       val filesChangedText = when (filesChanged) {
         0 -> "No other files changed"
-        1 -> "1 more file changed"
-        else -> "$filesChanged more files changed"
+        1 -> "1 other file changed"
+        else -> "$filesChanged other files changed"
       }
       tooltip = Tooltip(filesChangedText)
     }
