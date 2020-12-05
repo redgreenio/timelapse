@@ -1,11 +1,14 @@
 # Changelog
 ## [Unreleased]
-## Changed
-- Highlight deletions and insertions in main diff viewer
-- Put commit message below file name in the main diff viewer
+### Changed
+- Highlight deletions and insertions in main diff viewer.
+- Put commit message below file name in the main diff viewer.
+
+### Fixed
+- Remove extraneous vertical line in the middle of the area chart for single commits.
 
 ## [0.1.7] - 2020-11-28
-## Added
+### Added
 - Show deletions in the area chart.
 - Display area chart for single commits.
 - From the slider, use `Ctrl + Left Arrow` and `Ctrl + Right Arrow` to navigate to the oldest, and the newest commits in one go!
@@ -19,7 +22,7 @@
 - An application crash due to a non-`URLClassLoader` used in Mac runtime.
 
 ## [0.1.5] - 2020-11-21
-## Added
+### Added
 - Enhanced diff viewer.
 - Show line number in diff viewer.
 - Show binary diff message on selecting a binary file.
@@ -28,7 +31,7 @@
 - 'Enter' key brings up diff after changed files pane regains focus.
 - Support for non-english languages in the diff viewer.
 
-## Changed
+### Changed
 - Always show deleted lines count when showing diff.
 
 ### Fixed
