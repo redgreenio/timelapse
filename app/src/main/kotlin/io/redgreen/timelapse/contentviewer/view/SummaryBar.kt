@@ -23,7 +23,7 @@ class SummaryBar : VBox() {
     private const val VISIBLE_COMMIT_ID_CHAR_COUNT = 8
 
     // TODO: 05-12-2020 Extract to a `Theme` class
-    private val barBackgroundColor = Color.LIGHTGREY
+    private val barBackgroundColor = Color.gray(0.87)
     private val insertionsBackgroundColor = Color.rgb(0xbe, 0xf5, 0xcb)
     private val deletionsBackgroundColor = Color.rgb(0xff, 0xdc, 0xe0)
     private val filesChangedBackgroundColor = Color.WHITESMOKE
