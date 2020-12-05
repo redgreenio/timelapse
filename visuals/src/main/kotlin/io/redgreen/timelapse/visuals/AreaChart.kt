@@ -95,6 +95,8 @@ class AreaChart : ResizableCanvas() {
   }
 
   private fun GraphicsContext.drawLines() {
+    if (commits.size == 1) return
+
     // guides
     stroke = guideStrokeColor
     lineWidth = GUIDE_LINE_WIDTH
