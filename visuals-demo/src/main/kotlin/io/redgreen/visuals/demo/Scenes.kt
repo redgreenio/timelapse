@@ -6,6 +6,7 @@ import javafx.scene.Scene
 import javafx.scene.control.Tab
 import javafx.scene.control.TabPane
 import javafx.scene.control.TabPane.TabClosingPolicy
+import javafx.scene.control.Tooltip
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 
@@ -51,14 +52,27 @@ internal fun tabsScene(): Scene {
       """.trimIndent()
     }
 
-    val firstTab = Tab("build.gradle", Region().apply { style = "-fx-background-color: white;" })
-      .apply { isClosable = false }
+    val tab1Content = Region().apply { style = "-fx-background-color: white;" }
+    val tab1 = Tab("build.gradle", tab1Content).apply { isClosable = false }.apply {
+      tooltip = Tooltip("build: update library dependencies (2 weeks ago)")
+    }
 
-    val secondTab = Tab("build.gradle @ a73ef1ae", Region().apply { style = "-fx-background-color: white;" })
-    val thirdTab = Tab("build.gradle @ 33d1a90b", Region().apply { style = "-fx-background-color: white;" })
-    val fourthTab = Tab("build.gradle @ f85b284b", Region().apply { style = "-fx-background-color: white;" })
+    val tab2Content = Region().apply { style = "-fx-background-color: white;" }
+    val tab2 = Tab("build.gradle @ a73ef1ae", tab2Content).apply {
+      tooltip = Tooltip("style: format buildscripts according to the latest style guide (1 hour ago)")
+    }
 
-    tabPane.tabs.addAll(firstTab, secondTab, thirdTab, fourthTab)
+    val tab3Content = Region().apply { style = "-fx-background-color: white;" }
+    val tab3 = Tab("build.gradle @ 33d1a90b", tab3Content).apply {
+      tooltip = Tooltip("ci: send out alerts via Slack for failed quality checks (9 months ago)")
+    }
+
+    val tab4Content = Region().apply { style = "-fx-background-color: white;" }
+    val tab4 = Tab("build.gradle @ f85b284b", tab4Content).apply {
+      tooltip = Tooltip("chore: initial commit (2 years ago)")
+    }
+
+    tabPane.tabs.addAll(tab1, tab2, tab3, tab4)
 
     children.add(tabPane)
   }, 640.0, 480.0)
