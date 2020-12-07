@@ -1,11 +1,5 @@
-* {
-    -fx-theme-base: #56595d;
-    -fx-text-fill: #dddddd;
-    -fx-mark-color: -fx-text-fill;
-}
-
 .tab-pane {
-    -fx-background-color: #1e2124;
+    -fx-background-color: -fx-color-primary;
 }
 
 .tab-pane > .tab-header-area {
@@ -18,13 +12,13 @@
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:top {
-    -fx-background-color: #1e2124;
+    -fx-background-color: -fx-color-primary;
     -fx-pref-height: 34;
     -fx-padding: 0 14 0 14;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:hover:top {
-    -fx-background-color: #2c3035;
+    -fx-background-color: -fx-color-hover;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected:top {
@@ -37,7 +31,7 @@
 }
 
 .tab-pane > .tab-header-area > .tab-header-background {
-    -fx-background-color: #1e2124;
+    -fx-background-color: -fx-color-primary;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container {
