@@ -1,5 +1,11 @@
+* {
+    -fx-theme-base: #56595d;
+    -fx-text-fill: #dddddd;
+    -fx-mark-color: -fx-text-fill;
+}
+
 .tab-pane {
-    -fx-background-color: #efefef;
+    -fx-background-color: #1e2124;
 }
 
 .tab-pane > .tab-header-area {
@@ -12,26 +18,26 @@
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:top {
-    -fx-background-color: #efefef;
+    -fx-background-color: #1e2124;
     -fx-pref-height: 34;
     -fx-padding: 0 14 0 14;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:hover:top {
-    -fx-background-color: #dfdfdf;
+    -fx-background-color: #2c3035;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected:top {
-    -fx-background-color: white;
+    -fx-background-color: -fx-theme-base;
 }
 
 .tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
     -fx-border-width: 0;
-    -fx-border-color: white;
+    -fx-border-color: -fx-theme-base;
 }
 
 .tab-pane > .tab-header-area > .tab-header-background {
-    -fx-background-color: #efefef;
+    -fx-background-color: #1e2124;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container {
@@ -42,7 +48,6 @@
     -fx-background-color: -fx-mark-color;
     -fx-shape: "M 0,0 H1 L 4,3 7,0 H8 V1 L 5,4 8,7 V8 H7 L 4,5 1,8 H0 V7 L 3,4 0,1 Z";
     -fx-scale-shape: false;
-    -fx-effect: dropshadow(two-pass-box , rgba(255, 255, 255, 0.4), 1, 0.0 , 0, 1);
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-close-button:hover {
