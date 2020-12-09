@@ -30,4 +30,3 @@ internal fun areaChartScene(): Scene {
     areaChart.prefHeightProperty().bind(heightProperty())
   }, areaChartWidth.toDouble(), areaChartHeight.toDouble())
 }
-

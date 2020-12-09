@@ -13,7 +13,8 @@ import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.StackPane
 
-internal fun layers(): Scene {
+@Suppress("unused")
+internal fun layersScene(): Scene {
   val greetingsStackPane = StackPane()
 
   val greeting1Label = Label("Greeting 1")

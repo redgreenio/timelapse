@@ -11,8 +11,10 @@ class VisualsDemoApp : Application() {
   override fun start(primaryStage: Stage) {
     with(primaryStage) {
       title = "Visuals Demo"
-      scene = layers()
+      scene = openRepoScene()
+      isResizable = false
       show()
+      centerOnScreen()
     }
   }
 }
