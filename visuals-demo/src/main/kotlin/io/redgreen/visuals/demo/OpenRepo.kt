@@ -19,6 +19,7 @@ import javafx.scene.paint.Color
 
 private val grayTextFill = Color.web("#8F8F8F")
 
+@Suppress("unused")
 internal fun openRepoScene(): Scene {
   return Scene(StackPane().apply {
     background = Background(BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY))
