@@ -1,10 +1,9 @@
-package io.redgreen.visuals.demo
+package io.redgreen.timelapse.openrepo
 
 import io.redgreen.javafx.Fonts
-import io.redgreen.timelapse.openrepo.LargeButton
+import io.redgreen.timelapse.openrepo.OpenRepositoryScene.RecentProjectsLayer.NO_RECENT_PROJECTS
+import io.redgreen.timelapse.openrepo.OpenRepositoryScene.RecentProjectsLayer.RECENT_PROJECTS_LIST
 import io.redgreen.timelapse.visuals.StackPaneLayers
-import io.redgreen.visuals.demo.OpenRepositoryScene.RecentProjectsLayer.NO_RECENT_PROJECTS
-import io.redgreen.visuals.demo.OpenRepositoryScene.RecentProjectsLayer.RECENT_PROJECTS_LIST
 import javafx.geometry.Insets
 import javafx.geometry.Pos.BOTTOM_RIGHT
 import javafx.geometry.Pos.TOP_CENTER

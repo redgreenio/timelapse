@@ -11,7 +11,7 @@ class VisualsDemoApp : Application() {
   override fun start(primaryStage: Stage) {
     with(primaryStage) {
       title = "Visuals Demo"
-      scene = openRepoScene()
+      scene = areaChartScene()
       isResizable = false
       show()
       centerOnScreen()

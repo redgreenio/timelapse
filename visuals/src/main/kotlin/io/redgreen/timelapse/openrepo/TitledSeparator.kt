@@ -1,4 +1,4 @@
-package io.redgreen.visuals.demo
+package io.redgreen.timelapse.openrepo
 
 import io.redgreen.javafx.Fonts
 import javafx.geometry.Insets
