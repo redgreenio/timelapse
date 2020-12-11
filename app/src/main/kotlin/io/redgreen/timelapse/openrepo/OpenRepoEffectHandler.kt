@@ -33,6 +33,11 @@ class OpenRepoEffectHandler {
           schedulersProvider.io()
         )
         .addConsumer(OpenGitRepository::class.java, { view.openGitRepository(it.path) }, schedulersProvider.ui())
+        .addConsumer(
+          ShowNotAGitRepositoryError::class.java,
+          { view.showNotAGitRepositoryError(it.path) },
+          schedulersProvider.ui()
+        )
         .build()
     }
 

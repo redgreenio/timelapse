@@ -143,4 +143,20 @@ class OpenRepoEffectHandlerTest {
     testCase
       .assertNoOutgoingEvents()
   }
+
+  @Test
+  fun `it should show not a git repository message`() {
+    // given
+    val nonExistentPath = "/non/existent/path"
+
+    // when
+    testCase.dispatch(ShowNotAGitRepositoryError(nonExistentPath))
+
+    // then
+    verify(view).showNotAGitRepositoryError(nonExistentPath)
+    verifyNoMoreInteractions(view)
+
+    testCase
+      .assertNoOutgoingEvents()
+  }
 }
