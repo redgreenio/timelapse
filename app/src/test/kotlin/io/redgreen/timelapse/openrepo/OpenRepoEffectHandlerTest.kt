@@ -127,4 +127,20 @@ class OpenRepoEffectHandlerTest {
     testCase
       .assertNoOutgoingEvents()
   }
+
+  @Test
+  fun `it should open a detected repository`() {
+    // given
+    val repositoryPath = "~/IdeaProjects/timelapse"
+
+    // when
+    testCase.dispatch(OpenGitRepository(repositoryPath))
+
+    // then
+    verify(view).openGitRepository(repositoryPath)
+    verifyNoMoreInteractions(view)
+
+    testCase
+      .assertNoOutgoingEvents()
+  }
 }

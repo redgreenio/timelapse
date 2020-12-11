@@ -15,12 +15,12 @@ object OpenRepoUpdate : Update<OpenRepoModel, OpenRepoEvent, OpenRepoEffect> {
       is GitUsernameFound -> next(model.gitUsernameFound(event.username))
       is ChooseGitRepository -> dispatch(setOf(DisplayFileChooser))
       is GitRepositoryChosen -> dispatch(setOf(DetectGitRepository(event.maybeRepositoryPath)))
-      is GitRepositoryDetected -> dispatch(setOf(UpdateRecentRepositories(event.path), OpenRepository(event.path)))
+      is GitRepositoryDetected -> dispatch(setOf(UpdateRecentRepositories(event.path), OpenGitRepository(event.path)))
       is GitRepositoryNotDetected -> dispatch(setOf(ShowNotAGitRepositoryError(event.path)))
       is NoRecentRepositories -> next(model.noRecentRepositories())
       is HasRecentRepositories -> next(model.hasRecentRepositories(event.recentRepositories))
       is UnableToGetRecentRepositories -> next(model.unableToGetRecentRepositories())
-      is OpenRecentRepository -> dispatch(setOf(UpdateRecentRepositories(event.path), OpenRepository(event.path)))
+      is OpenRecentRepository -> dispatch(setOf(UpdateRecentRepositories(event.path), OpenGitRepository(event.path)))
     }
   }
 }

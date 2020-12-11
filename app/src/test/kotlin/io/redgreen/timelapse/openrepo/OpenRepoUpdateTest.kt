@@ -84,7 +84,7 @@ class OpenRepoUpdateTest {
       .then(
         assertThatNext(
           hasNoModel(),
-          hasEffects(UpdateRecentRepositories(repositoryPath), OpenRepository(repositoryPath))
+          hasEffects(UpdateRecentRepositories(repositoryPath), OpenGitRepository(repositoryPath))
         )
       )
   }
@@ -156,7 +156,7 @@ class OpenRepoUpdateTest {
       .then(
         assertThatNext(
           hasNoModel(),
-          hasEffects(UpdateRecentRepositories(repositoryPath), OpenRepository(repositoryPath))
+          hasEffects(UpdateRecentRepositories(repositoryPath), OpenGitRepository(repositoryPath))
         )
       )
   }
