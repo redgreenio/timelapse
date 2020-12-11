@@ -38,6 +38,10 @@ class OpenRepoEffectHandler {
           { view.showNotAGitRepositoryError(it.path) },
           schedulersProvider.ui()
         )
+        .addTransformer(
+          GetRecentRepositories::class.java,
+          getRecentRepositoriesTransformer(recentRepositoriesStorage, schedulersProvider.io())
+        )
         .build()
     }
 
@@ -78,6 +82,25 @@ class OpenRepoEffectHandler {
             }
           }
           .subscribeOn(scheduler)
+      }
+    }
+
+    private fun getRecentRepositoriesTransformer(
+      recentRepositoriesStorage: RecentRepositoriesStorage,
+      scheduler: Scheduler
+    ): ObservableTransformer<GetRecentRepositories, OpenRepoEvent> {
+      return ObservableTransformer { getRecentRepositoriesEvents ->
+        getRecentRepositoriesEvents
+          .subscribeOn(scheduler)
+          .map {
+            try {
+              recentRepositoriesStorage.getRecentRepositories()
+            } catch (e: RuntimeException) {
+              logger.error("${GetRecentRepositories::class.java.name} failed.", e)
+              emptyList()
+            }
+          }
+          .map { if (it.isNotEmpty()) HasRecentRepositories(it) else NoRecentRepositories }
       }
     }
   }

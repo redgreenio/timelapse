@@ -159,4 +159,49 @@ class OpenRepoEffectHandlerTest {
     testCase
       .assertNoOutgoingEvents()
   }
+
+  @Test
+  fun `it should return no recent repositories if the list is empty`() {
+    // given
+    whenever(recentRepositoriesStorage.getRecentRepositories())
+      .thenReturn(emptyList())
+
+    // when
+    testCase.dispatch(GetRecentRepositories)
+
+    // then
+    testCase
+      .assertOutgoingEvents(NoRecentRepositories)
+  }
+
+  @Test
+  fun `it should return a list of recent repositories if they are available`() {
+    // given
+    val recentRepositories = listOf("~/IdeaProjects/timelapse", "~/IdeaProjects/square/retrofit")
+      .map(::RecentRepository)
+
+    whenever(recentRepositoriesStorage.getRecentRepositories())
+      .thenReturn(recentRepositories)
+
+    // when
+    testCase.dispatch(GetRecentRepositories)
+
+    // then
+    testCase
+      .assertOutgoingEvents(HasRecentRepositories(recentRepositories))
+  }
+
+  @Test
+  fun `it should return no recent repositories if there is an exception`() {
+    // given
+    whenever(recentRepositoriesStorage.getRecentRepositories())
+      .thenThrow(RuntimeException("Error retrieving recent repositories :("))
+
+    // when
+    testCase.dispatch(GetRecentRepositories)
+
+    // then
+    testCase
+      .assertOutgoingEvents(NoRecentRepositories)
+  }
 }
