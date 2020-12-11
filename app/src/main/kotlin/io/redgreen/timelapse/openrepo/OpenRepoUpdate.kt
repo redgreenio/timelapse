@@ -11,7 +11,7 @@ object OpenRepoUpdate : Update<OpenRepoModel, OpenRepoEvent, OpenRepoEffect> {
     event: OpenRepoEvent
   ): Next<OpenRepoModel, OpenRepoEffect> {
     return when (event) {
-      CannotFindGitUsername -> next(model)
+      GitUsernameNotFound -> next(model)
       is GitUsernameFound -> next(model.gitUsernameFound(event.username))
       is ChooseGitRepository -> dispatch(setOf(DisplayFileChooser))
       is GitRepositoryChosen -> dispatch(setOf(AttemptOpenRepository(event.maybeRepositoryPath)))

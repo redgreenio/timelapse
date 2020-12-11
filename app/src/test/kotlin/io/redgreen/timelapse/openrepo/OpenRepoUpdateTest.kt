@@ -21,7 +21,7 @@ class OpenRepoUpdateTest {
 
     withUpdateSpec
       .given(start)
-      .whenEvent(CannotFindGitUsername) // TODO: 10-12-2020 Introduce a rule that forces developers to use `whenEvent` over `when`
+      .whenEvent(GitUsernameNotFound) // TODO: 10-12-2020 Introduce a rule that forces developers to use `whenEvent` over `when`
       .then(
         assertThatNext(
           hasModel(start.cannotFindGitUsername()),

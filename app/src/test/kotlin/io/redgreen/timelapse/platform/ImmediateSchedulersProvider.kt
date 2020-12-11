@@ -5,4 +5,5 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 object ImmediateSchedulersProvider : SchedulersProvider {
   override fun ui(): Scheduler = Schedulers.trampoline()
+  override fun io(): Scheduler = Schedulers.trampoline()
 }

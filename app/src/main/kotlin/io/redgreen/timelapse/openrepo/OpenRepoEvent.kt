@@ -7,7 +7,7 @@ import io.redgreen.timelapse.openrepo.data.RecentRepository
 sealed class OpenRepoEvent
 
 @EffectEvent(FindGitUsername::class)
-object CannotFindGitUsername : OpenRepoEvent()
+object GitUsernameNotFound : OpenRepoEvent()
 
 @EffectEvent(FindGitUsername::class)
 data class GitUsernameFound(
