@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.openrepo
+package io.redgreen.timelapse.openrepo.storage
 
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 

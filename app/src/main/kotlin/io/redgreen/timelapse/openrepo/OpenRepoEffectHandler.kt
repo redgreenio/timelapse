@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Scheduler
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
 import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.SchedulersProvider
 import org.slf4j.LoggerFactory

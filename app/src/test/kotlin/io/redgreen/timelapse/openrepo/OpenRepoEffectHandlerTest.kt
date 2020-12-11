@@ -6,6 +6,7 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.mobius.testCase
 import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
 import org.junit.jupiter.api.AfterEach
