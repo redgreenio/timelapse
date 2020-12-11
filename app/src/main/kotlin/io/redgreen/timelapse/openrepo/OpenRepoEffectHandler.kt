@@ -15,7 +15,7 @@ class OpenRepoEffectHandler {
 
     fun from(
       gitDetector: GitDetector,
-      recentRepositoriesRepository: RecentRepositoriesRepository,
+      recentRepositoriesStorage: RecentRepositoriesStorage,
       view: OpenRepoView,
       schedulersProvider: SchedulersProvider
     ): ObservableTransformer<OpenRepoEffect, OpenRepoEvent> {
@@ -29,7 +29,7 @@ class OpenRepoEffectHandler {
         )
         .addConsumer(
           UpdateRecentRepositories::class.java,
-          { recentRepositoriesRepository.update(RecentRepository(it.path)) },
+          { recentRepositoriesStorage.update(RecentRepository(it.path)) },
           schedulersProvider.io()
         )
         .addConsumer(OpenGitRepository::class.java, { view.openGitRepository(it.path) }, schedulersProvider.ui())

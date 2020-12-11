@@ -15,10 +15,10 @@ import java.util.Optional
 class OpenRepoEffectHandlerTest {
   private val gitDetector = mock<GitDetector>()
   private val view = mock<OpenRepoView>()
-  private val recentRepositoriesRepository = mock<RecentRepositoriesRepository>()
+  private val recentRepositoriesStorage = mock<RecentRepositoriesStorage>()
 
   private val testCase = OpenRepoEffectHandler
-    .from(gitDetector, recentRepositoriesRepository, view, ImmediateSchedulersProvider)
+    .from(gitDetector, recentRepositoriesStorage, view, ImmediateSchedulersProvider)
     .testCase()
 
   @AfterEach
@@ -121,8 +121,8 @@ class OpenRepoEffectHandlerTest {
     testCase.dispatch(UpdateRecentRepositories(repositoryPath))
 
     // then
-    verify(recentRepositoriesRepository).update(RecentRepository(repositoryPath))
-    verifyNoMoreInteractions(recentRepositoriesRepository)
+    verify(recentRepositoriesStorage).update(RecentRepository(repositoryPath))
+    verifyNoMoreInteractions(recentRepositoriesStorage)
 
     testCase
       .assertNoOutgoingEvents()
