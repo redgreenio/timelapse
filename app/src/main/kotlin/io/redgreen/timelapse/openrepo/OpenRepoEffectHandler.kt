@@ -3,6 +3,7 @@ package io.redgreen.timelapse.openrepo
 import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
+import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.SchedulersProvider
 import org.slf4j.LoggerFactory
@@ -13,6 +14,7 @@ class OpenRepoEffectHandler {
 
     fun from(
       gitDetector: GitDetector,
+      recentRepositoriesRepository: RecentRepositoriesRepository,
       view: OpenRepoView,
       schedulersProvider: SchedulersProvider
     ): ObservableTransformer<OpenRepoEffect, OpenRepoEvent> {
@@ -21,6 +23,11 @@ class OpenRepoEffectHandler {
         .addTransformer(FindGitUsername::class.java, findGitUsernameTransformer(schedulersProvider, gitDetector))
         .addAction(DisplayFileChooser::class.java, { view.displayFileChooser() }, schedulersProvider.ui())
         .addTransformer(DetectGitRepository::class.java, detectGitRepositoryTransformer(gitDetector))
+        .addConsumer(
+          UpdateRecentRepositories::class.java,
+          { recentRepositoriesRepository.update(RecentRepository(it.path)) },
+          schedulersProvider.io()
+        )
         .build()
     }
 

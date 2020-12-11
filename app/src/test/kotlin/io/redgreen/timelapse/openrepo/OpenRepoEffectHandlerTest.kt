@@ -5,6 +5,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.mobius.testCase
+import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
 import org.junit.jupiter.api.AfterEach
@@ -14,7 +15,11 @@ import java.util.Optional
 class OpenRepoEffectHandlerTest {
   private val gitDetector = mock<GitDetector>()
   private val view = mock<OpenRepoView>()
-  private val testCase = OpenRepoEffectHandler.from(gitDetector, view, ImmediateSchedulersProvider).testCase()
+  private val recentRepositoriesRepository = mock<RecentRepositoriesRepository>()
+
+  private val testCase = OpenRepoEffectHandler
+    .from(gitDetector, recentRepositoriesRepository, view, ImmediateSchedulersProvider)
+    .testCase()
 
   @AfterEach
   fun teardown() {
@@ -105,5 +110,21 @@ class OpenRepoEffectHandlerTest {
     // then
     testCase
       .assertOutgoingEvents(GitRepositoryNotDetected(path))
+  }
+
+  @Test
+  fun `it should update the list of recent projects`() {
+    // given
+    val repositoryPath = "~/IdeaProjects/timelapse"
+
+    // when
+    testCase.dispatch(UpdateRecentRepositories(repositoryPath))
+
+    // then
+    verify(recentRepositoriesRepository).update(RecentRepository(repositoryPath))
+    verifyNoMoreInteractions(recentRepositoriesRepository)
+
+    testCase
+      .assertNoOutgoingEvents()
   }
 }
