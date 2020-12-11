@@ -9,6 +9,7 @@ import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import java.util.Optional
 
 class OpenRepoEffectHandlerTest {
   private val gitDetector = mock<GitDetector>()
@@ -25,7 +26,7 @@ class OpenRepoEffectHandlerTest {
     // given
     val globalUsername = "Ajay"
     whenever(gitDetector.globalUsername())
-      .thenReturn(globalUsername)
+      .thenReturn(Optional.of(globalUsername))
 
     // when
     testCase.dispatch(FindGitUsername)
@@ -39,7 +40,7 @@ class OpenRepoEffectHandlerTest {
   fun `it should return username not found if a git global username is unavailable`() {
     // given
     whenever(gitDetector.globalUsername())
-      .thenReturn(null)
+      .thenReturn(Optional.empty())
 
     // when
     testCase.dispatch(FindGitUsername)

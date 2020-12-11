@@ -33,9 +33,9 @@ class OpenRepoEffectHandler {
           .subscribeOn(schedulersProvider.io())
           .flatMap {
             val gitUserName = try {
-              val globalUsername = gitDetector.globalUsername()
-              if (globalUsername != null) {
-                GitUsernameFound(globalUsername)
+              val globalUsernameOptional = gitDetector.globalUsername()
+              if (globalUsernameOptional.isPresent) {
+                GitUsernameFound(globalUsernameOptional.get())
               } else {
                 GitUsernameNotFound
               }
