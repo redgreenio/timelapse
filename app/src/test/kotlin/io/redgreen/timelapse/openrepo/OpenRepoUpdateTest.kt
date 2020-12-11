@@ -6,6 +6,7 @@ import com.spotify.mobius.test.NextMatchers.hasNoEffects
 import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
 import io.redgreen.timelapse.mobius.spec
+import io.redgreen.timelapse.openrepo.data.RecentRepository
 import org.junit.jupiter.api.Test
 
 class OpenRepoUpdateTest {

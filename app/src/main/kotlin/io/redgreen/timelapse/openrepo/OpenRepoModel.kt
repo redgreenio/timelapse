@@ -4,6 +4,8 @@ import io.redgreen.timelapse.mobius.AsyncOp
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.content
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.inFlight
+import io.redgreen.timelapse.openrepo.data.GitUsername
+import io.redgreen.timelapse.openrepo.data.RecentRepository
 
 data class OpenRepoModel(
   val gitUsername: GitUsername,

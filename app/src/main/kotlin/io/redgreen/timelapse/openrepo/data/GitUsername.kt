@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.openrepo
+package io.redgreen.timelapse.openrepo.data
 
 sealed class GitUsername {
   object NotFound : GitUsername() {
