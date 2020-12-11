@@ -6,7 +6,7 @@ object FindGitUsername : OpenRepoEffect()
 
 object DisplayFileChooser : OpenRepoEffect()
 
-data class AttemptOpenRepository(
+data class DetectGitRepository(
   val path: String
 ) : OpenRepoEffect()
 

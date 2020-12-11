@@ -1,7 +1,6 @@
 package io.redgreen.timelapse.openrepo
 
 import com.spotify.mobius.rx3.RxMobius
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
@@ -21,6 +20,7 @@ class OpenRepoEffectHandler {
         .subtypeEffectHandler<OpenRepoEffect, OpenRepoEvent>()
         .addTransformer(FindGitUsername::class.java, findGitUsernameTransformer(schedulersProvider, gitDetector))
         .addAction(DisplayFileChooser::class.java, { view.displayFileChooser() }, schedulersProvider.ui())
+        .addTransformer(DetectGitRepository::class.java, detectGitRepositoryTransformer(gitDetector))
         .build()
     }
 
@@ -31,8 +31,8 @@ class OpenRepoEffectHandler {
       return ObservableTransformer { findGitUserNameEvents ->
         findGitUserNameEvents
           .subscribeOn(schedulersProvider.io())
-          .flatMap {
-            val gitUserName = try {
+          .map {
+            try {
               val globalUsernameOptional = gitDetector.globalUsername()
               if (globalUsernameOptional.isPresent) {
                 GitUsernameFound(globalUsernameOptional.get())
@@ -43,8 +43,21 @@ class OpenRepoEffectHandler {
               logger.error("${FindGitUsername::class.java.name} failed.", e)
               GitUsernameNotFound
             }
-            Observable.just(gitUserName)
           }
+      }
+    }
+
+    private fun detectGitRepositoryTransformer(
+      gitDetector: GitDetector
+    ): ObservableTransformer<DetectGitRepository, OpenRepoEvent> {
+      return ObservableTransformer { events ->
+        events.map {
+          if (gitDetector.isGitRepository(it.path)) {
+            GitRepositoryDetected(it.path)
+          } else {
+            GitRepositoryNotDetected(it.path)
+          }
+        }
       }
     }
   }

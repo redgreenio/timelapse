@@ -22,13 +22,13 @@ data class GitRepositoryChosen(
   val maybeRepositoryPath: String
 ) : OpenRepoEvent()
 
-@EffectEvent(AttemptOpenRepository::class)
-data class GitRepositoryFound(
+@EffectEvent(DetectGitRepository::class)
+data class GitRepositoryDetected(
   val path: String
 ) : OpenRepoEvent()
 
-@EffectEvent(AttemptOpenRepository::class)
-data class GitRepositoryNotFound(
+@EffectEvent(DetectGitRepository::class)
+data class GitRepositoryNotDetected(
   val path: String
 ) : OpenRepoEvent()
 

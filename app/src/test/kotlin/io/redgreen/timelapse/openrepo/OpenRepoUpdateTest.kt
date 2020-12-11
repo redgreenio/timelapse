@@ -69,7 +69,7 @@ class OpenRepoUpdateTest {
       .then(
         assertThatNext(
           hasNoModel(),
-          hasEffects(AttemptOpenRepository(repositoryPath))
+          hasEffects(DetectGitRepository(repositoryPath))
         )
       )
   }
@@ -80,7 +80,7 @@ class OpenRepoUpdateTest {
 
     withUpdateSpec
       .given(gitUsernameFound)
-      .whenEvent(GitRepositoryFound(repositoryPath))
+      .whenEvent(GitRepositoryDetected(repositoryPath))
       .then(
         assertThatNext(
           hasNoModel(),
@@ -95,7 +95,7 @@ class OpenRepoUpdateTest {
 
     withUpdateSpec
       .given(gitUsernameFound)
-      .whenEvent(GitRepositoryNotFound(path))
+      .whenEvent(GitRepositoryNotDetected(path))
       .then(
         assertThatNext(
           hasNoModel(),

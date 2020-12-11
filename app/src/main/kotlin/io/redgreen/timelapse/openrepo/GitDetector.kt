@@ -6,4 +6,8 @@ class GitDetector {
   fun globalUsername(): Optional<String> {
     TODO("not implemented")
   }
+
+  fun isGitRepository(path: String): Boolean {
+    TODO("Not yet implemented")
+  }
 }

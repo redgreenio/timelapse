@@ -76,4 +76,34 @@ class OpenRepoEffectHandlerTest {
     testCase
       .assertNoOutgoingEvents()
   }
+
+  @Test
+  fun `it should return repository detected if the path points to a git repository`() {
+    // given
+    val path = "~/IdeaProjects/timelapse"
+    whenever(gitDetector.isGitRepository(path))
+      .thenReturn(true)
+
+    // when
+    testCase.dispatch(DetectGitRepository(path))
+
+    // then
+    testCase
+      .assertOutgoingEvents(GitRepositoryDetected(path))
+  }
+
+  @Test
+  fun `it should return repository not detected if the path does not point to a git repository`() {
+    // given
+    val path = "/non/existent/path"
+    whenever(gitDetector.isGitRepository(path))
+      .thenReturn(false)
+
+    // when
+    testCase.dispatch(DetectGitRepository(path))
+
+    // then
+    testCase
+      .assertOutgoingEvents(GitRepositoryNotDetected(path))
+  }
 }
