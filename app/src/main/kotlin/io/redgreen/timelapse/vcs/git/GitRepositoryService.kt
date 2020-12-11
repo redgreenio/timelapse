@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.vcs.git
 
 import io.reactivex.rxjava3.core.Single
-import io.redgreen.timelapse.contentviewer.BlobDiffInformation
+import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.diff.DiffLine
 import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.domain.BlobDiff

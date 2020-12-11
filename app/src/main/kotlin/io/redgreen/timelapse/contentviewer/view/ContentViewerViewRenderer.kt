@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.contentviewer.view
 
-import io.redgreen.timelapse.contentviewer.BlobDiffInformation
 import io.redgreen.timelapse.contentviewer.ContentViewerModel
+import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.mobius.AsyncOp
 import io.redgreen.timelapse.mobius.view.ViewRenderer

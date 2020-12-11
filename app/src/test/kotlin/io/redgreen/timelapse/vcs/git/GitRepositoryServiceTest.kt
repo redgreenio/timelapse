@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.vcs.git
 
-import io.redgreen.timelapse.contentviewer.BlobDiffInformation
+import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.vcs.ChangedFile.Addition

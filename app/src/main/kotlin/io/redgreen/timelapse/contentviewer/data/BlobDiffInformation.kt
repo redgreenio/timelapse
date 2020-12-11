@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.contentviewer
+package io.redgreen.timelapse.contentviewer.data
 
 data class BlobDiffInformation(
   val selectedFilePath: String,

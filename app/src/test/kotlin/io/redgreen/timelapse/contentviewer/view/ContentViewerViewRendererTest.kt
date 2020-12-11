@@ -3,8 +3,8 @@ package io.redgreen.timelapse.contentviewer.view
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import io.redgreen.timelapse.contentviewer.BlobDiffInformation
 import io.redgreen.timelapse.contentviewer.ContentViewerModel
+import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import org.junit.jupiter.api.Test
 
