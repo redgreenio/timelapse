@@ -2,12 +2,15 @@ package io.redgreen.timelapse.openrepo.view
 
 import com.squareup.moshi.Moshi
 import io.redgreen.javafx.Fonts
+import io.redgreen.timelapse.TimelapseScene
+import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.mobius.MobiusDelegate
 import io.redgreen.timelapse.openrepo.ChooseGitRepository
 import io.redgreen.timelapse.openrepo.GitDetector
 import io.redgreen.timelapse.openrepo.GitRepositoryChosen
 import io.redgreen.timelapse.openrepo.LargeButton
+import io.redgreen.timelapse.openrepo.OpenRecentRepository
 import io.redgreen.timelapse.openrepo.OpenRepoEffectHandler
 import io.redgreen.timelapse.openrepo.OpenRepoInit
 import io.redgreen.timelapse.openrepo.OpenRepoModel
@@ -39,6 +42,7 @@ import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.stage.DirectoryChooser
+import javafx.stage.Stage
 
 private const val SCENE_WIDTH = 720.0
 private const val SCENE_HEIGHT = 552.0
@@ -171,8 +175,8 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
       return
     }
     recentProjectsLayers.show(RECENT_PROJECTS_LIST)
-    val recentRepositoriesButtons = recentRepositories.map {
-      LargeButton(it.title, it.subtitle(System.getProperty("user.home")))
+    val recentRepositoriesButtons = recentRepositories.mapIndexed { index, recentRepository ->
+      buildRecentRepositoryButton(recentRepository, index)
     }
     recentProjectsList.children.addAll(recentRepositoriesButtons)
   }
@@ -187,7 +191,13 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   }
 
   override fun openGitRepository(path: String) {
-    // TODO Open the repository!
+    debug { "Opening repository: $path" }
+
+    with(window as Stage) {
+      scene = TimelapseScene(path)
+      isResizable = true
+      isMaximized = true
+    }
   }
 
   override fun showNotAGitRepositoryError(path: String) {
@@ -196,5 +206,17 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
       headerText = "Not a Git repository"
       contentText = "'$path' is not a Git repository."
     }.showAndWait()
+  }
+
+  private fun buildRecentRepositoryButton(
+    recentRepository: RecentRepository,
+    index: Int
+  ): LargeButton {
+    val title = recentRepository.title
+    val subtitle = recentRepository.subtitle(System.getProperty("user.home"))
+
+    return LargeButton(title, subtitle).apply {
+      setOnMouseClicked { mobiusDelegate.notify(OpenRecentRepository(index)) }
+    }
   }
 }

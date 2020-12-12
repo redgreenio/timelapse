@@ -24,8 +24,8 @@ import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.Commit
-import io.sentry.Sentry
-import javafx.application.Application
+import java.io.File
+import java.time.LocalDate
 import javafx.application.Platform
 import javafx.geometry.Insets
 import javafx.scene.Scene
@@ -45,23 +45,19 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.RowConstraints
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
-import javafx.stage.Stage
-import org.eclipse.jgit.lib.Repository
-import java.io.File
-import java.time.LocalDate
 import kotlin.math.round
-import kotlin.system.exitProcess
-
-private const val ALPHA = "\uD835\uDEFC"
-private const val APP_NAME = "Timelapse (Pre-$ALPHA)"
+import org.eclipse.jgit.lib.Repository
 
 private const val AREA_CHART_HEIGHT = 100.0
 
 private const val NO_PADDING = 0.0
 private const val PADDING = 10.0
 
-class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
-  private lateinit var project: String
+class TimelapseScene(private val project: String) :
+  Scene(SplitPane(), Screen.getPrimary().bounds.width, Screen.getPrimary().bounds.height),
+  ReadingAreaContract,
+  FileSelectionListener {
+
   private val gitRepository by lazy { openGitRepository(File(project)) }
   private lateinit var changes: List<Change>
   private lateinit var filePath: String
@@ -159,30 +155,13 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
     }
   }
 
-  override fun start(primaryStage: Stage) {
-    project = parameters.raw.first()
-    debug { "Project: $project" }
-
-    val rootPane = SplitPane().apply {
+  init {
+    (root as SplitPane).apply {
       items.addAll(fileExplorerPane, centerPane, rightPane)
       setDividerPositions(0.18, 0.82)
     }
 
-    with(primaryStage) {
-      val screenBounds = Screen.getPrimary().bounds
-      scene = Scene(rootPane, screenBounds.width, screenBounds.height)
-      title = APP_NAME
-      isMaximized = true
-      show()
-
-      setupHotKeys(scene)
-
-      setOnCloseRequest {
-        // FIXME: 19-11-2020 The application does not exit due to running thread pool executors? Shut down Mobius loops?
-        Platform.exit()
-        exitProcess(0)
-      }
-    }
+    setupHotKeys(this)
   }
 
   private fun moveFocusToReadingPane() {
@@ -272,16 +251,6 @@ class TimelapseApp : Application(), ReadingAreaContract, FileSelectionListener {
         readingPane.dismissOverlap()
         timelapseSlider.requestFocus()
       }
-    }
-  }
-
-  override fun init() {
-    super.init()
-    // See https://github.com/JabRef/jabref/issues/3295
-    System.setProperty("prism.lcdtext", "false")
-
-    Sentry.init { options ->
-      options.dsn = "https://9ccbeb20047c42e49a9fbe6094cd9896@o483785.ingest.sentry.io/5536123"
     }
   }
 }
