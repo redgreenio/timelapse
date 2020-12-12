@@ -2,7 +2,17 @@
 
 Timelapse is an attempt to help developers understand large source files really fast.
 
-### Project setup
+## Project setup
+
+### macOS
+
+Run the following script from the cloned project directory, and you should be ready to go!
+
+```shell script
+./setup-dev
+```
+
+### Windows & Linux
 
 After cloning the Timelapse project, also clone the **git-testbed** and **simple-android** projects into the project's
 root directory.
@@ -32,7 +42,7 @@ Create an empty directory for de-obfuscating ProGuard traces from production.
 mkdir proguard-lab
 ```
 
-### Helpful commands
+## Helpful commands
 
 ```shell script
 git log --oneline -M --stat --follow <file-path>
@@ -40,7 +50,7 @@ git log --oneline -M --stat --follow <file-path>
 
 Use this command to retrieve the commit history of the specified file.
 
-### Creating a release
+## Creating a release
 
 ```shell script
 gradlew demoJar
@@ -49,7 +59,7 @@ gradlew demoJar
 After creating a build, copy the `mapping-<version>.txt` and `timelapse-<version>-demo.jar` into the designated Google
 Drive directory.
 
-### Running on Java 9 and above
+## Running on Java 9 and above
 
 Add an environment variable pointing to the JavaFx SDK.
 
@@ -63,6 +73,6 @@ Specify the required JavaFx modules to launch the application.
 java --module-path $JAVA_FX --add-modules javafx.controls,javafx.web -jar timelapse-<version>.jar /path/to/repo
 ```
 
-### Quirks
+## Quirks
 
 The binary does not ship with JavaFx and will run only on JVMs that include JavaFx library jars.
