@@ -22,7 +22,13 @@ class PreferencesRecentRepositoriesStorage(
   private val preferences = Preferences.userRoot()
 
   override fun update(recentRepository: RecentRepository) {
-    val availableRecentRepositories = getRecentRepositories().toTypedArray()
+    val existingRecentRepositories = getRecentRepositories().toMutableList()
+    val recentRepositoryIndex = existingRecentRepositories.indexOf(recentRepository)
+    if (recentRepositoryIndex != -1) {
+      existingRecentRepositories.removeAt(recentRepositoryIndex)
+    }
+
+    val availableRecentRepositories = existingRecentRepositories.toTypedArray()
     val updatedRecentRepositories = listOf(recentRepository, *availableRecentRepositories)
     val updatedRecentRepositoriesJson = recentRepositoryListAdapter.toJson(updatedRecentRepositories)
     preferences.put(KEY_RECENT_REPOSITORIES, updatedRecentRepositoriesJson)

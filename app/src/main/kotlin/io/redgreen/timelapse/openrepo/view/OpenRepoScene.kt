@@ -165,6 +165,11 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   override fun displayRecentRepositories(
     recentRepositories: List<RecentRepository>
   ) {
+    // FIXME: 12/12/20 This requires a proper fix. The list is duplicated whenever render is called.
+    // Call this function only if previous list is different from the current list.
+    if (recentProjectsList.children.size != 0) {
+      return
+    }
     recentProjectsLayers.show(RECENT_PROJECTS_LIST)
     val recentRepositoriesButtons = recentRepositories.map { LargeButton(it.path, it.path) }
     recentProjectsList.children.addAll(recentRepositoriesButtons)
