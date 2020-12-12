@@ -93,15 +93,23 @@ class OpenRepoEffectHandler {
       return ObservableTransformer { getRecentRepositoriesEvents ->
         getRecentRepositoriesEvents
           .subscribeOn(scheduler)
-          .map {
-            try {
-              recentRepositoriesStorage.getRecentRepositories()
-            } catch (e: RuntimeException) {
-              logger.error("${GetRecentRepositories::class.java.name} failed.", e)
-              emptyList()
-            }
-          }
-          .map { if (it.isNotEmpty()) HasRecentRepositories(it) else NoRecentRepositories }
+          .map { toRecentRepositoriesResultEvent(recentRepositoriesStorage) }
+      }
+    }
+
+    private fun toRecentRepositoriesResultEvent(
+      recentRepositoriesStorage: RecentRepositoriesStorage
+    ): OpenRepoEvent {
+      return try {
+        val recentRepositories = recentRepositoriesStorage.getRecentRepositories()
+        if (recentRepositories.isNotEmpty()) {
+          HasRecentRepositories(recentRepositories)
+        } else {
+          NoRecentRepositories
+        }
+      } catch (e: RuntimeException) {
+        logger.error("${GetRecentRepositories::class.java.name} failed.", e)
+        UnableToGetRecentRepositories
       }
     }
   }

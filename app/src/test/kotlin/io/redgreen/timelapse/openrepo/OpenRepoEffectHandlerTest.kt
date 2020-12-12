@@ -193,7 +193,7 @@ class OpenRepoEffectHandlerTest {
   }
 
   @Test
-  fun `it should return no recent repositories if there is an exception`() {
+  fun `it should return unable to get recent repositories if there is an exception`() {
     // given
     whenever(recentRepositoriesStorage.getRecentRepositories())
       .thenThrow(RuntimeException("Error retrieving recent repositories :("))
@@ -203,6 +203,6 @@ class OpenRepoEffectHandlerTest {
 
     // then
     testCase
-      .assertOutgoingEvents(NoRecentRepositories)
+      .assertOutgoingEvents(UnableToGetRecentRepositories)
   }
 }
