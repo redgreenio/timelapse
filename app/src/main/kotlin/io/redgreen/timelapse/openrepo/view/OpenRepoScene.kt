@@ -36,7 +36,6 @@ private const val OPEN_REPOSITORY_TITLE = "Open repository..."
 private const val OPEN_REPOSITORY_SUBTITLE = "Choose an existing repository from your local hard drive"
 
 private const val MESSAGE_GET_STARTED = "Let's get started!"
-private const val MESSAGE_NO_RECENT_REPOSITORIES = "No recent repositories"
 
 private const val TITLE_RECENT_REPOSITORIES = "Recent repositories"
 
@@ -67,7 +66,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     padding = Insets(16.0, NO_PADDING, NO_PADDING, NO_PADDING)
   }
 
-  private val recentRepositoriesStatusLabel = Label(MESSAGE_NO_RECENT_REPOSITORIES).apply {
+  private val recentRepositoriesStatusLabel = Label().apply {
     font = Fonts.robotoRegular(12)
     textFill = grayTextFill
   }
