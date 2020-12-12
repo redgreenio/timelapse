@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.1.9] - 2020-12-12
+
 ### Added
 
 - Welcome screen with recent repositories feature.
