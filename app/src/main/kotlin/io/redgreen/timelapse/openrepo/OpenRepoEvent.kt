@@ -45,5 +45,5 @@ object UnableToGetRecentRepositories : OpenRepoEvent()
 
 @UiEvent
 data class OpenRecentRepository(
-  val path: String
+  val index: Int
 ) : OpenRepoEvent()
