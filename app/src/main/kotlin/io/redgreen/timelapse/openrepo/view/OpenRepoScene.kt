@@ -1,24 +1,36 @@
 package io.redgreen.timelapse.openrepo.view
 
+import com.squareup.moshi.Moshi
 import io.redgreen.javafx.Fonts
-import io.redgreen.timelapse.TimelapseApp
+import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.mobius.MobiusDelegate
+import io.redgreen.timelapse.openrepo.ChooseGitRepository
+import io.redgreen.timelapse.openrepo.GitDetector
+import io.redgreen.timelapse.openrepo.GitRepositoryChosen
 import io.redgreen.timelapse.openrepo.LargeButton
+import io.redgreen.timelapse.openrepo.OpenRepoEffectHandler
+import io.redgreen.timelapse.openrepo.OpenRepoInit
+import io.redgreen.timelapse.openrepo.OpenRepoModel
+import io.redgreen.timelapse.openrepo.OpenRepoUpdate
 import io.redgreen.timelapse.openrepo.TitledSeparator
 import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.storage.PreferencesRecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene.RecentProjectsLayer.NO_RECENT_PROJECTS
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene.RecentProjectsLayer.RECENT_PROJECTS_LIST
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.LOADING
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_REPOSITORIES
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Stranger
+import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import io.redgreen.timelapse.visuals.StackPaneLayers
-import javafx.application.Application
+import java.io.File
 import javafx.geometry.Insets
 import javafx.geometry.Pos.BOTTOM_RIGHT
 import javafx.geometry.Pos.TOP_CENTER
 import javafx.scene.Group
 import javafx.scene.Scene
 import javafx.scene.control.Alert
+import javafx.scene.control.Alert.AlertType.ERROR
 import javafx.scene.control.Label
 import javafx.scene.layout.Background
 import javafx.scene.layout.BackgroundFill
@@ -26,7 +38,7 @@ import javafx.scene.layout.CornerRadii
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
-import javafx.stage.FileChooser
+import javafx.stage.DirectoryChooser
 
 private const val SCENE_WIDTH = 720.0
 private const val SCENE_HEIGHT = 552.0
@@ -53,7 +65,9 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     padding = Insets(12.0, NO_PADDING, 28.0, NO_PADDING)
   }
 
-  private val openRepositoryButton = LargeButton(OPEN_REPOSITORY_TITLE, OPEN_REPOSITORY_SUBTITLE)
+  private val openRepositoryButton = LargeButton(OPEN_REPOSITORY_TITLE, OPEN_REPOSITORY_SUBTITLE).apply {
+    setOnMouseClicked { mobiusDelegate.notify(ChooseGitRepository) }
+  }
 
   private val appVersionLabel = Label(VERSION_NAME).apply {
     font = Fonts.robotoRegular(11)
@@ -95,6 +109,19 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     alignment = TOP_CENTER
   }
 
+  private val mobiusDelegate by fastLazy {
+    val gitDetector = GitDetector()
+    val recentRepositoriesStorage = PreferencesRecentRepositoriesStorage(Moshi.Builder().build())
+
+    MobiusDelegate(
+      OpenRepoModel.start(),
+      OpenRepoInit,
+      OpenRepoUpdate,
+      OpenRepoEffectHandler.from(gitDetector, recentRepositoriesStorage, this, JavaFxSchedulersProvider),
+      OpenRepoViewRenderer(this)
+    )
+  }
+
   init {
     with(root as StackPane) {
       background = Background(BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY))
@@ -109,6 +136,8 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
 
       show(NO_RECENT_PROJECTS)
     }
+
+    mobiusDelegate.start()
   }
 
   enum class RecentProjectsLayer {
@@ -142,17 +171,23 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   }
 
   override fun displayFileChooser() {
-    FileChooser().showOpenDialog(window)
+    val selectedDirectory = DirectoryChooser()
+      .apply { initialDirectory = File(System.getProperty("user.home")) }
+      .showDialog(window)
+    selectedDirectory?.let {
+      mobiusDelegate.notify(GitRepositoryChosen(it.absolutePath))
+    }
   }
 
   override fun openGitRepository(path: String) {
-    Application.launch(TimelapseApp::class.java, path)
+    // TODO Open the repository!
   }
 
   override fun showNotAGitRepositoryError(path: String) {
-    Alert(Alert.AlertType.ERROR).apply {
-      title = "Title"
-      contentText = "Content"
+    Alert(ERROR).apply {
+      title = OPEN_REPOSITORY_TITLE
+      headerText = "Not a Git repository"
+      contentText = "'$path' is not a Git repository."
     }.showAndWait()
   }
 }
