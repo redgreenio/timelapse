@@ -1,5 +1,6 @@
 import Build_gradle.DependencyVersions.junit
 import Build_gradle.DependencyVersions.mobius
+import Build_gradle.DependencyVersions.moshi
 import proguard.gradle.ProGuardTask
 
 plugins {
@@ -7,6 +8,7 @@ plugins {
   kotlin("jvm")
   id("com.github.johnrengelman.shadow") version "6.1.0"
   id("org.openjfx.javafxplugin") version "0.0.9"
+  kotlin("kapt")
 }
 
 group = "io.redgreen"
@@ -20,6 +22,7 @@ javafx {
 object DependencyVersions {
   internal const val mobius = "1.5.3"
   internal const val junit = "5.6.0"
+  internal const val moshi = "1.11.0"
 }
 
 dependencies {
@@ -49,6 +52,9 @@ dependencies {
     because("JavaFx bindings for RxJava 3 is not available.")
   }
   // End Circus
+
+  implementation("com.squareup.moshi:moshi:$moshi")
+  kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi")
 
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
