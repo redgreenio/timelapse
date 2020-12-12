@@ -2,6 +2,21 @@
 
 ## [Unreleased]
 
+### Added
+
+- Welcome screen with recent repositories feature.
+
+### Changed
+
+- Allow both command line project launch and welcome screen launch from the same artifact.
+- Remove commit SHA displayed in the commit information panel.
+
+### Fixed
+
+- JavaFx UI updates from a non-platform thread.
+
+## [0.1.8] - 2020-12-05
+
 ### Changed
 
 - Highlight deletions and insertions in main diff viewer.
