@@ -149,7 +149,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   ) {
     welcomeUserLabel.text = when (message) {
       Stranger -> "Hello, welcome to Timelapse."
-      is Greeter -> "Welcome to Timelapse, ${message.username}."
+      is Greeter -> "Welcome to Timelapse, ${message.displayName}."
     }
   }
 

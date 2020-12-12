@@ -10,6 +10,7 @@ import io.redgreen.timelapse.openrepo.data.GitUsername
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.LOADING
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_REPOSITORIES
+import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Stranger
 
 class OpenRepoViewRenderer(
@@ -20,7 +21,7 @@ class OpenRepoViewRenderer(
       if (model.gitUsername is GitUsername.NotFound) {
         displayWelcomeMessage(Stranger)
       } else if (model.gitUsername is GitUsername.Found) {
-        displayWelcomeMessage(WelcomeMessage.Greeter(model.gitUsername.username))
+        displayWelcomeMessage(Greeter(model.gitUsername.username))
       }
 
       when(model.recentRepositoriesAsyncOp.value) {
