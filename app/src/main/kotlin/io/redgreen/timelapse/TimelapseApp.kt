@@ -10,7 +10,7 @@ import kotlin.system.exitProcess
 private const val ALPHA = "\uD835\uDEFC"
 private const val APP_NAME = "Timelapse (Pre-$ALPHA)"
 
-class JavaFxTimelapseApp : Application() {
+class TimelapseApp : Application() {
   override fun init() {
     super.init()
     // See https://github.com/JabRef/jabref/issues/3295
