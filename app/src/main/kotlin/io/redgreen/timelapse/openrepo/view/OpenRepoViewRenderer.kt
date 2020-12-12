@@ -30,7 +30,6 @@ class OpenRepoViewRenderer(
           if (recentRepositories.size == 0) {
             displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
           } else {
-            hideRecentRepositoriesState()
             displayRecentRepositories(recentRepositories)
           }
         }

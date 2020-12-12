@@ -111,7 +111,6 @@ class OpenRepoViewRendererTest {
 
     // then
     verify(view).displayWelcomeMessage(Stranger)
-    verify(view).hideRecentRepositoriesState()
     verify(view).displayRecentRepositories(recentRepositories)
   }
 }
