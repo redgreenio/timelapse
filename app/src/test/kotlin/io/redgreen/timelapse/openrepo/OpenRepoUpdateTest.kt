@@ -140,7 +140,7 @@ class OpenRepoUpdateTest {
       .whenEvent(UnableToGetRecentRepositories)
       .then(
         assertThatNext(
-          hasModel(gitUsernameFound.unableToGetRecentRepositories()),
+          hasModel(gitUsernameFound.failedToGetRecentRepositories()),
           hasNoEffects()
         )
       )

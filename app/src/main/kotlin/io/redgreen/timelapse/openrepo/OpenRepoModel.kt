@@ -3,13 +3,13 @@ package io.redgreen.timelapse.openrepo
 import io.redgreen.timelapse.mobius.AsyncOp
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.content
 import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.inFlight
+import io.redgreen.timelapse.mobius.AsyncOp.Companion.idle
 import io.redgreen.timelapse.openrepo.data.GitUsername
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 
 data class OpenRepoModel(
   val gitUsername: GitUsername,
-  val recentRepositoriesAsyncOp: AsyncOp<List<RecentRepository>, GetRecentRepositories.Failure> = inFlight()
+  val recentRepositoriesAsyncOp: AsyncOp<List<RecentRepository>, GetRecentRepositories.Failure> = idle()
 ) {
   companion object {
     fun start(): OpenRepoModel {
@@ -37,7 +37,7 @@ data class OpenRepoModel(
     return copy(recentRepositoriesAsyncOp = content(recentRepositories))
   }
 
-  fun unableToGetRecentRepositories(): OpenRepoModel {
+  fun failedToGetRecentRepositories(): OpenRepoModel {
     return copy(recentRepositoriesAsyncOp = failure(GetRecentRepositories.Failure.Unknown))
   }
 }

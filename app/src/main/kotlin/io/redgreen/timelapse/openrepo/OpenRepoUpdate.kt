@@ -21,7 +21,7 @@ object OpenRepoUpdate : Update<OpenRepoModel, OpenRepoEvent, OpenRepoEffect> {
       is GitRepositoryNotDetected -> dispatch(setOf(ShowNotAGitRepositoryError(event.path)))
       is NoRecentRepositories -> next(model.noRecentRepositories())
       is HasRecentRepositories -> next(model.hasRecentRepositories(event.recentRepositories))
-      is UnableToGetRecentRepositories -> next(model.unableToGetRecentRepositories())
+      is UnableToGetRecentRepositories -> next(model.failedToGetRecentRepositories())
       is OpenRecentRepository -> {
         val path = (model.recentRepositoriesAsyncOp.value as Content<List<RecentRepository>>).content[event.index].path
         dispatch(setOf(UpdateRecentRepositories(path), OpenGitRepository(path)))
