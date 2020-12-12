@@ -2,6 +2,7 @@ package io.redgreen.timelapse.openrepo.view
 
 import com.squareup.moshi.Moshi
 import io.redgreen.javafx.Fonts
+import io.redgreen.timelapse.DISPLAY_VERSION_NAME
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.main.TimelapseScene
@@ -55,8 +56,6 @@ private const val MESSAGE_GET_STARTED = "Let's get started!"
 
 private const val TITLE_RECENT_REPOSITORIES = "Recent repositories"
 
-private const val VERSION_NAME = "v 0.1.8 (pre-alpha)"
-
 private val grayTextFill = Color.web("#8F8F8F")
 
 class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoView {
@@ -73,7 +72,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     setOnMouseClicked { mobiusDelegate.notify(ChooseGitRepository) }
   }
 
-  private val appVersionLabel = Label(VERSION_NAME).apply {
+  private val appVersionLabel = Label(DISPLAY_VERSION_NAME).apply {
     font = Fonts.robotoRegular(11)
     padding = Insets(0.0, 24.0, 24.0, 0.0)
     textFill = grayTextFill
