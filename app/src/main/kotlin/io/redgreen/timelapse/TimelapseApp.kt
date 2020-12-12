@@ -1,5 +1,6 @@
 package io.redgreen.timelapse
 
+import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
 import io.sentry.Sentry
 import javafx.application.Application
@@ -22,9 +23,17 @@ class TimelapseApp : Application() {
   }
 
   override fun start(primaryStage: Stage) {
+    val repositoryPath = if (parameters.raw.size != 0) parameters.raw.first() else null
+    val shouldLaunchTimelapseScene = repositoryPath != null
+    val sceneToShow = if (shouldLaunchTimelapseScene) {
+      TimelapseScene(repositoryPath!!)
+    } else {
+      OpenRepoScene()
+    }
+
     with(primaryStage) {
-      scene = OpenRepoScene()
-      isResizable = false
+      scene = sceneToShow
+      isResizable = shouldLaunchTimelapseScene
       title = APP_NAME
       centerOnScreen()
       show()
