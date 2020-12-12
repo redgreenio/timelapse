@@ -2,9 +2,9 @@ package io.redgreen.timelapse.openrepo.view
 
 import com.squareup.moshi.Moshi
 import io.redgreen.javafx.Fonts
-import io.redgreen.timelapse.TimelapseScene
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.mobius.MobiusDelegate
 import io.redgreen.timelapse.openrepo.ChooseGitRepository
 import io.redgreen.timelapse.openrepo.GitDetector
