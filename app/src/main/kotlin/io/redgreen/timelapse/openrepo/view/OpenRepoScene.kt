@@ -171,7 +171,9 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
       return
     }
     recentProjectsLayers.show(RECENT_PROJECTS_LIST)
-    val recentRepositoriesButtons = recentRepositories.map { LargeButton(it.path, it.path) }
+    val recentRepositoriesButtons = recentRepositories.map {
+      LargeButton(it.title, it.subtitle(System.getProperty("user.home")))
+    }
     recentProjectsList.children.addAll(recentRepositoriesButtons)
   }
 
