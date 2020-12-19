@@ -29,10 +29,7 @@ class FormattedDiff internal constructor(val lines: List<DiffLine>) {
       val rawDiffLinesWithoutHeader = rawDiffLines
         .drop(headerLineCount)
 
-      @Suppress("ReplaceSizeZeroCheckWithIsEmpty")
-      // 'isEmpty(): Boolean' is deprecated. This member is not fully supported by Kotlin compiler, so it may be
-      // absent or have different signature in next major version (JDK 15)
-      val contentsEmpty = rawDiffLinesWithoutHeader.size == 1 && rawDiffLinesWithoutHeader.first().length == 0
+      val contentsEmpty = rawDiffLinesWithoutHeader.size == 1 && rawDiffLinesWithoutHeader.first().isEmpty()
 
       return if (contentsEmpty) {
         FormattedDiff(listOf(ContentsEmpty))

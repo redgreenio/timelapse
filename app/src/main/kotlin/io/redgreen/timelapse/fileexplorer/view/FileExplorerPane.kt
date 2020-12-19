@@ -54,10 +54,7 @@ class FileExplorerPane(
         node = node?.parent
       }
 
-      @Suppress("ReplaceSizeZeroCheckWithIsEmpty")
-      // 'isEmpty(): Boolean' is deprecated. This member is not fully supported by Kotlin compiler, so it may be
-      // absent or have different signature in next major version (JDK 15)
-      val rootSelected = pathBuilder.length == 0
+      val rootSelected = pathBuilder.isEmpty()
       if (rootSelected) {
         return@addListener
       }

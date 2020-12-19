@@ -28,7 +28,7 @@ class OpenRepoViewRenderer(
         Idle, InFlight -> displayRecentRepositoriesStatus(LOADING)
         is Content -> {
           val recentRepositories = (model.recentRepositoriesAsyncOp.value as Content<List<RecentRepository>>).content
-          if (recentRepositories.size == 0) {
+          if (recentRepositories.isEmpty()) {
             displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
           } else {
             displayRecentRepositories(recentRepositories)
