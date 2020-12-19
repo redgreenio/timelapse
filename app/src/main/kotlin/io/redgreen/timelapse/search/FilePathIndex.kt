@@ -24,8 +24,9 @@ class FilePathIndex(
   ): List<Occurrence> {
     return when {
       term.isBlank() -> listOf(None)
-      term == filePath -> listOf(Segment(0, filePath.length))
-      filePath.contains(term) -> listOf(Segment(filePath.indexOf(term), term.length))
+      filePath.toLowerCase().contains(term.toLowerCase()) -> {
+        listOf(Segment(filePath.toLowerCase().indexOf(term.toLowerCase()), term.length))
+      }
       else -> emptyList()
     }
   }

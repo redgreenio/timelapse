@@ -102,4 +102,19 @@ class FilePathIndexTest {
       .containsExactly(*filePathsWithSegments.toTypedArray())
       .inOrder()
   }
+
+  @ParameterizedTest
+  @ValueSource(strings = ["patch", "PATCH"])
+  fun `it should ignore case (all small) in search term during searching`(term: String) {
+    // when
+    val matches = filePathIndex.search(term)
+
+    // then
+    assertThat(matches)
+      .containsExactly(
+        Match("io/redgreen/timelapse/diff/Patch.kt", listOf(Segment(27, 5))),
+        Match("io/redgreen/timelapse/diff/PatchViewer.kt", listOf(Segment(27, 5)))
+      )
+      .inOrder()
+  }
 }
