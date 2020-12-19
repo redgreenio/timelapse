@@ -123,4 +123,4 @@ class RandomLinesArgumentsProvider : ArgumentsProvider {
 }
 
 private fun <T> List<T>.toArgumentsStream(): Stream<out Arguments> =
-  this.map { Arguments.of(it) }.stream()
+  this.map { Arguments.of(it) }.stream() // TODO: 19/12/20 Extract into a separate test fixtures module
