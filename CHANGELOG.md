@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased]
+
+## [0.1.5] - 2020-11-21
 ## Added
 - Enhanced diff viewer.
 - Show line number in diff viewer.
