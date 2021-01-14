@@ -2,6 +2,7 @@ package io.redgreen.timelapse.git
 
 import arrow.core.Tuple4
 import arrow.core.Tuple5
+import arrow.core.Tuple6
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.git.CommitInfoUseCase.Property
@@ -151,6 +152,34 @@ class CommitInfoUseCaseTest {
           LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
           Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
           LocalDateTime.of(2020, OCTOBER, 16, 7, 14)
+        )
+      )
+  }
+
+  @Test
+  fun `it should query 6 properties`() {
+    // when
+    val tuple6 = useCase.invoke(
+      commitId,
+      ShortMessage,
+      Author,
+      AuthoredLocalDateTime,
+      Committer,
+      CommittedLocalDateTime,
+      ParentCount,
+      ::Tuple6
+    )
+
+    // then
+    assertThat(tuple6)
+      .isEqualTo(
+        Tuple6(
+          "exhibit b: add a new file",
+          Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
+          LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
+          Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
+          LocalDateTime.of(2020, OCTOBER, 16, 7, 14),
+          1
         )
       )
   }

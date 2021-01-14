@@ -138,6 +138,20 @@ class CommitInfoUseCase(
     return zip(a.get(revCommit), b.get(revCommit), c.get(revCommit), d.get(revCommit), e.get(revCommit))
   }
 
+  fun <A, B, C, D, E, F, T> invoke(
+    commitId: String,
+    a: Property<A>,
+    b: Property<B>,
+    c: Property<C>,
+    d: Property<D>,
+    e: Property<E>,
+    f: Property<F>,
+    zip: (A, B, C, D, E, F) -> T
+  ): T {
+    val revCommit = revCommitFor(commitId)
+    return zip(a.get(revCommit), b.get(revCommit), c.get(revCommit), d.get(revCommit), e.get(revCommit), f.get(revCommit))
+  }
+
   private fun revCommitFor(commitId: String): RevCommit =
     repository.parseCommit(repository.resolve(commitId))
 }
