@@ -9,9 +9,9 @@ import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
+import java.util.Optional
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import java.util.Optional
 
 class OpenRepoEffectHandlerTest {
   private val gitDetector = mock<GitDetector>()

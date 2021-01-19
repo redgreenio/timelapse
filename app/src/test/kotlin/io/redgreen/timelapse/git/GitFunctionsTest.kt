@@ -5,20 +5,30 @@ import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
+import io.redgreen.timelapse.fixtures.GitTestbed
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitC
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitD
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitE
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitF
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitG
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitH
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitI
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.mergeEnglishIntoSpanish
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class GitFunctionsTest {
-  private val repository = openGitRepository(File("../git-testbed"))
+  private val repository = openGitRepository(GitTestbed.path)
 
   @Test
   fun `it should get a list of files from initial commit`() {
     // given
-    val initialCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+    val initialCommitId = exhibitA // exhibit a: add three new files
 
     // when
     val changedFilesInCommit = repository.getChangedFilesInCommit(initialCommitId)
@@ -35,7 +45,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get added file from a non-initial commit`() {
     // given
-    val newFileCommitId = "b0d86a6cf1f8c9a12b25f2f51f5be97b61647075" // exhibit b: add a new file
+    val newFileCommitId = exhibitB // exhibit b: add a new file
 
     // when
     val changedFilesInCommit = repository.getChangedFilesInCommit(newFileCommitId)
@@ -50,7 +60,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get modified file from a non-initial commit`() {
     // given
-    val modifiedFileCommitId = "6c2faf72204d1848bdaef44f4e69c2c4ae6ca786" // exhibit c: modify a file
+    val modifiedFileCommitId = exhibitC // exhibit c: modify a file
 
     // when
     val changedFilesInCommit = repository.getChangedFilesInCommit(modifiedFileCommitId)
@@ -65,7 +75,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get a deleted file from a non-initial commit`() {
     // given
-    val deletedFileCommitId = "68958540148efb4dd0dbfbb181df330deaffbe13" // exhibit d: delete a file
+    val deletedFileCommitId = exhibitD // exhibit d: delete a file
 
     // when
     val changedFilesInCommit = repository.getChangedFilesInCommit(deletedFileCommitId)
@@ -80,7 +90,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get a renamed file from a non-initial commit`() {
     // given
-    val renamedFileCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
+    val renamedFileCommitId = exhibitF // exhibit f: rename a file
 
     // when
     val changedFilesInCommit = repository.getChangedFilesInCommit(renamedFileCommitId)
@@ -95,7 +105,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get renamed, added, modified and deleted files from a non-initial commit`() {
     // given
-    val commitId = "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val commitId = exhibitG // exhibit g: renames, deletion, addition and modification
 
     // when
     val changedFilesInCommit = repository.getChangedFilesInCommit(commitId)
@@ -115,7 +125,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get the diff of a file that was newly added`() {
     // given
-    val newlyAddedFileCommitId = "0e298ab233af0e283edff96772c75a42a21b1479" // exhibit e: copy a file
+    val newlyAddedFileCommitId = exhibitE // exhibit e: copy a file
 
     // when
     val newlyAddedFileDiff = repository.getBlobDiff(newlyAddedFileCommitId, "file-1-copy.txt") as Simple
@@ -139,8 +149,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get the diff of a deleted file`() {
     // given
-    val deletedFileCommitId =
-      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val deletedFileCommitId = exhibitG // exhibit g: renames, deletion, addition and modification
 
     // when
     val deletedFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-4.txt") as Simple
@@ -164,8 +173,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get diff of a modified file`() {
     // given
-    val modifiedFileCommitId =
-      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val modifiedFileCommitId = exhibitG // exhibit g: renames, deletion, addition and modification
 
     // when
     val modifiedFileDiff = repository.getBlobDiff(modifiedFileCommitId, "file-1.txt") as Simple
@@ -189,7 +197,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get diff of a renamed file`() {
     // given
-    val renamedFileCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
+    val renamedFileCommitId = exhibitF // exhibit f: rename a file
 
     // when
     val renamedFileDiff = repository.getBlobDiff(renamedFileCommitId, "file-4.txt") as Simple
@@ -213,7 +221,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get diff for a file added in the first commit`() {
     // given
-    val initialCommit = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+    val initialCommit = exhibitA // exhibit a: add three new files
 
     // when
     val newFileDiff = repository.getBlobDiff(initialCommit, "file-1.txt") as Simple
@@ -235,8 +243,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get the diff of a deleted file with no content`() {
     // given
-    val deletedFileCommitId =
-      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val deletedFileCommitId = exhibitG // exhibit g: renames, deletion, addition and modification
 
     // when
     val deletedEmptyFileDiff = repository.getBlobDiff(deletedFileCommitId, "file-3.txt") as Simple
@@ -258,8 +265,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get the diff of a new file with no content`() {
     // given
-    val newEmptyFileCommitId =
-      "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+    val newEmptyFileCommitId = exhibitG // exhibit g: renames, deletion, addition and modification
 
     // when
     val newEmptyFileDiff = repository.getBlobDiff(newEmptyFileCommitId, "file-b.txt") as Simple
@@ -281,7 +287,7 @@ class GitFunctionsTest {
   @Test
   fun `it should get the diff for a merge commit`() {
     // given
-    val mergeCommitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
+    val mergeCommitId = mergeEnglishIntoSpanish // Merge branch 'english' into spanish
 
     // when
     val mergeCommitDiff = repository.getBlobDiff(mergeCommitId, "file-1.txt") as Merge
@@ -293,7 +299,7 @@ class GitFunctionsTest {
     // then - parent 1
     val parent1Diff = mergeCommitDiff.diffs[0]
     assertThat(parent1Diff.parentCommitId)
-      .isEqualTo("1865160d483f9b22dfa9b49d0305c167746d9f7a") // exhibit i: pre-merge modification (Spanish)
+      .isEqualTo(exhibitI) // exhibit i: pre-merge modification (Spanish)
     assertThat(parent1Diff.rawDiff)
       .isEqualTo(
         """
@@ -311,7 +317,7 @@ class GitFunctionsTest {
     // then - parent 2
     val parent2Diff = mergeCommitDiff.diffs[1]
     assertThat(parent2Diff.parentCommitId)
-      .isEqualTo("6ad80c13f9d08fdfc1bd0ab7299a2178183326a1") // exhibit h: pre-merge modification (English)
+      .isEqualTo(exhibitH) // exhibit h: pre-merge modification (English)
     assertThat(parent2Diff.rawDiff)
       .isEqualTo(
         """

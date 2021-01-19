@@ -2,6 +2,8 @@ package io.redgreen.timelapse.domain
 
 import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
+import java.io.ByteArrayOutputStream
+import java.io.File
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.ObjectId
@@ -12,8 +14,6 @@ import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.treewalk.filter.PathFilter
-import java.io.ByteArrayOutputStream
-import java.io.File
 
 fun openGitRepository(repositoryPath: File): Repository {
   val gitDirectory = "${repositoryPath.canonicalPath}${File.separator}.git"

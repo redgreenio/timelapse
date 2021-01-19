@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.openrepo
 
-import org.eclipse.jgit.lib.RepositoryBuilder
-import org.eclipse.jgit.util.SystemReader
 import java.io.File
 import java.util.Optional
+import org.eclipse.jgit.lib.RepositoryBuilder
+import org.eclipse.jgit.util.SystemReader
 
 class GitDetector {
   companion object {

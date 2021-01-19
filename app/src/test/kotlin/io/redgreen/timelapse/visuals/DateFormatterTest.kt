@@ -1,12 +1,12 @@
 package io.redgreen.timelapse.visuals
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.Month.OCTOBER
 import java.time.ZoneId
 import java.util.Date
+import org.junit.jupiter.api.Test
 
 class DateFormatterTest {
   @Test

@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.openrepo
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.fixtures.FixtureRepository.SimpleAndroid
 import org.junit.jupiter.api.Test
 
 class GitDetectorTest {
@@ -35,7 +36,7 @@ class GitDetectorTest {
   @Test
   fun `it should return true if the path contains a valid git directory`() {
     // given
-    val gitDirectoryPath = "../simple-android"
+    val gitDirectoryPath = SimpleAndroid.path.path
 
     // when
     val isGitRepository = gitDetector.isGitRepository(gitDirectoryPath)

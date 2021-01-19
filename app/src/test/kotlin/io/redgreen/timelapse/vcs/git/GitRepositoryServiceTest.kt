@@ -3,34 +3,51 @@ package io.redgreen.timelapse.vcs.git
 import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
+import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
+import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.NON_EXISTENT_FILE_PATH
+import io.redgreen.timelapse.fixtures.FixtureRepository.SimpleAndroid
+import io.redgreen.timelapse.fixtures.GitTestbed
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitE
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitF
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitG
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.mergeEnglishIntoSpanish
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_1_COPY_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_1_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_2_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_3_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_4_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_A_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_B_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_C_TXT
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.vcs.Contribution
 import io.redgreen.timelapse.vcs.Identity
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import java.io.File
 import java.time.LocalDate
 import java.time.Month.OCTOBER
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 
 class GitRepositoryServiceTest {
   @Nested
   inner class GetChangedFiles {
-    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
     fun `it should get changed files from an initial commit`() {
       // given
-      val initialCommit = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+      val initialCommit = exhibitA // exhibit a: add three new files
 
       // when
       val testObserver = repositoryService.getChangedFiles(initialCommit).test()
 
       // then
-      val changedFiles = listOf("file-1.txt", "file-2.txt", "file-3.txt").map(::Addition)
+      val changedFiles = listOf(FILE_1_TXT, FILE_2_TXT, FILE_3_TXT).map(::Addition)
       testObserver
         .assertValue(changedFiles)
         .assertNoErrors()
@@ -40,20 +57,19 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should get changed files from a non-initial commit`() {
       // given
-      val nonInitialCommit =
-        "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f" // exhibit g: renames, deletion, addition and modification
+      val nonInitialCommit = exhibitG // exhibit g: renames, deletion, addition and modification
 
       // when
       val testObserver = repositoryService.getChangedFiles(nonInitialCommit).test()
 
       // then
       val changedFiles = listOf(
-        Modification("file-1.txt"),
-        Deletion("file-3.txt"),
-        Deletion("file-4.txt"),
-        Addition("file-b.txt"),
-        Addition("file-c.txt"),
-        Rename("file-a.txt", "file-2.txt")
+        Modification(FILE_1_TXT),
+        Deletion(FILE_3_TXT),
+        Deletion(FILE_4_TXT),
+        Addition(FILE_B_TXT),
+        Addition(FILE_C_TXT),
+        Rename(FILE_A_TXT, FILE_2_TXT)
       )
       testObserver
         .assertValue(changedFiles)
@@ -64,7 +80,7 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return an error for an invalid commit`() {
       // given
-      val invalidCommitId = "invalid-commit-id"
+      val invalidCommitId = INVALID_COMMIT_ID
 
       // when
       val testObserver = repositoryService.getChangedFiles(invalidCommitId).test()
@@ -80,14 +96,14 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetContributions {
-    private val simpleAndroidRepository = openGitRepository(File("../simple-android"))
+    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path)
     private val repositoryService = GitRepositoryService(simpleAndroidRepository)
     private val commitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd"
 
     @Test
     fun `it should return a single contribution for a file with just one contributor`() {
       // given
-      val filePath = "newbranch"
+      val filePath = "newbranch" // Name of a shell script file
 
       // when
       val testObserver = repositoryService.getContributions(commitId, filePath).test()
@@ -132,7 +148,7 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return an error if the commit ID is invalid`() {
       // given
-      val invalidCommitId = "invalid-commit-id"
+      val invalidCommitId = INVALID_COMMIT_ID
       val filePath = "app/src/androidTest/java/org/simple/clinic/di/TestAppComponent.kt"
 
       // when
@@ -149,17 +165,16 @@ class GitRepositoryServiceTest {
 
     @Test
     fun `it should return an error if the file path is non-existent`() {
-      // given
-      val nonExistentFilePath = "non/existent/file/path"
-
       // when
-      val testObserver = repositoryService.getContributions(commitId, nonExistentFilePath).test()
+      val testObserver = repositoryService
+        .getContributions(commitId, NON_EXISTENT_FILE_PATH)
+        .test()
 
       // then
       testObserver
         .assertError {
           it is java.lang.IllegalArgumentException
-              && it.message == "Non-existent file path at $commitId: $nonExistentFilePath"
+              && it.message == "Non-existent file path at $commitId: $NON_EXISTENT_FILE_PATH"
         }
         .assertNoValues()
     }
@@ -167,7 +182,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetCommitOnOrAfter {
-    private val simpleAndroidRepository = openGitRepository(File("../simple-android"))
+    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path)
     private val repositoryService = GitRepositoryService(simpleAndroidRepository)
 
     @Test
@@ -203,13 +218,13 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetChangedFilePaths {
-    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
     fun `it should return changed file paths for initial commit`() {
       // given
-      val initialCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+      val initialCommitId = exhibitA // exhibit a: add three new files
 
       // when
       val testObserver = repositoryService.getChangedFilePaths(initialCommitId).test()
@@ -218,9 +233,9 @@ class GitRepositoryServiceTest {
       testObserver
         .assertValue(
           listOf(
-            "file-1.txt",
-            "file-2.txt",
-            "file-3.txt",
+            FILE_1_TXT,
+            FILE_2_TXT,
+            FILE_3_TXT,
           )
         )
         .assertNoErrors()
@@ -230,8 +245,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return changed file paths between a parent and a child`() {
       // given
-      val parentCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
-      val childCommitId = "b0d86a6cf1f8c9a12b25f2f51f5be97b61647075" // exhibit b: add a new file
+      val parentCommitId = exhibitA // exhibit a: add three new files
+      val childCommitId = exhibitB // exhibit b: add a new file
 
       // when
       val testObserver = repositoryService.getChangedFilePaths(childCommitId, parentCommitId).test()
@@ -239,7 +254,7 @@ class GitRepositoryServiceTest {
       // then
       testObserver
         .assertValue(
-          listOf("file-4.txt")
+          listOf(FILE_4_TXT)
         )
         .assertNoErrors()
         .assertComplete()
@@ -248,8 +263,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return changed file paths between an ancestor and a descendant`() {
       // given
-      val parentCommitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
-      val childCommitId = "f1027401b8d62cd699f286b8eb8e049645654909" // exhibit f: rename a file
+      val parentCommitId = exhibitA // exhibit a: add three new files
+      val childCommitId = exhibitF // exhibit f: rename a file
 
       // when
       val testObserver = repositoryService.getChangedFilePaths(childCommitId, parentCommitId).test()
@@ -258,8 +273,8 @@ class GitRepositoryServiceTest {
       testObserver
         .assertValue(
           listOf(
-            "file-1.txt",
-            "file-4.txt",
+            FILE_1_TXT,
+            FILE_4_TXT,
           )
         )
         .assertNoErrors()
@@ -269,7 +284,7 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should ignore deleted file paths between an ancestor and a descendant (simple-android)`() {
       // given
-      val repositoryService = GitRepositoryService(openGitRepository(File("../simple-android")))
+      val repositoryService = GitRepositoryService(openGitRepository(SimpleAndroid.path))
       val ancestorCommitId = "f7a3080ee72869bd9925eaef49cb0de75acc7083" // Update CHANGELOG (#2037)
       val descendantCommitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd" // Update CHANGELOG (#2043)
 
@@ -307,14 +322,14 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetBlobDiff {
-    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
     fun `it should get the blob diff of a simple commit`() {
       // given
-      val selectedFilePath = "file-1-copy.txt"
-      val commitId = "0e298ab233af0e283edff96772c75a42a21b1479" // exhibit e: copy a file
+      val selectedFilePath = FILE_1_COPY_TXT
+      val commitId = exhibitE // exhibit e: copy a file
 
       // when
       val testObserver = repositoryService
@@ -342,8 +357,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should get the blob diff for a merge commit`() {
       // given
-      val selectedFilePath = "file-1.txt"
-      val commitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
+      val selectedFilePath = FILE_1_TXT
+      val commitId = mergeEnglishIntoSpanish // Merge branch 'english' into spanish
 
       // when
       val testObserver = repositoryService
@@ -358,8 +373,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return an error if the selected file path is invalid`() {
       // given
-      val selectedFilePath = "non-existent-file-path"
-      val commitId = "0e298ab233af0e283edff96772c75a42a21b1479" // exhibit e: copy a file
+      val selectedFilePath = NON_EXISTENT_FILE_PATH
+      val commitId = exhibitE // exhibit e: copy a file
 
       // when
       val testObserver = repositoryService
@@ -376,8 +391,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return an error if the selected commit ID is invalid`() {
       // given
-      val selectedFilePath = "file-1-copy.txt"
-      val commitId = "invalid-commit-id"
+      val selectedFilePath = FILE_1_COPY_TXT
+      val commitId = INVALID_COMMIT_ID
 
       // when
       val testObserver = repositoryService
@@ -429,14 +444,14 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetBlobDiffInformation {
-    private val gitTestbedRepository = openGitRepository(File("../git-testbed"))
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
     fun `it should fetch blob diff information for a simple commit`() {
       // given
-      val selectedFilePath = "file-1.txt"
-      val commitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+      val selectedFilePath = FILE_1_TXT
+      val commitId = exhibitA // exhibit a: add three new files
 
       // when
       val testObserver = repositoryService
@@ -452,8 +467,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should fetch blob diff information for a simple commit with non-zero deletions and insertions`() {
       // given
-      val selectedFilePath = "file-1.txt"
-      val commitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
+      val selectedFilePath = FILE_1_TXT
+      val commitId = mergeEnglishIntoSpanish // Merge branch 'english' into spanish
 
       // when
       val testObserver = repositoryService
@@ -469,8 +484,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return an error if the selected path is invalid`() {
       // given
-      val selectedFilePath = "non-existent-file.txt"
-      val commitId = "b6748190194e697df97d3dd9801af4f55d763ef9" // exhibit a: add three new files
+      val selectedFilePath = NON_EXISTENT_FILE_PATH
+      val commitId = exhibitA // exhibit a: add three new files
 
       // when
       val testObserver = repositoryService
@@ -487,8 +502,8 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should return an error if the commit ID is invalid`() {
       // given
-      val selectedFilePath = "non-existent-file.txt"
-      val commitId = "invalid-commit-id"
+      val selectedFilePath = NON_EXISTENT_FILE_PATH
+      val commitId = INVALID_COMMIT_ID
 
       // when
       val testObserver = repositoryService

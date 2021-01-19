@@ -5,6 +5,12 @@ import arrow.core.Tuple5
 import arrow.core.Tuple6
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.domain.openGitRepository
+import io.redgreen.timelapse.fixtures.GitTestbed
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitH
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitI
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.mergeEnglishIntoSpanish
 import io.redgreen.timelapse.git.CommitInfoUseCase.Property
 import io.redgreen.timelapse.git.CommitInfoUseCase.Property.Author
 import io.redgreen.timelapse.git.CommitInfoUseCase.Property.AuthoredLocalDateTime
@@ -16,7 +22,6 @@ import io.redgreen.timelapse.git.CommitInfoUseCase.Property.Parent
 import io.redgreen.timelapse.git.CommitInfoUseCase.Property.ParentCount
 import io.redgreen.timelapse.git.CommitInfoUseCase.Property.ShortMessage
 import io.redgreen.timelapse.vcs.Identity
-import java.io.File
 import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.Month.OCTOBER
@@ -29,9 +34,9 @@ import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
 
 class CommitInfoUseCaseTest {
-  private val repository = openGitRepository(File("../git-testbed"))
+  private val repository = openGitRepository(GitTestbed.path)
   private val useCase = CommitInfoUseCase(repository)
-  private val commitId = "b0d86a6cf1f8c9a12b25f2f51f5be97b61647075" // exhibit b: add a new file
+  private val commitId = exhibitB // exhibit b: add a new file
 
   @ParameterizedTest
   @ArgumentsSource(PropertiesArgumentsProvider::class)
@@ -58,7 +63,7 @@ class CommitInfoUseCaseTest {
         Committer to Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
         AuthoredLocalDateTime to LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
         CommittedLocalDateTime to LocalDateTime.of(2020, OCTOBER, 16, 7, 14),
-        Parent to Ancestors.One("b6748190194e697df97d3dd9801af4f55d763ef9"),
+        Parent to Ancestors.One(exhibitA), // "b6748190194e697df97d3dd9801af4f55d763ef9"
       )
         .map { Arguments.of(it) }
         .toList()
@@ -69,7 +74,7 @@ class CommitInfoUseCaseTest {
   @Test
   fun `it should get more than one commit ID for a merge commit`() {
     // given
-    val mergeCommitId = "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278" // Merge branch 'english' into spanish
+    val mergeCommitId = mergeEnglishIntoSpanish // Merge branch 'english' into spanish
 
     // when
     val ancestors = useCase.invoke(mergeCommitId, Parent)
@@ -79,8 +84,8 @@ class CommitInfoUseCaseTest {
       .isEqualTo(
         Ancestors.Many(
           listOf(
-            "1865160d483f9b22dfa9b49d0305c167746d9f7a",
-            "6ad80c13f9d08fdfc1bd0ab7299a2178183326a1"
+            exhibitI, // exhibit i: pre-merge modification (Spanish)
+            exhibitH // exhibit h: pre-merge modification (English)
           )
         )
       )

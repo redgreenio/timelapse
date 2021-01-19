@@ -8,8 +8,8 @@ import javafx.geometry.Insets
 import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
-import org.eclipse.jgit.lib.Repository
 import kotlin.math.ceil
+import org.eclipse.jgit.lib.Repository
 
 class CommitInformationPane(
   private val gitRepository: Repository
