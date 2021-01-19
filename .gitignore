@@ -4,9 +4,13 @@
 build/
 out/
 
-# sdfsdf
+# Working area to de-obfuscate crash traces
 proguard-lab/
 
 # Cloned repositories used in tests
 git-testbed/
 simple-android/
+
+# Repos used in test fixtures
+fixtures/git-testbed/
+fixtures/simple-android/
