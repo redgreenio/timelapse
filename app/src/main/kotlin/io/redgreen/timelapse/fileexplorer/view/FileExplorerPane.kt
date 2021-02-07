@@ -142,7 +142,14 @@ class FileExplorerPane(
     val treeItemNodeTransformer = object : NodeTransformer<Node<String>, TreeItem<String>> {
       override fun create(node: Node<String>): TreeItem<String> {
         return TreeItem(node.value).apply {
-          node.children.map(::create).onEach { children.add(it) }
+          node.children.map(::create).onEach {
+            val isLeaf = it.children.isEmpty()
+            if (isLeaf) {
+              children.add(it)
+            } else {
+              children.add(0, it)
+            }
+          }
         }
       }
     }
