@@ -41,6 +41,7 @@ class TreeTest {
   fun `it should add a grandchild`() {
     tree.insert("root/app/package.json")
 
+    println("Tree: ${tree.root}")
     assertThat(tree.root.children)
       .containsExactly(Node("app", mutableListOf(Node("package.json"))))
   }
@@ -112,5 +113,22 @@ class TreeTest {
       .containsExactly(
         AnotherNode(2, mutableListOf(AnotherNode(3), AnotherNode(4)))
       )
+  }
+
+  @Test
+  fun `it should place branch nodes before leaf nodes on insertion`() {
+    // when
+    with(tree) {
+      insert("root/app.xml")
+      insert("root/buildscripts/build.gradle")
+    }
+
+    // then
+    assertThat(tree.root.children)
+      .containsExactly(
+        Node("buildscripts", mutableListOf(Node("build.gradle"))),
+        Node("app.xml")
+      )
+      .inOrder()
   }
 }

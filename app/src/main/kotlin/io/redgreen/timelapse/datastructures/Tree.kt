@@ -14,15 +14,17 @@ class Tree<T> private constructor(
     val nodes = nodeSplitter(value)
 
     var ancestor = root
-    for (descendant in nodes.drop(1)) {
-      ancestor = insert(ancestor, descendant)
+    nodes.drop(1).forEachIndexed { index, descendant ->
+      val isLeaf = index == nodes.lastIndex - 1 /* -1 because we are dropping a node */
+      println("$descendant: index: $index leaf: ${isLeaf}, nodes: $nodes") // TODO: 07/02/21 Remove this line
+      ancestor = insert(ancestor, descendant, isLeaf)
     }
   }
 
-  private fun insert(parent: Node<T>, value: T): Node<T> {
+  private fun insert(parent: Node<T>, value: T, isLeaf: Boolean): Node<T> {
     val existingChild = parent.findChild(value)
     if (existingChild != null) return existingChild
-    return parent.addChild(value)
+    return parent.insertChild(value, isLeaf)
   }
 
   fun <I : Any, O> transform(transformer: NodeTransformer<Node<I>, O>): O =
@@ -35,9 +37,14 @@ class Tree<T> private constructor(
     val children: List<Node<T>>
       get() = mutableChildren.toList()
 
-    internal fun addChild(value: T): Node<T> {
+    internal fun insertChild(value: T, isLeaf: Boolean): Node<T> {
       val child = Node(value)
-      mutableChildren.add(child)
+      if (isLeaf) {
+        mutableChildren.add(child)
+      } else {
+        val insertionIndex = mutableChildren.indexOfFirst { it.children.isEmpty() }.coerceAtLeast(0)
+        mutableChildren.add(insertionIndex, child)
+      }
       return child
     }
 
