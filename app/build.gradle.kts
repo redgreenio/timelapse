@@ -72,13 +72,17 @@ with(application) {
   mainClassName = "LauncherKt"
 }
 
+val useIRBackend = true
+
 tasks {
   compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.useIR = useIRBackend
   }
 
   compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.useIR = useIRBackend
   }
 
   test {
