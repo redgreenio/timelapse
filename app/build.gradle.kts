@@ -151,6 +151,7 @@ runtime {
 
       currentOs.isMacOsX -> {
         imageName = productName
+        installerOutputDir = File("$projectDir/build/distribution")
         installerType = "dmg"
         with(installerOptions) {
           addAll(listOf("--mac-package-name", productName))
