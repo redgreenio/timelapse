@@ -13,6 +13,8 @@ plugins {
   kotlin("kapt")
 }
 
+val productName = "Timelapse Studio"
+
 group = "io.redgreen"
 version = "1.0.0" /* Because, macOS apps can't have version numbers starting with '0'. */
 
@@ -74,7 +76,7 @@ dependencies {
 }
 
 with(application) {
-  applicationName = "timelapse"
+  applicationName = productName
   mainClassName = "LauncherKt"
 }
 
@@ -130,8 +132,13 @@ runtime {
     val currentOs = OperatingSystem.current()
     val imageType = if (currentOs.isWindows) "ico" else if (currentOs.isMacOsX) "icns" else "png"
     imageOptions.addAll(listOf("--icon", "src/main/resources/app-icons/icon.$imageType"))
-    installerOptions.addAll(listOf("--resource-dir", "src/main/resources"))
-    installerOptions.addAll(listOf("--vendor", "Red Green, Inc."))
+
+    with(installerOptions) {
+      addAll(listOf("--name", productName))
+      addAll(listOf("--vendor", "Red Green, Inc."))
+      addAll(listOf("--app-version", "${project.version}"))
+      addAll(listOf("--resource-dir", "src/main/resources"))
+    }
 
     when {
       currentOs.isWindows -> {
@@ -139,11 +146,16 @@ runtime {
       }
 
       currentOs.isLinux -> {
-        installerOptions.addAll(listOf("--linux-package-name", "hellofx", "--linux-shortcut"))
+        installerOptions.addAll(listOf("--linux-package-name", productName, "--linux-shortcut"))
       }
 
       currentOs.isMacOsX -> {
-        installerOptions.addAll(listOf("--mac-package-name", "hellofx"))
+        imageName = productName
+        installerType = "dmg"
+        with(installerOptions) {
+          addAll(listOf("--mac-package-name", productName))
+          addAll(listOf("--mac-package-identifier", "io.redgreen.timelapseStudio"))
+        }
       }
     }
   }
