@@ -1,11 +1,11 @@
 package io.redgreen.timelapse.datastructures
 
-class Tree<T> private constructor(
+class Tree<T : Comparable<T>> private constructor(
   val root: Node<T>,
   private val nodeSplitter: (T) -> List<T>
 ) {
   companion object {
-    fun <T> create(root: T, split: (T) -> List<T>): Tree<T> {
+    fun <T : Comparable<T>> create(root: T, split: (T) -> List<T>): Tree<T> {
       return Tree(Node(root), split)
     }
   }
@@ -16,7 +16,6 @@ class Tree<T> private constructor(
     var ancestor = root
     nodes.drop(1).forEachIndexed { index, descendant ->
       val isLeaf = index == nodes.lastIndex - 1 /* -1 because we are dropping a node */
-      println("$descendant: index: $index leaf: ${isLeaf}, nodes: $nodes") // TODO: 07/02/21 Remove this line
       ancestor = insert(ancestor, descendant, isLeaf)
     }
   }
@@ -27,10 +26,10 @@ class Tree<T> private constructor(
     return parent.insertChild(value, isLeaf)
   }
 
-  fun <I : Any, O> transform(transformer: NodeTransformer<Node<I>, O>): O =
+  fun <I : Comparable<I>, O> transform(transformer: NodeTransformer<Node<I>, O>): O =
     transformer.create(root as Node<I>)
 
-  data class Node<T>(
+  data class Node<T : Comparable<T>>(
     val value: T,
     private val mutableChildren: MutableList<Node<T>> = mutableListOf()
   ) {
@@ -39,13 +38,27 @@ class Tree<T> private constructor(
 
     internal fun insertChild(value: T, isLeaf: Boolean): Node<T> {
       val child = Node(value)
-      if (isLeaf) {
-        mutableChildren.add(child)
-      } else {
-        val insertionIndex = mutableChildren.indexOfFirst { it.children.isEmpty() }.coerceAtLeast(0)
-        mutableChildren.add(insertionIndex, child)
-      }
+      mutableChildren.add(findInsertionIndex(!isLeaf, child.value), child)
       return child
+    }
+
+    private fun findInsertionIndex(isBranch: Boolean, value: T): Int {
+      return if (isBranch) {
+        mutableChildren
+          .indexOfFirst { sibling -> sibling.children.isNotEmpty() && sibling.value > value }
+      } else {
+        if (mutableChildren.size == 1) {
+          if (mutableChildren.first().value < value) 1 else 0
+        } else {
+          val insertionIndex = mutableChildren.indexOfFirst { sibling -> sibling.children.isEmpty() && sibling.value > value }
+          val hasBranchesButNotLeaves = insertionIndex == -1 && mutableChildren.isNotEmpty()
+          if (hasBranchesButNotLeaves) {
+            mutableChildren.size
+          } else {
+            insertionIndex
+          }
+        }
+      }.coerceAtLeast(0)
     }
 
     fun findChild(value: T): Node<T>? {

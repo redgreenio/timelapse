@@ -41,7 +41,6 @@ class TreeTest {
   fun `it should add a grandchild`() {
     tree.insert("root/app/package.json")
 
-    println("Tree: ${tree.root}")
     assertThat(tree.root.children)
       .containsExactly(Node("app", mutableListOf(Node("package.json"))))
   }
@@ -75,6 +74,7 @@ class TreeTest {
         Node("app", mutableListOf(Node("package.json"), Node("yarn.json"))),
         Node("config.xml")
       )
+      .inOrder()
   }
 
   @Test
@@ -128,6 +128,70 @@ class TreeTest {
       .containsExactly(
         Node("buildscripts", mutableListOf(Node("build.gradle"))),
         Node("app.xml")
+      )
+      .inOrder()
+  }
+
+  @Test
+  fun `it should sort files in alphabetical order`() {
+    // when
+    with(tree) {
+      insert("root/c.txt")
+      insert("root/a.txt")
+      insert("root/b.txt")
+    }
+
+    // then
+    assertThat(tree.root.children)
+      .containsExactly(
+        Node("a.txt"),
+        Node("b.txt"),
+        Node("c.txt")
+      )
+      .inOrder()
+  }
+
+  @Test
+  fun `it should sort directories in alphabetical order`() {
+    // when
+    with(tree) {
+      insert("root/router/mapping.pro")
+      insert("root/quality/.north-pole")
+      insert("root/app/build.gradle")
+      insert("root/doc/README.md")
+      insert("root/.gitignore")
+      insert("root/router/DEPRECATED.txt")
+    }
+
+    // then
+    assertThat(tree.root.children)
+      .containsExactly(
+        Node("app", mutableListOf(Node("build.gradle"))),
+        Node("doc", mutableListOf(Node("README.md"))),
+        Node("quality", mutableListOf(Node(".north-pole"))),
+        Node("router", mutableListOf(Node("DEPRECATED.txt"), Node("mapping.pro"))),
+        Node(".gitignore")
+      )
+      .inOrder()
+  }
+
+  @Test
+  fun `it should sort directories and files in alphabetical order`() {
+    // when
+    with(tree) {
+      insert("root/z/Z.txt")
+      insert("root/a/A.txt")
+      insert("root/build.gradle")
+      insert("root/e/E.txt")
+    }
+
+    // then
+    assertThat(tree.root.children)
+      .containsExactly(
+        Node("a", mutableListOf(Node("A.txt"))),
+        Node("e", mutableListOf(Node("E.txt"))),
+        Node("z", mutableListOf(Node("Z.txt"))),
+        Node("build.gradle")
       )
       .inOrder()
   }
