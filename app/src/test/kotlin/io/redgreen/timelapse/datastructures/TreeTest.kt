@@ -15,64 +15,64 @@ class TreeTest {
 
   @Test
   fun `it should insert a child node`() {
-    tree.insert("root/app")
+    tree.insert("root/.gitignore")
 
     assertThat(tree.root.children)
       .containsExactly(
-        Node("app"),
+        Node(".gitignore"),
       )
   }
 
   @Test
   fun `it should insert multiple child nodes`() {
     with(tree) {
-      insert("root/app")
-      insert("root/buildscripts")
+      insert("root/.gitignore")
+      insert("root/config.xml")
     }
 
     assertThat(tree.root.children)
       .containsExactly(
-        Node("app"),
-        Node("buildscripts"),
+        Node(".gitignore"),
+        Node("config.xml"),
       )
   }
 
   @Test
   fun `it should add a grandchild`() {
-    tree.insert("root/app/main")
+    tree.insert("root/app/package.json")
 
     assertThat(tree.root.children)
-      .containsExactly(Node("app", mutableListOf(Node("main"))))
+      .containsExactly(Node("app", mutableListOf(Node("package.json"))))
   }
 
   @Test
   fun `it should add multiple grandchildren`() {
     with(tree) {
-      insert("root/app/main")
-      insert("root/app/test")
+      insert("root/app/package.json")
+      insert("root/app/yarn.yml")
     }
 
     val rootChildren = tree.root.children
     val app = rootChildren.first()
     assertThat(app.children)
       .containsExactly(
-        Node("main"),
-        Node("test"),
+        Node("package.json"),
+        Node("yarn.yml"),
       )
   }
 
   @Test
   fun `it should add several levels of descendants`() {
     with(tree) {
-      insert("root/app/main")
-      insert("root/app/test")
-      insert("root/buildscripts")
+      insert("root/app/package.json")
+      insert("root/app/yarn.json")
+      insert("root/config.xml")
     }
 
     assertThat(tree.root.children)
       .containsExactly(
-        Node("app", mutableListOf(Node("main"), Node("test"))),
-        Node("buildscripts")
+        Node("app", mutableListOf(Node("package.json"), Node("yarn.json"))),
+        Node("config.xml")
       )
   }
 
@@ -98,8 +98,8 @@ class TreeTest {
   fun `it should map a tree into a different tree with the same structure`() {
     // given
     with(tree) {
-      insert("root/app/main")
-      insert("root/app/test")
+      insert("root/app/.gitignore")
+      insert("root/app/config.yml")
     }
 
     // when

@@ -16,8 +16,8 @@ data class AnotherNode(
       return when (node.value) {
         "root" -> 1
         "app" -> 2
-        "main" -> 3
-        "test" -> 4
+        ".gitignore" -> 3
+        "config.yml" -> 4
         else -> throw UnsupportedOperationException("Unknown node value: ${node.value}")
       }
     }
