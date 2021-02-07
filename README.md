@@ -53,11 +53,9 @@ Use this command to retrieve the commit history of the specified file.
 ## Creating a release
 
 ```shell script
-gradlew demoJar
+gradlew jpackageImage jpackage
 ```
-
-After creating a build, copy the `mapping-<version>.txt` and `timelapse-<version>-demo.jar` into the designated Google
-Drive directory.
+This will created a distributable native installer (`.dmg` and `.pkg`) for **macOS**. Windows and Linux distributions are yet to be tested.
 
 ## Running on Java 9 and above
 
