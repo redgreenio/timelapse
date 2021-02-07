@@ -129,7 +129,7 @@ runtime {
   jpackage {
     val currentOs = OperatingSystem.current()
     val imageType = if (currentOs.isWindows) "ico" else if (currentOs.isMacOsX) "icns" else "png"
-    imageOptions.addAll(listOf("--icon", "src/main/resources/hellofx.$imageType"))
+    imageOptions.addAll(listOf("--icon", "src/main/resources/app-icons/icon.$imageType"))
     installerOptions.addAll(listOf("--resource-dir", "src/main/resources"))
     installerOptions.addAll(listOf("--vendor", "Red Green, Inc."))
 
