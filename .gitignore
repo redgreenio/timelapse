@@ -4,6 +4,9 @@
 build/
 out/
 
+# macOS
+.DS_Store
+
 # Working area to de-obfuscate crash traces
 proguard-lab/
 

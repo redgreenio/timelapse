@@ -10,7 +10,7 @@ import kotlin.system.exitProcess
 
 private const val ALPHA = "\uD835\uDEFC"
 private const val APP_NAME = "Timelapse (Pre-$ALPHA)"
-private const val APP_VERSION = "0.1.10" // FIXME: 12/12/20 The version name should be via the build process.
+private const val APP_VERSION = "1.0.0" // FIXME: 12/12/20 The version name should be via the build process.
 
 internal const val DISPLAY_VERSION_NAME = "v$APP_VERSION (pre-alpha)"
 

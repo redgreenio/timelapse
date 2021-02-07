@@ -1,6 +1,7 @@
 import Build_gradle.DependencyVersions.junit
 import Build_gradle.DependencyVersions.mobius
 import Build_gradle.DependencyVersions.moshi
+import org.gradle.internal.os.OperatingSystem
 import proguard.gradle.ProGuardTask
 
 plugins {
@@ -8,11 +9,12 @@ plugins {
   kotlin("jvm")
   id("com.github.johnrengelman.shadow") version "6.1.0"
   id("org.openjfx.javafxplugin") version "0.0.9"
+  id("org.beryx.runtime") version "1.12.1"
   kotlin("kapt")
 }
 
 group = "io.redgreen"
-version = "0.1.10"
+version = "1.0.0" /* Because, macOS apps can't have version numbers starting with '0'. */
 
 javafx {
   version = "15"
@@ -115,6 +117,35 @@ tasks {
     printmapping(mappingFile)
 
     doLast { delete(shadowJar) }
+  }
+}
+
+runtime {
+  addOptions("--strip-debug", "--compress", "2", "--no-header-files", "--no-man-pages")
+  launcher {
+    noConsole = true
+  }
+
+  jpackage {
+    val currentOs = OperatingSystem.current()
+    val imageType = if (currentOs.isWindows) "ico" else if (currentOs.isMacOsX) "icns" else "png"
+    imageOptions.addAll(listOf("--icon", "src/main/resources/hellofx.$imageType"))
+    installerOptions.addAll(listOf("--resource-dir", "src/main/resources"))
+    installerOptions.addAll(listOf("--vendor", "Red Green, Inc."))
+
+    when {
+      currentOs.isWindows -> {
+        installerOptions.addAll(listOf("--win-per-user-install", "--win-dir-chooser", "--win-menu", "--win-shortcut"))
+      }
+
+      currentOs.isLinux -> {
+        installerOptions.addAll(listOf("--linux-package-name", "hellofx", "--linux-shortcut"))
+      }
+
+      currentOs.isMacOsX -> {
+        installerOptions.addAll(listOf("--mac-package-name", "hellofx"))
+      }
+    }
   }
 }
 
