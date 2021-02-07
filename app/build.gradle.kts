@@ -62,7 +62,11 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit")
   testImplementation("com.spotify.mobius:mobius-test:$mobius")
-  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0") {
+    isTransitive = false
+    because("we want the extension functions on the latest Mockito artifact.")
+  }
+  testImplementation("org.mockito:mockito-core:3.7.7")
   testImplementation("com.google.truth:truth:1.0.1")
   testImplementation("com.approvaltests:approvaltests:9.3.0")
 }
