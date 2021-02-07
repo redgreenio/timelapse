@@ -14,6 +14,7 @@ plugins {
 }
 
 val productName = "Timelapse Studio"
+val vendorName = "Red Green, Inc."
 
 group = "io.redgreen"
 version = "1.0.0" /* Because, macOS apps can't have version numbers starting with '0'. */
@@ -135,7 +136,8 @@ runtime {
 
     with(installerOptions) {
       addAll(listOf("--name", productName))
-      addAll(listOf("--vendor", "Red Green, Inc."))
+      addAll(listOf("--vendor", vendorName))
+      addAll(listOf("--copyright", "Copyright 2021 $vendorName"))
       addAll(listOf("--app-version", "${project.version}"))
       addAll(listOf("--resource-dir", "src/main/resources"))
     }
