@@ -80,12 +80,12 @@ val useIRBackend = true
 
 tasks {
   compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
     kotlinOptions.useIR = useIRBackend
   }
 
   compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
     kotlinOptions.useIR = useIRBackend
   }
 
