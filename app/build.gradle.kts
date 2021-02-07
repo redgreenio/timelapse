@@ -15,7 +15,7 @@ group = "io.redgreen"
 version = "0.1.10"
 
 javafx {
-  version = "11"
+  version = "15"
   modules("javafx.controls", "javafx.web")
 }
 
@@ -80,12 +80,12 @@ val useIRBackend = true
 
 tasks {
   compileKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "15"
     kotlinOptions.useIR = useIRBackend
   }
 
   compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "15"
     kotlinOptions.useIR = useIRBackend
   }
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 javafx {
-  version = "11"
+  version = "15"
   modules("javafx.controls", "javafx.web")
 }
 
@@ -17,10 +17,10 @@ dependencies {
 
 tasks {
   compileKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "15"
   }
 
   compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "15"
   }
 }
