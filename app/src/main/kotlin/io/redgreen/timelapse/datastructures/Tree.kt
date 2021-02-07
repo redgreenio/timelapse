@@ -45,12 +45,14 @@ class Tree<T : Comparable<T>> private constructor(
     private fun findInsertionIndex(isBranch: Boolean, value: T): Int {
       return if (isBranch) {
         mutableChildren
-          .indexOfFirst { sibling -> sibling.children.isNotEmpty() && sibling.value > value }
+          .indexOfFirst { sibling -> sibling.children.isNotEmpty() && isGt(sibling, value) }
       } else {
         if (mutableChildren.size == 1) {
-          if (mutableChildren.first().value < value) 1 else 0
+          if (isLt(mutableChildren.first(), value)) 1 else 0
         } else {
-          val insertionIndex = mutableChildren.indexOfFirst { sibling -> sibling.children.isEmpty() && sibling.value > value }
+          val insertionIndex = mutableChildren.indexOfFirst { sibling ->
+            sibling.children.isEmpty() && isGt(sibling, value)
+          }
           val hasBranchesButNotLeaves = insertionIndex == -1 && mutableChildren.isNotEmpty()
           if (hasBranchesButNotLeaves) {
             mutableChildren.size
@@ -59,6 +61,18 @@ class Tree<T : Comparable<T>> private constructor(
           }
         }
       }.coerceAtLeast(0)
+    }
+
+    private fun isGt(node: Node<T>, value: T): Boolean = if (node.value is String && value is String) {
+      node.value.toLowerCase() > value.toLowerCase()
+    } else {
+      node.value > value
+    }
+
+    private fun isLt(node: Node<T>, value: T): Boolean = if (node.value is String && value is String) {
+      node.value.toLowerCase() < value.toLowerCase()
+    } else {
+      node.value < value
     }
 
     fun findChild(value: T): Node<T>? {

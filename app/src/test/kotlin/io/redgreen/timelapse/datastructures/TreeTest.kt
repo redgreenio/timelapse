@@ -195,4 +195,24 @@ class TreeTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it should sort strings in ascending order regardless of the casing`() {
+    // given
+    val tree = Tree.create("root") { it.split('/') }
+
+    // when
+    with(tree) {
+      insert("root/build.gradle")
+      insert("root/CHANGELOG.md")
+    }
+
+    // then
+    assertThat(tree.root.children)
+      .containsExactly(
+        Node("build.gradle"),
+        Node("CHANGELOG.md")
+      )
+      .inOrder()
+  }
 }

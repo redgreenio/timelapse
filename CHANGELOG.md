@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Changed
-- Show directories before files in the File Explorer.
+- Sort files and directories in ascending order inside the File Explorer.
 
 ## [0.1.9] - 2020-12-12
 
