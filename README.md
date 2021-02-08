@@ -14,8 +14,7 @@ Run the following script from the cloned project directory, and you should be re
 
 ### Windows & Linux
 
-After cloning the Timelapse project, also clone the **git-testbed** and **simple-android** projects into the project's
-root directory.
+After cloning the project, also clone the **git-testbed** and **simple-android** projects into the `fixtures` directory.
 
 **Git Testbed**
 
@@ -36,41 +35,31 @@ git checkout d26b2b56696e63bffa5700488dcfe0154ad8cecd
 
 **ProGuard**
 
-Create an empty directory for de-obfuscating ProGuard traces from production.
+Create an empty directory inside the root directory for de-obfuscating ProGuard traces from production.
 
 ```shell script
 mkdir proguard-lab
 ```
-
-## Helpful commands
-
-```shell script
-git log --oneline -M --stat --follow <file-path>
-```
-
-Use this command to retrieve the commit history of the specified file.
 
 ## Creating a release
 
 ```shell script
 gradlew jpackageImage jpackage
 ```
-This will created a distributable native installer (`.dmg` and `.pkg`) for **macOS**. Windows and Linux distributions are yet to be tested.
 
-## Running on Java 9 and above
+This will created a distributable native installer (currently `.dmg`) for **macOS**. Windows and Linux distributions are
+yet to be tested.
 
-Add an environment variable pointing to the JavaFx SDK.
+## Distribution
 
-```shell script
-export JAVA_FX=/path/to/javafx-sdk-<version>/lib
+| Operating System | Native Builds | Auto-updates |   Format  |
+|------------------|---------------|--------------|-----------|
+| macOS            | ✅            | In-progress  | `.dmg`    |
+| Windows          | ❌            | ❌           | `-`       |
+| Linux            | ❌            | ❌           | `-`       |
+
+## License
+
 ```
-
-Specify the required JavaFx modules to launch the application.
-
-```shell script
-java --module-path $JAVA_FX --add-modules javafx.controls,javafx.web -jar timelapse-<version>.jar /path/to/repo
+Copyright 2021 Red Green, Inc.
 ```
-
-## Quirks
-
-The binary does not ship with JavaFx and will run only on JVMs that include JavaFx library jars.
