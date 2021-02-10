@@ -332,4 +332,20 @@ class GitFunctionsTest {
         """.trimIndent()
       )
   }
+
+  @Test
+  fun `it should list all remote branches`() {
+    // when
+    val remoteBranches = repository.listRemoteBranches()
+
+    // then
+    assertThat(remoteBranches)
+      .containsExactly(
+        Branch("refs/remotes/origin/HEAD", "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278"),
+        Branch("refs/remotes/origin/branch-a", "68958540148efb4dd0dbfbb181df330deaffbe13"),
+        Branch("refs/remotes/origin/branch-b", "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278"),
+        Branch("refs/remotes/origin/group-a/branch-a", "374bbc8b4cefbb6c37feb5526a68f5d7bf0aeb7f"),
+        Branch("refs/remotes/origin/master", "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278"),
+      )
+  }
 }

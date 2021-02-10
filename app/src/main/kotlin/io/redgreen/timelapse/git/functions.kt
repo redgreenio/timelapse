@@ -6,6 +6,8 @@ import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import kotlin.collections.Map.Entry
+import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
@@ -23,6 +25,15 @@ import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.util.io.DisabledOutputStream.INSTANCE
 
 private const val DEV_NULL_ID = "0000000000000000000000000000000000000000"
+
+fun Repository.listRemoteBranches(): List<Branch> {
+  return Git(this)
+    .branchList()
+    .setListMode(REMOTE)
+    .call()
+    .map { it.name to it.target.objectId.name }
+    .map { (name, commitId) -> Branch(name, commitId) }
+}
 
 fun Repository.getChangedFilesInCommit(commitId: String): List<ChangedFile> {
   val commit = RevWalk(this).use { it.parseCommit(resolve(commitId)) }
