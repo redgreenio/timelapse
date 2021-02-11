@@ -1,8 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+
 ### Changed
+
 - Sort files and directories in ascending order inside the File Explorer.
+- Map Control key shortcuts to Command key on Mac.
 
 ## [0.1.9] - 2020-12-12
 

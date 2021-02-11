@@ -38,7 +38,7 @@ import javafx.scene.input.KeyCode.ESCAPE
 import javafx.scene.input.KeyCode.LEFT
 import javafx.scene.input.KeyCode.RIGHT
 import javafx.scene.input.KeyCodeCombination
-import javafx.scene.input.KeyCombination.CONTROL_ANY
+import javafx.scene.input.KeyCombination.SHORTCUT_ANY
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
@@ -85,8 +85,8 @@ class TimelapseScene(private val project: String) :
         insertionsAreaChart.setAnchorIndex(changeIndex)
 
         // Keyboard shortcuts
-        val newestCommitKeyCodeCombination = KeyCodeCombination(RIGHT, CONTROL_ANY)
-        val oldestCommitKeyCodeCombination = KeyCodeCombination(LEFT, CONTROL_ANY)
+        val newestCommitKeyCodeCombination = KeyCodeCombination(RIGHT, SHORTCUT_ANY)
+        val oldestCommitKeyCodeCombination = KeyCodeCombination(LEFT, SHORTCUT_ANY)
 
         with(scene.accelerators) {
           put(newestCommitKeyCodeCombination) { if (max != 0.0) setValue(max) }
@@ -241,9 +241,9 @@ class TimelapseScene(private val project: String) :
 
   private fun setupHotKeys(scene: Scene) {
     with(scene) {
-      accelerators[KeyCodeCombination(DIGIT1, CONTROL_ANY)] = Runnable { fileExplorerPane.focus() }
-      accelerators[KeyCodeCombination(DIGIT2, CONTROL_ANY)] = Runnable { moveFocusToReadingPane() }
-      accelerators[KeyCodeCombination(DIGIT3, CONTROL_ANY)] = Runnable { changedFilesPane.focusOnList() }
+      accelerators[KeyCodeCombination(DIGIT1, SHORTCUT_ANY)] = Runnable { fileExplorerPane.focus() }
+      accelerators[KeyCodeCombination(DIGIT2, SHORTCUT_ANY)] = Runnable { moveFocusToReadingPane() }
+      accelerators[KeyCodeCombination(DIGIT3, SHORTCUT_ANY)] = Runnable { changedFilesPane.focusOnList() }
     }
 
     scene.addEventHandler(KeyEvent.KEY_RELEASED) { event ->
