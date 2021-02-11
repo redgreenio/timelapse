@@ -75,6 +75,7 @@ dependencies {
 
   implementation(deps.diff4j)
   implementation("com.github.tomas-langer:chalk:1.0.2")
+  implementation("com.jakewharton.picnic:picnic:0.5.0")
 
   testImplementation(testFixtures(project(":fixtures:library")))
   testImplementation(deps.test.junit.api)
