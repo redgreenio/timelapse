@@ -20,3 +20,6 @@ proguard-lab/
 
 # Approvals
 *.received.*
+
+# File stats experiement
+file-stats.json

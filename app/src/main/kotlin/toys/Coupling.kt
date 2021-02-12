@@ -25,8 +25,8 @@ fun main() {
 
   // Is this file located in the right place? Where should this file be located?
 
-  val gitDirectory = "/Users/ragunathjawahar/GitHubProjects/guava/.git"
-  val filePath = "guava/src/com/google/common/cache/LocalCache.java"
+  val gitDirectory = "/Users/ragunathjawahar/IdeaProjects/timelapse/.git"
+  val filePath = "app/src/main/kotlin/io/redgreen/timelapse/openrepo/GitDetector.kt"
   val filterSingleChangeFiles = false
 
   val commitSHAs = extractCommitIds(getFileCommitHistory(gitDirectory, filePath))
