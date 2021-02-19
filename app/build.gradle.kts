@@ -77,6 +77,7 @@ dependencies {
   implementation("com.github.tomas-langer:chalk:1.0.2")
   implementation("com.jakewharton.picnic:picnic:0.5.0")
   implementation("com.google.code.gson:gson:2.8.6")
+  implementation("info.debatty:java-string-similarity:2.0.0")
 
   testImplementation(testFixtures(project(":fixtures:library")))
   testImplementation(deps.test.junit.api)
