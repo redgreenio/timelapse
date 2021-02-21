@@ -1,0 +1,12 @@
+.list-cell {
+  -fx-padding: 0.0em;
+  -fx-background-color: #FAFAFA;
+}
+
+.list-cell:focused, .list-cell:selected {
+  -fx-background-color: #DEDEDE;
+}
+
+.list-cell:selected .label {
+  -fx-text-fill: black;
+}
