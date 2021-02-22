@@ -39,15 +39,15 @@
 
 .dawn-list-view .dawn-scroll-bar:vertical {
   -fx-background-color: transparent;
-  -fx-pref-width: 8;
-  -fx-pref-height: 8;
+  -fx-pref-width: 6;
+  -fx-pref-height: 6;
   -fx-padding: 4 0 4 0;
 }
 
 .dawn-list-view .dawn-scroll-bar:horizontal {
   -fx-background-color: transparent;
-  -fx-pref-width: 8;
-  -fx-pref-height: 8;
+  -fx-pref-width: 6;
+  -fx-pref-height: 6;
   -fx-padding: 0 4 0 4;
 }
 

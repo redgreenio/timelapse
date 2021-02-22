@@ -5,27 +5,26 @@ import javafx.collections.FXCollections
 import javafx.scene.Scene
 import javafx.scene.layout.Pane
 import javafx.stage.Stage
-import redgreen.dawn.affectedfiles.affectedFiles
+import redgreen.dawn.affectedfiles.affectedFilesViewModels
 import redgreen.dawn.affectedfiles.view.javafx.AffectedFilesListView
 import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel
-import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCell
 
 class AffectedFilesDemo : Application() {
-  private val affectedFilesMutableList: MutableList<AffectedFilesCellViewModel> = affectedFiles
-    .map(::FileCell)
+  private val affectedFilesViewModelsMutableList: MutableList<AffectedFilesCellViewModel> = affectedFilesViewModels
     .toMutableList()
 
   override fun start(primaryStage: Stage) {
     with(primaryStage) {
       title = "Affected Files"
       val root = Pane()
-      val rootScene = Scene(root, 400.0, 600.0)
+      val rootScene = Scene(root, 500.0, 600.0)
       loadCssFiles(rootScene)
 
-      affectedFilesMutableList.add(0, AffectedFilesCellViewModel.DirectoryCell("guava/src/com/google/common/collect/"))
-      val affectedFiles = FXCollections.observableList(affectedFilesMutableList)
-      val affectedFilesListView = AffectedFilesListView(affectedFiles)
+      val affectedFilesViewModels = FXCollections
+        .observableList(affectedFilesViewModelsMutableList)
+      val affectedFilesListView = AffectedFilesListView(affectedFilesViewModels)
       affectedFilesListView.prefWidthProperty().bind(root.widthProperty())
+      affectedFilesListView.prefHeightProperty().bind(root.heightProperty())
 
       root.children.add(affectedFilesListView)
 

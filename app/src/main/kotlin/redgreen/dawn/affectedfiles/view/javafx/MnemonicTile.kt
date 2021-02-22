@@ -19,7 +19,7 @@ import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
 import redgreen.dawn.affectedfiles.model.AffectedFile.New
 
-internal open class MnemonicTile : Group() {
+class MnemonicTile : Group() {
   private companion object {
     private const val WIDTH = 24.0
     private const val HEIGHT = WIDTH
@@ -36,6 +36,8 @@ internal open class MnemonicTile : Group() {
 
     private const val FONT_FAMILY = "Roboto Black"
     private const val FONT_SIZE = 12.0
+
+    private const val CORNER_RADIUS = 1.5
   }
 
   private val mnemonicLetterText = Text().apply {
@@ -71,6 +73,6 @@ internal open class MnemonicTile : Group() {
   }
 
   private fun setBackgroundFill(hexColor: String) {
-    mnemonicContainer.background = Background(BackgroundFill(Color.web(hexColor), CornerRadii.EMPTY, Insets.EMPTY))
+    mnemonicContainer.background = Background(BackgroundFill(Color.web(hexColor), CornerRadii(CORNER_RADIUS), Insets.EMPTY))
   }
 }
