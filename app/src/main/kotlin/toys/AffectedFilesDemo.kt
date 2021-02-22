@@ -19,7 +19,7 @@ class AffectedFilesDemo : Application() {
     with(primaryStage) {
       title = "Affected Files"
       val root = Pane()
-      val rootScene = Scene(root, 600.0, 600.0)
+      val rootScene = Scene(root, 400.0, 600.0)
       loadCssFiles(rootScene)
 
       affectedFilesMutableList.add(0, AffectedFilesCellViewModel.DirectoryCell("guava/src/com/google/common/collect/"))

@@ -8,6 +8,7 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.Directo
 import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCell
 
 internal class AffectedFilesListCell : ListCell<AffectedFilesCellViewModel>() {
+  // TODO: 22/02/21 Use weak references for these, otherwise the unused nodes are going to linger forever...
   private val affectedDirectoryRow by fastLazy { AffectedDirectoryRow() }
   private val affectedFileRow by fastLazy { AffectedFileRow() }
 
@@ -28,8 +29,7 @@ internal class AffectedFilesListCell : ListCell<AffectedFilesCellViewModel>() {
       }
 
       is FileCell -> {
-        affectedFileRow.
-        setData(cellViewModel)
+        affectedFileRow.setData(cellViewModel)
         affectedFileRow
       }
     }

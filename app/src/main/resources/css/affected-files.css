@@ -10,3 +10,36 @@
 .list-cell:selected .label {
   -fx-text-fill: black;
 }
+
+/* List View */
+.list-view .scroll-bar:vertical,
+.list-view .scroll-bar:horizontal {
+  -fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:vertical .thumb,
+.list-view .scroll-bar:horizontal .thumb {
+  -fx-background-color: #8F8F8F69;
+  -fx-background-insets: 2, 0, 0;
+  -fx-background-radius: 2em;
+}
+
+.list-view .scroll-bar .increment-arrow,
+.list-view .scroll-bar .decrement-arrow {
+  -fx-shape: "";
+  -fx-padding: 0;
+}
+
+.list-view .scroll-bar:vertical .increment-button,
+.list-view .scroll-bar:vertical .decrement-button {
+  -fx-background-color: transparent;
+  -fx-background-radius: 0em;
+  -fx-padding: 0 12 0 0;
+}
+
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+  -fx-background-color: transparent;
+  -fx-background-radius: 0em;
+  -fx-padding: 0 0 12 0;
+}
