@@ -12,7 +12,7 @@ import javafx.scene.layout.Region
 import javafx.scene.layout.RowConstraints
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
-import redgreen.dawn.affectedfiles.model.AffectedFile
+import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCell
 
 internal class AffectedFileRow : GridPane() {
   companion object {
@@ -33,8 +33,12 @@ internal class AffectedFileRow : GridPane() {
 
   init {
     prefHeight = ROW_HEIGHT
+    padding = Insets(0.0, ROW_PADDING, 0.0, ROW_PADDING)
 
-    rowConstraints.add(RowConstraints(ROW_HEIGHT, ROW_HEIGHT, ROW_HEIGHT, Priority.NEVER, VPos.CENTER, true))
+    // Constraints
+    rowConstraints.add(
+      RowConstraints(ROW_HEIGHT, ROW_HEIGHT, ROW_HEIGHT, Priority.NEVER, VPos.CENTER, true)
+    )
 
     columnConstraints.addAll(
       ColumnConstraints(),
@@ -42,15 +46,14 @@ internal class AffectedFileRow : GridPane() {
       ColumnConstraints(),
     )
 
-    padding = Insets(0.0, ROW_PADDING, 0.0, ROW_PADDING)
-
+    // Content
     add(mnemonicTile, 0, 0)
     add(Region().apply { prefWidth(CONTENT_SPACING) }, 1, 0)
     add(filePathLabel, 2, 0)
   }
 
-  fun setAffectedFile(affectedFile: AffectedFile) {
-    mnemonicTile.setAffectedFile(affectedFile)
-    filePathLabel.text = affectedFile.filename
+  fun setData(data: FileCell) {
+    mnemonicTile.setAffectedFile(data.affectedFile)
+    filePathLabel.text = data.affectedFile.filename
   }
 }

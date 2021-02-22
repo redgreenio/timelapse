@@ -7,8 +7,14 @@ import javafx.scene.layout.Pane
 import javafx.stage.Stage
 import redgreen.dawn.affectedfiles.affectedFiles
 import redgreen.dawn.affectedfiles.view.javafx.AffectedFilesListView
+import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel
+import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCell
 
 class AffectedFilesDemo : Application() {
+  private val affectedFilesMutableList: MutableList<AffectedFilesCellViewModel> = affectedFiles
+    .map(::FileCell)
+    .toMutableList()
+
   override fun start(primaryStage: Stage) {
     with(primaryStage) {
       title = "Affected Files"
@@ -16,12 +22,12 @@ class AffectedFilesDemo : Application() {
       val rootScene = Scene(root, 600.0, 600.0)
       loadCssFiles(rootScene)
 
-      root.apply {
-        val affectedFiles = FXCollections.observableList(affectedFiles.toMutableList())
-        val affectedFilesListView = AffectedFilesListView(affectedFiles)
-        affectedFilesListView.prefWidthProperty().bind(this.widthProperty())
-        children.add(affectedFilesListView)
-      }
+      affectedFilesMutableList.add(0, AffectedFilesCellViewModel.DirectoryCell("guava/src/com/google/common/collect/"))
+      val affectedFiles = FXCollections.observableList(affectedFilesMutableList)
+      val affectedFilesListView = AffectedFilesListView(affectedFiles)
+      affectedFilesListView.prefWidthProperty().bind(root.widthProperty())
+
+      root.children.add(affectedFilesListView)
 
       scene = rootScene
       show()
