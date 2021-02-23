@@ -21,7 +21,7 @@ import redgreen.dawn.affectedfiles.model.AffectedFile.New
 
 class MnemonicTile : Group() {
   private companion object {
-    private const val WIDTH = 24.0
+    private const val WIDTH = 20.0
     private const val HEIGHT = WIDTH
 
     private const val LETTER_NEW = 'N'

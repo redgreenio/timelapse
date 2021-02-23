@@ -20,14 +20,14 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCel
 
 internal class AffectedFileRow : GridPane() {
   companion object {
-    private const val ROW_HEIGHT = 32.0
+    private const val ROW_HEIGHT = 28.0
     private const val ROW_PADDING_LEFT = 4.0
     private const val ROW_PADDING_RIGHT = 8.0
 
-    private const val CONTENT_SPACING = 8.0
+    private const val CONTENT_SPACING = 4.0
 
     private const val FONT_FAMILY = "Roboto"
-    private const val FONT_SIZE = 13.0
+    private const val FONT_SIZE = 12.0
   }
 
   // TODO Have one instance of the font?

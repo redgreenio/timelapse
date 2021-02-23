@@ -18,7 +18,7 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.Directo
 
 class AffectedDirectoryRow : GridPane() {
   companion object {
-    private const val ROW_HEIGHT = 32.0
+    private const val ROW_HEIGHT = 28.0
 
     private const val HEX_BACKGROUND = "0xC4C4C4"
 
