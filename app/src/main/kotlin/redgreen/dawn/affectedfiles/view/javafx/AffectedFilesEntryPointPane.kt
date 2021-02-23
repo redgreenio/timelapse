@@ -1,13 +1,42 @@
-package toys
+package redgreen.dawn.affectedfiles.view.javafx
 
+import io.reactivex.rxjava3.disposables.Disposable
+import javafx.collections.FXCollections
+import javafx.scene.layout.Pane
+import redgreen.dawn.affectedfiles.contract.AffectedFilesProps
 import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
 import redgreen.dawn.affectedfiles.model.AffectedFile.New
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import redgreen.dawn.architecture.Disposer
+import redgreen.dawn.architecture.EntryPoint
+import redgreen.dawn.architecture.RxJava3Disposer
 
-internal val affectedFilesViewModels = listOf(
+class AffectedFilesEntryPointPane : Pane(),
+  EntryPoint<AffectedFilesProps>,
+  Disposer<Disposable> by RxJava3Disposer() {
+
+  override fun mount(props: AffectedFilesProps) {
+    val parent = this
+    val affectedFilesListView = AffectedFilesListView().apply {
+      items = FXCollections.observableList(affectedFilesViewModels)
+      prefWidthProperty().bind(parent.widthProperty())
+      prefHeightProperty().bind(parent.heightProperty())
+    }
+    children.add(affectedFilesListView)
+
+    props.contextChanges.subscribe { println(it) }.collect()
+  }
+
+  override fun unmount() {
+    dispose()
+  }
+}
+
+// TODO: 24/02/21 Remove this and replace with actual logic
+private val affectedFilesViewModels = listOf(
   DirectoryCell("guava/src/com/google/common/collect/"),
   FileCell(Modified("Collections2.java", 0, 443)),
   FileCell(Modified("Multimaps.java", 4, 0)),

@@ -87,11 +87,13 @@ tasks {
   compileKotlin {
     kotlinOptions.jvmTarget = "15"
     kotlinOptions.useIR = useIRBackend
+    kotlinOptions.freeCompilerArgs = listOf("-Xinline-classes")
   }
 
   compileTestKotlin {
     kotlinOptions.jvmTarget = "15"
     kotlinOptions.useIR = useIRBackend
+    kotlinOptions.freeCompilerArgs = listOf("-Xinline-classes")
   }
 
   test {

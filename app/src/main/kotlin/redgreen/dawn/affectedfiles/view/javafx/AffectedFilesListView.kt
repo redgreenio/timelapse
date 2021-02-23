@@ -1,7 +1,6 @@
 package redgreen.dawn.affectedfiles.view.javafx
 
 import javafx.beans.InvalidationListener
-import javafx.collections.ObservableList
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.ListView
@@ -10,9 +9,7 @@ import javafx.util.Callback
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 
 /* Courtesy: https://dlsc.com/2017/09/07/javafx-tip-28-pretty-list-view/ */
-internal class AffectedFilesListView(
-  affectedFiles: ObservableList<AffectedFileCellViewModel>
-) : ListView<AffectedFileCellViewModel>(affectedFiles) {
+internal class AffectedFilesListView : ListView<AffectedFileCellViewModel>() {
   companion object {
     private const val CSS_CLASS_LIST_VIEW = "affected-files-list-view"
     private const val CSS_CLASS_SCROLL_BAR = "affected-files-scroll-bar"
