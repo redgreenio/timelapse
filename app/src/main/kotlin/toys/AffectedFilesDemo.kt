@@ -15,7 +15,7 @@ class AffectedFilesDemo : Application() {
 
   override fun start(primaryStage: Stage) {
     with(primaryStage) {
-      title = "Affected Files"
+      title = "Demo"
       val root = Pane()
       val rootScene = Scene(root, 500.0, 600.0)
       loadCssFiles(rootScene)
