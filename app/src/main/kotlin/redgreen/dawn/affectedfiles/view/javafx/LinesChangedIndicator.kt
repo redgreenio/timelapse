@@ -29,6 +29,8 @@ class LinesChangedIndicator : Group() {
     private const val PADDING_HORIZONTAL = 5.0
 
     private const val CORNER_RADIUS = 1.5
+
+    private const val CSS_CLASS_INDICATOR_LABEL = "indicator-label"
   }
 
   private val linesChangedFont by fastLazy { Font.font(FONT_FAMILY, FontWeight.NORMAL, FONT_SIZE) }
@@ -47,10 +49,10 @@ class LinesChangedIndicator : Group() {
 
   private fun newLabel(backgroundHex: String): Label {
     return Label().apply {
+      styleClass.add(CSS_CLASS_INDICATOR_LABEL)
       font = linesChangedFont
       background = Background(BackgroundFill(Color.web(backgroundHex), CornerRadii(CORNER_RADIUS), Insets.EMPTY))
       padding = Insets(PADDING_VERTICAL, PADDING_HORIZONTAL, PADDING_VERTICAL, PADDING_HORIZONTAL)
-      textFill = Color.WHITE
     }
   }
 

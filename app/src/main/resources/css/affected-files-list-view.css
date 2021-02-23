@@ -69,3 +69,8 @@
 .affected-files-list-view .list-cell:selected .label {
   -fx-text-fill: black;
 }
+
+.affected-files-list-view .list-cell .indicator-label,
+.affected-files-list-view .list-cell:selected .indicator-label {
+  -fx-text-fill: white;
+}
