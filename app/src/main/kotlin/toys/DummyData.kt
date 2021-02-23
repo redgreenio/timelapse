@@ -1,4 +1,4 @@
-package redgreen.dawn.affectedfiles
+package toys
 
 import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified

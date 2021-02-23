@@ -5,7 +5,6 @@ import javafx.collections.FXCollections
 import javafx.scene.Scene
 import javafx.scene.layout.Pane
 import javafx.stage.Stage
-import redgreen.dawn.affectedfiles.affectedFilesViewModels
 import redgreen.dawn.affectedfiles.view.javafx.AffectedFilesListView
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 
