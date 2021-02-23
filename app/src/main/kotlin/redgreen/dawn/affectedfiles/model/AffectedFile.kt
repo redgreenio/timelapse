@@ -7,6 +7,11 @@ sealed class AffectedFile(open val filePath: String) {
     filePath.substring(filePath.lastIndexOf('/') + 1)
   }
 
+  val directoryPath: String by lazy {
+    val path = filePath.substring(0, filePath.lastIndexOf('/') + 1)
+    if (path == "") "/" else path
+  }
+
   data class New(
     override val filePath: String,
     val insertions: Int

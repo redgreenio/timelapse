@@ -17,7 +17,7 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
  * 4. If file cells of the same type don't have deletions, sort them in descending order based on insertions.
  * 5. If file cells of the same type have similar deletions, sort them in ascending order based on file names.
  */
-class FileCellComparator : Comparator<FileCell> {
+object FileCellComparator : Comparator<FileCell> {
   private val affectedFileRanks = mapOf(
     New::class to 1,
     Modified::class to 2,

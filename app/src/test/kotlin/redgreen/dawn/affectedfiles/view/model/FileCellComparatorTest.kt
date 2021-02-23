@@ -9,8 +9,6 @@ import redgreen.dawn.affectedfiles.model.AffectedFile.New
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
 internal class FileCellComparatorTest {
-  private val comparator = FileCellComparator()
-
   @Test
   fun `sort file cells in the following order (NEW) - (Modified) - (Moved) - (Deleted)`() {
     // given
@@ -22,7 +20,7 @@ internal class FileCellComparatorTest {
     ).toMutableList()
 
     // when
-    val sortedFileCells = fileCells.sortedWith(comparator)
+    val sortedFileCells = fileCells.sortedWith(FileCellComparator)
 
     // then
     assertThat(sortedFileCells)
@@ -46,7 +44,7 @@ internal class FileCellComparatorTest {
     ).toMutableList()
 
     // when
-    val sortedFileCells = fileCellsOfSameType.sortedWith(comparator)
+    val sortedFileCells = fileCellsOfSameType.sortedWith(FileCellComparator)
 
     // then
     assertThat(sortedFileCells)
@@ -74,7 +72,7 @@ internal class FileCellComparatorTest {
     ).toMutableList()
 
     // when
-    val sortedFileCells = fileCellsOfDifferentTypes.sortedWith(comparator)
+    val sortedFileCells = fileCellsOfDifferentTypes.sortedWith(FileCellComparator)
 
     // then
     assertThat(sortedFileCells)
@@ -101,7 +99,7 @@ internal class FileCellComparatorTest {
     ).toMutableList()
 
     // when
-    val sortedFileCells = fileCellsWithSimilarChangeCount.sortedWith(comparator)
+    val sortedFileCells = fileCellsWithSimilarChangeCount.sortedWith(FileCellComparator)
 
     // then
     assertThat(sortedFileCells)
@@ -123,7 +121,7 @@ internal class FileCellComparatorTest {
     ).toMutableList()
 
     // when
-    val sortedFileCells = fileCellsWithSimilarChangeCount.sortedWith(comparator)
+    val sortedFileCells = fileCellsWithSimilarChangeCount.sortedWith(FileCellComparator)
 
     // then
     assertThat(sortedFileCells)
@@ -145,7 +143,7 @@ internal class FileCellComparatorTest {
     ).toMutableList()
 
     // when
-    val sortedFileCells = fileCellsWithSimilarChangeCount.sortedWith(comparator)
+    val sortedFileCells = fileCellsWithSimilarChangeCount.sortedWith(FileCellComparator)
 
     // then
     assertThat(sortedFileCells)
