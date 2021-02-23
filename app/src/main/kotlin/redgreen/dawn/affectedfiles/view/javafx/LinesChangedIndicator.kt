@@ -14,8 +14,8 @@ import javafx.scene.text.FontWeight
 
 class LinesChangedIndicator : Group() {
   companion object {
-    private const val HEX_INSERTIONS = "#4CAF50"
-    private const val HEX_DELETIONS = "#F44336"
+    private const val HEX_INSERTIONS = "#629749"
+    private const val HEX_DELETIONS = "#F05545"
 
     private const val HAIR_SPACE = ' '
 

@@ -29,10 +29,10 @@ class MnemonicTile : Group() {
     private const val LETTER_MOVED = 'V'
     private const val LETTER_DELETED = 'D'
 
-    private const val HEX_NEW = "0x4CAF50"
+    private const val HEX_NEW = "0x629749"
     private const val HEX_MODIFIED = "0x3B9DFF"
     private const val HEX_MOVED = "0xAB47BC"
-    private const val HEX_DELETED = "0xF44336"
+    private const val HEX_DELETED = "0xF05545"
 
     private const val FONT_FAMILY = "Roboto Black"
     private const val FONT_SIZE = 12.0
