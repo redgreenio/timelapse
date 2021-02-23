@@ -1,6 +1,6 @@
 package redgreen.dawn.affectedfiles.view.javafx
 
-import io.redgreen.timelapse.foo.fastLazy
+import java.lang.ref.WeakReference
 import javafx.scene.control.ListCell
 import javafx.scene.layout.Region
 import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel
@@ -8,9 +8,8 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.Directo
 import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCell
 
 internal class AffectedFilesListCell : ListCell<AffectedFilesCellViewModel>() {
-  // TODO: 22/02/21 Use weak references for these, otherwise the unused nodes are going to linger forever...
-  private val affectedDirectoryRow by fastLazy { AffectedDirectoryRow() }
-  private val affectedFileRow by fastLazy { AffectedFileRow() }
+  private var affectedDirectoryRowReference = WeakReference(AffectedDirectoryRow())
+  private var affectedFileRowReference = WeakReference(AffectedFileRow())
 
   override fun updateItem(cellViewModel: AffectedFilesCellViewModel?, empty: Boolean) {
     super.updateItem(cellViewModel, empty)
@@ -21,16 +20,18 @@ internal class AffectedFilesListCell : ListCell<AffectedFilesCellViewModel>() {
     }
   }
 
-  private fun cellFor(cellViewModel: AffectedFilesCellViewModel): Region =
-    when (cellViewModel) {
-      is DirectoryCell -> {
-        affectedDirectoryRow.setData(cellViewModel)
-        affectedDirectoryRow
-      }
+  private fun cellFor(viewModel: AffectedFilesCellViewModel): Region = when (viewModel) {
+    is DirectoryCell -> existingOrNewDirectoryRow().apply { setData(viewModel) }
+    is FileCell -> existingOrNewFileRow().apply { setData(viewModel) }
+  }
 
-      is FileCell -> {
-        affectedFileRow.setData(cellViewModel)
-        affectedFileRow
-      }
+  private fun existingOrNewDirectoryRow(): AffectedDirectoryRow =
+    affectedDirectoryRowReference.get() ?: AffectedDirectoryRow().apply {
+      affectedDirectoryRowReference = WeakReference(this)
+    }
+
+  private fun existingOrNewFileRow(): AffectedFileRow =
+    affectedFileRowReference.get() ?: AffectedFileRow().apply {
+      affectedFileRowReference = WeakReference(this)
     }
 }
