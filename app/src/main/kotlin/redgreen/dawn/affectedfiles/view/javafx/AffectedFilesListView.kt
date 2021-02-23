@@ -7,12 +7,12 @@ import javafx.scene.Node
 import javafx.scene.control.ListView
 import javafx.scene.control.ScrollBar
 import javafx.util.Callback
-import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel
+import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 
 /* Courtesy: https://dlsc.com/2017/09/07/javafx-tip-28-pretty-list-view/ */
 internal class AffectedFilesListView(
-  affectedFiles: ObservableList<AffectedFilesCellViewModel>
-) : ListView<AffectedFilesCellViewModel>(affectedFiles) {
+  affectedFiles: ObservableList<AffectedFileCellViewModel>
+) : ListView<AffectedFileCellViewModel>(affectedFiles) {
   companion object {
     private const val CSS_CLASS_LIST_VIEW = "dawn-list-view"
     private const val CSS_CLASS_SCROLL_BAR = "dawn-scroll-bar"

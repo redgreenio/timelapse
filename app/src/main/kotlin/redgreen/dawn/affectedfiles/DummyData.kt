@@ -3,8 +3,8 @@ package redgreen.dawn.affectedfiles
 import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.New
-import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.DirectoryCell
-import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCell
+import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
+import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
 internal val affectedFilesViewModels = listOf(
   DirectoryCell("guava/src/com/google/common/collect/"),

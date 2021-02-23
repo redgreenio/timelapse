@@ -7,10 +7,10 @@ import javafx.scene.layout.Pane
 import javafx.stage.Stage
 import redgreen.dawn.affectedfiles.affectedFilesViewModels
 import redgreen.dawn.affectedfiles.view.javafx.AffectedFilesListView
-import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel
+import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 
 class AffectedFilesDemo : Application() {
-  private val affectedFilesViewModelsMutableList: MutableList<AffectedFilesCellViewModel> = affectedFilesViewModels
+  private val affectedFileViewModelsMutableList: MutableList<AffectedFileCellViewModel> = affectedFilesViewModels
     .toMutableList()
 
   override fun start(primaryStage: Stage) {
@@ -21,7 +21,7 @@ class AffectedFilesDemo : Application() {
       loadCssFiles(rootScene)
 
       val affectedFilesViewModels = FXCollections
-        .observableList(affectedFilesViewModelsMutableList)
+        .observableList(affectedFileViewModelsMutableList)
       val affectedFilesListView = AffectedFilesListView(affectedFilesViewModels)
       affectedFilesListView.prefWidthProperty().bind(root.widthProperty())
       affectedFilesListView.prefHeightProperty().bind(root.heightProperty())

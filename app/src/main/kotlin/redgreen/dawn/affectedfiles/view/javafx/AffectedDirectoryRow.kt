@@ -14,7 +14,7 @@ import javafx.scene.layout.RowConstraints
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
-import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.DirectoryCell
+import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 
 class AffectedDirectoryRow : GridPane() {
   companion object {

@@ -2,12 +2,12 @@ package redgreen.dawn.affectedfiles.view.model
 
 import redgreen.dawn.affectedfiles.model.AffectedFile
 
-sealed class AffectedFilesCellViewModel {
+sealed class AffectedFileCellViewModel {
   data class FileCell(
     val affectedFile: AffectedFile
-  ) : AffectedFilesCellViewModel()
+  ) : AffectedFileCellViewModel()
 
   data class DirectoryCell(
     val path: String
-  ) : AffectedFilesCellViewModel()
+  ) : AffectedFileCellViewModel()
 }

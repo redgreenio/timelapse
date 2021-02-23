@@ -16,7 +16,7 @@ import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
 import redgreen.dawn.affectedfiles.model.AffectedFile.New
-import redgreen.dawn.affectedfiles.view.model.AffectedFilesCellViewModel.FileCell
+import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
 internal class AffectedFileRow : GridPane() {
   companion object {
