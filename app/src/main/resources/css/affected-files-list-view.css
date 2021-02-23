@@ -63,7 +63,7 @@
 }
 
 .affected-files-list-view .list-cell:focused, .list-cell:selected {
-  -fx-background-color: #DEDEDE;
+  -fx-background-color: #FFE07D;
 }
 
 .affected-files-list-view .list-cell:selected .label {
