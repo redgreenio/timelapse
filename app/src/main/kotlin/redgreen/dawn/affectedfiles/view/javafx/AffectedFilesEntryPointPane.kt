@@ -13,6 +13,7 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import redgreen.dawn.architecture.Disposer
 import redgreen.dawn.architecture.EntryPoint
 import redgreen.dawn.architecture.RxJava3Disposer
+import redgreen.dawn.extentions.matchParent
 
 class AffectedFilesEntryPointPane : Pane(),
   EntryPoint<AffectedFilesProps>,
@@ -21,9 +22,8 @@ class AffectedFilesEntryPointPane : Pane(),
   override fun mount(props: AffectedFilesProps) {
     val parent = this
     val affectedFilesListView = AffectedFilesListView().apply {
+      matchParent(parent)
       items = FXCollections.observableList(affectedFilesViewModels)
-      prefWidthProperty().bind(parent.widthProperty())
-      prefHeightProperty().bind(parent.heightProperty())
     }
     children.add(affectedFilesListView)
 
