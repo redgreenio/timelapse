@@ -26,7 +26,7 @@ internal class AffectedFileToCellViewModelMapperTest {
     // then
     assertThat(viewModels)
       .containsExactly(
-        DirectoryCell("module/a/"),
+        DirectoryCell("module/a/", 4),
         FileCell(New("module/a/A.txt", 34)),
         FileCell(Modified("module/a/B.txt", 76, 12)),
         FileCell(Moved("module/a/C.txt", 2, 4)),
@@ -54,13 +54,13 @@ internal class AffectedFileToCellViewModelMapperTest {
     // then
     assertThat(viewModels)
       .containsExactly(
-        DirectoryCell("module/a/"),
+        DirectoryCell("module/a/", 4),
         FileCell(New("module/a/A.txt", 34)),
         FileCell(Modified("module/a/B.txt", 76, 12)),
         FileCell(Moved("module/a/C.txt", 2, 4)),
         FileCell(Deleted("module/a/D.txt", 1)),
 
-        DirectoryCell("module/b/"),
+        DirectoryCell("module/b/", 3),
         FileCell(Modified("module/b/1.txt", 90, 52)),
         FileCell(Modified("module/b/2.txt", 5, 12)),
         FileCell(Deleted("module/b/3.txt", 89)),
@@ -84,7 +84,7 @@ internal class AffectedFileToCellViewModelMapperTest {
     // then
     assertThat(viewModels)
       .containsExactly(
-        DirectoryCell("/"),
+        DirectoryCell("/", 4),
         FileCell(New("A.txt", 34)),
         FileCell(Modified("B.txt", 76, 12)),
         FileCell(Moved("C.txt", 2, 4)),

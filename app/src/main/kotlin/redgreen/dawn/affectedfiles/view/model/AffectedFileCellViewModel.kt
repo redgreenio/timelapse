@@ -8,6 +8,7 @@ sealed class AffectedFileCellViewModel {
   ) : AffectedFileCellViewModel()
 
   data class DirectoryCell(
-    val path: String
+    val path: String,
+    val fileCount: Int
   ) : AffectedFileCellViewModel()
 }

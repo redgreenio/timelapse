@@ -66,7 +66,7 @@ class AffectedFilesLiftOff : LiftOff<AffectedFilesProps, AffectedFilesEntryPoint
 }
 
 private val sample1ViewModels = listOf(
-  DirectoryCell("guava/src/com/google/common/collect/"),
+  DirectoryCell("guava/src/com/google/common/collect/", 9),
   FileCell(Modified("guava/src/com/google/common/collect/Collections2.java", 0, 443)),
   FileCell(Modified("guava/src/com/google/common/collect/Multimaps.java", 4, 0)),
   FileCell(Modified("guava/src/com/google/common/collect/Table.java", 3, 0)),
@@ -77,17 +77,17 @@ private val sample1ViewModels = listOf(
   FileCell(Moved("guava/src/com/google/common/collect/SortedTable.java", 1, 1)),
   FileCell(Deleted("guava/src/com/google/common/collect/SortedMaps.java", 374)),
 
-  DirectoryCell("guava/src/com/google/common/cache/"),
+  DirectoryCell("guava/src/com/google/common/cache/", 1),
   FileCell(Modified("guava/src/com/google/common/cache/CacheBuilder.java", 0, 25)),
 
-  DirectoryCell("guava-tests/test/com/google/common/collect/"),
+  DirectoryCell("guava-tests/test/com/google/common/collect/", 2),
   FileCell(Modified("guava-tests/test/com/google/common/collect/Collections2Test.java", 0, 279)),
   FileCell(Deleted("guava-tests/test/com/google/common/collect/SortedMapsTest.java", 222)),
 
-  DirectoryCell("guava-tests/test/com/google/common/cache/"),
+  DirectoryCell("guava-tests/test/com/google/common/cache/", 1),
   FileCell(New("guava-tests/test/com/google/common/cache/CacheBuilderSpecTest.java", 533)),
 
-  DirectoryCell("guava-gwt/src-super/com/google/common/collect/super/com/google/common/collect/"),
+  DirectoryCell("guava-gwt/src-super/com/google/common/collect/super/com/google/common/collect/", 2),
   FileCell(Modified("guava-gwt/src-super/com/google/common/collect/super/com/google/common/collect/Multimaps.java", 4, 11)),
   FileCell(Modified("guava-gwt/src-super/com/google/common/collect/super/com/google/common/collect/Maps.java", 1, 0)),
 )

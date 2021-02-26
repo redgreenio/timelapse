@@ -13,7 +13,7 @@ object AffectedFileToCellViewModelMapper {
     entries.sortByDescending { it.value.size }
 
     return entries
-      .map { listOf(DirectoryCell(it.key)) + it.value.map(::FileCell).sortedWith(FileCellComparator) }
+      .map { listOf(DirectoryCell(it.key, it.value.size)) + it.value.map(::FileCell).sortedWith(FileCellComparator) }
       .flatten()
   }
 }
