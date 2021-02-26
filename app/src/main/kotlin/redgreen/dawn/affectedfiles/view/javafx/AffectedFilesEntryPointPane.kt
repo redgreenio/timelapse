@@ -21,6 +21,8 @@ class AffectedFilesEntryPointPane : Pane(),
       selectionModel.selectedItemProperty().addListener { _, oldValue, newValue ->
         if (newValue != oldValue && newValue is FileCell) {
           props.fileSelectedCallback(newValue.affectedFile.filePath)
+        } else {
+          skipDirectoryRow(items.indexOf(oldValue), items.indexOf(newValue))
         }
       }
     }
@@ -31,6 +33,19 @@ class AffectedFilesEntryPointPane : Pane(),
         affectedFilesListView.items = FXCollections.observableList(affectedFileCellViewModels)
       }.collect()
       contextChanges.subscribe { println(it) }.collect()
+    }
+  }
+
+  private fun AffectedFilesListView.skipDirectoryRow(
+    previousSelectionIndex: Int,
+    currentSelectionIndex: Int
+  ) {
+    when {
+      currentSelectionIndex > previousSelectionIndex -> selectionModel.selectNext()
+      currentSelectionIndex > 1 -> selectionModel.selectPrevious()
+
+      /* prevent moving the selection to index 0, which is always a directory row */
+      else -> selectionModel.selectNext()
     }
   }
 

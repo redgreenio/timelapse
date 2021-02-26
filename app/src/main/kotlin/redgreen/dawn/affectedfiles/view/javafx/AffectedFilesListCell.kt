@@ -2,6 +2,7 @@ package redgreen.dawn.affectedfiles.view.javafx
 
 import java.lang.ref.WeakReference
 import javafx.scene.control.ListCell
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Region
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
@@ -23,7 +24,13 @@ internal class AffectedFilesListCell(
   }
 
   private fun cellFor(viewModel: AffectedFileCellViewModel): Region = when (viewModel) {
-    is DirectoryCell -> existingOrNewDirectoryRow().apply { setData(viewModel) }
+    is DirectoryCell -> existingOrNewDirectoryRow().apply {
+      setData(viewModel)
+      addEventFilter(MouseEvent.MOUSE_PRESSED) {
+        /* because we don't want directory rows to be clickable :) */
+        it.consume()
+      }
+    }
     is FileCell -> existingOrNewFileRow().apply { setData(viewModel) }
   }
 
