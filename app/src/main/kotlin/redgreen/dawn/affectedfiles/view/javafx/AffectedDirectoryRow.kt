@@ -5,6 +5,7 @@ import javafx.geometry.Insets
 import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.control.OverrunStyle.CENTER_ELLIPSIS
+import javafx.scene.control.Tooltip
 import javafx.scene.layout.Background
 import javafx.scene.layout.BackgroundFill
 import javafx.scene.layout.ColumnConstraints
@@ -33,6 +34,8 @@ internal class AffectedDirectoryRow(
   }
 
   private val directoryPathFont by fastLazy { Font.font(FONT_FAMILY, FontWeight.MEDIUM, FONT_SIZE) }
+
+  private val tooltip by fastLazy { Tooltip() }
 
   private val directoryPathLabel by fastLazy {
     Label().apply {
@@ -63,5 +66,12 @@ internal class AffectedDirectoryRow(
 
   fun setData(data: DirectoryCell) {
     directoryPathLabel.text = data.path
+    setupTooltip(data.path)
+  }
+
+  private fun setupTooltip(directoryPath: String) {
+    Tooltip.uninstall(directoryPathLabel, tooltip)
+    Tooltip.install(directoryPathLabel, tooltip)
+    tooltip.text = directoryPath
   }
 }
