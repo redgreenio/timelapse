@@ -7,8 +7,10 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
-internal class AffectedFilesListCell : ListCell<AffectedFileCellViewModel>() {
-  private var affectedDirectoryRowReference = WeakReference(AffectedDirectoryRow())
+internal class AffectedFilesListCell(
+  private val listView: AffectedFilesListView
+) : ListCell<AffectedFileCellViewModel>() {
+  private var affectedDirectoryRowReference = WeakReference(AffectedDirectoryRow(listView))
   private var affectedFileRowReference = WeakReference(AffectedFileRow())
 
   override fun updateItem(cellViewModel: AffectedFileCellViewModel?, empty: Boolean) {
@@ -26,7 +28,7 @@ internal class AffectedFilesListCell : ListCell<AffectedFileCellViewModel>() {
   }
 
   private fun existingOrNewDirectoryRow(): AffectedDirectoryRow =
-    affectedDirectoryRowReference.get() ?: AffectedDirectoryRow().apply {
+    affectedDirectoryRowReference.get() ?: AffectedDirectoryRow(listView).apply {
       affectedDirectoryRowReference = WeakReference(this)
     }
 

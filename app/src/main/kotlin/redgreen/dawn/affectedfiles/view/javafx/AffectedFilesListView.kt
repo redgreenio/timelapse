@@ -42,7 +42,7 @@ internal class AffectedFilesListView : ListView<AffectedFileCellViewModel>() {
     horizontalScrollbar.visibleProperty().bind(horizontalScrollbar.visibleAmountProperty().isNotEqualTo(0))
 
     stylesheets.add(CSS_FILE)
-    cellFactory = Callback { AffectedFilesListCell() }
+    cellFactory = Callback { AffectedFilesListCell(this) }
     isEditable = false
   }
 
