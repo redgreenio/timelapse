@@ -16,7 +16,9 @@ import javafx.scene.layout.RowConstraints
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
+import redgreen.dawn.affectedfiles.view.model.summarize
 
 internal class AffectedDirectoryRow(
   private val listView: AffectedFilesListView
@@ -51,6 +53,7 @@ internal class AffectedDirectoryRow(
   }
 
   private val fileCountFont by fastLazy { Font.font(FILE_COUNT_FONT_FAMILY, FontWeight.NORMAL, FONT_SIZE) }
+  private val fileCountTooltip by fastLazy { Tooltip() }
   private val fileCountLabel by fastLazy {
     Label().apply {
       font = fileCountFont
@@ -88,13 +91,27 @@ internal class AffectedDirectoryRow(
 
   fun setData(data: DirectoryCell) {
     directoryPathLabel.text = data.path
+    setupDirectoryPathTooltip(data.path)
+
     fileCountLabel.text = data.fileCount.toString()
-    setupTooltip(data.path)
+
+    val directoryCellIndex = listView.items.indexOf(data)
+    val affectedFiles = listView.items
+      .slice(IntRange(directoryCellIndex + 1, directoryCellIndex + data.fileCount))
+    setupFileCountTooltip(affectedFiles)
   }
 
-  private fun setupTooltip(directoryPath: String) {
+  private fun setupDirectoryPathTooltip(directoryPath: String) {
     Tooltip.uninstall(directoryPathLabel, directoryPathTooltip)
     Tooltip.install(directoryPathLabel, directoryPathTooltip)
     directoryPathTooltip.text = directoryPath
+  }
+
+  private fun setupFileCountTooltip(
+    affectedFiles: List<AffectedFileCellViewModel>
+  ) {
+    Tooltip.uninstall(fileCountLabel, fileCountTooltip)
+    Tooltip.install(fileCountLabel, fileCountTooltip)
+    fileCountTooltip.text = affectedFiles.summarize()
   }
 }
