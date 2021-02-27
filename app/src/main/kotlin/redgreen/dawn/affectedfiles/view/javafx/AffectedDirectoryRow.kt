@@ -24,32 +24,52 @@ internal class AffectedDirectoryRow(
   companion object {
     private const val ROW_HEIGHT = 28.0
 
-    private const val HEX_BACKGROUND = "0xC4C4C4"
-
-    private const val PADDING = 8.0
-    private const val GUTTER = 24.0
-
-    private const val FONT_FAMILY = "Roboto Medium"
+    private const val FILE_PATH_FONT_FAMILY = "Roboto Medium"
     private const val FONT_SIZE = 12.0
+    private const val HEX_ROW_BACKGROUND = "0xC4C4C4"
+    private const val ZERO_PADDING = 0.0
+    private const val PADDING = 8.0
+    private const val GUTTER = 38.0
+
+    private const val FILE_COUNT_FONT_FAMILY = "Roboto Black"
+    private const val HEX_FILE_COUNT_FOREGROUND = "0xEFEFEF"
+    private const val HEX_FILE_COUNT_BACKGROUND = "0x8F8F8F"
+    private const val CORNER_RADIUS = 1.5
+    private const val FILE_COUNT_VERTICAL_PADDING = 2.0
+    private const val FILE_COUNT_HORIZONTAL_PADDING = 6.0
   }
 
-  private val directoryPathFont by fastLazy { Font.font(FONT_FAMILY, FontWeight.MEDIUM, FONT_SIZE) }
-
-  private val tooltip by fastLazy { Tooltip() }
-
+  private val directoryPathFont by fastLazy { Font.font(FILE_PATH_FONT_FAMILY, FontWeight.MEDIUM, FONT_SIZE) }
+  private val directoryPathTooltip by fastLazy { Tooltip() }
   private val directoryPathLabel by fastLazy {
     Label().apply {
       font = directoryPathFont
       textOverrun = CENTER_ELLIPSIS
+      padding = Insets(ZERO_PADDING, PADDING, ZERO_PADDING, ZERO_PADDING)
       prefWidthProperty().bind(listView.widthProperty().subtract(GUTTER))
+    }
+  }
+
+  private val fileCountFont by fastLazy { Font.font(FILE_COUNT_FONT_FAMILY, FontWeight.NORMAL, FONT_SIZE) }
+  private val fileCountLabel by fastLazy {
+    Label().apply {
+      font = fileCountFont
+      textFill = Color.web(HEX_FILE_COUNT_FOREGROUND)
+      padding = Insets(
+        FILE_COUNT_VERTICAL_PADDING,
+        FILE_COUNT_HORIZONTAL_PADDING,
+        FILE_COUNT_VERTICAL_PADDING,
+        FILE_COUNT_HORIZONTAL_PADDING
+      )
+      background = Background(BackgroundFill(Color.web(HEX_FILE_COUNT_BACKGROUND), CornerRadii(CORNER_RADIUS), Insets.EMPTY))
     }
   }
 
   init {
     prefHeight = ROW_HEIGHT
-    background = Background(BackgroundFill(Color.web(HEX_BACKGROUND), CornerRadii.EMPTY, Insets.EMPTY))
+    background = Background(BackgroundFill(Color.web(HEX_ROW_BACKGROUND), CornerRadii.EMPTY, Insets.EMPTY))
 
-    padding = Insets(0.0, PADDING, 0.0, PADDING)
+    padding = Insets(ZERO_PADDING, PADDING, ZERO_PADDING, PADDING)
 
     // Constraints
     rowConstraints.add(
@@ -57,21 +77,24 @@ internal class AffectedDirectoryRow(
     )
 
     columnConstraints.addAll(
+      ColumnConstraints(),
       ColumnConstraints()
     )
 
     // Content
     add(directoryPathLabel, 0, 0)
+    add(fileCountLabel, 1, 0)
   }
 
   fun setData(data: DirectoryCell) {
     directoryPathLabel.text = data.path
+    fileCountLabel.text = data.fileCount.toString()
     setupTooltip(data.path)
   }
 
   private fun setupTooltip(directoryPath: String) {
-    Tooltip.uninstall(directoryPathLabel, tooltip)
-    Tooltip.install(directoryPathLabel, tooltip)
-    tooltip.text = directoryPath
+    Tooltip.uninstall(directoryPathLabel, directoryPathTooltip)
+    Tooltip.install(directoryPathLabel, directoryPathTooltip)
+    directoryPathTooltip.text = directoryPath
   }
 }
