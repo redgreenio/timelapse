@@ -4,13 +4,12 @@ import javafx.geometry.Insets
 import javafx.scene.layout.Background
 import javafx.scene.layout.BackgroundFill
 import javafx.scene.layout.CornerRadii
-import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.scene.paint.Color
 
 private const val CORNER_RADIUS = 1.5
 
-fun Region.matchParent(parent: Pane) {
+fun Region.matchParent(parent: Region) {
   this.prefWidthProperty().bind(parent.widthProperty())
   this.prefHeightProperty().bind(parent.heightProperty())
 }

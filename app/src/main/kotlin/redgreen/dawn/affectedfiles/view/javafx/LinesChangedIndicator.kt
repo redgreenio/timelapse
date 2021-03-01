@@ -6,7 +6,6 @@ import javafx.scene.Group
 import javafx.scene.control.Label
 import javafx.scene.layout.HBox
 import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
 import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
 class LinesChangedIndicator : Group() {
@@ -28,7 +27,7 @@ class LinesChangedIndicator : Group() {
     private const val CSS_CLASS_INDICATOR_LABEL = "indicator-label"
   }
 
-  private val linesChangedFont by fastLazy { Font.font(FONT_FAMILY, FontWeight.NORMAL, FONT_SIZE) }
+  private val linesChangedFont by fastLazy { Font.font(FONT_FAMILY, FONT_SIZE) }
 
   private val deletionsLabel = newLabel(HEX_DELETIONS)
   private val insertionsLabel = newLabel(HEX_INSERTIONS)

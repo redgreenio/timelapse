@@ -12,7 +12,6 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.RowConstraints
 import javafx.scene.paint.Color
 import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.summarize
@@ -38,7 +37,7 @@ internal class AffectedDirectoryRow(
     private const val FILE_COUNT_HORIZONTAL_PADDING = 6.0
   }
 
-  private val directoryPathFont by fastLazy { Font.font(FILE_PATH_FONT_FAMILY, FontWeight.MEDIUM, FONT_SIZE) }
+  private val directoryPathFont by fastLazy { Font.font(FILE_PATH_FONT_FAMILY, FONT_SIZE) }
   private val directoryPathTooltip by fastLazy { Tooltip() }
   private val directoryPathLabel by fastLazy {
     Label().apply {
@@ -49,7 +48,7 @@ internal class AffectedDirectoryRow(
     }
   }
 
-  private val fileCountFont by fastLazy { Font.font(FILE_COUNT_FONT_FAMILY, FontWeight.NORMAL, FONT_SIZE) }
+  private val fileCountFont by fastLazy { Font.font(FILE_COUNT_FONT_FAMILY, FONT_SIZE) }
   private val fileCountTooltip by fastLazy { Tooltip() }
   private val fileCountLabel by fastLazy {
     Label().apply {

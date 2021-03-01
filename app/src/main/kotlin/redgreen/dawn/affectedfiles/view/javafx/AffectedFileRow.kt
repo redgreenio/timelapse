@@ -11,7 +11,6 @@ import javafx.scene.layout.Priority
 import javafx.scene.layout.Region
 import javafx.scene.layout.RowConstraints
 import javafx.scene.text.Font
-import javafx.scene.text.FontWeight
 import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
@@ -31,7 +30,7 @@ internal class AffectedFileRow : GridPane() {
   }
 
   // TODO Have one instance of the font?
-  private val filePathFont by fastLazy { Font.font(FONT_FAMILY, FontWeight.NORMAL, FONT_SIZE) }
+  private val filePathFont by fastLazy { Font.font(FONT_FAMILY, FONT_SIZE) }
 
   private val mnemonicTile by fastLazy { MnemonicTile() }
   private val filePathLabel by fastLazy { Label().apply { font = filePathFont; minWidth = USE_PREF_SIZE } }
