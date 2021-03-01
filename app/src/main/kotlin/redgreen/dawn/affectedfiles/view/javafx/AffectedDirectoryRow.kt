@@ -15,6 +15,7 @@ import javafx.scene.text.Font
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.summarize
+import redgreen.dawn.extentions.backgroundFill
 import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
 internal class AffectedDirectoryRow(
@@ -67,7 +68,7 @@ internal class AffectedDirectoryRow(
 
   init {
     prefHeight = ROW_HEIGHT
-    backgroundFillRoundedCorners(HEX_ROW_BACKGROUND)
+    backgroundFill(HEX_ROW_BACKGROUND)
 
     padding = Insets(ZERO_PADDING, PADDING, ZERO_PADDING, PADDING)
 

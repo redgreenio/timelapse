@@ -74,3 +74,8 @@
 .affected-files-list-view .list-cell:selected .indicator-label {
   -fx-text-fill: white;
 }
+
+.affected-files-list-view {
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}

@@ -14,6 +14,10 @@ fun Region.matchParent(parent: Region) {
   this.prefHeightProperty().bind(parent.heightProperty())
 }
 
-fun Region.backgroundFillRoundedCorners(hexColor: String) {
-  this.background = Background(BackgroundFill(Color.web(hexColor), CornerRadii(CORNER_RADIUS), Insets.EMPTY))
+fun Region.backgroundFillRoundedCorners(hexColor: String, cornerRadius: Double = CORNER_RADIUS) {
+  this.background = Background(BackgroundFill(Color.web(hexColor), CornerRadii(cornerRadius), Insets.EMPTY))
+}
+
+fun Region.backgroundFill(hexColor: String) {
+  backgroundFillRoundedCorners(hexColor, 0.0)
 }
