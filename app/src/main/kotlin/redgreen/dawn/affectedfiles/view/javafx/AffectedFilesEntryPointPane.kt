@@ -27,10 +27,16 @@ class AffectedFilesEntryPointPane : TitledParent(),
       }
     }
 
-    setContent("Affected files", affectedFilesListView)
+    setContent("Affected files (none)", affectedFilesListView)
 
     with(props) {
       viewModelChanges.subscribe { affectedFileCellViewModels ->
+        val countText = if (affectedFileCellViewModels.isNotEmpty()) {
+          "${affectedFileCellViewModels.size - 1}"
+        } else {
+          "none"
+        }
+        setTitle("Affected files ($countText)")
         affectedFilesListView.items = FXCollections.observableList(affectedFileCellViewModels)
       }.collect()
       contextChanges.subscribe { println(it) }.collect()

@@ -37,6 +37,10 @@ open class TitledParent : GridPane() {
     titleLabel.prefWidthProperty().bind(column.widthProperty())
   }
 
+  fun setTitle(title: String) {
+    titleLabel.text = title
+  }
+
   fun setContent(title: String, content: Node) {
     addRow(0, column)
 
