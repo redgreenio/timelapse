@@ -17,3 +17,7 @@
   -fx-font-family: 'Roboto Bold', sans-serif;
   src: url('../fonts/roboto/Roboto-Bold.ttf');
 }
+
+.text {
+  -fx-font-smoothing-type: gray; /* force anti-aliasing */
+}
