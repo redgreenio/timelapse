@@ -1,13 +1,8 @@
 package redgreen.dawn.affectedfiles.view.javafx
 
-import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.Group
-import javafx.scene.layout.Background
-import javafx.scene.layout.BackgroundFill
-import javafx.scene.layout.CornerRadii
 import javafx.scene.layout.StackPane
-import javafx.scene.paint.Color
 import javafx.scene.paint.Color.WHITE
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight.BLACK
@@ -18,6 +13,7 @@ import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
 import redgreen.dawn.affectedfiles.model.AffectedFile.New
+import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
 class MnemonicTile : Group() {
   private companion object {
@@ -36,8 +32,6 @@ class MnemonicTile : Group() {
 
     private const val FONT_FAMILY = "Roboto Black"
     private const val FONT_SIZE = 12.0
-
-    private const val CORNER_RADIUS = 1.5
   }
 
   private val mnemonicLetterText = Text().apply {
@@ -64,15 +58,7 @@ class MnemonicTile : Group() {
       is Deleted -> LETTER_DELETED to HEX_DELETED
     }
 
-    setMnemonicChar(letter)
-    setBackgroundFill(hexColor)
-  }
-
-  private fun setMnemonicChar(letter: Char) {
     mnemonicLetterText.text = "$letter"
-  }
-
-  private fun setBackgroundFill(hexColor: String) {
-    mnemonicContainer.background = Background(BackgroundFill(Color.web(hexColor), CornerRadii(CORNER_RADIUS), Insets.EMPTY))
+    mnemonicContainer.backgroundFillRoundedCorners(hexColor)
   }
 }

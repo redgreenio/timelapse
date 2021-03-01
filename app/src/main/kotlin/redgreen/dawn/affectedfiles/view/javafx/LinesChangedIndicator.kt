@@ -4,13 +4,10 @@ import io.redgreen.timelapse.foo.fastLazy
 import javafx.geometry.Insets
 import javafx.scene.Group
 import javafx.scene.control.Label
-import javafx.scene.layout.Background
-import javafx.scene.layout.BackgroundFill
-import javafx.scene.layout.CornerRadii
 import javafx.scene.layout.HBox
-import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import javafx.scene.text.FontWeight
+import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
 class LinesChangedIndicator : Group() {
   companion object {
@@ -27,8 +24,6 @@ class LinesChangedIndicator : Group() {
 
     private const val PADDING_VERTICAL = 1.4
     private const val PADDING_HORIZONTAL = 5.0
-
-    private const val CORNER_RADIUS = 1.5
 
     private const val CSS_CLASS_INDICATOR_LABEL = "indicator-label"
   }
@@ -51,8 +46,9 @@ class LinesChangedIndicator : Group() {
     return Label().apply {
       styleClass.add(CSS_CLASS_INDICATOR_LABEL)
       font = linesChangedFont
-      background = Background(BackgroundFill(Color.web(backgroundHex), CornerRadii(CORNER_RADIUS), Insets.EMPTY))
       padding = Insets(PADDING_VERTICAL, PADDING_HORIZONTAL, PADDING_VERTICAL, PADDING_HORIZONTAL)
+
+      backgroundFillRoundedCorners(backgroundHex)
     }
   }
 

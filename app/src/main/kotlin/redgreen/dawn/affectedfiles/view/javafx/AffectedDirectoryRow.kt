@@ -6,10 +6,7 @@ import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.control.OverrunStyle.CENTER_ELLIPSIS
 import javafx.scene.control.Tooltip
-import javafx.scene.layout.Background
-import javafx.scene.layout.BackgroundFill
 import javafx.scene.layout.ColumnConstraints
-import javafx.scene.layout.CornerRadii
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.RowConstraints
@@ -19,6 +16,7 @@ import javafx.scene.text.FontWeight
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.summarize
+import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
 internal class AffectedDirectoryRow(
   private val listView: AffectedFilesListView
@@ -36,7 +34,6 @@ internal class AffectedDirectoryRow(
     private const val FILE_COUNT_FONT_FAMILY = "Roboto Black"
     private const val HEX_FILE_COUNT_FOREGROUND = "0xEFEFEF"
     private const val HEX_FILE_COUNT_BACKGROUND = "0x8F8F8F"
-    private const val CORNER_RADIUS = 1.5
     private const val FILE_COUNT_VERTICAL_PADDING = 2.0
     private const val FILE_COUNT_HORIZONTAL_PADDING = 6.0
   }
@@ -64,13 +61,14 @@ internal class AffectedDirectoryRow(
         FILE_COUNT_VERTICAL_PADDING,
         FILE_COUNT_HORIZONTAL_PADDING
       )
-      background = Background(BackgroundFill(Color.web(HEX_FILE_COUNT_BACKGROUND), CornerRadii(CORNER_RADIUS), Insets.EMPTY))
+
+      backgroundFillRoundedCorners(HEX_FILE_COUNT_BACKGROUND)
     }
   }
 
   init {
     prefHeight = ROW_HEIGHT
-    background = Background(BackgroundFill(Color.web(HEX_ROW_BACKGROUND), CornerRadii.EMPTY, Insets.EMPTY))
+    backgroundFillRoundedCorners(HEX_ROW_BACKGROUND)
 
     padding = Insets(ZERO_PADDING, PADDING, ZERO_PADDING, PADDING)
 
