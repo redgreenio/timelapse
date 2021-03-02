@@ -1,2 +1,8 @@
 rootProject.name = "timelapse"
-include("app", "visuals", "visuals-demo", "fixtures:library")
+include(
+  "app",
+  "visuals",
+  "visuals-demo",
+  "fixtures:library",
+  "design"
+)

@@ -32,6 +32,7 @@ object DependencyVersions {
 
 dependencies {
   implementation(project(":visuals"))
+  implementation(project(":design"))
 
   implementation(kotlin("stdlib-jdk8"))
   implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")

@@ -1,5 +1,6 @@
 package toys.lliftoff
 
+import io.redgreen.design.DesignSystem
 import io.redgreen.timelapse.foo.fastLazy
 import javafx.application.Application
 import javafx.geometry.Dimension2D
@@ -24,8 +25,9 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     val size = howBig()
     val root = HBox()
     val content = if (debug) MaterialGridPane() else Pane()
+
     val scenePane = Scene(root, size.width + PROPS_UI_WIDTH, size.height).apply {
-      loadCssFiles(this)
+      DesignSystem.initialize(this)
     }
 
     entryPoint.mount(props())
@@ -71,9 +73,4 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
   abstract fun entryPoint(): E
   abstract fun props(): P
   abstract fun propsUi(): Region
-
-  private fun loadCssFiles(scene: Scene) {
-    val cssUri = LiftOff::class.java.getResource("/css/design/fonts.css").toExternalForm()
-    scene.stylesheets.add(cssUri)
-  }
 }
