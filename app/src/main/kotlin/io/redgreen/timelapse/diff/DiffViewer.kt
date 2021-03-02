@@ -7,7 +7,7 @@ import javafx.scene.web.WebView
 
 class DiffViewer : StackPane() {
   companion object {
-    private const val DEFAULT_FONT = "/fonts/FiraCode-Regular.ttf"
+    private const val DEFAULT_FONT = "/fonts/fira-code/FiraCode-Regular.ttf"
     private const val DEFAULT_FONT_SIZE = 13.0
   }
 
