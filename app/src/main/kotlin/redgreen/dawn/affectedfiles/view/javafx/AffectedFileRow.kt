@@ -2,7 +2,6 @@ package redgreen.dawn.affectedfiles.view.javafx
 
 import io.redgreen.timelapse.foo.fastLazy
 import javafx.geometry.HPos
-import javafx.geometry.Insets
 import javafx.geometry.VPos
 import javafx.scene.control.Label
 import javafx.scene.layout.ColumnConstraints
@@ -10,7 +9,6 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.Region
 import javafx.scene.layout.RowConstraints
-import javafx.scene.text.Font
 import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
@@ -19,51 +17,34 @@ import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
 internal class AffectedFileRow : GridPane() {
   companion object {
+    private const val CSS_FILE = "/css/affected-files/affected-file-row.css"
+
+    private const val CSS_CLASS_FILE_ROW = "file-row"
+    private const val CSS_CLASS_SPACER = "spacer"
+    private const val CSS_CLASS_FILENAME = "filename"
+
+    /**
+     * This value should also be changed in the associated CSS file. This value used for row constraints can't be set
+     * from CSS (only from FXML).
+     */
     private const val ROW_HEIGHT = 28.0
-    private const val ROW_PADDING_LEFT = 4.0
-    private const val ROW_PADDING_RIGHT = 8.0
-
-    private const val CONTENT_SPACING = 4.0
-
-    private const val FONT_FAMILY = "Roboto"
-    private const val FONT_SIZE = 12.0
   }
 
-  // TODO Have one instance of the font?
-  private val filePathFont by fastLazy { Font.font(FONT_FAMILY, FONT_SIZE) }
-
   private val mnemonicTile by fastLazy { MnemonicTile() }
-  private val filePathLabel by fastLazy { Label().apply { font = filePathFont; minWidth = USE_PREF_SIZE } }
+  private val filenameLabel by fastLazy { Label().apply { styleClass.add(CSS_CLASS_FILENAME) } }
   private val linesChangedIndicator by fastLazy { LinesChangedIndicator() }
 
   init {
-    prefHeight = ROW_HEIGHT
-    padding = Insets(0.0, ROW_PADDING_RIGHT, 0.0, ROW_PADDING_LEFT)
-
-    // Constraints
-    rowConstraints.add(
-      RowConstraints(ROW_HEIGHT, ROW_HEIGHT, ROW_HEIGHT, Priority.NEVER, VPos.CENTER, true)
-    )
-
-    columnConstraints.addAll(
-      ColumnConstraints(),
-      ColumnConstraints(CONTENT_SPACING, CONTENT_SPACING, CONTENT_SPACING, Priority.NEVER, HPos.LEFT, false),
-      ColumnConstraints(),
-      ColumnConstraints(-1.0, -1.0, -1.0, Priority.ALWAYS, HPos.RIGHT, true),
-    )
-
-    // Content
-    add(mnemonicTile, 0, 0)
-    add(Region().apply { prefWidth(CONTENT_SPACING) }, 1, 0)
-    add(filePathLabel, 2, 0)
-    add(linesChangedIndicator, 3, 0)
+    styleClass.add(CSS_CLASS_FILE_ROW)
+    stylesheets.add(CSS_FILE)
+    addContent()
   }
 
   fun setData(data: FileCell) {
     val affectedFile = data.affectedFile
 
     mnemonicTile.setAffectedFile(affectedFile)
-    filePathLabel.text = affectedFile.filename
+    filenameLabel.text = affectedFile.filename
     val (deletions, insertions) = when (affectedFile) {
       is New -> 0 to affectedFile.insertions
       is Modified -> affectedFile.deletions to affectedFile.insertions
@@ -72,5 +53,25 @@ internal class AffectedFileRow : GridPane() {
     }
 
     linesChangedIndicator.linesChanged(deletions, insertions)
+  }
+
+  private fun addContent() {
+    // Constraints
+    rowConstraints.add(
+      RowConstraints(ROW_HEIGHT, ROW_HEIGHT, ROW_HEIGHT, Priority.NEVER, VPos.CENTER, true)
+    )
+
+    columnConstraints.addAll(
+      ColumnConstraints(),
+      ColumnConstraints(),
+      ColumnConstraints(),
+      ColumnConstraints(-1.0, -1.0, -1.0, Priority.ALWAYS, HPos.RIGHT, true),
+    )
+
+    // Content
+    add(mnemonicTile, 0, 0)
+    add(Region().apply { styleClass.add(CSS_CLASS_SPACER) }, 1, 0)
+    add(filenameLabel, 2, 0)
+    add(linesChangedIndicator, 3, 0)
   }
 }
