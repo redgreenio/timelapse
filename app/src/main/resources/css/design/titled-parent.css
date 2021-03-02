@@ -1,0 +1,9 @@
+.titled-parent .title {
+  -fx-padding: 0 8 0 8;
+  -fx-pref-height: 64;
+
+  -fx-font-family: "Roboto Medium";
+  -fx-font-size: 13;
+
+  -fx-background-color: #E2E6EC;
+}

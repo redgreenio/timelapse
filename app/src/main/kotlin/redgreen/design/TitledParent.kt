@@ -1,38 +1,29 @@
 package redgreen.design
 
 import io.redgreen.timelapse.foo.fastLazy
-import javafx.application.Platform
-import javafx.geometry.Insets
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.VBox
-import javafx.scene.text.Font
-import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
 open class TitledParent : GridPane() {
   private companion object {
-    private const val ROW_HEIGHT = 32.0
-    private const val PADDING = 8.0
+    private const val CSS_FILE = "/css/design/titled-parent.css"
 
-    private const val FONT_FAMILY = "Roboto Medium"
-    private const val FONT_SIZE = 13.0
-
-    private const val HEX_TITLE_BACKGROUND = "#E2E6EC"
+    private const val CSS_CLASS_TITLED_PARENT = "titled-parent"
+    private const val CSS_CLASS_TITLE = "title"
   }
 
   private val column = VBox()
 
   private val titleLabel by fastLazy {
-    Label().apply {
-      prefHeight = ROW_HEIGHT
-      padding = Insets(PADDING)
-      backgroundFillRoundedCorners(HEX_TITLE_BACKGROUND)
-      Platform.runLater { font = Font.font(FONT_FAMILY, FONT_SIZE) }
-    }
+    Label().apply { styleClass.add(CSS_CLASS_TITLE) }
   }
 
   init {
+    stylesheets.add(CSS_FILE)
+    styleClass.add(CSS_CLASS_TITLED_PARENT)
+
     column.prefWidthProperty().bind(widthProperty())
     titleLabel.prefWidthProperty().bind(column.widthProperty())
   }
