@@ -26,14 +26,14 @@ internal class AffectedDirectoryRow(
 
     private const val FILE_PATH_FONT_FAMILY = "Roboto Medium"
     private const val FONT_SIZE = 12.0
-    private const val HEX_ROW_BACKGROUND = "0xC4C4C4"
+    private const val HEX_ROW_BACKGROUND = "0xE1E1E1"
     private const val ZERO_PADDING = 0.0
     private const val PADDING = 8.0
     private const val GUTTER = 38.0
 
     private const val FILE_COUNT_FONT_FAMILY = "Roboto Black"
-    private const val HEX_FILE_COUNT_FOREGROUND = "0xEFEFEF"
-    private const val HEX_FILE_COUNT_BACKGROUND = "0x8F8F8F"
+    private const val HEX_FILE_COUNT_FOREGROUND = "0x2F2F2F"
+    private const val HEX_FILE_COUNT_BACKGROUND = "0xBFBFBF"
     private const val FILE_COUNT_VERTICAL_PADDING = 2.0
     private const val FILE_COUNT_HORIZONTAL_PADDING = 6.0
   }
