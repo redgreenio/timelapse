@@ -79,3 +79,8 @@
 .affected-files-list-view .list-cell:selected .indicators {
   -fx-text-fill: white;
 }
+
+.affected-files-list-view .list-cell .mnemonic-tile,
+.affected-files-list-view .list-cell:selected .mnemonic-tile {
+  -fx-text-fill: white;
+}

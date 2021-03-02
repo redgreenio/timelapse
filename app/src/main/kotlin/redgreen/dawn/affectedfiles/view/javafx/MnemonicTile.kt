@@ -1,64 +1,61 @@
 package redgreen.dawn.affectedfiles.view.javafx
 
-import javafx.geometry.Pos
-import javafx.scene.Group
-import javafx.scene.layout.StackPane
-import javafx.scene.paint.Color.WHITE
-import javafx.scene.text.Font
-import javafx.scene.text.FontWeight.BLACK
-import javafx.scene.text.Text
-import javafx.scene.text.TextAlignment
+import javafx.scene.control.Label
 import redgreen.dawn.affectedfiles.model.AffectedFile
 import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
 import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
 import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
 import redgreen.dawn.affectedfiles.model.AffectedFile.New
-import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
-class MnemonicTile : Group() {
+class MnemonicTile : Label() {
   private companion object {
-    private const val WIDTH = 20.0
-    private const val HEIGHT = WIDTH
+    private const val CSS_FILE = "/css/affected-files/mnemonic-tile.css"
+
+    private const val CSS_CLASS_MNEMONIC_TILE = "mnemonic-tile"
+    private const val CSS_CLASS_NEW = "new"
+    private const val CSS_CLASS_MODIFIED = "modified"
+    private const val CSS_CLASS_MOVED = "moved"
+    private const val CSS_CLASS_DELETED = "deleted"
 
     private const val LETTER_NEW = 'N'
     private const val LETTER_MODIFIED = 'M'
     private const val LETTER_MOVED = 'V'
     private const val LETTER_DELETED = 'D'
-
-    private const val HEX_NEW = "0x629749"
-    private const val HEX_MODIFIED = "0x3B9DFF"
-    private const val HEX_MOVED = "0xAB47BC"
-    private const val HEX_DELETED = "0xF05545"
-
-    private const val FONT_FAMILY = "Roboto Black"
-    private const val FONT_SIZE = 12.0
   }
 
-  private val mnemonicLetterText = Text().apply {
-    fill = WHITE
-    textAlignment = TextAlignment.CENTER
-    font = Font.font(FONT_FAMILY, BLACK, FONT_SIZE)
-  }
-
-  private val mnemonicContainer = StackPane().apply {
-    prefWidth = WIDTH; prefHeight = HEIGHT
-    alignment = Pos.CENTER
-    children.add(mnemonicLetterText)
+  enum class MnemonicAppearance(
+    val letter: Char,
+    val cssClass: String
+  ) {
+    New(LETTER_NEW, CSS_CLASS_NEW),
+    Modified(LETTER_MODIFIED, CSS_CLASS_MODIFIED),
+    Moved(LETTER_MOVED, CSS_CLASS_MOVED),
+    Deleted(LETTER_DELETED, CSS_CLASS_DELETED),
   }
 
   init {
-    children.add(mnemonicContainer)
+    styleClass.add(CSS_CLASS_MNEMONIC_TILE)
+    stylesheets.add(CSS_FILE)
   }
 
   fun setAffectedFile(affectedFile: AffectedFile) {
-    val (letter, hexColor) = when (affectedFile) {
-      is New -> LETTER_NEW to HEX_NEW
-      is Modified -> LETTER_MODIFIED to HEX_MODIFIED
-      is Moved -> LETTER_MOVED to HEX_MOVED
-      is Deleted -> LETTER_DELETED to HEX_DELETED
+    val appearance = when (affectedFile) {
+      is New -> MnemonicAppearance.New
+      is Modified -> MnemonicAppearance.Modified
+      is Moved -> MnemonicAppearance.Moved
+      is Deleted -> MnemonicAppearance.Deleted
     }
 
-    mnemonicLetterText.text = "$letter"
-    mnemonicContainer.backgroundFillRoundedCorners(hexColor)
+    text = "${appearance.letter}"
+
+    val classesToRemove = MnemonicAppearance
+      .values()
+      /* Minus the current CSS class. Otherwise, the label will flicker until we add the css class for the change type */
+      .map(MnemonicAppearance::cssClass) - appearance.cssClass
+
+    with(styleClass) {
+      removeAll(classesToRemove)
+      add(appearance.cssClass)
+    }
   }
 }
