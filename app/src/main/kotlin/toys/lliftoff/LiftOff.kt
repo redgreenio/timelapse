@@ -73,7 +73,7 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
   abstract fun propsUi(): Region
 
   private fun loadCssFiles(scene: Scene) {
-    val cssUri = LiftOff::class.java.getResource("/css/fonts.css").toExternalForm()
+    val cssUri = LiftOff::class.java.getResource("/css/design/fonts.css").toExternalForm()
     scene.stylesheets.add(cssUri)
   }
 }

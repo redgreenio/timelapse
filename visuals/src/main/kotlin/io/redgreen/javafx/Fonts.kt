@@ -1,7 +1,7 @@
 package io.redgreen.javafx
 
-import javafx.scene.text.Font
 import java.io.InputStream
+import javafx.scene.text.Font
 
 object Fonts {
   fun robotoRegular(size: Int): Font =
