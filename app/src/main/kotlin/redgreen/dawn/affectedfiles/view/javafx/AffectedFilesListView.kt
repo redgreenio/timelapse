@@ -13,10 +13,9 @@ internal class AffectedFilesListView : ListView<AffectedFileCellViewModel>() {
   companion object {
     private const val CSS_CLASS_LIST_VIEW = "affected-files-list-view"
     private const val CSS_CLASS_SCROLL_BAR = "affected-files-scroll-bar"
+    private const val CSS_FILE = "/css/affected-files/affected-files-list-view.css"
 
     private const val CSS_SELECTOR_VIRTUAL_SCROLL_BAR = "VirtualScrollBar"
-
-    private const val CSS_FILE = "/css/affected-files-list-view.css"
   }
 
   private val verticalScrollbar = ScrollBar().apply {

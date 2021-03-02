@@ -1,90 +1,54 @@
 package redgreen.dawn.affectedfiles.view.javafx
 
 import io.redgreen.timelapse.foo.fastLazy
-import javafx.geometry.Insets
 import javafx.geometry.VPos
 import javafx.scene.control.Label
-import javafx.scene.control.OverrunStyle.CENTER_ELLIPSIS
 import javafx.scene.control.Tooltip
-import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.RowConstraints
-import javafx.scene.paint.Color
-import javafx.scene.text.Font
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.summarize
-import redgreen.dawn.extentions.backgroundFill
-import redgreen.dawn.extentions.backgroundFillRoundedCorners
 
 internal class AffectedDirectoryRow(
   private val listView: AffectedFilesListView
 ) : GridPane() {
   companion object {
+    private const val CSS_FILE = "/css/affected-files/affected-directory-row.css"
+
+    private const val CSS_CLASS_DIRECTORY_ROW = "directory-row"
+    private const val CSS_CLASS_DIRECTORY_PATH = "directory-path"
+    private const val CSS_CLASS_FILE_COUNT = "file-count"
+
+    /**
+     * This value should also be changed in the associated CSS file. This value used for row constraints can't be set
+     * from CSS (only from FXML).
+     */
     private const val ROW_HEIGHT = 28.0
-
-    private const val FILE_PATH_FONT_FAMILY = "Roboto Medium"
-    private const val FONT_SIZE = 12.0
-    private const val HEX_ROW_BACKGROUND = "0xE1E1E1"
-    private const val ZERO_PADDING = 0.0
-    private const val PADDING = 8.0
-    private const val GUTTER = 38.0
-
-    private const val FILE_COUNT_FONT_FAMILY = "Roboto Black"
-    private const val HEX_FILE_COUNT_FOREGROUND = "0x2F2F2F"
-    private const val HEX_FILE_COUNT_BACKGROUND = "0xBFBFBF"
-    private const val FILE_COUNT_VERTICAL_PADDING = 2.0
-    private const val FILE_COUNT_HORIZONTAL_PADDING = 6.0
+    private const val DIRECTORY_PATH_LABEL_GUTTER = 38.0
   }
 
-  private val directoryPathFont by fastLazy { Font.font(FILE_PATH_FONT_FAMILY, FONT_SIZE) }
-  private val directoryPathTooltip by fastLazy { Tooltip() }
   private val directoryPathLabel by fastLazy {
     Label().apply {
-      font = directoryPathFont
-      textOverrun = CENTER_ELLIPSIS
-      padding = Insets(ZERO_PADDING, PADDING, ZERO_PADDING, ZERO_PADDING)
-      prefWidthProperty().bind(listView.widthProperty().subtract(GUTTER))
+      styleClass.add(CSS_CLASS_DIRECTORY_PATH)
+      prefWidthProperty().bind(listView.widthProperty().subtract(DIRECTORY_PATH_LABEL_GUTTER))
     }
   }
 
-  private val fileCountFont by fastLazy { Font.font(FILE_COUNT_FONT_FAMILY, FONT_SIZE) }
-  private val fileCountTooltip by fastLazy { Tooltip() }
+  private val directoryPathTooltip by fastLazy { Tooltip() }
+
   private val fileCountLabel by fastLazy {
-    Label().apply {
-      font = fileCountFont
-      textFill = Color.web(HEX_FILE_COUNT_FOREGROUND)
-      padding = Insets(
-        FILE_COUNT_VERTICAL_PADDING,
-        FILE_COUNT_HORIZONTAL_PADDING,
-        FILE_COUNT_VERTICAL_PADDING,
-        FILE_COUNT_HORIZONTAL_PADDING
-      )
-
-      backgroundFillRoundedCorners(HEX_FILE_COUNT_BACKGROUND)
-    }
+    Label().apply { styleClass.add(CSS_CLASS_FILE_COUNT) }
   }
+
+  private val fileCountTooltip by fastLazy { Tooltip() }
 
   init {
-    prefHeight = ROW_HEIGHT
-    backgroundFill(HEX_ROW_BACKGROUND)
-
-    padding = Insets(ZERO_PADDING, PADDING, ZERO_PADDING, PADDING)
-
-    // Constraints
-    rowConstraints.add(
-      RowConstraints(ROW_HEIGHT, ROW_HEIGHT, ROW_HEIGHT, Priority.NEVER, VPos.CENTER, true)
-    )
-
-    columnConstraints.addAll(
-      ColumnConstraints(),
-      ColumnConstraints()
-    )
-
-    // Content
-    add(directoryPathLabel, 0, 0)
-    add(fileCountLabel, 1, 0)
+    // CSS
+    styleClass.add(CSS_CLASS_DIRECTORY_ROW)
+    stylesheets.add(CSS_FILE)
+    addContent()
   }
 
   fun setData(data: DirectoryCell) {
@@ -97,6 +61,17 @@ internal class AffectedDirectoryRow(
     val affectedFiles = listView.items
       .slice(IntRange(directoryCellIndex + 1, directoryCellIndex + data.fileCount))
     setupFileCountTooltip(affectedFiles)
+  }
+
+  private fun addContent() {
+    // Constraints
+    rowConstraints.add(
+      RowConstraints(ROW_HEIGHT, ROW_HEIGHT, ROW_HEIGHT, Priority.NEVER, VPos.CENTER, true)
+    )
+
+    // Content
+    add(directoryPathLabel, 0, 0)
+    add(fileCountLabel, 1, 0)
   }
 
   private fun setupDirectoryPathTooltip(directoryPath: String) {

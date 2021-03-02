@@ -17,7 +17,3 @@ fun Region.matchParent(parent: Region) {
 fun Region.backgroundFillRoundedCorners(hexColor: String, cornerRadius: Double = CORNER_RADIUS) {
   this.background = Background(BackgroundFill(Color.web(hexColor), CornerRadii(cornerRadius), Insets.EMPTY))
 }
-
-fun Region.backgroundFill(hexColor: String) {
-  backgroundFillRoundedCorners(hexColor, 0.0)
-}
