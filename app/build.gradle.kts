@@ -33,6 +33,8 @@ object DependencyVersions {
 dependencies {
   implementation(project(":visuals"))
   implementation(project(":design"))
+  implementation(project(":liftoff")) // TODO: 02/03/21 Create a new source set of exploratory tests
+  implementation(project(":architecture"))
 
   implementation(kotlin("stdlib-jdk8"))
   implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")

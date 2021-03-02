@@ -1,4 +1,4 @@
-package redgreen.dawn.architecture
+package io.redgreen.architecture
 
 interface Disposer<T> {
   fun T.collect()

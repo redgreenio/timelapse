@@ -17,7 +17,7 @@ import redgreen.dawn.affectedfiles.view.javafx.AffectedFilesEntryPointPane
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
-import toys.lliftoff.LiftOff
+import io.redgreen.liftoff.javafx.LiftOff
 
 fun main() {
   Application.launch(AffectedFilesLiftOff::class.java)

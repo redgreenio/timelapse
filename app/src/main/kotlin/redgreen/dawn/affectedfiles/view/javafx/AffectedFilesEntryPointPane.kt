@@ -1,13 +1,13 @@
 package redgreen.dawn.affectedfiles.view.javafx
 
 import io.reactivex.rxjava3.disposables.Disposable
+import io.redgreen.architecture.Disposer
+import io.redgreen.architecture.EntryPoint
+import io.redgreen.architecture.RxJava3Disposer
 import io.redgreen.design.TitledParent
 import javafx.collections.FXCollections
 import redgreen.dawn.affectedfiles.contract.AffectedFilesProps
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
-import redgreen.dawn.architecture.Disposer
-import redgreen.dawn.architecture.EntryPoint
-import redgreen.dawn.architecture.RxJava3Disposer
 import redgreen.dawn.extentions.matchParent
 
 class AffectedFilesEntryPointPane : TitledParent(),

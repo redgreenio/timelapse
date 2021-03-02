@@ -1,7 +1,7 @@
-package toys.lliftoff
+package io.redgreen.liftoff.javafx
 
+import io.redgreen.architecture.EntryPoint
 import io.redgreen.design.DesignSystem
-import io.redgreen.timelapse.foo.fastLazy
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.geometry.Insets
@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.stage.Stage
-import redgreen.dawn.architecture.EntryPoint
+import kotlin.LazyThreadSafetyMode.NONE
 
 abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : Parent {
   private companion object {
@@ -19,12 +19,12 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
   }
 
   private val debug = false
-  private val entryPoint: E by fastLazy { entryPoint() }
+  private val entryPoint: E by lazy(NONE) { entryPoint() }
 
   override fun start(primaryStage: Stage) {
     val size = howBig()
     val root = HBox()
-    val content = if (debug) MaterialGridPane() else Pane()
+    val content = /* if (debug) MaterialGridPane() else */ Pane() // FIXME: 02/03/21 Bring in MaterialDesignGridPane
 
     val scenePane = Scene(root, size.width + PROPS_UI_WIDTH, size.height).apply {
       DesignSystem.initialize(this)
@@ -43,13 +43,15 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
       propsUi
     )
 
+    /*
     if (content is MaterialGridPane) {
       content.setOnlyChild(entryPoint as Region)
     } else {
+    */
       content.children.add(entryPoint)
       (entryPoint as Region).prefWidthProperty().bind(content.widthProperty())
       (entryPoint as Region).prefHeightProperty().bind(content.heightProperty())
-    }
+    //}
 
     with(primaryStage) {
       title = "${title()} [Liftoff^]"

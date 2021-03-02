@@ -4,5 +4,7 @@ include(
   "visuals",
   "visuals-demo",
   "fixtures:library",
-  "design"
+  "design",
+  "liftoff",
+  "architecture"
 )
