@@ -32,7 +32,7 @@ internal class AffectedFileRow : GridPane() {
 
   private val mnemonicTile by fastLazy { MnemonicTile() }
   private val filenameLabel by fastLazy { Label().apply { styleClass.add(CSS_CLASS_FILENAME) } }
-  private val linesChangedIndicator by fastLazy { LinesChangedIndicator() }
+  private val linesChangedIndicators by fastLazy { LinesChangedIndicators() }
 
   init {
     styleClass.add(CSS_CLASS_FILE_ROW)
@@ -52,7 +52,7 @@ internal class AffectedFileRow : GridPane() {
       is Deleted -> affectedFile.deletions to 0
     }
 
-    linesChangedIndicator.linesChanged(deletions, insertions)
+    linesChangedIndicators.linesChanged(deletions, insertions)
   }
 
   private fun addContent() {
@@ -72,6 +72,6 @@ internal class AffectedFileRow : GridPane() {
     add(mnemonicTile, 0, 0)
     add(Region().apply { styleClass.add(CSS_CLASS_SPACER) }, 1, 0)
     add(filenameLabel, 2, 0)
-    add(linesChangedIndicator, 3, 0)
+    add(linesChangedIndicators, 3, 0)
   }
 }

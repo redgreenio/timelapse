@@ -70,12 +70,12 @@
   -fx-text-fill: black;
 }
 
-.affected-files-list-view .list-cell .indicator-label,
-.affected-files-list-view .list-cell:selected .indicator-label {
-  -fx-text-fill: white;
-}
-
 .affected-files-list-view {
   -fx-focus-color: transparent;
   -fx-faint-focus-color: transparent;
+}
+
+.affected-files-list-view .list-cell .indicators,
+.affected-files-list-view .list-cell:selected .indicators {
+  -fx-text-fill: white;
 }
