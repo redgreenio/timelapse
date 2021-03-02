@@ -32,7 +32,7 @@ class AffectedFilesEntryPointPane : TitledParent(),
     with(props) {
       viewModelChanges.subscribe { affectedFileCellViewModels ->
         val countText = if (affectedFileCellViewModels.isNotEmpty()) {
-          "${affectedFileCellViewModels.size - 1}"
+          "${affectedFileCellViewModels.size - 1} more"
         } else {
           "none"
         }
