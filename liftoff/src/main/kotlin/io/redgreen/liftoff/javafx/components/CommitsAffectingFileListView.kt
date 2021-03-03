@@ -12,6 +12,10 @@ import org.eclipse.jgit.revwalk.RevCommit
 class CommitsAffectingFileListView(
   onSelected: (commitId: String) -> Unit
 ) : ListView<RevCommit>() {
+  private companion object {
+    private const val COMMIT_ID_LENGTH = 8
+    private const val SHORT_MESSAGE_LENGTH = 64
+  }
 
   class FileModel(
     val repository: Repository,
@@ -32,16 +36,16 @@ class CommitsAffectingFileListView(
         override fun updateItem(revCommit: RevCommit?, empty: Boolean) {
           super.updateItem(revCommit, empty)
 
-          if (revCommit == null || empty) {
-            graphic = null
+          text = if (revCommit == null || empty) {
+            null
           } else {
-            text = displayMessage(revCommit)
+            displayMessage(revCommit)
           }
         }
 
         private fun displayMessage(revCommit: RevCommit): String {
-          val shortCommitId = revCommit.name.take(8)
-          val truncatedMessage = revCommit.shortMessage.take(48)
+          val shortCommitId = revCommit.name.take(COMMIT_ID_LENGTH)
+          val truncatedMessage = revCommit.shortMessage.take(SHORT_MESSAGE_LENGTH)
           val messageToShow = if (truncatedMessage.length != revCommit.shortMessage.length) {
             "$truncatedMessage…"
           } else {
