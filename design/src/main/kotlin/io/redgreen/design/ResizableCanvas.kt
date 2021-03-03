@@ -1,4 +1,4 @@
-package io.redgreen.javafx
+package io.redgreen.design
 
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext
@@ -23,10 +23,6 @@ abstract class ResizableCanvas : Pane() {
   }
 
   abstract fun GraphicsContext.draw()
-
-  protected fun invalidate() {
-    draw()
-  }
 
   private fun draw() {
     canvas.graphicsContext2D.draw()

@@ -1,7 +1,8 @@
-package io.redgreen.liftoff.javafx
+package io.redgreen.liftoff
 
 import io.redgreen.architecture.EntryPoint
 import io.redgreen.design.DesignSystem
+import io.redgreen.liftoff.javafx.DesignerGridPane
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.geometry.Insets
@@ -18,13 +19,13 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     private const val PROPS_UI_WIDTH = 200.0
   }
 
-  private val debug = false
+  private val debug = true
   private val entryPoint: E by lazy(NONE) { entryPoint() }
 
   override fun start(primaryStage: Stage) {
     val size = howBig()
     val root = HBox()
-    val content = /* if (debug) MaterialGridPane() else */ Pane() // FIXME: 02/03/21 Bring in MaterialDesignGridPane
+    val content = if (debug) DesignerGridPane() else Pane()
 
     val scenePane = Scene(root, size.width + PROPS_UI_WIDTH, size.height).apply {
       DesignSystem.initialize(this)
@@ -43,15 +44,13 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
       propsUi
     )
 
-    /*
-    if (content is MaterialGridPane) {
+    if (content is DesignerGridPane) {
       content.setOnlyChild(entryPoint as Region)
     } else {
-    */
       content.children.add(entryPoint)
       (entryPoint as Region).prefWidthProperty().bind(content.widthProperty())
       (entryPoint as Region).prefHeightProperty().bind(content.heightProperty())
-    //}
+    }
 
     with(primaryStage) {
       title = "${title()} [Liftoff^]"

@@ -1,6 +1,7 @@
 package toys.affectedfiles
 
 import io.reactivex.rxjava3.subjects.PublishSubject
+import io.redgreen.liftoff.LiftOff
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.scene.control.Button
@@ -17,7 +18,6 @@ import redgreen.dawn.affectedfiles.view.javafx.AffectedFilesEntryPointPane
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
-import io.redgreen.liftoff.javafx.LiftOff
 
 fun main() {
   Application.launch(AffectedFilesLiftOff::class.java)
