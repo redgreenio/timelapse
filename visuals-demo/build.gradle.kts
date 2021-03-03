@@ -13,6 +13,7 @@ application.mainClassName = "io.redgreen.visuals.demo.VisualsDemoApp"
 
 dependencies {
   implementation(project(":visuals"))
+  implementation(project(":design"))
 }
 
 tasks {

@@ -1,8 +1,6 @@
 package io.redgreen.timelapse.visuals
 
-import io.redgreen.javafx.ResizableCanvas
-import io.redgreen.timelapse.visuals.debug.debug
-import io.redgreen.timelapse.visuals.debug.drawDebugGrid
+import io.redgreen.design.ResizableCanvas
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.WHITE
@@ -17,6 +15,8 @@ class AreaChart : ResizableCanvas() {
 
     private const val GUIDE_LINE_WIDTH = 1.0
     private const val ANCHOR_LINE_WIDTH = 2.0
+
+    private const val debug = false
   }
 
   private val insertionsPolygonColor = Color.rgb(198, 240, 194)
@@ -69,7 +69,6 @@ class AreaChart : ResizableCanvas() {
     drawChartPolygon()
     drawLines()
     drawDebugCircles()
-    drawDebugGrid(width, height)
   }
 
   fun setAnchorIndex(index: Int) {
@@ -111,7 +110,7 @@ class AreaChart : ResizableCanvas() {
   }
 
   private fun GraphicsContext.drawDebugCircles() {
-    debug {
+    if (debug) {
       stroke = Color.RED
       lineWidth = 0.5
       insertionPoints.onEach { point ->

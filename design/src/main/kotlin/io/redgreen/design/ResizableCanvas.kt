@@ -24,6 +24,10 @@ abstract class ResizableCanvas : Pane() {
 
   abstract fun GraphicsContext.draw()
 
+  protected fun invalidate() {
+    draw()
+  }
+
   private fun draw() {
     canvas.graphicsContext2D.draw()
   }

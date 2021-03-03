@@ -16,6 +16,8 @@ object DependencyVersions {
 }
 
 dependencies {
+  implementation(project(":design"))
+
   testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
   testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
