@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.mobius
+package io.redgreen.architecture.mobius
 
 import com.spotify.mobius.Connectable
 import com.spotify.mobius.Connection
@@ -8,9 +8,9 @@ import com.spotify.mobius.Update
 import com.spotify.mobius.extras.Connectables
 import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
-import io.redgreen.timelapse.foo.fastLazy
-import io.redgreen.timelapse.mobius.view.ViewRenderer
+import io.redgreen.architecture.mobius.view.ViewRenderer
 import javafx.application.Platform
+import kotlin.LazyThreadSafetyMode.NONE
 
 class MobiusDelegate<M, E, F>(
   private val initialModel: M,
@@ -28,7 +28,7 @@ class MobiusDelegate<M, E, F>(
 
   private val eventSource = DeferredEventSource<E>()
 
-  private val loopController by fastLazy {
+  private val loopController by lazy(NONE) {
     val loop = RxMobius
       .loop(update, effectHandler)
       .eventSource(eventSource)
@@ -40,7 +40,7 @@ class MobiusDelegate<M, E, F>(
     }
   }
 
-  private val connectable by fastLazy {
+  private val connectable by lazy(NONE) {
     Connectable<M, E> {
       object : Connection<M> {
         override fun accept(model: M) {

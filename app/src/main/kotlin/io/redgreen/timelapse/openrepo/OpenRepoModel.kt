@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.openrepo
 
-import io.redgreen.timelapse.mobius.AsyncOp
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.content
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.idle
+import io.redgreen.architecture.mobius.AsyncOp
+import io.redgreen.architecture.mobius.AsyncOp.Companion.content
+import io.redgreen.architecture.mobius.AsyncOp.Companion.failure
+import io.redgreen.architecture.mobius.AsyncOp.Companion.idle
 import io.redgreen.timelapse.openrepo.data.GitUsername
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 

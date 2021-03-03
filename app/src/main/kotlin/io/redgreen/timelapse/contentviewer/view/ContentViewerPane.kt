@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.contentviewer.view
 
+import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.timelapse.contentviewer.CommitIdClicked
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
 import io.redgreen.timelapse.contentviewer.ContentViewerModel
@@ -10,7 +11,6 @@ import io.redgreen.timelapse.diff.FormattedDiff
 import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.foo.fastLazy
-import io.redgreen.timelapse.mobius.MobiusDelegate
 import io.redgreen.timelapse.platform.JavaFxClipboardService
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import io.redgreen.timelapse.vcs.git.GitRepositoryService

@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.mobius.annotations
+package io.redgreen.architecture.mobius.annotations
 
 import kotlin.annotation.AnnotationRetention.SOURCE
 import kotlin.annotation.AnnotationTarget.CLASS

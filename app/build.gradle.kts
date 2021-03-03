@@ -40,9 +40,6 @@ dependencies {
   implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")
   implementation("org.slf4j:slf4j-simple:1.7.30")
   implementation("com.github.mfornos:humanize-slim:1.2.2")
-  implementation("com.spotify.mobius:mobius-core:$mobius")
-  implementation("com.spotify.mobius:mobius-rx3:$mobius")
-  implementation("com.spotify.mobius:mobius-extras:$mobius")
   implementation("org.apache.commons:commons-text:1.4")
   implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359") {
     because("Humanize requires this dependency explicitly after Java 11 upgrade.")

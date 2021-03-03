@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.changedfiles.view
 
+import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.timelapse.changedfiles.ChangedFileSelected
 import io.redgreen.timelapse.changedfiles.ChangedFilesEffectHandler
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel
@@ -8,7 +9,6 @@ import io.redgreen.timelapse.changedfiles.FileAndRevisionSelected
 import io.redgreen.timelapse.changedfiles.contracts.ReadingAreaContract
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
 import io.redgreen.timelapse.foo.fastLazy
-import io.redgreen.timelapse.mobius.MobiusDelegate
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion

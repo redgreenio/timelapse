@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.mobius
+package io.redgreen.architecture.mobius
 
 /**
  * The [AsyncOp] type represents asynchronous tasks at hand. This are commonly used for but not limited to

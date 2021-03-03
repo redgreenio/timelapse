@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.openrepo.view
 
-import io.redgreen.timelapse.mobius.AsyncOp.Content
-import io.redgreen.timelapse.mobius.AsyncOp.Failure
-import io.redgreen.timelapse.mobius.AsyncOp.Idle
-import io.redgreen.timelapse.mobius.AsyncOp.InFlight
-import io.redgreen.timelapse.mobius.view.ViewRenderer
+import io.redgreen.architecture.mobius.AsyncOp.Content
+import io.redgreen.architecture.mobius.AsyncOp.Failure
+import io.redgreen.architecture.mobius.AsyncOp.Idle
+import io.redgreen.architecture.mobius.AsyncOp.InFlight
+import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.timelapse.openrepo.OpenRepoModel
 import io.redgreen.timelapse.openrepo.data.GitUsername
 import io.redgreen.timelapse.openrepo.data.RecentRepository

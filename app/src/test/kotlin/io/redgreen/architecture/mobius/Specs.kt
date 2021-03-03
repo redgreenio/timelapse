@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.mobius
+package io.redgreen.architecture.mobius
 
 import com.spotify.mobius.Init
 import com.spotify.mobius.Update

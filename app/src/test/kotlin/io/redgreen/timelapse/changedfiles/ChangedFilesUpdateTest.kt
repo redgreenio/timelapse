@@ -6,8 +6,8 @@ import com.spotify.mobius.test.NextMatchers.hasModel
 import com.spotify.mobius.test.NextMatchers.hasNoEffects
 import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
-import io.redgreen.timelapse.mobius.spec
+import io.redgreen.architecture.mobius.AsyncOp.Companion.failure
+import io.redgreen.architecture.mobius.spec
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import org.junit.jupiter.api.Test

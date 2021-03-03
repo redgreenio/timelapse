@@ -3,7 +3,7 @@ package io.redgreen.timelapse.openrepo
 import com.spotify.mobius.test.FirstMatchers.hasEffects
 import com.spotify.mobius.test.FirstMatchers.hasModel
 import com.spotify.mobius.test.InitSpec.assertThatFirst
-import io.redgreen.timelapse.mobius.spec
+import io.redgreen.architecture.mobius.spec
 import org.junit.jupiter.api.Test
 
 class OpenRepoInitTest {

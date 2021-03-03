@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.contentviewer
 
+import io.redgreen.architecture.mobius.annotations.EffectEvent
+import io.redgreen.architecture.mobius.annotations.UiEvent
 import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
-import io.redgreen.timelapse.mobius.annotations.EffectEvent
-import io.redgreen.timelapse.mobius.annotations.UiEvent
 
 sealed class ContentViewerEvent
 

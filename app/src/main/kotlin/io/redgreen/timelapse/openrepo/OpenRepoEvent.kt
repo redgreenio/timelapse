@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.openrepo
 
-import io.redgreen.timelapse.mobius.annotations.EffectEvent
-import io.redgreen.timelapse.mobius.annotations.UiEvent
+import io.redgreen.architecture.mobius.annotations.EffectEvent
+import io.redgreen.architecture.mobius.annotations.UiEvent
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 
 sealed class OpenRepoEvent

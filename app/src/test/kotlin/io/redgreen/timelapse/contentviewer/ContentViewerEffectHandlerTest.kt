@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
-import io.redgreen.timelapse.mobius.EffectHandlerTestCase
+import io.redgreen.architecture.mobius.EffectHandlerTestCase
 import io.redgreen.timelapse.platform.ClipboardService
 import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
 import io.redgreen.timelapse.vcs.VcsRepositoryService

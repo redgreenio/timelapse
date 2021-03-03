@@ -4,7 +4,7 @@ import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
-import io.redgreen.timelapse.mobius.AsyncOp.Content
+import io.redgreen.architecture.mobius.AsyncOp.Content
 import io.redgreen.timelapse.vcs.ChangedFile
 
 object ChangedFilesUpdate : Update<ChangedFilesModel, ChangedFilesEvent, ChangedFilesEffect> {

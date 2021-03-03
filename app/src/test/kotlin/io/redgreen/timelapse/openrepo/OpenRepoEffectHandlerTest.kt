@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
-import io.redgreen.timelapse.mobius.testCase
+import io.redgreen.architecture.mobius.testCase
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView

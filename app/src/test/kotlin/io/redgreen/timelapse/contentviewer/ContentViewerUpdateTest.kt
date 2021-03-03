@@ -7,7 +7,7 @@ import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
 import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff.Simple
-import io.redgreen.timelapse.mobius.spec
+import io.redgreen.architecture.mobius.spec
 import org.junit.jupiter.api.Test
 
 class ContentViewerUpdateTest {

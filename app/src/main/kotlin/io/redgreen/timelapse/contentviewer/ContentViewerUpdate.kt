@@ -4,7 +4,7 @@ import com.spotify.mobius.Next
 import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
-import io.redgreen.timelapse.mobius.AsyncOp
+import io.redgreen.architecture.mobius.AsyncOp
 
 object ContentViewerUpdate : Update<ContentViewerModel, ContentViewerEvent, ContentViewerEffect> {
   override fun update(

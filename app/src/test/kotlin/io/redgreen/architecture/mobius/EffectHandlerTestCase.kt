@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.mobius
+package io.redgreen.architecture.mobius
 
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.subjects.PublishSubject

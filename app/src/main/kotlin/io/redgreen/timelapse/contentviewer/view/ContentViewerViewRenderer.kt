@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.contentviewer.view
 
+import io.redgreen.architecture.mobius.AsyncOp
+import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.timelapse.contentviewer.ContentViewerModel
 import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
-import io.redgreen.timelapse.mobius.AsyncOp
-import io.redgreen.timelapse.mobius.view.ViewRenderer
 
 class ContentViewerViewRenderer(
   private val view: ContentViewerView

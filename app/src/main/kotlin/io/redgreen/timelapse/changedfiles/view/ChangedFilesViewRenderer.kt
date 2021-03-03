@@ -1,13 +1,13 @@
 package io.redgreen.timelapse.changedfiles.view
 
+import io.redgreen.architecture.mobius.AsyncOp.Content
+import io.redgreen.architecture.mobius.AsyncOp.Failure
+import io.redgreen.architecture.mobius.AsyncOp.InFlight
+import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.timelapse.changedfiles.ChangedFilesModel
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_FILE_AND_REVISION_SELECTED
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.NO_OTHER_FILES_CHANGED
 import io.redgreen.timelapse.changedfiles.view.ChangedFilesViewMessage.RETRY_GETTING_CHANGED_FILES
-import io.redgreen.timelapse.mobius.AsyncOp.Content
-import io.redgreen.timelapse.mobius.AsyncOp.Failure
-import io.redgreen.timelapse.mobius.AsyncOp.InFlight
-import io.redgreen.timelapse.mobius.view.ViewRenderer
 import io.redgreen.timelapse.vcs.ChangedFile
 
 class ChangedFilesViewRenderer(

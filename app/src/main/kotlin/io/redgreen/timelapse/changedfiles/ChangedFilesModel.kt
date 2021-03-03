@@ -1,12 +1,12 @@
 package io.redgreen.timelapse.changedfiles
 
+import io.redgreen.architecture.mobius.AsyncOp
+import io.redgreen.architecture.mobius.AsyncOp.Companion.content
+import io.redgreen.architecture.mobius.AsyncOp.Companion.failure
+import io.redgreen.architecture.mobius.AsyncOp.Companion.idle
+import io.redgreen.architecture.mobius.AsyncOp.Companion.inFlight
 import io.redgreen.timelapse.changedfiles.GetChangedFiles.Failure
 import io.redgreen.timelapse.changedfiles.GetChangedFiles.Failure.Unknown
-import io.redgreen.timelapse.mobius.AsyncOp
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.content
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.failure
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.idle
-import io.redgreen.timelapse.mobius.AsyncOp.Companion.inFlight
 import io.redgreen.timelapse.vcs.ChangedFile
 
 data class ChangedFilesModel(
