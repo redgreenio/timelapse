@@ -69,9 +69,28 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     println("${entryPoint::class.java.simpleName} unmounted.")
   }
 
+  /**
+   * The title of this feature.
+   */
   abstract fun title(): String
+
+  /**
+   * Size of the feature in the liftoff window.
+   */
   abstract fun howBig(): Dimension2D
+
+  /**
+   * The feature to liftoff and (maybe) interact with.
+   */
   abstract fun entryPoint(): E
+
+  /**
+   * Props for the feature's [EntryPoint].
+   */
   abstract fun props(): P
+
+  /**
+   * UI in the liftoff window to manipulate the props.
+   */
   abstract fun propsUi(): Region
 }
