@@ -2,12 +2,12 @@ package toys.affectedfiles
 
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.liftoff.LiftOff
+import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
+import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
+import io.redgreen.timelapse.affectedfiles.view.javafx.AffectedFilesEntryPointPane
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.scene.layout.Region
-import redgreen.dawn.affectedfiles.contract.AffectedFileContext
-import redgreen.dawn.affectedfiles.contract.AffectedFilesProps
-import redgreen.dawn.affectedfiles.view.javafx.AffectedFilesEntryPointPane
 
 fun main() {
   Application.launch(AffectedFilesLiftOff::class.java)

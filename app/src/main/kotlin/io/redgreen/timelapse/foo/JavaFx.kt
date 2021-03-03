@@ -1,4 +1,4 @@
-package redgreen.dawn.extentions
+package io.redgreen.timelapse.foo
 
 import javafx.scene.layout.Region
 

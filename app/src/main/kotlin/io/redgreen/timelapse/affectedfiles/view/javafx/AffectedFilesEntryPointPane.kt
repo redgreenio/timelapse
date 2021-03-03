@@ -1,13 +1,13 @@
-package redgreen.dawn.affectedfiles.view.javafx
+package io.redgreen.timelapse.affectedfiles.view.javafx
 
 import io.reactivex.rxjava3.disposables.Disposable
 import io.redgreen.architecture.Disposer
 import io.redgreen.architecture.EntryPoint
 import io.redgreen.architecture.RxJava3Disposer
 import io.redgreen.design.TitledParent
-import redgreen.dawn.affectedfiles.contract.AffectedFilesProps
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
-import redgreen.dawn.extentions.matchParent
+import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import io.redgreen.timelapse.foo.matchParent
 
 class AffectedFilesEntryPointPane : TitledParent(),
   EntryPoint<AffectedFilesProps>,

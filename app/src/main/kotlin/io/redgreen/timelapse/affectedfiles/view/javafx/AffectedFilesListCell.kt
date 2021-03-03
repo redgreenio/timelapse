@@ -1,12 +1,12 @@
-package redgreen.dawn.affectedfiles.view.javafx
+package io.redgreen.timelapse.affectedfiles.view.javafx
 
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import java.lang.ref.WeakReference
 import javafx.scene.control.ListCell
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Region
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
 internal class AffectedFilesListCell(
   private val listView: AffectedFilesListView

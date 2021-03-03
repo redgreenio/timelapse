@@ -1,5 +1,8 @@
-package redgreen.dawn.affectedfiles.view.javafx
+package io.redgreen.timelapse.affectedfiles.view.javafx
 
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
+import io.redgreen.timelapse.affectedfiles.view.model.summarize
 import io.redgreen.timelapse.foo.fastLazy
 import javafx.geometry.VPos
 import javafx.scene.control.Label
@@ -7,9 +10,6 @@ import javafx.scene.control.Tooltip
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.RowConstraints
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
-import redgreen.dawn.affectedfiles.view.model.summarize
 
 internal class AffectedDirectoryRow(
   private val listView: AffectedFilesListView

@@ -1,4 +1,4 @@
-package redgreen.dawn.affectedfiles.contract
+package io.redgreen.timelapse.affectedfiles.contract
 
 data class AffectedFileContext(
   val filePath: String,

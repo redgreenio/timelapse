@@ -1,4 +1,4 @@
-package redgreen.dawn.affectedfiles.view.javafx
+package io.redgreen.timelapse.affectedfiles.view.javafx
 
 import javafx.scene.Group
 import javafx.scene.control.Label

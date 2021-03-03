@@ -4,13 +4,13 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.liftoff.javafx.components.CommitsAffectingFileListView
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox
 import io.redgreen.liftoff.javafx.components.TrackedFilesInRepoComboBox
+import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
+import io.redgreen.timelapse.affectedfiles.contract.CommitHash
 import java.io.File
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
 import kotlin.properties.Delegates
 import org.eclipse.jgit.lib.RepositoryBuilder
-import redgreen.dawn.affectedfiles.contract.AffectedFileContext
-import redgreen.dawn.affectedfiles.contract.CommitHash
 
 class AffectedFilesPropsUi(
   private val affectedFilesContextSubject: BehaviorSubject<AffectedFileContext>,

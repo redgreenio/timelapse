@@ -1,12 +1,12 @@
-package redgreen.dawn.affectedfiles.view.javafx
+package io.redgreen.timelapse.affectedfiles.view.javafx
 
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel
 import javafx.beans.InvalidationListener
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.ListView
 import javafx.scene.control.ScrollBar
 import javafx.util.Callback
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel
 
 /* Courtesy: https://dlsc.com/2017/09/07/javafx-tip-28-pretty-list-view/ */
 internal class AffectedFilesListView : ListView<AffectedFileCellViewModel>() {

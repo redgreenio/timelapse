@@ -1,12 +1,12 @@
-package redgreen.dawn.affectedfiles.view.model
+package io.redgreen.timelapse.affectedfiles.view.model
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import redgreen.dawn.affectedfiles.model.AffectedFile.Deleted
-import redgreen.dawn.affectedfiles.model.AffectedFile.Modified
-import redgreen.dawn.affectedfiles.model.AffectedFile.Moved
-import redgreen.dawn.affectedfiles.model.AffectedFile.New
-import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
 internal class FileCellComparatorTest {
   @Test

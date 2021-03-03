@@ -1,4 +1,4 @@
-package redgreen.dawn.affectedfiles.model
+package io.redgreen.timelapse.affectedfiles.model
 
 sealed class AffectedFile(open val filePath: String) {
   abstract val changeCount: Int

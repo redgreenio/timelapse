@@ -1,6 +1,6 @@
-package redgreen.dawn.affectedfiles.view.model
+package io.redgreen.timelapse.affectedfiles.view.model
 
-import redgreen.dawn.affectedfiles.model.AffectedFile
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile
 
 sealed class AffectedFileCellViewModel {
   data class FileCell(
