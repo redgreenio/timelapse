@@ -5,7 +5,7 @@ import io.redgreen.liftoff.javafx.components.CommitsAffectingFileListView
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox
 import io.redgreen.liftoff.javafx.components.TrackedFilesInRepoComboBox
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
-import io.redgreen.timelapse.affectedfiles.contract.CommitHash
+import io.redgreen.timelapse.git.CommitHash
 import java.io.File
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox

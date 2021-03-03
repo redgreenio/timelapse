@@ -87,46 +87,46 @@ class CommitInfoUseCase(
   }
 
   fun <T> invoke(
-    commitId: String,
+    commitHash: CommitHash,
     property: Property<T>,
   ): T =
-    property.get(revCommitFor(commitId))
+    property.get(revCommitFor(commitHash))
 
   fun <A, B, T> invoke(
-    commitId: String,
+    commitHash: CommitHash,
     a: Property<A>,
     b: Property<B>,
     zip: (A, B) -> T
   ): T {
-    val revCommit = revCommitFor(commitId)
+    val revCommit = revCommitFor(commitHash)
     return zip(a.get(revCommit), b.get(revCommit))
   }
 
   fun <A, B, C, T> invoke(
-    commitId: String,
+    commitHash: CommitHash,
     a: Property<A>,
     b: Property<B>,
     c: Property<C>,
     zip: (A, B, C) -> T
   ): T {
-    val revCommit = revCommitFor(commitId)
+    val revCommit = revCommitFor(commitHash)
     return zip(a.get(revCommit), b.get(revCommit), c.get(revCommit))
   }
 
   fun <A, B, C, D, T> invoke(
-    commitId: String,
+    commitHash: CommitHash,
     a: Property<A>,
     b: Property<B>,
     c: Property<C>,
     d: Property<D>,
     zip: (A, B, C, D) -> T
   ): T {
-    val revCommit = revCommitFor(commitId)
+    val revCommit = revCommitFor(commitHash)
     return zip(a.get(revCommit), b.get(revCommit), c.get(revCommit), d.get(revCommit))
   }
 
   fun <A, B, C, D, E, T> invoke(
-    commitId: String,
+    commitHash: CommitHash,
     a: Property<A>,
     b: Property<B>,
     c: Property<C>,
@@ -134,12 +134,12 @@ class CommitInfoUseCase(
     e: Property<E>,
     zip: (A, B, C, D, E) -> T
   ): T {
-    val revCommit = revCommitFor(commitId)
+    val revCommit = revCommitFor(commitHash)
     return zip(a.get(revCommit), b.get(revCommit), c.get(revCommit), d.get(revCommit), e.get(revCommit))
   }
 
   fun <A, B, C, D, E, F, T> invoke(
-    commitId: String,
+    commitHash: CommitHash,
     a: Property<A>,
     b: Property<B>,
     c: Property<C>,
@@ -148,10 +148,10 @@ class CommitInfoUseCase(
     f: Property<F>,
     zip: (A, B, C, D, E, F) -> T
   ): T {
-    val revCommit = revCommitFor(commitId)
+    val revCommit = revCommitFor(commitHash)
     return zip(a.get(revCommit), b.get(revCommit), c.get(revCommit), d.get(revCommit), e.get(revCommit), f.get(revCommit))
   }
 
-  private fun revCommitFor(commitId: String): RevCommit =
-    repository.parseCommit(repository.resolve(commitId))
+  private fun revCommitFor(commitHash: CommitHash): RevCommit =
+    repository.parseCommit(repository.resolve(commitHash.value))
 }

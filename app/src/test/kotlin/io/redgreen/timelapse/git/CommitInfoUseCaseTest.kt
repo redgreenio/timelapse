@@ -36,7 +36,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource
 class CommitInfoUseCaseTest {
   private val repository = openGitRepository(GitTestbed.path)
   private val useCase = CommitInfoUseCase(repository)
-  private val commitId = exhibitB // exhibit b: add a new file
+  private val commitHash = CommitHash(exhibitB) // exhibit b: add a new file
 
   @ParameterizedTest
   @ArgumentsSource(PropertiesArgumentsProvider::class)
@@ -45,7 +45,7 @@ class CommitInfoUseCaseTest {
     val (property, expected) = propertyExpected
 
     // when
-    val actual = useCase.invoke(commitId, property)
+    val actual = useCase.invoke(commitHash, property)
 
     // then
     assertThat(actual)
@@ -74,7 +74,7 @@ class CommitInfoUseCaseTest {
   @Test
   fun `it should get more than one commit ID for a merge commit`() {
     // given
-    val mergeCommitId = mergeEnglishIntoSpanish // Merge branch 'english' into spanish
+    val mergeCommitId = CommitHash(mergeEnglishIntoSpanish) // Merge branch 'english' into spanish
 
     // when
     val ancestors = useCase.invoke(mergeCommitId, Parent)
@@ -94,7 +94,7 @@ class CommitInfoUseCaseTest {
   @Test
   fun `it should query 2 properties`() {
     // when
-    val shortMessageAndEncoding = useCase.invoke(commitId, ShortMessage, Encoding, ::Pair)
+    val shortMessageAndEncoding = useCase.invoke(commitHash, ShortMessage, Encoding, ::Pair)
 
     // then
     assertThat(shortMessageAndEncoding)
@@ -105,7 +105,7 @@ class CommitInfoUseCaseTest {
   fun `it should query 3 properties`() {
     // when
     val authorEncodingShortMessage = useCase
-      .invoke(commitId, Author, Encoding, ShortMessage, ::Triple)
+      .invoke(commitHash, Author, Encoding, ShortMessage, ::Triple)
 
     // then
     assertThat(authorEncodingShortMessage)
@@ -121,7 +121,7 @@ class CommitInfoUseCaseTest {
   @Test
   fun `it should query 4 properties`() {
     // when
-    val tuple4 = useCase.invoke(commitId, ShortMessage, Author, AuthoredLocalDateTime, Committer, ::Tuple4)
+    val tuple4 = useCase.invoke(commitHash, ShortMessage, Author, AuthoredLocalDateTime, Committer, ::Tuple4)
 
     // then
     assertThat(tuple4)
@@ -139,7 +139,7 @@ class CommitInfoUseCaseTest {
   fun `it should query 5 properties`() {
     // when
     val tuple5 = useCase.invoke(
-      commitId,
+      commitHash,
       ShortMessage,
       Author,
       AuthoredLocalDateTime,
@@ -165,7 +165,7 @@ class CommitInfoUseCaseTest {
   fun `it should query 6 properties`() {
     // when
     val tuple6 = useCase.invoke(
-      commitId,
+      commitHash,
       ShortMessage,
       Author,
       AuthoredLocalDateTime,
