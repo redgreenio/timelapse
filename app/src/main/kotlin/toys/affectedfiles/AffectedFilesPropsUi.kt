@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox
 import kotlin.properties.Delegates
 import org.eclipse.jgit.lib.RepositoryBuilder
 import redgreen.dawn.affectedfiles.contract.AffectedFileContext
+import redgreen.dawn.affectedfiles.contract.CommitHash
 
 class AffectedFilesPropsUi(
   private val affectedFilesContextSubject: BehaviorSubject<AffectedFileContext>,
@@ -20,9 +21,32 @@ class AffectedFilesPropsUi(
   }
 
   private val gitReposComboBox = DiscoverGitReposComboBox(File(GIT_PROJECTS_ROOT)) { selectedGitRepo = it }
+
   private val trackedFilesComboBox = TrackedFilesInRepoComboBox { selectedFilePath = it }
-  private val commitsAffectingFileListView = CommitsAffectingFileListView { println(it) }
+
+  private val commitsAffectingFileListView = CommitsAffectingFileListView {
+    val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
+    val parent = repository.resolve("$it^1")
+
+    affectedFilesContextSubject.onNext(
+      AffectedFileContext(selectedFilePath!!, CommitHash(parent.name), CommitHash(it))
+    )
+  }
+
   private val callbackLabel = Label().apply { isWrapText = true }
+
+  private var selectedFilePath: String? by Delegates.observable(null) { _, _, value ->
+    value ?: return@observable
+
+    val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
+    commitsAffectingFileListView.fileModel = CommitsAffectingFileListView.FileModel(repository, selectedFilePath!!)
+  }
+
+  private var selectedGitRepo: DiscoverGitReposComboBox.GitRepo? by Delegates.observable(null) { _, _, value ->
+    trackedFilesComboBox.gitRepo = value
+    commitsAffectingFileListView.fileModel = null
+    selectedFilePath = null
+  }
 
   init {
     spacing = SPACING
@@ -37,18 +61,5 @@ class AffectedFilesPropsUi(
 
   fun showAffectedFile(filePath: String) {
     callbackLabel.text = "Affected file: $filePath"
-  }
-
-  private var selectedFilePath: String? by Delegates.observable(null) { _, _, value ->
-    value ?: return@observable
-
-    val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
-    commitsAffectingFileListView.fileModel = CommitsAffectingFileListView.FileModel(repository, selectedFilePath!!)
-  }
-
-  private var selectedGitRepo: DiscoverGitReposComboBox.GitRepo? by Delegates.observable(null) { _, _, value ->
-    trackedFilesComboBox.gitRepo = value
-    commitsAffectingFileListView.fileModel = null
-    selectedFilePath = null
   }
 }
