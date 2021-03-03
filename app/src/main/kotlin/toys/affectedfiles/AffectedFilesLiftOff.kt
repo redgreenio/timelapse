@@ -24,17 +24,22 @@ fun main() {
 }
 
 class AffectedFilesLiftOff : LiftOff<AffectedFilesProps, AffectedFilesEntryPointPane>() {
+  private companion object {
+    private const val TITLE = "Affected files"
+    private const val WIDTH = 500.0
+    private const val HEIGHT = 600.0
+  }
+
   private val contextChanges = PublishSubject.create<AffectedFileContext>()
   private val affectedFilesCellViewModelChanges = PublishSubject
     .create<List<AffectedFileCellViewModel>>()
 
   private val callbackLabel = Label().apply { isWrapText = true }
 
-  override fun title(): String =
-    "Affected files"
+  override fun title(): String = TITLE
 
   override fun howBig(): Dimension2D =
-    Dimension2D(500.0, 600.0)
+    Dimension2D(WIDTH, HEIGHT)
 
   override fun entryPoint(): AffectedFilesEntryPointPane =
     AffectedFilesEntryPointPane()
