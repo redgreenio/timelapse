@@ -22,4 +22,6 @@ tasks {
 dependencies {
   implementation(project(":design"))
   implementation(project(":architecture"))
+  api("org.controlsfx:controlsfx:11.1.0")
+  implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")
 }
