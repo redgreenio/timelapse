@@ -16,16 +16,16 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : Parent {
   private companion object {
+    private const val drawGrid = false
     private const val PROPS_UI_WIDTH = 200.0
   }
 
-  private val debug = true
   private val entryPoint: E by lazy(NONE) { entryPoint() }
 
   override fun start(primaryStage: Stage) {
     val size = howBig()
     val root = HBox()
-    val content = if (debug) DesignerGridPane() else Pane()
+    val content = if (drawGrid) DesignerGridPane() else Pane()
 
     val scenePane = Scene(root, size.width + PROPS_UI_WIDTH, size.height).apply {
       DesignSystem.initialize(this)
