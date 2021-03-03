@@ -5,7 +5,6 @@ import io.redgreen.architecture.Disposer
 import io.redgreen.architecture.EntryPoint
 import io.redgreen.architecture.RxJava3Disposer
 import io.redgreen.design.TitledParent
-import javafx.collections.FXCollections
 import redgreen.dawn.affectedfiles.contract.AffectedFilesProps
 import redgreen.dawn.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import redgreen.dawn.extentions.matchParent
@@ -29,18 +28,7 @@ class AffectedFilesEntryPointPane : TitledParent(),
 
     setContent("Affected files (none)", affectedFilesListView)
 
-    with(props) {
-      viewModelChanges.subscribe { affectedFileCellViewModels ->
-        val countText = if (affectedFileCellViewModels.isNotEmpty()) {
-          "${affectedFileCellViewModels.size - 1} more"
-        } else {
-          "none"
-        }
-        setTitle("Affected files ($countText)")
-        affectedFilesListView.items = FXCollections.observableList(affectedFileCellViewModels)
-      }.collect()
-      contextChanges.subscribe { println(it) }.collect()
-    }
+    props.contextChanges.subscribe { println(it) }.collect()
   }
 
   private fun AffectedFilesListView.skipDirectoryRow(
