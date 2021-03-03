@@ -2,6 +2,8 @@ package toys.affectedfiles
 
 import io.reactivex.rxjava3.subjects.PublishSubject
 import io.redgreen.liftoff.LiftOff
+import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox
+import java.io.File
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.scene.control.Button
@@ -28,6 +30,8 @@ class AffectedFilesLiftOff : LiftOff<AffectedFilesProps, AffectedFilesEntryPoint
     private const val TITLE = "Affected files"
     private const val WIDTH = 500.0
     private const val HEIGHT = 600.0
+
+    private const val GIT_PROJECTS_ROOT = "/Users/ragunathjawahar/GitHubProjects/"
   }
 
   private val contextChanges = PublishSubject.create<AffectedFileContext>()
@@ -57,10 +61,18 @@ class AffectedFilesLiftOff : LiftOff<AffectedFilesProps, AffectedFilesEntryPoint
     val sample2Button = Button("Empty").apply {
       setOnAction { showSample(sample2ViewModels) }
     }
+    val gitReposComboBox = DiscoverGitReposComboBox(File(GIT_PROJECTS_ROOT)) {
+      println("Selected: ${it.parentDirectoryName}")
+    }
 
     return VBox().apply {
       spacing = 8.0
-      children.addAll(sample1Button, sample2Button, callbackLabel)
+      children.addAll(
+        sample1Button,
+        sample2Button,
+        callbackLabel,
+        gitReposComboBox
+      )
     }
   }
 
