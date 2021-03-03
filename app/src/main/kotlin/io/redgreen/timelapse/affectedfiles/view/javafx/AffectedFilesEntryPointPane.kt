@@ -17,18 +17,26 @@ class AffectedFilesEntryPointPane : TitledParent(),
     val parent = this
     val affectedFilesListView = AffectedFilesListView().apply {
       matchParent(parent)
-      selectionModel.selectedItemProperty().addListener { _, oldValue, newValue ->
-        if (newValue != oldValue && newValue is FileCell) {
-          props.fileSelectedCallback(newValue.affectedFile.filePath)
-        } else {
-          skipDirectoryRow(items.indexOf(oldValue), items.indexOf(newValue))
-        }
+      handleSelection(props.fileSelectedCallback)
+    }
+    setContent("Affected files (none)", affectedFilesListView)
+    props.contextChanges.subscribe { println(it) }.collect()
+  }
+
+  override fun unmount() {
+    dispose()
+  }
+
+  private fun AffectedFilesListView.handleSelection(
+    fileSelectedCallback: (filePath: String) -> Unit
+  ) {
+    selectionModel.selectedItemProperty().addListener { _, oldValue, newValue ->
+      if (newValue != oldValue && newValue is FileCell) {
+        fileSelectedCallback(newValue.affectedFile.filePath)
+      } else {
+        skipDirectoryRow(items.indexOf(oldValue), items.indexOf(newValue))
       }
     }
-
-    setContent("Affected files (none)", affectedFilesListView)
-
-    props.contextChanges.subscribe { println(it) }.collect()
   }
 
   private fun AffectedFilesListView.skipDirectoryRow(
@@ -42,9 +50,5 @@ class AffectedFilesEntryPointPane : TitledParent(),
       /* prevent moving the selection to index 0, which is always a directory row */
       else -> selectionModel.selectNext()
     }
-  }
-
-  override fun unmount() {
-    dispose()
   }
 }
