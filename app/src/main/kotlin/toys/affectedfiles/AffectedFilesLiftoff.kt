@@ -1,7 +1,7 @@
 package toys.affectedfiles
 
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.redgreen.liftoff.LiftOff
+import io.redgreen.liftoff.Liftoff
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
 import io.redgreen.timelapse.affectedfiles.view.javafx.AffectedFilesEntryPointPane
@@ -10,10 +10,10 @@ import javafx.geometry.Dimension2D
 import javafx.scene.layout.Region
 
 fun main() {
-  Application.launch(AffectedFilesLiftOff::class.java)
+  Application.launch(AffectedFilesLiftoff::class.java)
 }
 
-class AffectedFilesLiftOff : LiftOff<AffectedFilesProps, AffectedFilesEntryPointPane>() {
+class AffectedFilesLiftoff : Liftoff<AffectedFilesProps, AffectedFilesEntryPointPane>() {
   private companion object {
     private const val TITLE = "Affected files"
     private const val WIDTH = 500.0

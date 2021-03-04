@@ -14,10 +14,12 @@ import javafx.scene.layout.Region
 import javafx.stage.Stage
 import kotlin.LazyThreadSafetyMode.NONE
 
-abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : Parent {
+abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : Parent {
   private companion object {
     private const val drawGrid = false
+
     private const val PROPS_UI_WIDTH = 200.0
+    private const val TITLE_SUFFIX = "[Liftoff^]"
   }
 
   private val entryPoint: E by lazy(NONE) { entryPoint() }
@@ -53,7 +55,7 @@ abstract class LiftOff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     }
 
     with(primaryStage) {
-      title = "${title()} [Liftoff^]"
+      title = "${title()} $TITLE_SUFFIX"
       scene = scenePane
       centerOnScreen()
       show()
