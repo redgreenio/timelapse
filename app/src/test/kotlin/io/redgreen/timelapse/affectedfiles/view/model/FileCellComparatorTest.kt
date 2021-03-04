@@ -1,12 +1,12 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Test
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import org.junit.jupiter.api.Test
 
 internal class FileCellComparatorTest {
   @Test
@@ -16,7 +16,7 @@ internal class FileCellComparatorTest {
       FileCell(Deleted("NoLongerRequired.kt", 217)),
       FileCell(New("Hello.kt", 12)),
       FileCell(Modified("NoLastingChanges.kt", 12, 99)),
-      FileCell(Moved("BelongsHereNow.kt", 1, 1)),
+      FileCell(Moved("BelongsHereNow.kt", "DoesNotBelongHere.kt", 1, 1)),
     ).toMutableList()
 
     // when
@@ -27,7 +27,7 @@ internal class FileCellComparatorTest {
       .containsExactly(
         FileCell(New("Hello.kt", 12)),
         FileCell(Modified("NoLastingChanges.kt", 12, 99)),
-        FileCell(Moved("BelongsHereNow.kt", 1, 1)),
+        FileCell(Moved("BelongsHereNow.kt", "DoesNotBelongHere.kt", 1, 1)),
         FileCell(Deleted("NoLongerRequired.kt", 217)),
       )
       .inOrder()
@@ -62,10 +62,10 @@ internal class FileCellComparatorTest {
     // given
     val fileCellsOfDifferentTypes = listOf(
       FileCell(New("NB.kt", 6)),
-      FileCell(Moved("VA.kt", 12, 11)),
+      FileCell(Moved("VA.kt", "XA.kt", 12, 11)),
       FileCell(Deleted("DA.kt", 111)),
       FileCell(New("NA.kt", 71)),
-      FileCell(Moved("VB.kt", 14, 7)),
+      FileCell(Moved("VB.kt", "XB.kt", 14, 7)),
       FileCell(Modified("MB.kt", 7, 3)),
       FileCell(Deleted("DB.kt", 86)),
       FileCell(Modified("MA.kt", 12, 1)),
@@ -81,8 +81,8 @@ internal class FileCellComparatorTest {
         FileCell(New("NB.kt", 6)),
         FileCell(Modified("MA.kt", 12, 1)),
         FileCell(Modified("MB.kt", 7, 3)),
-        FileCell(Moved("VA.kt", 12, 11)),
-        FileCell(Moved("VB.kt", 14, 7)),
+        FileCell(Moved("VA.kt", "XA.kt", 12, 11)),
+        FileCell(Moved("VB.kt", "XB.kt", 14, 7)),
         FileCell(Deleted("DA.kt", 111)),
         FileCell(Deleted("DB.kt", 86)),
       )

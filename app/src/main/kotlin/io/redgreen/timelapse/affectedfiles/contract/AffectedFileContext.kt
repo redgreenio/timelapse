@@ -5,6 +5,6 @@ import io.redgreen.timelapse.git.CommitHash
 data class AffectedFileContext(
   val repositoryPath: String,
   val filePath: String,
-  val ancestor: CommitHash,
-  val descendent: CommitHash
+  val descendent: CommitHash,
+  val ancestor: CommitHash
 )

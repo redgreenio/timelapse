@@ -6,12 +6,17 @@ import io.redgreen.architecture.EntryPoint
 import io.redgreen.architecture.RxJava3Disposer
 import io.redgreen.design.TitledParent
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
+import io.redgreen.timelapse.affectedfiles.usecases.GetAffectedFilesUseCase
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileToCellViewModelMapper
 import io.redgreen.timelapse.foo.matchParent
+import javafx.collections.FXCollections
 
 class AffectedFilesEntryPointPane : TitledParent(),
   EntryPoint<AffectedFilesProps>,
   Disposer<Disposable> by RxJava3Disposer() {
+
+  private val getAffectedFilesUseCase = GetAffectedFilesUseCase()
 
   override fun mount(props: AffectedFilesProps) {
     val parent = this
@@ -20,7 +25,13 @@ class AffectedFilesEntryPointPane : TitledParent(),
       handleSelection(props.fileSelectedCallback)
     }
     setContent("Affected files (none)", affectedFilesListView)
-    props.contextChanges.subscribe { println(it) }.collect()
+
+    props
+      .contextChanges
+      .flatMapSingle { getAffectedFilesUseCase.invoke(it.repositoryPath, it.descendent, it.ancestor) }
+      .map { AffectedFileToCellViewModelMapper.map(it) }
+      .subscribe { affectedFilesListView.items = FXCollections.observableArrayList(it) }
+      .collect()
   }
 
   override fun unmount() {

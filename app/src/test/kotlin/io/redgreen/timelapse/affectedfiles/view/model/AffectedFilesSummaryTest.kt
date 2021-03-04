@@ -1,14 +1,14 @@
 package io.redgreen.timelapse.affectedfiles.view.model;
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.MethodSource
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 typealias TestPair = Pair<List<AffectedFileCellViewModel>, String>
 
@@ -20,7 +20,7 @@ class AffectedFilesSummaryTest {
       return listOf(
         listOf(FileCell(New("Hello.txt", 12))) to "1 new",
         listOf(FileCell(Modified("BeenHere.txt", 96, 11))) to "1 modified",
-        listOf(FileCell(Moved("InTheRightPlace.txt", 1, 1))) to "1 moved",
+        listOf(FileCell(Moved("InTheRightPlace.txt", "WasHere.txt", 1, 1))) to "1 moved",
         listOf(FileCell(Deleted("ServedMyPurpose.txt", 101))) to "1 deleted",
       )
     }
@@ -40,10 +40,10 @@ class AffectedFilesSummaryTest {
         ) to "3 modified",
 
         listOf(
-          FileCell(Moved("1.txt", 1, 1)),
-          FileCell(Moved("2.txt", 11, 66)),
-          FileCell(Moved("3.txt", 98, 17)),
-          FileCell(Moved("4.txt", 11, 11)),
+          FileCell(Moved("1.txt", "A.txt", 1, 1)),
+          FileCell(Moved("2.txt", "B.txt", 11, 66)),
+          FileCell(Moved("3.txt", "C.txt", 98, 17)),
+          FileCell(Moved("4.txt", "D.txt", 11, 11)),
         ) to "4 moved",
 
         listOf(
@@ -85,10 +85,10 @@ class AffectedFilesSummaryTest {
       FileCell(New("1.txt", 1)),
       FileCell(Modified("2.txt", 11, 66)),
       FileCell(Modified("3.txt", 98, 17)),
-      FileCell(Moved("A.txt", 1, 1)),
-      FileCell(Moved("B.txt", 11, 66)),
-      FileCell(Moved("C.txt", 98, 17)),
-      FileCell(Moved("D.txt", 11, 11)),
+      FileCell(Moved("A.txt", "1.txt", 1, 1)),
+      FileCell(Moved("B.txt", "2.txt", 11, 66)),
+      FileCell(Moved("C.txt", "3.txt", 98, 17)),
+      FileCell(Moved("D.txt", "4.txt", 11, 11)),
       FileCell(Deleted("X.txt", 1)),
       FileCell(Deleted("Y.txt", 11)),
     )

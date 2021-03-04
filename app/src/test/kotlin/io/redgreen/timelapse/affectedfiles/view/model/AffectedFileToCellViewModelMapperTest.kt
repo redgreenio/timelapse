@@ -1,20 +1,20 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Test
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import org.junit.jupiter.api.Test
 
 internal class AffectedFileToCellViewModelMapperTest {
   @Test
   fun `group files based on directories they belong`() {
     // given
     val affectedFiles = listOf(
-      Moved("module/a/C.txt", 2, 4),
+      Moved("module/a/C.txt", "module/b/C.txt", 2, 4),
       Deleted("module/a/D.txt", 1),
       Modified("module/a/B.txt", 76, 12),
       New("module/a/A.txt", 34),
@@ -29,7 +29,7 @@ internal class AffectedFileToCellViewModelMapperTest {
         DirectoryCell("module/a/", 4),
         FileCell(New("module/a/A.txt", 34)),
         FileCell(Modified("module/a/B.txt", 76, 12)),
-        FileCell(Moved("module/a/C.txt", 2, 4)),
+        FileCell(Moved("module/a/C.txt", "module/b/C.txt", 2, 4)),
         FileCell(Deleted("module/a/D.txt", 1)),
       )
       .inOrder()
@@ -40,7 +40,7 @@ internal class AffectedFileToCellViewModelMapperTest {
     // given
     val affectedFiles = listOf(
       Modified("module/b/2.txt", 5, 12),
-      Moved("module/a/C.txt", 2, 4),
+      Moved("module/a/C.txt", "module/b/C.txt", 2, 4),
       Modified("module/b/1.txt", 90, 52),
       New("module/a/A.txt", 34),
       Deleted("module/b/3.txt", 89),
@@ -57,7 +57,7 @@ internal class AffectedFileToCellViewModelMapperTest {
         DirectoryCell("module/a/", 4),
         FileCell(New("module/a/A.txt", 34)),
         FileCell(Modified("module/a/B.txt", 76, 12)),
-        FileCell(Moved("module/a/C.txt", 2, 4)),
+        FileCell(Moved("module/a/C.txt", "module/b/C.txt", 2, 4)),
         FileCell(Deleted("module/a/D.txt", 1)),
 
         DirectoryCell("module/b/", 3),
@@ -72,7 +72,7 @@ internal class AffectedFileToCellViewModelMapperTest {
   fun `group files in the root directory`() {
     // given
     val affectedFiles = listOf(
-      Moved("C.txt", 2, 4),
+      Moved("C.txt", "3.txt", 2, 4),
       Deleted("D.txt", 1),
       Modified("B.txt", 76, 12),
       New("A.txt", 34),
@@ -87,7 +87,7 @@ internal class AffectedFileToCellViewModelMapperTest {
         DirectoryCell("/", 4),
         FileCell(New("A.txt", 34)),
         FileCell(Modified("B.txt", 76, 12)),
-        FileCell(Moved("C.txt", 2, 4)),
+        FileCell(Moved("C.txt", "3.txt", 2, 4)),
         FileCell(Deleted("D.txt", 1)),
       )
       .inOrder()

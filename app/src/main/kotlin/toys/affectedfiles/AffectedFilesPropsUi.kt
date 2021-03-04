@@ -32,7 +32,7 @@ class AffectedFilesPropsUi(
     val ancestor = CommitHash(parent.name)
     val descendent = CommitHash(it)
     val repositoryPath = selectedGitRepo!!.gitDirectory.absolutePath
-    affectedFilesContextSubject.onNext(AffectedFileContext(repositoryPath, filePath, ancestor, descendent))
+    affectedFilesContextSubject.onNext(AffectedFileContext(repositoryPath, filePath, descendent, ancestor))
   }
 
   private val callbackLabel = Label().apply { isWrapText = true }

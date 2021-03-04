@@ -7,6 +7,7 @@ sealed class AffectedFile(open val filePath: String) {
     filePath.substring(filePath.lastIndexOf('/') + 1)
   }
 
+  // TODO: 04/03/21 consider moving this to the presentation layer or introduce a new type
   val directoryPath: String by lazy {
     val path = filePath.substring(0, filePath.lastIndexOf('/') + 1)
     if (path == "") "/" else path
@@ -31,6 +32,7 @@ sealed class AffectedFile(open val filePath: String) {
 
   data class Moved(
     override val filePath: String,
+    val oldFilePath: String,
     val deletions: Int,
     val insertions: Int
   ) : AffectedFile(filePath) {
