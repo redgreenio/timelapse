@@ -64,6 +64,6 @@ class AffectedFilesPropsUi(
   }
 
   fun showAffectedFile(filePath: String) {
-    callbackLabel.text = "Affected file: $filePath"
+    callbackLabel.text = "Selected file: $filePath"
   }
 }

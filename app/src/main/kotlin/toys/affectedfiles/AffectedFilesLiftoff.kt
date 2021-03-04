@@ -5,6 +5,7 @@ import io.redgreen.liftoff.Liftoff
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
 import io.redgreen.timelapse.affectedfiles.view.javafx.AffectedFilesEntryPointPane
+import io.redgreen.timelapse.foo.fastLazy
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.scene.layout.Region
@@ -23,16 +24,16 @@ class AffectedFilesLiftoff : Liftoff<AffectedFilesProps, AffectedFilesEntryPoint
   private val contextChanges = BehaviorSubject.create<AffectedFileContext>()
   private val affectedFilesPropsUi = AffectedFilesPropsUi(contextChanges)
 
+  override val entryPoint: AffectedFilesEntryPointPane by fastLazy { AffectedFilesEntryPointPane() }
+
+  override val props: AffectedFilesProps by fastLazy {
+    AffectedFilesProps(contextChanges) { affectedFilesPropsUi.showAffectedFile(it) }
+  }
+
   override fun title(): String = TITLE
 
   override fun howBig(): Dimension2D =
     Dimension2D(WIDTH, HEIGHT)
-
-  override fun entryPoint(): AffectedFilesEntryPointPane =
-    AffectedFilesEntryPointPane()
-
-  override fun props(): AffectedFilesProps =
-    AffectedFilesProps(contextChanges) { affectedFilesPropsUi.showAffectedFile(it) }
 
   override fun propsUi(): Region =
     AffectedFilesPropsUi(contextChanges)

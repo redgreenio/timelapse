@@ -12,7 +12,6 @@ import javafx.scene.layout.HBox
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Region
 import javafx.stage.Stage
-import kotlin.LazyThreadSafetyMode.NONE
 
 abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : Parent {
   private companion object {
@@ -22,7 +21,15 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     private const val TITLE_SUFFIX = "[Liftoff^]"
   }
 
-  private val entryPoint: E by lazy(NONE) { entryPoint() }
+  /**
+   * The feature to liftoff and (maybe) interact with.
+   */
+  protected abstract val entryPoint: E
+
+  /**
+   * Props for the feature's [EntryPoint].
+   */
+  protected abstract val props: P
 
   override fun start(primaryStage: Stage) {
     val size = howBig()
@@ -33,7 +40,7 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
       DesignSystem.initialize(this)
     }
 
-    entryPoint.mount(props())
+    entryPoint.mount(props)
     println("${entryPoint::class.java.simpleName} mounted.")
 
     val propsUi = propsUi().apply {
@@ -80,16 +87,6 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
    * Size of the feature in the liftoff window.
    */
   abstract fun howBig(): Dimension2D
-
-  /**
-   * The feature to liftoff and (maybe) interact with.
-   */
-  abstract fun entryPoint(): E
-
-  /**
-   * Props for the feature's [EntryPoint].
-   */
-  abstract fun props(): P
 
   /**
    * UI in the liftoff window to manipulate the props.
