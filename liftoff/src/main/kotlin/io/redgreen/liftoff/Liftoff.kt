@@ -36,8 +36,18 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
    */
   protected abstract val propsUi: Region
 
+  /**
+   * The title of this feature.
+   */
+  protected abstract val title: String
+
+  /**
+   * Size of the feature in the liftoff window.
+   */
+  protected abstract val howBig: Dimension2D
+
   override fun start(primaryStage: Stage) {
-    val size = howBig()
+    val size = howBig
     val root = HBox()
     val content = if (drawGrid) DesignerGridPane() else Pane()
 
@@ -67,7 +77,7 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     }
 
     with(primaryStage) {
-      title = "${title()} $TITLE_SUFFIX"
+      title = "${title} $TITLE_SUFFIX"
       scene = scenePane
       centerOnScreen()
       show()
@@ -82,14 +92,4 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     entryPoint.unmount()
     println("${entryPoint::class.java.simpleName} unmounted.")
   }
-
-  /**
-   * The title of this feature.
-   */
-  abstract fun title(): String
-
-  /**
-   * Size of the feature in the liftoff window.
-   */
-  abstract fun howBig(): Dimension2D
 }
