@@ -31,6 +31,11 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
    */
   protected abstract val props: P
 
+  /**
+   * UI in the liftoff window to manipulate the props.
+   */
+  protected abstract val propsUi: Region
+
   override fun start(primaryStage: Stage) {
     val size = howBig()
     val root = HBox()
@@ -43,7 +48,7 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     entryPoint.mount(props)
     println("${entryPoint::class.java.simpleName} mounted.")
 
-    val propsUi = propsUi().apply {
+    propsUi.apply {
       padding = Insets(8.0)
       prefWidth(PROPS_UI_WIDTH)
     }
@@ -87,9 +92,4 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
    * Size of the feature in the liftoff window.
    */
   abstract fun howBig(): Dimension2D
-
-  /**
-   * UI in the liftoff window to manipulate the props.
-   */
-  abstract fun propsUi(): Region
 }

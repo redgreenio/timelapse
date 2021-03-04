@@ -22,19 +22,19 @@ class AffectedFilesLiftoff : Liftoff<AffectedFilesProps, AffectedFilesEntryPoint
   }
 
   private val contextChanges = BehaviorSubject.create<AffectedFileContext>()
-  private val affectedFilesPropsUi = AffectedFilesPropsUi(contextChanges)
 
   override val entryPoint: AffectedFilesEntryPointPane by fastLazy { AffectedFilesEntryPointPane() }
 
   override val props: AffectedFilesProps by fastLazy {
-    AffectedFilesProps(contextChanges) { affectedFilesPropsUi.showAffectedFile(it) }
+    AffectedFilesProps(contextChanges) { (propsUi as AffectedFilesPropsUi).showAffectedFile(it) }
+  }
+
+  override val propsUi: Region by fastLazy {
+    AffectedFilesPropsUi(contextChanges)
   }
 
   override fun title(): String = TITLE
 
   override fun howBig(): Dimension2D =
     Dimension2D(WIDTH, HEIGHT)
-
-  override fun propsUi(): Region =
-    AffectedFilesPropsUi(contextChanges)
 }
