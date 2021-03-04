@@ -28,7 +28,9 @@ class AffectedFilesEntryPointPane : TitledParent(),
 
     props
       .contextChanges
-      .flatMapSingle { getAffectedFilesUseCase.invoke(it.repositoryPath, it.descendent, it.ancestor) }
+      .flatMapSingle {
+        getAffectedFilesUseCase.invoke(it.gitDirectory, it.descendent, it.ancestor)
+      }
       .map { AffectedFileToCellViewModelMapper.map(it) }
       .subscribe { affectedFilesListView.items = FXCollections.observableArrayList(it) }
       .collect()

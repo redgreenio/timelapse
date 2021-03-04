@@ -6,6 +6,7 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
+import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.extensions.isDelete
 import io.redgreen.timelapse.extensions.isInsert
 import io.redgreen.timelapse.extensions.isReplace
@@ -31,13 +32,12 @@ import org.eclipse.jgit.util.io.DisabledOutputStream
 
 class GetAffectedFilesUseCase {
   fun invoke(
-    repositoryPath: String,
+    gitDirectory: GitDirectory,
     descendent: CommitHash,
     ancestor: CommitHash
   ): Single<List<AffectedFile>> {
-    // TODO: 04/03/21 Introduce a type to distinguish between project and git directories
     return Single.create { emitter ->
-      val repository = RepositoryBuilder().setGitDir(File(repositoryPath)).build()
+      val repository = RepositoryBuilder().setGitDir(File(gitDirectory.path)).build()
 
       try {
         val affectedFiles = getAffectedFiles(repository, descendent, ancestor)

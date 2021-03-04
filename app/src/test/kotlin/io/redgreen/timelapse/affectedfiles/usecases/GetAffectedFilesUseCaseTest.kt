@@ -4,6 +4,7 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
+import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit
@@ -16,7 +17,7 @@ import org.junit.jupiter.api.Test
 
 internal class GetAffectedFilesUseCaseTest {
   private val useCase = GetAffectedFilesUseCase()
-  private val repositoryPath = "${GitTestbed.path.absolutePath}/.git"
+  private val gitTestbedGitDirectory = GitDirectory.from("${GitTestbed.path.absolutePath}/.git").get()
 
   @Test
   fun `it should get changed files from an initial commit`() {
@@ -28,7 +29,7 @@ internal class GetAffectedFilesUseCaseTest {
 
     // when
     val testObserver = useCase
-      .invoke(repositoryPath, CommitHash(descendent), CommitHash(ancestor))
+      .invoke(gitTestbedGitDirectory, CommitHash(descendent), CommitHash(ancestor))
       .test()
 
     // then
@@ -50,7 +51,9 @@ internal class GetAffectedFilesUseCaseTest {
     val ancestor = CommitHash(Commit.exhibitF) // exhibit f: rename a file
 
     // when
-    val testObserver = useCase.invoke(repositoryPath, descendent, ancestor).test()
+    val testObserver = useCase
+      .invoke(gitTestbedGitDirectory, descendent, ancestor)
+      .test()
 
     // then
     val changedFiles = listOf(
@@ -74,7 +77,7 @@ internal class GetAffectedFilesUseCaseTest {
 
     // when
     val testObserver = useCase
-      .invoke(repositoryPath, invalidInitialCommitHash, invalidInitialCommitHash)
+      .invoke(gitTestbedGitDirectory, invalidInitialCommitHash, invalidInitialCommitHash)
       .test()
 
     // then
@@ -94,7 +97,7 @@ internal class GetAffectedFilesUseCaseTest {
 
     // when
     val testObserver = useCase
-      .invoke(repositoryPath, invalidDescendentHash, ancestorHash)
+      .invoke(gitTestbedGitDirectory, invalidDescendentHash, ancestorHash)
       .test()
 
     // then
@@ -114,7 +117,7 @@ internal class GetAffectedFilesUseCaseTest {
 
     // when
     val testObserver = useCase
-      .invoke(repositoryPath, descendentHash, invalidAncestorHash)
+      .invoke(gitTestbedGitDirectory, descendentHash, invalidAncestorHash)
       .test()
 
     // then
