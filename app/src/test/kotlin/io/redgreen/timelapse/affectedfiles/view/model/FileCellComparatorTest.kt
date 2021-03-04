@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import org.junit.jupiter.api.Test
 
@@ -14,7 +14,7 @@ internal class FileCellComparatorTest {
     // given
     val fileCells = listOf(
       FileCell(Deleted("NoLongerRequired.kt", 217)),
-      FileCell(New("Hello.kt", 12)),
+      FileCell(Added("Hello.kt", 12)),
       FileCell(Modified("NoLastingChanges.kt", 12, 99)),
       FileCell(Moved("BelongsHereNow.kt", "DoesNotBelongHere.kt", 1, 1)),
     ).toMutableList()
@@ -25,7 +25,7 @@ internal class FileCellComparatorTest {
     // then
     assertThat(sortedFileCells)
       .containsExactly(
-        FileCell(New("Hello.kt", 12)),
+        FileCell(Added("Hello.kt", 12)),
         FileCell(Modified("NoLastingChanges.kt", 12, 99)),
         FileCell(Moved("BelongsHereNow.kt", "DoesNotBelongHere.kt", 1, 1)),
         FileCell(Deleted("NoLongerRequired.kt", 217)),
@@ -61,10 +61,10 @@ internal class FileCellComparatorTest {
   fun `sort file cells of different types by change count`() {
     // given
     val fileCellsOfDifferentTypes = listOf(
-      FileCell(New("NB.kt", 6)),
+      FileCell(Added("NB.kt", 6)),
       FileCell(Moved("VA.kt", "XA.kt", 12, 11)),
       FileCell(Deleted("DA.kt", 111)),
-      FileCell(New("NA.kt", 71)),
+      FileCell(Added("NA.kt", 71)),
       FileCell(Moved("VB.kt", "XB.kt", 14, 7)),
       FileCell(Modified("MB.kt", 7, 3)),
       FileCell(Deleted("DB.kt", 86)),
@@ -77,8 +77,8 @@ internal class FileCellComparatorTest {
     // then
     assertThat(sortedFileCells)
       .containsExactly(
-        FileCell(New("NA.kt", 71)),
-        FileCell(New("NB.kt", 6)),
+        FileCell(Added("NA.kt", 71)),
+        FileCell(Added("NB.kt", 6)),
         FileCell(Modified("MA.kt", 12, 1)),
         FileCell(Modified("MB.kt", 7, 3)),
         FileCell(Moved("VA.kt", "XA.kt", 12, 11)),
@@ -115,9 +115,9 @@ internal class FileCellComparatorTest {
   fun `sort files of the same type with similar change count based on insertions if they don't have deletions`() {
     // given
     val fileCellsWithSimilarChangeCount = listOf(
-      FileCell(New("NB.kt", 2)),
-      FileCell(New("NC.kt", 1)),
-      FileCell(New("NA.kt", 3)),
+      FileCell(Added("NB.kt", 2)),
+      FileCell(Added("NC.kt", 1)),
+      FileCell(Added("NA.kt", 3)),
     ).toMutableList()
 
     // when
@@ -126,9 +126,9 @@ internal class FileCellComparatorTest {
     // then
     assertThat(sortedFileCells)
       .containsExactly(
-        FileCell(New("NA.kt", 3)),
-        FileCell(New("NB.kt", 2)),
-        FileCell(New("NC.kt", 1)),
+        FileCell(Added("NA.kt", 3)),
+        FileCell(Added("NB.kt", 2)),
+        FileCell(Added("NC.kt", 1)),
       )
       .inOrder()
   }

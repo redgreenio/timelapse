@@ -2,10 +2,10 @@ package io.redgreen.timelapse.affectedfiles.usecases
 
 import io.reactivex.rxjava3.core.Single
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.extensions.isDelete
 import io.redgreen.timelapse.extensions.isInsert
 import io.redgreen.timelapse.extensions.isReplace
@@ -139,7 +139,7 @@ class GetAffectedFilesUseCase {
     entry: DiffEntry,
     header: FileHeader
   ): AffectedFile = when (entry.changeType) {
-    COPY, ADD -> New(entry.newPath, calculateInsertions(header))
+    COPY, ADD -> Added(entry.newPath, calculateInsertions(header))
     MODIFY -> Modified(entry.newPath, calculateDeletions(header), calculateInsertions(header))
     DELETE -> Deleted(entry.oldPath, calculateDeletions(header))
     RENAME -> Moved(entry.newPath, entry.oldPath, calculateDeletions(header), calculateInsertions(header))

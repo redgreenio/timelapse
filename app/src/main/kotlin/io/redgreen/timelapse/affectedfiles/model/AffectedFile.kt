@@ -13,7 +13,7 @@ sealed class AffectedFile(open val filePath: String) {
     if (path == "") "/" else path
   }
 
-  data class New(
+  data class Added(
     override val filePath: String,
     val insertions: Int
   ) : AffectedFile(filePath) {

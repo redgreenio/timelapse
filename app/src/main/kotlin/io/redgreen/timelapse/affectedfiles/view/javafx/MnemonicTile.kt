@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.affectedfiles.view.javafx
 
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import javafx.scene.control.Label
 
 class MnemonicTile : Label() {
@@ -27,7 +27,7 @@ class MnemonicTile : Label() {
     val letter: Char,
     val cssClass: String
   ) {
-    New(LETTER_NEW, CSS_CLASS_NEW),
+    Added(LETTER_NEW, CSS_CLASS_NEW),
     Modified(LETTER_MODIFIED, CSS_CLASS_MODIFIED),
     Moved(LETTER_MOVED, CSS_CLASS_MOVED),
     Deleted(LETTER_DELETED, CSS_CLASS_DELETED),
@@ -40,7 +40,7 @@ class MnemonicTile : Label() {
 
   fun setAffectedFile(affectedFile: AffectedFile) {
     val appearance = when (affectedFile) {
-      is New -> MnemonicAppearance.New
+      is Added -> MnemonicAppearance.Added
       is Modified -> MnemonicAppearance.Modified
       is Moved -> MnemonicAppearance.Moved
       is Deleted -> MnemonicAppearance.Deleted

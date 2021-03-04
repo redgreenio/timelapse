@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.affectedfiles.view.model;
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -18,7 +18,7 @@ class AffectedFilesSummaryTest {
     @JvmStatic
     fun oneAffectedFileParams(): List<TestPair> {
       return listOf(
-        listOf(FileCell(New("Hello.txt", 12))) to "1 new",
+        listOf(FileCell(Added("Hello.txt", 12))) to "1 added",
         listOf(FileCell(Modified("BeenHere.txt", 96, 11))) to "1 modified",
         listOf(FileCell(Moved("InTheRightPlace.txt", "WasHere.txt", 1, 1))) to "1 moved",
         listOf(FileCell(Deleted("ServedMyPurpose.txt", 101))) to "1 deleted",
@@ -29,9 +29,9 @@ class AffectedFilesSummaryTest {
     fun moreThanOneHomogeneousAffectedFileParams(): List<TestPair> {
       return listOf(
         listOf(
-          FileCell(New("1.txt", 1)),
-          FileCell(New("2.txt", 1))
-        ) to "2 new",
+          FileCell(Added("1.txt", 1)),
+          FileCell(Added("2.txt", 1))
+        ) to "2 added",
 
         listOf(
           FileCell(Modified("1.txt", 5, 16)),
@@ -82,7 +82,7 @@ class AffectedFilesSummaryTest {
   fun `summarize heterogeneous affected files`() {
     // given
     val affectedFileCellViewModels = listOf(
-      FileCell(New("1.txt", 1)),
+      FileCell(Added("1.txt", 1)),
       FileCell(Modified("2.txt", 11, 66)),
       FileCell(Modified("3.txt", 98, 17)),
       FileCell(Moved("A.txt", "1.txt", 1, 1)),
@@ -95,6 +95,6 @@ class AffectedFilesSummaryTest {
 
     // when & then
     assertThat(affectedFileCellViewModels.summarize())
-      .isEqualTo("9 files affected • 1 new, 2 modified, 4 moved, 2 deleted")
+      .isEqualTo("9 files affected • 1 added, 2 modified, 4 moved, 2 deleted")
   }
 }

@@ -3,7 +3,7 @@ package io.redgreen.timelapse.affectedfiles.view.javafx
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import io.redgreen.timelapse.foo.fastLazy
 import javafx.geometry.HPos
@@ -46,7 +46,7 @@ internal class AffectedFileRow : GridPane() {
     mnemonicTile.setAffectedFile(affectedFile)
     filenameLabel.text = affectedFile.filename
     val (deletions, insertions) = when (affectedFile) {
-      is New -> 0 to affectedFile.insertions
+      is Added -> 0 to affectedFile.insertions
       is Modified -> affectedFile.deletions to affectedFile.insertions
       is Moved -> affectedFile.deletions to affectedFile.insertions
       is Deleted -> affectedFile.deletions to 0

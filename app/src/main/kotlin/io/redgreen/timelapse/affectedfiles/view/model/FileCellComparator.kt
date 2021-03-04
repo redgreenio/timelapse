@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 
 /**
@@ -18,11 +18,11 @@ import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.
  * 5. If file cells of the same type don't have deletions, sort them in descending order based on insertions.
  */
 object FileCellComparator : Comparator<FileCell> {
-  private const val ZERO_BECAUSE_A_NEW_FILE_CANT_HAVE_DELETIONS = 0
+  private const val ZERO_BECAUSE_ADDED_FILE_CANT_HAVE_DELETIONS = 0
   private const val BOTH_ARE_SAME = 0
 
   private val affectedFileRanks = mapOf(
-    New::class to 1,
+    Added::class to 1,
     Modified::class to 2,
     Moved::class to 3,
     Deleted::class to 4,
@@ -68,7 +68,7 @@ object FileCellComparator : Comparator<FileCell> {
   private fun getDeletions(
     affectedFile: AffectedFile
   ): Int = when (affectedFile) {
-    is New -> ZERO_BECAUSE_A_NEW_FILE_CANT_HAVE_DELETIONS
+    is Added -> ZERO_BECAUSE_ADDED_FILE_CANT_HAVE_DELETIONS
     is Modified -> affectedFile.deletions
     is Moved -> affectedFile.deletions
     is Deleted -> affectedFile.deletions

@@ -1,12 +1,24 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import kotlin.reflect.KClass
+
+private const val ADDED = "added"
+private const val MODIFIED = "modified"
+private const val MOVED = "moved"
+private const val DELETED = "deleted"
+
+private const val TEMPLATE_ADDED = "%d $ADDED"
+private const val TEMPLATE_MODIFIED = "%d $MODIFIED"
+private const val TEMPLATE_MOVED = "%d $MOVED"
+private const val TEMPLATE_DELETED = "%d $DELETED"
+
+private const val TEMPLATE_VARIOUS_STATS = "%d files affected • %s"
 
 fun List<AffectedFileCellViewModel>.summarize(): String {
   val affectedFilesCount = this.size
@@ -16,23 +28,23 @@ fun List<AffectedFileCellViewModel>.summarize(): String {
 
   val homogeneousAffectedFileTypes = groupedFileCells.keys.size == 1
   return if (homogeneousAffectedFileTypes) {
-    "$affectedFilesCount ${asText((groupedFileCells.entries.first().value.first().affectedFile))}"
+    "$affectedFilesCount ${humanizedStat((groupedFileCells.entries.first().value.first().affectedFile))}"
   } else {
     val stats = mutableListOf<String>()
 
-    val new = groupedFileCells.countOf(New::class)
-    if (new != 0) stats.add("$new new")
+    val added = groupedFileCells.countOf(Added::class)
+    if (added != 0) stats.add(String.format(TEMPLATE_ADDED, added))
 
     val modified = groupedFileCells.countOf(Modified::class)
-    if (modified != 0) stats.add("$modified modified")
+    if (modified != 0) stats.add(String.format(TEMPLATE_MODIFIED, modified))
 
     val moved = groupedFileCells.countOf(Moved::class)
-    if (moved != 0) stats.add("$moved moved")
+    if (moved != 0) stats.add(String.format(TEMPLATE_MOVED, moved))
 
     val deleted = groupedFileCells.countOf(Deleted::class)
-    if (deleted != 0) stats.add("$deleted deleted")
+    if (deleted != 0) stats.add(String.format(TEMPLATE_DELETED, deleted))
 
-    "$affectedFilesCount files affected • ${stats.joinToString()}"
+    String.format(TEMPLATE_VARIOUS_STATS, affectedFilesCount, stats.joinToString())
   }
 }
 
@@ -41,11 +53,11 @@ private fun Map<KClass<out AffectedFile>, List<FileCell>>.countOf(
 ): Int =
   this[key]?.size ?: 0
 
-private fun asText(
+private fun humanizedStat(
   affectedFile: AffectedFile
 ): String = when (affectedFile) {
-  is New -> "new"
-  is Modified -> "modified"
-  is Moved -> "moved"
-  is Deleted -> "deleted"
+  is Added -> ADDED
+  is Modified -> MODIFIED
+  is Moved -> MOVED
+  is Deleted -> DELETED
 }

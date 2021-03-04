@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.affectedfiles.usecases
 
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.New
 import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit
@@ -33,9 +33,9 @@ internal class GetAffectedFilesUseCaseTest {
 
     // then
     val affectedFiles = listOf(
-      New(FILE_1_TXT, 0),
-      New(FILE_2_TXT, 0),
-      New(FILE_3_TXT, 0),
+      Added(FILE_1_TXT, 0),
+      Added(FILE_2_TXT, 0),
+      Added(FILE_3_TXT, 0),
     )
     testObserver
       .assertValue(affectedFiles)
@@ -58,8 +58,8 @@ internal class GetAffectedFilesUseCaseTest {
       Deleted("file-3.txt", 0),
       Deleted("file-4.txt", 1),
       Moved("file-a.txt", "file-2.txt", 0, 0),
-      New("file-b.txt", 0),
-      New("file-c.txt", 1),
+      Added("file-b.txt", 0),
+      Added("file-c.txt", 1),
     )
     testObserver
       .assertValue(changedFiles)
