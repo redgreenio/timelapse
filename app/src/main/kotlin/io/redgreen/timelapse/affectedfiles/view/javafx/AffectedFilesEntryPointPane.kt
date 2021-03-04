@@ -6,6 +6,7 @@ import io.redgreen.architecture.EntryPoint
 import io.redgreen.architecture.RxJava3Disposer
 import io.redgreen.design.TitledParent
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
+import io.redgreen.timelapse.affectedfiles.model.AffectedFile
 import io.redgreen.timelapse.affectedfiles.usecases.GetAffectedFilesUseCase
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
@@ -25,7 +26,7 @@ class AffectedFilesEntryPointPane : TitledParent(),
     val parent = this
     val affectedFilesListView = AffectedFilesListView().apply {
       matchParent(parent)
-      handleSelection(props.fileSelectedCallback)
+      handleSelection(props.onSelected)
     }
     setContent("Affected files (none)", affectedFilesListView)
 
@@ -44,11 +45,11 @@ class AffectedFilesEntryPointPane : TitledParent(),
   }
 
   private fun AffectedFilesListView.handleSelection(
-    fileSelectedCallback: (filePath: String) -> Unit
+    fileSelectedCallback: (affectedFile: AffectedFile) -> Unit
   ) {
     selectionModel.selectedItemProperty().addListener { _, oldValue, newValue ->
       if (newValue != oldValue && newValue is FileCell) {
-        fileSelectedCallback(newValue.affectedFile.filePath)
+        fileSelectedCallback(newValue.affectedFile)
       } else {
         skipDirectoryRow(items.indexOf(oldValue), items.indexOf(newValue))
       }
