@@ -7,8 +7,10 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitTestbed
-import io.redgreen.timelapse.fixtures.GitTestbed.Commit
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitD
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitF
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitG
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_1_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_2_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_3_TXT
@@ -22,7 +24,7 @@ internal class GetAffectedFilesUseCaseTest {
   @Test
   fun `it should get changed files from an initial commit`() {
     // given
-    val descendent = Commit.exhibitA // exhibit a: add three new files
+    val descendent = exhibitA // exhibit a: add three new files
 
     @Suppress("UnnecessaryVariable")
     val ancestor = descendent // because, initial commit is its own parent
@@ -47,8 +49,8 @@ internal class GetAffectedFilesUseCaseTest {
   @Test
   fun `it should get changed files from a non-initial commit`() {
     // given
-    val descendent = CommitHash(Commit.exhibitG) // exhibit g: renames, deletion, addition and modification
-    val ancestor = CommitHash(Commit.exhibitF) // exhibit f: rename a file
+    val descendent = CommitHash(exhibitG) // exhibit g: renames, deletion, addition and modification
+    val ancestor = CommitHash(exhibitF) // exhibit f: rename a file
 
     // when
     val testObserver = useCase
@@ -127,5 +129,29 @@ internal class GetAffectedFilesUseCaseTest {
         throwable is IllegalArgumentException
             && throwable.message == "Invalid ancestor commit ID: ${invalidAncestorHash.value}"
       }
+  }
+
+  @Test
+  fun `it should return a list of affected files for commits that are far apart`() {
+    // given
+    val descendentCommitHash = CommitHash(exhibitG)
+    val ancestorCommitHash = CommitHash(exhibitA)
+
+    // when
+    val testObserver = useCase
+      .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
+      .test()
+
+    // then
+    val affectedFiles = listOf(
+      Modified("file-1.txt", 0, 1),
+      Deleted("file-3.txt", 0),
+      Moved("file-a.txt", "file-2.txt", 0, 0),
+      Added("file-b.txt", 0),
+      Added("file-c.txt", 1)
+    )
+    testObserver
+      .assertNoErrors()
+      .assertValue(affectedFiles)
   }
 }
