@@ -28,9 +28,11 @@ class AffectedFilesPropsUi(
     val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
     val parent = repository.resolve("$it^1")
 
-    affectedFilesContextSubject.onNext(
-      AffectedFileContext(selectedFilePath!!, CommitHash(parent.name), CommitHash(it))
-    )
+    val filePath = selectedFilePath!!
+    val ancestor = CommitHash(parent.name)
+    val descendent = CommitHash(it)
+    val repositoryPath = selectedGitRepo!!.gitDirectory.absolutePath
+    affectedFilesContextSubject.onNext(AffectedFileContext(repositoryPath, filePath, ancestor, descendent))
   }
 
   private val callbackLabel = Label().apply { isWrapText = true }
