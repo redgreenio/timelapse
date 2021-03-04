@@ -26,16 +26,19 @@ class OpenRepoViewRenderer(
 
       when(model.recentRepositoriesAsyncOp.value) {
         Idle, InFlight -> displayRecentRepositoriesStatus(LOADING)
-        is Content -> {
-          val recentRepositories = (model.recentRepositoriesAsyncOp.value as Content<List<RecentRepository>>).content
-          if (recentRepositories.isEmpty()) {
-            displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
-          } else {
-            displayRecentRepositories(recentRepositories)
-          }
-        }
+        is Content -> showListOrEmpty(model)
         is Failure -> displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
       }
+    }
+  }
+
+  private fun OpenRepoView.showListOrEmpty(model: OpenRepoModel) {
+    val recentRepositoriesAsyncOp = model.recentRepositoriesAsyncOp
+    val recentRepositories = (recentRepositoriesAsyncOp.value as Content<List<RecentRepository>>).content
+    if (recentRepositories.isEmpty()) {
+      displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
+    } else {
+      displayRecentRepositories(recentRepositories)
     }
   }
 }
