@@ -26,15 +26,8 @@ class AffectedFilesPropsUi(
   private val trackedFilesComboBox = TrackedFilesInRepoComboBox { selectedFilePath = it }
 
   private val commitsAffectingFileListView = CommitsAffectingFileListView {
-    val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
-    val parent = repository.resolve("$it^1")
-
-    val filePath = selectedFilePath!!
-    val ancestor = CommitHash(parent.name)
-    val descendent = CommitHash(it)
-    val repositoryPath = selectedGitRepo!!.gitDirectory.absolutePath
-    val gitDirectory = GitDirectory.from(repositoryPath).get()
-    affectedFilesContextSubject.onNext(AffectedFileContext(gitDirectory, filePath, descendent, ancestor))
+    val affectedFileContext = getAffectedFilesContext(it)
+    affectedFilesContextSubject.onNext(affectedFileContext)
   }
 
   private val callbackLabel = Label().apply { isWrapText = true }
@@ -44,6 +37,7 @@ class AffectedFilesPropsUi(
 
     val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
     commitsAffectingFileListView.fileModel = CommitsAffectingFileListView.FileModel(repository, selectedFilePath!!)
+    callbackLabel.text = null
   }
 
   private var selectedGitRepo: DiscoverGitReposComboBox.GitRepo? by Delegates.observable(null) { _, _, value ->
@@ -65,5 +59,32 @@ class AffectedFilesPropsUi(
 
   fun showAffectedFile(filePath: String) {
     callbackLabel.text = "Selected file: $filePath"
+  }
+
+  private fun getAffectedFilesContext(
+    descendentCommitId: String
+  ): AffectedFileContext {
+    val ancestorCommitHash = getImmediateParent(descendentCommitId)
+    val descendentCommitHash = CommitHash(descendentCommitId)
+
+    return AffectedFileContext(
+      getGitDirectory(),
+      selectedFilePath!!,
+      descendentCommitHash,
+      ancestorCommitHash
+    )
+  }
+
+  private fun getImmediateParent(
+    descendentCommitId: String
+  ): CommitHash {
+    val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
+    val parent = repository.resolve("$descendentCommitId^1")
+    return CommitHash(parent.name)
+  }
+
+  private fun getGitDirectory(): GitDirectory {
+    val repositoryPath = selectedGitRepo!!.gitDirectory.absolutePath
+    return GitDirectory.from(repositoryPath).get()
   }
 }
