@@ -1,16 +1,20 @@
 package toys.affectedfiles
 
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.redgreen.liftoff.javafx.components.CommitsAffectingFileListView
+import io.reactivex.rxjava3.subjects.PublishSubject
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox
-import io.redgreen.liftoff.javafx.components.TrackedFilesInRepoComboBox
+import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
+import io.redgreen.liftoff.javafx.components.FileCommitsListView
+import io.redgreen.liftoff.javafx.components.FilesInRepoComboBox
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.git.CommitHash
 import java.io.File
+import java.util.Optional
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
-import kotlin.properties.Delegates
+import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
 
 class AffectedFilesPropsUi(
@@ -21,70 +25,104 @@ class AffectedFilesPropsUi(
     private const val SPACING = 8.0
   }
 
-  private val gitReposComboBox = DiscoverGitReposComboBox(File(GIT_PROJECTS_ROOT)) { selectedGitRepo = it }
+  private val gitRepoSelections = PublishSubject.create<GitRepo>()
+  private val fileSelections = PublishSubject.create<Optional<String>>()
+  private val commitSelections = PublishSubject.create<Optional<String>>()
 
-  private val trackedFilesComboBox = TrackedFilesInRepoComboBox { selectedFilePath = it }
+  private val gitReposComboBox = DiscoverGitReposComboBox(File(GIT_PROJECTS_ROOT)) {
+    gitRepoSelections.onNext(it)
+    fileSelections.onNext(Optional.empty())
+    commitSelections.onNext(Optional.empty())
+  }
 
-  private val commitsAffectingFileListView = CommitsAffectingFileListView {
-    val affectedFileContext = getAffectedFilesContext(it)
-    affectedFilesContextSubject.onNext(affectedFileContext)
+  private val filesInRepoComboBox = FilesInRepoComboBox { filePath ->
+    fileSelections.onNext(Optional.of(filePath))
+    commitSelections.onNext(Optional.empty())
+  }
+
+  private val fileCommitsListView = FileCommitsListView { commitId ->
+    commitSelections.onNext(Optional.of(commitId))
   }
 
   private val callbackLabel = Label().apply { isWrapText = true }
-
-  private var selectedFilePath: String? by Delegates.observable(null) { _, _, value ->
-    value ?: return@observable
-
-    val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
-    commitsAffectingFileListView.fileModel = CommitsAffectingFileListView.FileModel(repository, selectedFilePath!!)
-    callbackLabel.text = null
-  }
-
-  private var selectedGitRepo: DiscoverGitReposComboBox.GitRepo? by Delegates.observable(null) { _, _, value ->
-    trackedFilesComboBox.gitRepo = value
-    commitsAffectingFileListView.fileModel = null
-    selectedFilePath = null
-  }
 
   init {
     spacing = SPACING
 
     children.addAll(
       gitReposComboBox,
-      trackedFilesComboBox,
-      commitsAffectingFileListView,
+      filesInRepoComboBox,
+      fileCommitsListView,
       callbackLabel,
     )
+
+    Observable
+      .combineLatest<GitRepo, Optional<String>, Optional<String>, Triple<GitRepo, Optional<String>, Optional<String>>>(
+        gitRepoSelections,
+        fileSelections,
+        commitSelections,
+        ::Triple
+      )
+      .doOnNext { (gitRepo, fileOptional, commitOptional) ->
+        resetUiAfterSelection(gitRepo, fileOptional, commitOptional)
+      }
+      .filter { (_, fileOptional, commitOptional) ->
+        fileOptional.isPresent && commitOptional.isPresent
+      }
+      .map { (gitRepo, fileOptional, commitOptional) ->
+        mapToAffectedFileContext(gitRepo, fileOptional, commitOptional)
+      }
+      .subscribe(affectedFilesContextSubject::onNext)
   }
+
+  private fun resetUiAfterSelection(
+    gitRepo: GitRepo,
+    fileOptional: Optional<String>,
+    commitOptional: Optional<String>
+  ) {
+    if (filesInRepoComboBox.gitRepo != gitRepo) {
+      filesInRepoComboBox.gitRepo = gitRepo
+      fileCommitsListView.fileModel = null
+    } else {
+      fileCommitsListView.fileModel = if (fileOptional.isPresent) {
+        FileCommitsListView.FileModel(getRepository(gitRepo.gitDirectory), fileOptional.get())
+      } else {
+        null
+      }
+    }
+    callbackLabel.text = null
+
+    if (fileOptional.isEmpty || commitOptional.isEmpty) {
+      // TODO Send a different message to clear selection
+    }
+  }
+
+  private fun mapToAffectedFileContext(
+    gitRepo: GitRepo,
+    fileOptional: Optional<String>,
+    commitOptional: Optional<String>
+  ): AffectedFileContext {
+    val gitDirectory = GitDirectory.from(gitRepo.gitDirectory.absolutePath).get()
+    val filePath = fileOptional.get()
+    val descendent = CommitHash(commitOptional.get())
+    val ancestor = getImmediateParent(gitDirectory, descendent.value)
+
+    return AffectedFileContext(gitDirectory, filePath, descendent, ancestor)
+  }
+
+  private fun getRepository(gitDirectory: File): Repository =
+    RepositoryBuilder().setGitDir(gitDirectory).build()
 
   fun showAffectedFile(filePath: String) {
     callbackLabel.text = "Selected file: $filePath"
   }
 
-  private fun getAffectedFilesContext(
-    descendentCommitId: String
-  ): AffectedFileContext {
-    val ancestorCommitHash = getImmediateParent(descendentCommitId)
-    val descendentCommitHash = CommitHash(descendentCommitId)
-
-    return AffectedFileContext(
-      getGitDirectory(),
-      selectedFilePath!!,
-      descendentCommitHash,
-      ancestorCommitHash
-    )
-  }
-
   private fun getImmediateParent(
+    gitDirectory: GitDirectory,
     descendentCommitId: String
   ): CommitHash {
-    val repository = RepositoryBuilder().setGitDir(selectedGitRepo!!.gitDirectory).build()
+    val repository = RepositoryBuilder().setGitDir(File(gitDirectory.path)).build()
     val parent = repository.resolve("$descendentCommitId^1")
     return CommitHash(parent.name)
-  }
-
-  private fun getGitDirectory(): GitDirectory {
-    val repositoryPath = selectedGitRepo!!.gitDirectory.absolutePath
-    return GitDirectory.from(repositoryPath).get()
   }
 }

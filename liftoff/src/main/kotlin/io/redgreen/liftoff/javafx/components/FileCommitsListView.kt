@@ -9,7 +9,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 
-class CommitsAffectingFileListView(
+class FileCommitsListView(
   onSelected: (commitId: String) -> Unit
 ) : ListView<RevCommit>() {
   private companion object {

@@ -9,7 +9,7 @@ import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.treewalk.TreeWalk
 
-class TrackedFilesInRepoComboBox(onSelected: (filePath: String) -> Unit) : SearchableComboBox<String>() {
+class FilesInRepoComboBox(onSelected: (filePath: String) -> Unit) : SearchableComboBox<String>() {
   var gitRepo: GitRepo? by Delegates.observable(null) { _, _, selectedGitRepo ->
     items = if (selectedGitRepo == null) {
       FXCollections.emptyObservableList()
