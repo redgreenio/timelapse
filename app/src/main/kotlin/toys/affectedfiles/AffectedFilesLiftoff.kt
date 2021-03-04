@@ -31,7 +31,7 @@ class AffectedFilesLiftoff : Liftoff<AffectedFilesProps, AffectedFilesEntryPoint
 
   override val propsUi: Region by fastLazy { AffectedFilesPropsUi(contextChanges) }
 
-  override val title: String = TITLE
+  override val liftoffTitle: String = TITLE
 
   override val howBig: Dimension2D = Dimension2D(WIDTH, HEIGHT)
 }

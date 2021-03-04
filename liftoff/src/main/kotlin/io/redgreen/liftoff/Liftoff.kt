@@ -39,7 +39,7 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
   /**
    * The title of this feature.
    */
-  protected abstract val title: String
+  protected abstract val liftoffTitle: String
 
   /**
    * Size of the feature in the liftoff window.
@@ -77,7 +77,7 @@ abstract class Liftoff<P : Any, E> : Application() where E : EntryPoint<P>, E : 
     }
 
     with(primaryStage) {
-      title = "${title} $TITLE_SUFFIX"
+      title = "$liftoffTitle $TITLE_SUFFIX"
       scene = scenePane
       centerOnScreen()
       show()
