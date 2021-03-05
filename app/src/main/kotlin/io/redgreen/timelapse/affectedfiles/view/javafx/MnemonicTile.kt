@@ -17,7 +17,7 @@ class MnemonicTile : Label() {
     private const val CSS_CLASS_MOVED = "moved"
     private const val CSS_CLASS_DELETED = "deleted"
 
-    private const val LETTER_NEW = 'N'
+    private const val LETTER_ADDED = 'A'
     private const val LETTER_MODIFIED = 'M'
     private const val LETTER_MOVED = 'V'
     private const val LETTER_DELETED = 'D'
@@ -27,7 +27,7 @@ class MnemonicTile : Label() {
     val letter: Char,
     val cssClass: String
   ) {
-    Added(LETTER_NEW, CSS_CLASS_NEW),
+    Added(LETTER_ADDED, CSS_CLASS_NEW),
     Modified(LETTER_MODIFIED, CSS_CLASS_MODIFIED),
     Moved(LETTER_MOVED, CSS_CLASS_MOVED),
     Deleted(LETTER_DELETED, CSS_CLASS_DELETED),
