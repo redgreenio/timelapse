@@ -1,52 +1,43 @@
 package io.redgreen.liftoff.javafx.components
 
-import javafx.collections.FXCollections
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.util.Callback
-import kotlin.properties.Delegates
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.revwalk.RevCommit
 
 class FileCommitsListView(
-  onSelected: (commitId: String) -> Unit
-) : ListView<RevCommit>() {
+  onSelected: (commitId: String, shortMessage: String) -> Unit
+) : ListView<Pair<String, String>>() {
   private companion object {
     private const val COMMIT_ID_LENGTH = 8
     private const val SHORT_MESSAGE_LENGTH = 64
   }
 
-  class FileModel(
-    val repository: Repository,
-    val path: String
-  )
-
   init {
-    cellFactory = revCommitCellFactory()
-    selectionModel.selectedItemProperty().addListener { _, _, revCommit ->
-      revCommit ?: return@addListener
-      onSelected(revCommit.name)
+    cellFactory = commitCellFactory()
+    selectionModel.selectedItemProperty().addListener { _, _, commitIsShortMessage ->
+      commitIsShortMessage ?: return@addListener
+      onSelected(commitIsShortMessage.first, commitIsShortMessage.second)
     }
   }
 
-  private fun revCommitCellFactory(): Callback<ListView<RevCommit>, ListCell<RevCommit>> {
-    return Callback<ListView<RevCommit>, ListCell<RevCommit>> {
-      return@Callback object : ListCell<RevCommit>() {
-        override fun updateItem(revCommit: RevCommit?, empty: Boolean) {
-          super.updateItem(revCommit, empty)
+  private fun commitCellFactory(): Callback<ListView<Pair<String, String>>, ListCell<Pair<String, String>>> {
+    return Callback<ListView<Pair<String, String>>, ListCell<Pair<String, String>>> {
+      return@Callback object : ListCell<Pair<String, String>>() {
+        override fun updateItem(commitIdShortMessage: Pair<String, String>?, empty: Boolean) {
+          super.updateItem(commitIdShortMessage, empty)
 
-          text = if (revCommit == null || empty) {
+          text = if (commitIdShortMessage == null || empty) {
             null
           } else {
-            displayMessage(revCommit)
+            displayMessage(commitIdShortMessage)
           }
         }
 
-        private fun displayMessage(revCommit: RevCommit): String {
-          val shortCommitId = revCommit.name.take(COMMIT_ID_LENGTH)
-          val truncatedMessage = revCommit.shortMessage.take(SHORT_MESSAGE_LENGTH)
-          val messageToShow = if (truncatedMessage.length != revCommit.shortMessage.length) {
+        private fun displayMessage(commitIdShortMessage: Pair<String, String>): String {
+          val (commitId, shortMessage) = commitIdShortMessage
+          val shortCommitId = commitId.take(COMMIT_ID_LENGTH)
+          val truncatedMessage = shortMessage.take(SHORT_MESSAGE_LENGTH)
+          val messageToShow = if (truncatedMessage.length != shortMessage.length) {
             "$truncatedMessage…"
           } else {
             truncatedMessage
@@ -56,19 +47,4 @@ class FileCommitsListView(
       }
     }
   }
-
-  var fileModel: FileModel? by Delegates.observable(null) { _, _, fileModel ->
-    items = if (fileModel == null) {
-      FXCollections.emptyObservableList()
-    } else {
-      FXCollections.observableArrayList(getCommits(fileModel))
-    }
-  }
-
-  private fun getCommits(fileModel: FileModel): List<RevCommit> =
-    Git(fileModel.repository)
-      .log()
-      .addPath(fileModel.path)
-      .call()
-      .toList()
 }

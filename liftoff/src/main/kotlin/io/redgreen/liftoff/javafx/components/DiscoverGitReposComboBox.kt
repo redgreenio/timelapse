@@ -2,14 +2,13 @@ package io.redgreen.liftoff.javafx.components
 
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import java.io.File
-import javafx.collections.FXCollections
 import javafx.scene.control.ComboBox
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.util.Callback
 
+// FIXME: 06/03/21 Maybe replace with a regular ComboBox?
 class DiscoverGitReposComboBox(
-  directory: File,
   onSelected: (GitRepo) -> Unit
 ) : ComboBox<GitRepo>() {
 
@@ -17,24 +16,11 @@ class DiscoverGitReposComboBox(
     val gitProjectsCellFactory = gitProjectsCellFactory()
     buttonCell = gitProjectsCellFactory.call(null)
     cellFactory = gitProjectsCellFactory
-    items = FXCollections.observableArrayList(naiveGetPossibleGitProjects(directory))
 
     selectionModel.selectedItemProperty().addListener { _, _, selectedGitProject ->
+      selectedGitProject ?: return@addListener
       onSelected(selectedGitProject)
     }
-  }
-
-  private fun naiveGetPossibleGitProjects(
-    gitProjectsRoot: File
-  ): List<GitRepo> {
-    val gitRepos = gitProjectsRoot
-      .list()!!
-      .map { File("${gitProjectsRoot.absolutePath}/$it/.git") }
-      .filter { it.exists() }
-      .map(::GitRepo)
-      .toMutableList()
-    gitRepos.sortBy { it.gitDirectory.absolutePath.toLowerCase() }
-    return gitRepos
   }
 
   private fun gitProjectsCellFactory(): Callback<ListView<GitRepo>, ListCell<GitRepo>> {

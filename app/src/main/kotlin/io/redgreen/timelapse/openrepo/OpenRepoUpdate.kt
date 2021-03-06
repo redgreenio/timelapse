@@ -23,7 +23,7 @@ object OpenRepoUpdate : Update<OpenRepoModel, OpenRepoEvent, OpenRepoEffect> {
       is HasRecentRepositories -> next(model.hasRecentRepositories(event.recentRepositories))
       is UnableToGetRecentRepositories -> next(model.failedToGetRecentRepositories())
       is OpenRecentRepository -> {
-        val path = (model.recentRepositoriesAsyncOp.value as Content<List<RecentRepository>>).content[event.index].path
+        val path = (model.recentRepositoriesAsyncOp as Content<List<RecentRepository>>).content[event.index].path
         dispatch(setOf(UpdateRecentRepositories(path), OpenGitRepository(path)))
       }
     }

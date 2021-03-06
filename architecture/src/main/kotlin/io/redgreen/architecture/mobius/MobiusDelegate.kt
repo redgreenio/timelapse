@@ -8,6 +8,7 @@ import com.spotify.mobius.Update
 import com.spotify.mobius.extras.Connectables
 import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
+import io.redgreen.architecture.mobius.dev.DevLogger
 import io.redgreen.architecture.mobius.view.ViewRenderer
 import javafx.application.Platform
 import kotlin.LazyThreadSafetyMode.NONE
@@ -32,6 +33,7 @@ class MobiusDelegate<M, E, F>(
     val loop = RxMobius
       .loop(update, effectHandler)
       .eventSource(eventSource)
+      .logger(DevLogger())
 
     if (init != null) {
       Mobius.controller(loop, initialModel, init)

@@ -26,25 +26,25 @@ sealed class AsyncOp<in C, in R> {
   /**
    * Represents a situation where the async operation has not been started.
    */
-  object Idle : AsyncOp<Unit, Unit>()
+  object Idle : AsyncOp<Nothing, Nothing>()
 
   /**
    * Represents an async operation in progress, this is where the UI may show a
    * non-deterministic loader on the screen.
    */
-  object InFlight : AsyncOp<Unit, Unit>()
+  object InFlight : AsyncOp<Nothing, Nothing>()
 
   /**
    * The async operation completed successfully and the requested information is
    * available for use. The content may be modeled using a sealed class if necessary.
    */
-  data class Content<C>(val content: C) : AsyncOp<C, Unit>()
+  data class Content<C>(val content: C) : AsyncOp<C, Nothing>()
 
   /**
    * The async operation failed to complete and it contains the reason why. The reason
    * may be modeled using a sealed class if necessary.
    */
-  data class Failure<R>(val reason: R) : AsyncOp<Unit, R>()
+  data class Failure<R>(val reason: R) : AsyncOp<Nothing, R>()
 
   /**
    * Convenience property to use with `when` blocks to surpass verbose type casting.

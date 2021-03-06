@@ -34,7 +34,7 @@ class OpenRepoViewRenderer(
 
   private fun OpenRepoView.showListOrEmpty(model: OpenRepoModel) {
     val recentRepositoriesAsyncOp = model.recentRepositoriesAsyncOp
-    val recentRepositories = (recentRepositoriesAsyncOp.value as Content<List<RecentRepository>>).content
+    val recentRepositories = (recentRepositoriesAsyncOp as Content<List<RecentRepository>>).content
     if (recentRepositories.isEmpty()) {
       displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
     } else {

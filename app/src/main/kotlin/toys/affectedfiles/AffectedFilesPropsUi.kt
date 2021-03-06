@@ -1,8 +1,7 @@
 package toys.affectedfiles
 
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.PublishSubject
+import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.liftoff.javafx.components.FileCommitsListView
@@ -10,40 +9,50 @@ import io.redgreen.liftoff.javafx.components.FilesInRepoComboBox
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
 import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.core.TrackedFilePath
-import java.io.File
-import java.util.Optional
+import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
+import javafx.collections.FXCollections
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
-import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.lib.RepositoryBuilder
+import toys.affectedfiles.model.AffectedFilesEffectHandler
+import toys.affectedfiles.model.AffectedFilesEvent.*
+import toys.affectedfiles.model.AffectedFilesInit
+import toys.affectedfiles.model.AffectedFilesModel
+import toys.affectedfiles.model.AffectedFilesUpdate
+import toys.affectedfiles.model.AffectingCommit
+import toys.affectedfiles.view.AffectedFilesView
+import toys.affectedfiles.view.AffectedFilesViewRenderer
 
 class AffectedFilesPropsUi(
   private val affectedFilesContextSubject: BehaviorSubject<AffectedFileContext>,
-) : VBox() {
+) : VBox(), AffectedFilesView, AffectedFileContextChangeListener {
+
   private companion object {
-    private const val GIT_PROJECTS_ROOT = "/Users/ragunathjawahar/GitHubProjects/"
     private const val SPACING = 8.0
   }
 
-  private val gitRepoSelections = PublishSubject.create<GitRepo>()
-  private val fileSelections = PublishSubject.create<Optional<String>>()
-  private val commitSelections = PublishSubject.create<Optional<String>>()
-
-  private val gitReposComboBox = DiscoverGitReposComboBox(File(GIT_PROJECTS_ROOT)) {
-    gitRepoSelections.onNext(it)
-    fileSelections.onNext(Optional.empty())
-    commitSelections.onNext(Optional.empty())
+  private val delegate by fastLazy {
+    MobiusDelegate(
+      AffectedFilesModel.fetchingGitRepos,
+      AffectedFilesInit,
+      AffectedFilesUpdate,
+      AffectedFilesEffectHandler.from(this@AffectedFilesPropsUi, JavaFxSchedulersProvider),
+      AffectedFilesViewRenderer(this)
+    )
   }
 
-  private val filesInRepoComboBox = FilesInRepoComboBox { filePath ->
-    fileSelections.onNext(Optional.of(filePath))
-    commitSelections.onNext(Optional.empty())
+  private val gitReposComboBox = DiscoverGitReposComboBox { gitRepo ->
+    delegate.notify(GitRepoSelected(gitRepo))
   }
 
-  private val fileCommitsListView = FileCommitsListView { commitId ->
-    commitSelections.onNext(Optional.of(commitId))
+  private val trackedFilesComboBox = FilesInRepoComboBox { filePath ->
+    delegate.notify(FilePathSelected(TrackedFilePath(filePath)))
+  }
+
+  private val affectingCommitsListView = FileCommitsListView { commitId, shortMessage ->
+    val affectingCommit = AffectingCommit(CommitHash(commitId), shortMessage)
+    delegate.notify(AffectingCommitSelected(affectingCommit))
   }
 
   private val callbackLabel = Label().apply { isWrapText = true }
@@ -51,80 +60,56 @@ class AffectedFilesPropsUi(
   init {
     spacing = SPACING
 
+    gitReposComboBox.isDisable = true
+    trackedFilesComboBox.isDisable = true
+    affectingCommitsListView.isDisable = true
+
     children.addAll(
       gitReposComboBox,
-      filesInRepoComboBox,
-      fileCommitsListView,
+      trackedFilesComboBox,
+      affectingCommitsListView,
       callbackLabel,
     )
 
-    Observable
-      .combineLatest<GitRepo, Optional<String>, Optional<String>, Triple<GitRepo, Optional<String>, Optional<String>>>(
-        gitRepoSelections,
-        fileSelections,
-        commitSelections,
-        ::Triple
-      )
-      .doOnNext { (gitRepo, fileOptional, commitOptional) ->
-        resetUiAfterSelection(gitRepo, fileOptional, commitOptional)
-      }
-      .filter { (_, fileOptional, commitOptional) ->
-        fileOptional.isPresent && commitOptional.isPresent
-      }
-      .map { (gitRepo, fileOptional, commitOptional) ->
-        mapToAffectedFileContext(gitRepo, fileOptional, commitOptional)
-      }
-      .subscribe(affectedFilesContextSubject::onNext)
+    delegate.start() // FIXME: 06/03/21 stop the delegate
   }
 
-  private fun resetUiAfterSelection(
-    gitRepo: GitRepo,
-    fileOptional: Optional<String>,
-    commitOptional: Optional<String>
+  override fun onChange(context: AffectedFileContext) {
+    affectedFilesContextSubject.onNext(context)
+  }
+
+  override fun populateGitRepos(
+    gitRepos: List<GitRepo>
   ) {
-    if (filesInRepoComboBox.gitRepo != gitRepo) {
-      filesInRepoComboBox.gitRepo = gitRepo
-      fileCommitsListView.fileModel = null
-    } else {
-      fileCommitsListView.fileModel = if (fileOptional.isPresent) {
-        FileCommitsListView.FileModel(getRepository(gitRepo.gitDirectory), fileOptional.get())
-      } else {
-        null
-      }
+    with(gitReposComboBox) {
+      isDisable = false
+      items = FXCollections.observableArrayList(gitRepos)
     }
+  }
+
+  override fun populateTrackedFiles(
+    trackedFilePaths: List<TrackedFilePath>
+  ) {
+    with(trackedFilesComboBox) {
+      isDisable = false
+      items = FXCollections.observableArrayList(trackedFilePaths.map(TrackedFilePath::value))
+    }
+  }
+
+  override fun populateAffectingCommits(
+    affectingCommits: List<AffectingCommit>
+  ) {
+    with(affectingCommitsListView) {
+      isDisable = false
+      items = FXCollections.observableArrayList(affectingCommits.map { it.commitHash.value to it.shortMessage })
+    }
+  }
+
+  override fun clearAffectedFileCallbackText() {
     callbackLabel.text = null
-
-    if (fileOptional.isEmpty || commitOptional.isEmpty) {
-      // TODO Send a different message to clear selection
-    }
   }
-
-  private fun mapToAffectedFileContext(
-    gitRepo: GitRepo,
-    fileOptional: Optional<String>,
-    commitOptional: Optional<String>
-  ): AffectedFileContext {
-    val gitDirectory = GitDirectory.from(gitRepo.gitDirectory.absolutePath).get()
-    val filePath = fileOptional.get()
-    val descendent = CommitHash(commitOptional.get())
-    val ancestor = getImmediateParent(gitDirectory, descendent.value)
-
-    return AffectedFileContext(gitDirectory, TrackedFilePath(filePath), descendent, ancestor)
-  }
-
-  private fun getRepository(gitDirectory: File): Repository =
-    RepositoryBuilder().setGitDir(gitDirectory).build()
 
   fun showAffectedFile(affectedFile: AffectedFile) {
-    callbackLabel.text = "Selected file: $affectedFile"
-  }
-
-  private fun getImmediateParent(
-    gitDirectory: GitDirectory,
-    descendentCommitId: String
-  ): CommitHash {
-    val repository = RepositoryBuilder().setGitDir(File(gitDirectory.path)).build()
-    val parent = repository.resolve("$descendentCommitId^1")
-    return CommitHash(parent.name)
+    callbackLabel.text = affectedFile.toString()
   }
 }

@@ -12,6 +12,7 @@ import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileToCellViewModelMapper
 import io.redgreen.timelapse.foo.matchParent
+import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections
 
 class AffectedFilesEntryPointPane : TitledParent(),
@@ -36,6 +37,8 @@ class AffectedFilesEntryPointPane : TitledParent(),
       .contextChanges
       .flatMapSingle { getAffectedFilesUseCase.invoke(it.gitDirectory, it.descendent, it.ancestor) }
       .map { AffectedFileToCellViewModelMapper.map(it) }
+      .observeOn(JavaFxSchedulersProvider.ui())
+      .distinctUntilChanged()
       .subscribe { affectedFileCellViewModels.setAll(it) }
       .collect()
   }
