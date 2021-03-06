@@ -60,9 +60,9 @@ dependencies {
 
   implementation("com.squareup.moshi:moshi:$moshi")
   kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi")
+  implementation("io.arrow-kt:arrow-core-data:0.11.0")
 
   testImplementation(testFixtures(project(":fixtures:library")))
-  testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
   testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit")

@@ -1,5 +1,7 @@
 package io.redgreen.timelapse.affectedfiles.usecases
 
+import arrow.core.Either
+import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
@@ -31,20 +33,18 @@ internal class GetAffectedFilesUseCaseTest {
     val ancestor = descendent // because, initial commit is its own parent
 
     // when
-    val testObserver = useCase
+    val either = useCase
       .invoke(gitTestbedGitDirectory, CommitHash(descendent), CommitHash(ancestor))
-      .test()
 
     // then
-    val affectedFiles = listOf(
-      Added(TrackedFilePath(FILE_1_TXT), 0),
-      Added(TrackedFilePath(FILE_2_TXT), 0),
-      Added(TrackedFilePath(FILE_3_TXT), 0),
-    )
-    testObserver
-      .assertValue(affectedFiles)
-      .assertNoErrors()
-      .assertComplete()
+    val actualAffectedFiles = (either as Either.Right).b
+    assertThat(actualAffectedFiles)
+      .containsExactly(
+        Added(TrackedFilePath(FILE_1_TXT), 0),
+        Added(TrackedFilePath(FILE_2_TXT), 0),
+        Added(TrackedFilePath(FILE_3_TXT), 0),
+      )
+      .inOrder()
   }
 
   @Test
@@ -54,23 +54,21 @@ internal class GetAffectedFilesUseCaseTest {
     val ancestor = CommitHash(exhibitF) // exhibit f: rename a file
 
     // when
-    val testObserver = useCase
+    val either = useCase
       .invoke(gitTestbedGitDirectory, descendent, ancestor)
-      .test()
 
     // then
-    val changedFiles = listOf(
-      Modified(TrackedFilePath("file-1.txt"), 1, 1),
-      Deleted(TrackedFilePath("file-3.txt"), 0),
-      Deleted(TrackedFilePath("file-4.txt"), 1),
-      Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
-      Added(TrackedFilePath("file-b.txt"), 0),
-      Added(TrackedFilePath("file-c.txt"), 1),
-    )
-    testObserver
-      .assertValue(changedFiles)
-      .assertNoErrors()
-      .assertComplete()
+    val actualAffectedFiles = (either as Either.Right).b
+    assertThat(actualAffectedFiles)
+      .containsExactly(
+        Modified(TrackedFilePath("file-1.txt"), 1, 1),
+        Deleted(TrackedFilePath("file-3.txt"), 0),
+        Deleted(TrackedFilePath("file-4.txt"), 1),
+        Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
+        Added(TrackedFilePath("file-b.txt"), 0),
+        Added(TrackedFilePath("file-c.txt"), 1),
+      )
+      .inOrder()
   }
 
   @Test
@@ -79,17 +77,15 @@ internal class GetAffectedFilesUseCaseTest {
     val invalidInitialCommitHash = CommitHash(INVALID_COMMIT_ID)
 
     // when
-    val testObserver = useCase
+    val either = useCase
       .invoke(gitTestbedGitDirectory, invalidInitialCommitHash, invalidInitialCommitHash)
-      .test()
 
     // then
-    testObserver
-      .assertNoValues()
-      .assertError { throwable ->
-        throwable is IllegalArgumentException
-            && throwable.message == "Invalid descendent commit ID: ${invalidInitialCommitHash.value}"
-      }
+    val actualThrowable = (either as Either.Left).a
+    assertThat(actualThrowable)
+      .isInstanceOf(IllegalArgumentException::class.java)
+    assertThat(actualThrowable.message)
+      .isEqualTo("Invalid descendent commit ID: ${invalidInitialCommitHash.value}")
   }
 
   @Test
@@ -99,17 +95,15 @@ internal class GetAffectedFilesUseCaseTest {
     val ancestorHash = CommitHash(exhibitD) // exhibit d: delete a file
 
     // when
-    val testObserver = useCase
+    val either = useCase
       .invoke(gitTestbedGitDirectory, invalidDescendentHash, ancestorHash)
-      .test()
 
     // then
-    testObserver
-      .assertNoValues()
-      .assertError { throwable ->
-        throwable is IllegalArgumentException
-            && throwable.message == "Invalid descendent commit ID: ${invalidDescendentHash.value}"
-      }
+    val actualThrowable = (either as Either.Left).a
+    assertThat(actualThrowable)
+      .isInstanceOf(IllegalArgumentException::class.java)
+    assertThat(actualThrowable.message)
+      .isEqualTo("Invalid descendent commit ID: ${invalidDescendentHash.value}")
   }
 
   @Test
@@ -119,17 +113,15 @@ internal class GetAffectedFilesUseCaseTest {
     val invalidAncestorHash = CommitHash(INVALID_COMMIT_ID)
 
     // when
-    val testObserver = useCase
+    val either = useCase
       .invoke(gitTestbedGitDirectory, descendentHash, invalidAncestorHash)
-      .test()
 
     // then
-    testObserver
-      .assertNoValues()
-      .assertError { throwable ->
-        throwable is IllegalArgumentException
-            && throwable.message == "Invalid ancestor commit ID: ${invalidAncestorHash.value}"
-      }
+    val actualThrowable = (either as Either.Left).a
+    assertThat(actualThrowable)
+      .isInstanceOf(IllegalArgumentException::class.java)
+    assertThat(actualThrowable.message)
+      .isEqualTo("Invalid ancestor commit ID: ${invalidAncestorHash.value}")
   }
 
   @Test
@@ -139,20 +131,19 @@ internal class GetAffectedFilesUseCaseTest {
     val ancestorCommitHash = CommitHash(exhibitA)
 
     // when
-    val testObserver = useCase
+    val either = useCase
       .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
-      .test()
 
     // then
-    val affectedFiles = listOf(
-      Modified(TrackedFilePath("file-1.txt"), 0, 1),
-      Deleted(TrackedFilePath("file-3.txt"), 0),
-      Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
-      Added(TrackedFilePath("file-b.txt"), 0),
-      Added(TrackedFilePath("file-c.txt"), 1)
-    )
-    testObserver
-      .assertNoErrors()
-      .assertValue(affectedFiles)
+    val actualAffectedFiles = (either as Either.Right).b
+    assertThat(actualAffectedFiles)
+      .containsExactly(
+        Modified(TrackedFilePath("file-1.txt"), 0, 1),
+        Deleted(TrackedFilePath("file-3.txt"), 0),
+        Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
+        Added(TrackedFilePath("file-b.txt"), 0),
+        Added(TrackedFilePath("file-c.txt"), 1),
+      )
+      .inOrder()
   }
 }

@@ -1,10 +1,13 @@
 package io.redgreen.timelapse.affectedfiles.view.javafx
 
+import arrow.core.Either
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.redgreen.architecture.Disposer
 import io.redgreen.architecture.EntryPoint
 import io.redgreen.architecture.RxJava3Disposer
 import io.redgreen.design.TitledParent
+import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
 import io.redgreen.timelapse.affectedfiles.usecases.GetAffectedFilesUseCase
@@ -35,7 +38,7 @@ class AffectedFilesEntryPointPane : TitledParent(),
 
     props
       .contextChanges
-      .flatMapSingle { getAffectedFilesUseCase.invoke(it.gitDirectory, it.descendent, it.ancestor) }
+      .flatMapSingle(::getAffectedFiles)
       .map { AffectedFileToCellViewModelMapper.map(it) }
       .observeOn(JavaFxSchedulersProvider.ui())
       .distinctUntilChanged()
@@ -68,7 +71,16 @@ class AffectedFilesEntryPointPane : TitledParent(),
       currentSelectionIndex > 1 -> selectionModel.selectPrevious()
 
       /* prevent moving the selection to index 0, which is always a directory row */
-      else -> { selectionModel.select(previousSelectionIndex) }
+      else -> selectionModel.select(previousSelectionIndex)
     }
+  }
+
+  private fun getAffectedFiles(
+    context: AffectedFileContext
+  ): Single<List<AffectedFile>> {
+    val (gitDirectory, _, descendent, ancestor) = context
+    return Single
+      .fromCallable { getAffectedFilesUseCase.invoke(gitDirectory, descendent, ancestor) }
+      .flatMap { if (it is Either.Right) Single.just(it.b) else Single.error((it as Either.Left).a) }
   }
 }

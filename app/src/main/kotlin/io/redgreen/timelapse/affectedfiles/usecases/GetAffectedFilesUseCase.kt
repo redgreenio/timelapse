@@ -1,6 +1,8 @@
 package io.redgreen.timelapse.affectedfiles.usecases
 
-import io.reactivex.rxjava3.core.Single
+import arrow.core.Either
+import arrow.core.Either.Companion.left
+import arrow.core.Either.Companion.right
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
@@ -36,16 +38,13 @@ class GetAffectedFilesUseCase {
     gitDirectory: GitDirectory,
     descendent: CommitHash,
     ancestor: CommitHash
-  ): Single<List<AffectedFile>> {
-    return Single.create { emitter ->
-      val repository = RepositoryBuilder().setGitDir(File(gitDirectory.path)).build()
+  ): Either<IllegalArgumentException, List<AffectedFile>> {
+    val repository = RepositoryBuilder().setGitDir(File(gitDirectory.path)).build()
 
-      try {
-        val affectedFiles = getAffectedFiles(repository, descendent, ancestor)
-        emitter.onSuccess(affectedFiles)
-      } catch (exception: IllegalStateException) {
-        emitter.onError(exception)
-      }
+    return try {
+      right(getAffectedFiles(repository, descendent, ancestor))
+    } catch (exception: IllegalArgumentException) {
+      left(exception)
     }
   }
 
