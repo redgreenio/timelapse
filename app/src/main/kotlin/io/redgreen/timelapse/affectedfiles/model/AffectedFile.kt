@@ -7,16 +7,6 @@ sealed class AffectedFile(
 ) {
   abstract val changeCount: Int
 
-  val filename: String by lazy {
-    filePath.value.substring(filePath.value.lastIndexOf('/') + 1)
-  }
-
-  // TODO: 04/03/21 consider moving this to the presentation layer or introduce a new type
-  val directoryPath: String by lazy {
-    val path = filePath.value.substring(0, filePath.value.lastIndexOf('/') + 1)
-    if (path == "") "/" else path
-  }
-
   data class Added(
     override val filePath: TrackedFilePath,
     val insertions: Int

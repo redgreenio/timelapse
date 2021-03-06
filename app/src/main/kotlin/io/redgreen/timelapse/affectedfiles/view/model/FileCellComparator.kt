@@ -52,7 +52,7 @@ object FileCellComparator : Comparator<FileCell> {
     return if (differentDeletionsCount) {
       deletionsComparisonResult
     } else {
-      compareFileNames(affectedFile1.filename, affectedFile2.filename)
+      compareFileNames(affectedFile1.filePath.filename, affectedFile2.filePath.filename)
     }
   }
 

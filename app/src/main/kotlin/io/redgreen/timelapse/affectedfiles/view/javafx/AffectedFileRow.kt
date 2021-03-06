@@ -44,7 +44,7 @@ internal class AffectedFileRow : GridPane() {
     val affectedFile = data.affectedFile
 
     mnemonicTile.setAffectedFile(affectedFile)
-    filenameLabel.text = affectedFile.filename
+    filenameLabel.text = affectedFile.filePath.filename
     val (deletions, insertions) = when (affectedFile) {
       is Added -> 0 to affectedFile.insertions
       is Modified -> affectedFile.deletions to affectedFile.insertions

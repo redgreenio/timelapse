@@ -16,4 +16,10 @@ object AffectedFileToCellViewModelMapper {
       .map { listOf(DirectoryCell(it.key, it.value.size)) + it.value.map(::FileCell).sortedWith(FileCellComparator) }
       .flatten()
   }
+
+  private val AffectedFile.directoryPath: String
+    get() {
+      val path = filePath.value.substring(0, filePath.value.lastIndexOf('/') + 1)
+      return if (path == "") "/" else path
+    }
 }
