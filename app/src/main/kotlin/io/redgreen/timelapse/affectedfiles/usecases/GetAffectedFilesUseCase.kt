@@ -6,11 +6,11 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
+import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.extensions.isDelete
 import io.redgreen.timelapse.extensions.isInsert
 import io.redgreen.timelapse.extensions.isReplace
-import io.redgreen.timelapse.git.CommitHash
 import java.io.File
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD

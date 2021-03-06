@@ -4,6 +4,7 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
+import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitTestbed
@@ -14,7 +15,6 @@ import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitG
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_1_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_2_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_3_TXT
-import io.redgreen.timelapse.git.CommitHash
 import org.junit.jupiter.api.Test
 
 internal class GetAffectedFilesUseCaseTest {

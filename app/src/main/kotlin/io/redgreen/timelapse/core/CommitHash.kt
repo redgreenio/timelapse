@@ -1,3 +1,3 @@
-package io.redgreen.timelapse.git
+package io.redgreen.timelapse.core
 
 inline class CommitHash(val value: String)

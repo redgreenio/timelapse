@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.git
 
+import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.git.Ancestors.Many
 import io.redgreen.timelapse.git.Ancestors.One
 import io.redgreen.timelapse.vcs.Identity

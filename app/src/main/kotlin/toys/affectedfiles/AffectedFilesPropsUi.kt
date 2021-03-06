@@ -9,8 +9,8 @@ import io.redgreen.liftoff.javafx.components.FileCommitsListView
 import io.redgreen.liftoff.javafx.components.FilesInRepoComboBox
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
+import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.core.GitDirectory
-import io.redgreen.timelapse.git.CommitHash
 import java.io.File
 import java.util.Optional
 import javafx.scene.control.Label

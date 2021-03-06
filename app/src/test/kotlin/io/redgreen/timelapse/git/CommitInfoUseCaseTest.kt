@@ -4,6 +4,7 @@ import arrow.core.Tuple4
 import arrow.core.Tuple5
 import arrow.core.Tuple6
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
