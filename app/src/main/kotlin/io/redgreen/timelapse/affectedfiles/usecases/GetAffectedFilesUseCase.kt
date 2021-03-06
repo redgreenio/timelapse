@@ -8,6 +8,7 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.core.GitDirectory
+import io.redgreen.timelapse.core.TrackedFilePath
 import io.redgreen.timelapse.extensions.isDelete
 import io.redgreen.timelapse.extensions.isInsert
 import io.redgreen.timelapse.extensions.isReplace
@@ -139,10 +140,10 @@ class GetAffectedFilesUseCase {
     entry: DiffEntry,
     header: FileHeader
   ): AffectedFile = when (entry.changeType) {
-    COPY, ADD -> Added(entry.newPath, calculateInsertions(header))
-    MODIFY -> Modified(entry.newPath, calculateDeletions(header), calculateInsertions(header))
-    DELETE -> Deleted(entry.oldPath, calculateDeletions(header))
-    RENAME -> Moved(entry.newPath, entry.oldPath, calculateDeletions(header), calculateInsertions(header))
+    COPY, ADD -> Added(TrackedFilePath(entry.newPath), calculateInsertions(header))
+    MODIFY -> Modified(TrackedFilePath(entry.newPath), calculateDeletions(header), calculateInsertions(header))
+    DELETE -> Deleted(TrackedFilePath(entry.oldPath), calculateDeletions(header))
+    RENAME -> toMoved(entry.newPath, entry.oldPath, header)
     else -> throw IllegalStateException("Unknown `changeType`: ${entry.changeType}")
   }
 
@@ -169,5 +170,18 @@ class GetAffectedFilesUseCase {
       .hunks
       .map(HunkHeader::toEditList)
       .flatten()
+  }
+
+  private fun toMoved(
+    newPath: String,
+    oldPath: String,
+    header: FileHeader
+  ): Moved {
+    return Moved(
+      TrackedFilePath(newPath),
+      TrackedFilePath(oldPath),
+      calculateDeletions(header),
+      calculateInsertions(header)
+    )
   }
 }

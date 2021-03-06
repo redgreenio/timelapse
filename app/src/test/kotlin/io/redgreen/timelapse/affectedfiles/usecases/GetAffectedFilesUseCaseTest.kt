@@ -6,6 +6,7 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.core.GitDirectory
+import io.redgreen.timelapse.core.TrackedFilePath
 import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
@@ -36,9 +37,9 @@ internal class GetAffectedFilesUseCaseTest {
 
     // then
     val affectedFiles = listOf(
-      Added(FILE_1_TXT, 0),
-      Added(FILE_2_TXT, 0),
-      Added(FILE_3_TXT, 0),
+      Added(TrackedFilePath(FILE_1_TXT), 0),
+      Added(TrackedFilePath(FILE_2_TXT), 0),
+      Added(TrackedFilePath(FILE_3_TXT), 0),
     )
     testObserver
       .assertValue(affectedFiles)
@@ -59,12 +60,12 @@ internal class GetAffectedFilesUseCaseTest {
 
     // then
     val changedFiles = listOf(
-      Modified("file-1.txt", 1, 1),
-      Deleted("file-3.txt", 0),
-      Deleted("file-4.txt", 1),
-      Moved("file-a.txt", "file-2.txt", 0, 0),
-      Added("file-b.txt", 0),
-      Added("file-c.txt", 1),
+      Modified(TrackedFilePath("file-1.txt"), 1, 1),
+      Deleted(TrackedFilePath("file-3.txt"), 0),
+      Deleted(TrackedFilePath("file-4.txt"), 1),
+      Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
+      Added(TrackedFilePath("file-b.txt"), 0),
+      Added(TrackedFilePath("file-c.txt"), 1),
     )
     testObserver
       .assertValue(changedFiles)
@@ -144,11 +145,11 @@ internal class GetAffectedFilesUseCaseTest {
 
     // then
     val affectedFiles = listOf(
-      Modified("file-1.txt", 0, 1),
-      Deleted("file-3.txt", 0),
-      Moved("file-a.txt", "file-2.txt", 0, 0),
-      Added("file-b.txt", 0),
-      Added("file-c.txt", 1)
+      Modified(TrackedFilePath("file-1.txt"), 0, 1),
+      Deleted(TrackedFilePath("file-3.txt"), 0),
+      Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
+      Added(TrackedFilePath("file-b.txt"), 0),
+      Added(TrackedFilePath("file-c.txt"), 1)
     )
     testObserver
       .assertNoErrors()

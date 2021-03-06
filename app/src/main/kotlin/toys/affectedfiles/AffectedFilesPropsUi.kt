@@ -11,6 +11,7 @@ import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile
 import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.core.GitDirectory
+import io.redgreen.timelapse.core.TrackedFilePath
 import java.io.File
 import java.util.Optional
 import javafx.scene.control.Label
@@ -108,7 +109,7 @@ class AffectedFilesPropsUi(
     val descendent = CommitHash(commitOptional.get())
     val ancestor = getImmediateParent(gitDirectory, descendent.value)
 
-    return AffectedFileContext(gitDirectory, filePath, descendent, ancestor)
+    return AffectedFileContext(gitDirectory, TrackedFilePath(filePath), descendent, ancestor)
   }
 
   private fun getRepository(gitDirectory: File): Repository =

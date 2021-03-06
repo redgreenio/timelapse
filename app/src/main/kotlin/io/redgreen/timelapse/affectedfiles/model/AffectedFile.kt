@@ -1,20 +1,24 @@
 package io.redgreen.timelapse.affectedfiles.model
 
-sealed class AffectedFile(open val filePath: String) {
+import io.redgreen.timelapse.core.TrackedFilePath
+
+sealed class AffectedFile(
+  open val filePath: TrackedFilePath
+) {
   abstract val changeCount: Int
 
   val filename: String by lazy {
-    filePath.substring(filePath.lastIndexOf('/') + 1)
+    filePath.value.substring(filePath.value.lastIndexOf('/') + 1)
   }
 
   // TODO: 04/03/21 consider moving this to the presentation layer or introduce a new type
   val directoryPath: String by lazy {
-    val path = filePath.substring(0, filePath.lastIndexOf('/') + 1)
+    val path = filePath.value.substring(0, filePath.value.lastIndexOf('/') + 1)
     if (path == "") "/" else path
   }
 
   data class Added(
-    override val filePath: String,
+    override val filePath: TrackedFilePath,
     val insertions: Int
   ) : AffectedFile(filePath) {
     override val changeCount: Int
@@ -22,7 +26,7 @@ sealed class AffectedFile(open val filePath: String) {
   }
 
   data class Modified(
-    override val filePath: String,
+    override val filePath: TrackedFilePath,
     val deletions: Int,
     val insertions: Int
   ) : AffectedFile(filePath) {
@@ -30,9 +34,9 @@ sealed class AffectedFile(open val filePath: String) {
       get() = deletions + insertions
   }
 
-  data class Moved(
-    override val filePath: String,
-    val oldFilePath: String,
+  data class Moved constructor(
+    override val filePath: TrackedFilePath,
+    val oldFilePath: TrackedFilePath,
     val deletions: Int,
     val insertions: Int
   ) : AffectedFile(filePath) {
@@ -41,7 +45,7 @@ sealed class AffectedFile(open val filePath: String) {
   }
 
   data class Deleted(
-    override val filePath: String,
+    override val filePath: TrackedFilePath,
     val deletions: Int
   ) : AffectedFile(filePath) {
     override val changeCount: Int

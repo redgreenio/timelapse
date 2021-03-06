@@ -6,6 +6,7 @@ import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import io.redgreen.timelapse.core.TrackedFilePath
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -18,10 +19,10 @@ class AffectedFilesSummaryTest {
     @JvmStatic
     fun oneAffectedFileParams(): List<TestPair> {
       return listOf(
-        listOf(FileCell(Added("Hello.txt", 12))) to "1 added",
-        listOf(FileCell(Modified("BeenHere.txt", 96, 11))) to "1 modified",
-        listOf(FileCell(Moved("InTheRightPlace.txt", "WasHere.txt", 1, 1))) to "1 moved",
-        listOf(FileCell(Deleted("ServedMyPurpose.txt", 101))) to "1 deleted",
+        listOf(FileCell(Added(TrackedFilePath("Hello.txt"), 12))) to "1 added",
+        listOf(FileCell(Modified(TrackedFilePath("BeenHere.txt"), 96, 11))) to "1 modified",
+        listOf(FileCell(Moved(TrackedFilePath("InTheRightPlace.txt"), TrackedFilePath("WasHere.txt"), 1, 1))) to "1 moved",
+        listOf(FileCell(Deleted(TrackedFilePath("ServedMyPurpose.txt"), 101))) to "1 deleted",
       )
     }
 
@@ -29,26 +30,26 @@ class AffectedFilesSummaryTest {
     fun moreThanOneHomogeneousAffectedFileParams(): List<TestPair> {
       return listOf(
         listOf(
-          FileCell(Added("1.txt", 1)),
-          FileCell(Added("2.txt", 1))
+          FileCell(Added(TrackedFilePath("1.txt"), 1)),
+          FileCell(Added(TrackedFilePath("2.txt"), 1))
         ) to "2 added",
 
         listOf(
-          FileCell(Modified("1.txt", 5, 16)),
-          FileCell(Modified("2.txt", 11, 66)),
-          FileCell(Modified("3.txt", 98, 17)),
+          FileCell(Modified(TrackedFilePath("1.txt"), 5, 16)),
+          FileCell(Modified(TrackedFilePath("2.txt"), 11, 66)),
+          FileCell(Modified(TrackedFilePath("3.txt"), 98, 17)),
         ) to "3 modified",
 
         listOf(
-          FileCell(Moved("1.txt", "A.txt", 1, 1)),
-          FileCell(Moved("2.txt", "B.txt", 11, 66)),
-          FileCell(Moved("3.txt", "C.txt", 98, 17)),
-          FileCell(Moved("4.txt", "D.txt", 11, 11)),
+          FileCell(Moved(TrackedFilePath("1.txt"), TrackedFilePath("A.txt"), 1, 1)),
+          FileCell(Moved(TrackedFilePath("2.txt"), TrackedFilePath("B.txt"), 11, 66)),
+          FileCell(Moved(TrackedFilePath("3.txt"), TrackedFilePath("C.txt"), 98, 17)),
+          FileCell(Moved(TrackedFilePath("4.txt"), TrackedFilePath("D.txt"), 11, 11)),
         ) to "4 moved",
 
         listOf(
-          FileCell(Deleted("1.txt", 1)),
-          FileCell(Deleted("4.txt", 11)),
+          FileCell(Deleted(TrackedFilePath("1.txt"), 1)),
+          FileCell(Deleted(TrackedFilePath("4.txt"), 11)),
         ) to "2 deleted",
       )
     }
@@ -82,15 +83,15 @@ class AffectedFilesSummaryTest {
   fun `summarize heterogeneous affected files`() {
     // given
     val affectedFileCellViewModels = listOf(
-      FileCell(Added("1.txt", 1)),
-      FileCell(Modified("2.txt", 11, 66)),
-      FileCell(Modified("3.txt", 98, 17)),
-      FileCell(Moved("A.txt", "1.txt", 1, 1)),
-      FileCell(Moved("B.txt", "2.txt", 11, 66)),
-      FileCell(Moved("C.txt", "3.txt", 98, 17)),
-      FileCell(Moved("D.txt", "4.txt", 11, 11)),
-      FileCell(Deleted("X.txt", 1)),
-      FileCell(Deleted("Y.txt", 11)),
+      FileCell(Added(TrackedFilePath("1.txt"), 1)),
+      FileCell(Modified(TrackedFilePath("2.txt"), 11, 66)),
+      FileCell(Modified(TrackedFilePath("3.txt"), 98, 17)),
+      FileCell(Moved(TrackedFilePath("A.txt"), TrackedFilePath("1.txt"), 1, 1)),
+      FileCell(Moved(TrackedFilePath("B.txt"), TrackedFilePath("2.txt"), 11, 66)),
+      FileCell(Moved(TrackedFilePath("C.txt"), TrackedFilePath("3.txt"), 98, 17)),
+      FileCell(Moved(TrackedFilePath("D.txt"), TrackedFilePath("4.txt"), 11, 11)),
+      FileCell(Deleted(TrackedFilePath("X.txt"), 1)),
+      FileCell(Deleted(TrackedFilePath("Y.txt"), 11)),
     )
 
     // when & then
