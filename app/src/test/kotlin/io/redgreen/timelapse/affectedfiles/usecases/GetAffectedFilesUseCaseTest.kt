@@ -12,12 +12,20 @@ import io.redgreen.timelapse.core.TrackedFilePath
 import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitC
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitD
+import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitE
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitF
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitG
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_1_COPY_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_1_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_2_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_3_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_4_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_A_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_B_TXT
+import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_C_TXT
 import org.junit.jupiter.api.Test
 
 internal class GetAffectedFilesUseCaseTest {
@@ -44,7 +52,6 @@ internal class GetAffectedFilesUseCaseTest {
         Added(TrackedFilePath(FILE_2_TXT), 0),
         Added(TrackedFilePath(FILE_3_TXT), 0),
       )
-      .inOrder()
   }
 
   @Test
@@ -61,14 +68,13 @@ internal class GetAffectedFilesUseCaseTest {
     val actualAffectedFiles = (either as Either.Right).b
     assertThat(actualAffectedFiles)
       .containsExactly(
-        Modified(TrackedFilePath("file-1.txt"), 1, 1),
-        Deleted(TrackedFilePath("file-3.txt"), 0),
-        Deleted(TrackedFilePath("file-4.txt"), 1),
-        Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
-        Added(TrackedFilePath("file-b.txt"), 0),
-        Added(TrackedFilePath("file-c.txt"), 1),
+        Modified(TrackedFilePath(FILE_1_TXT), 1, 1),
+        Deleted(TrackedFilePath(FILE_3_TXT), 0),
+        Deleted(TrackedFilePath(FILE_4_TXT), 1),
+        Moved(TrackedFilePath(FILE_A_TXT), TrackedFilePath(FILE_2_TXT), 0, 0),
+        Added(TrackedFilePath(FILE_B_TXT), 0),
+        Added(TrackedFilePath(FILE_C_TXT), 1),
       )
-      .inOrder()
   }
 
   @Test
@@ -138,12 +144,83 @@ internal class GetAffectedFilesUseCaseTest {
     val actualAffectedFiles = (either as Either.Right).b
     assertThat(actualAffectedFiles)
       .containsExactly(
-        Modified(TrackedFilePath("file-1.txt"), 0, 1),
-        Deleted(TrackedFilePath("file-3.txt"), 0),
-        Moved(TrackedFilePath("file-a.txt"), TrackedFilePath("file-2.txt"), 0, 0),
-        Added(TrackedFilePath("file-b.txt"), 0),
-        Added(TrackedFilePath("file-c.txt"), 1),
+        Modified(TrackedFilePath(FILE_1_TXT), 0, 1),
+        Deleted(TrackedFilePath(FILE_3_TXT), 0),
+        Moved(TrackedFilePath(FILE_A_TXT), TrackedFilePath(FILE_2_TXT), 0, 0),
+        Added(TrackedFilePath(FILE_B_TXT), 0),
+        Added(TrackedFilePath(FILE_C_TXT), 1),
       )
-      .inOrder()
+  }
+
+  @Test
+  fun `it should get added file from a non-initial commit`() {
+    // given
+    val descendentCommitHash = CommitHash(exhibitB) // exhibit b: add a new file
+    val ancestorCommitHash = CommitHash(exhibitA) // exhibit a: add three new files
+
+    // when
+    val either = useCase
+      .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
+
+    // then
+    val actualAffectedFiles = (either as Either.Right).b
+    assertThat(actualAffectedFiles)
+      .containsExactly(
+        Added(TrackedFilePath(FILE_4_TXT), 0)
+      )
+  }
+
+  @Test
+  fun `it should get modified file from a non-initial commit`() {
+    // given
+    val descendentCommitHash = CommitHash(exhibitC) // exhibit c: modify a file
+    val ancestorCommitHash = CommitHash(exhibitB) // exhibit b: add a new file
+
+    // when
+    val either = useCase
+      .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
+
+    // then
+    val actualAffectedFiles = (either as Either.Right).b
+    assertThat(actualAffectedFiles)
+      .containsExactly(
+        Modified(TrackedFilePath(FILE_1_TXT), 0, 1)
+      )
+  }
+
+  @Test
+  fun `it should get a deleted file from a non-initial commit`() {
+    // given
+    val descendentCommitHash = CommitHash(exhibitD) // exhibit d: delete a file
+    val ancestorCommitHash = CommitHash(exhibitC) // exhibit c: modify a file
+
+    // when
+    val either = useCase
+      .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
+
+    // then
+    val actualAffectedFiles = (either as Either.Right).b
+    assertThat(actualAffectedFiles)
+      .containsExactly(
+        Deleted(TrackedFilePath(FILE_4_TXT), 0)
+      )
+  }
+
+  @Test
+  fun `it should get a renamed file from a non-initial commit`() {
+    // given
+    val descendentCommitHash = CommitHash(exhibitF) // exhibit f: rename a file
+    val ancestorCommitHash = CommitHash(exhibitE) // exhibit e: copy a file
+
+    // when
+    val either = useCase
+      .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
+
+    // then
+    val actualAffectedFiles = (either as Either.Right).b
+    assertThat(actualAffectedFiles)
+      .containsExactly(
+        Moved(TrackedFilePath(FILE_4_TXT), TrackedFilePath(FILE_1_COPY_TXT), 0, 0)
+      )
   }
 }
