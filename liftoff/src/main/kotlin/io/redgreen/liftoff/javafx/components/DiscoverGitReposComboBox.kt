@@ -2,15 +2,15 @@ package io.redgreen.liftoff.javafx.components
 
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import java.io.File
-import javafx.scene.control.ComboBox
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.util.Callback
+import org.controlsfx.control.SearchableComboBox
 
 // FIXME: 06/03/21 Maybe replace with a regular ComboBox?
 class DiscoverGitReposComboBox(
   onSelected: (GitRepo) -> Unit
-) : ComboBox<GitRepo>() {
+) : SearchableComboBox<GitRepo>() {
 
   init {
     val gitProjectsCellFactory = gitProjectsCellFactory()
