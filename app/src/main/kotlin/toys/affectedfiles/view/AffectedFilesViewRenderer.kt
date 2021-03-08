@@ -8,7 +8,7 @@ import toys.affectedfiles.model.AffectedFilesModel
 import toys.affectedfiles.model.AffectingCommit
 
 class AffectedFilesViewRenderer(
-  private val view: AffectedFilesView
+  private val view: AffectedFilesPropsView
 ) : ViewRenderer<AffectedFilesModel> {
   private var gitReposMemoized: List<GitRepo>? = null
   private var trackedFilePathsMemoized: List<TrackedFilePath>? = null

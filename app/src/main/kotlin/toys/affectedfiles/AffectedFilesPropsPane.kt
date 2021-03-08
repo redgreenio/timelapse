@@ -21,12 +21,12 @@ import toys.affectedfiles.model.AffectedFilesInit
 import toys.affectedfiles.model.AffectedFilesModel
 import toys.affectedfiles.model.AffectedFilesUpdate
 import toys.affectedfiles.model.AffectingCommit
-import toys.affectedfiles.view.AffectedFilesView
+import toys.affectedfiles.view.AffectedFilesPropsView
 import toys.affectedfiles.view.AffectedFilesViewRenderer
 
-class AffectedFilesPropsUi(
+class AffectedFilesPropsPane(
   private val affectedFilesContextSubject: BehaviorSubject<AffectedFileContext>,
-) : VBox(), AffectedFilesView, AffectedFileContextChangeListener {
+) : VBox(), AffectedFilesPropsView, AffectedFileContextChangeListener {
 
   private companion object {
     private const val SPACING = 8.0
@@ -37,7 +37,7 @@ class AffectedFilesPropsUi(
       AffectedFilesModel.fetchingGitRepos,
       AffectedFilesInit,
       AffectedFilesUpdate,
-      AffectedFilesEffectHandler.from(this@AffectedFilesPropsUi, JavaFxSchedulersProvider),
+      AffectedFilesEffectHandler.from(this@AffectedFilesPropsPane, JavaFxSchedulersProvider),
       AffectedFilesViewRenderer(this)
     )
   }

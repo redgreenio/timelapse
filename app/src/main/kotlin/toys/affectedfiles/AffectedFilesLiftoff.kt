@@ -31,10 +31,10 @@ class AffectedFilesLiftoff : Liftoff<AffectedFilesProps, AffectedFilesEntryPoint
   override val entryPoint: AffectedFilesEntryPointPane by fastLazy { AffectedFilesEntryPointPane() }
 
   override val props: AffectedFilesProps by fastLazy {
-    AffectedFilesProps(contextChanges) { (propsUi as AffectedFilesPropsUi).showAffectedFile(it) }
+    AffectedFilesProps(contextChanges) { (propsUi as AffectedFilesPropsPane).showAffectedFile(it) }
   }
 
-  override val propsUi: Region by fastLazy { AffectedFilesPropsUi(contextChanges) }
+  override val propsUi: Region by fastLazy { AffectedFilesPropsPane(contextChanges) }
 
   override val liftoffTitle: String = TITLE
 
