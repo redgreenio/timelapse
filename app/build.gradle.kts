@@ -62,6 +62,9 @@ dependencies {
   kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi")
   implementation("io.arrow-kt:arrow-core-data:0.11.0")
   implementation("com.github.ben-manes.caffeine:caffeine:3.0.0")
+  implementation("org.greenrobot:eventbus:3.2.0") {
+    because("Provides a decoupled API for analytics.")
+  }
 
   testImplementation(testFixtures(project(":fixtures:library")))
   testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
