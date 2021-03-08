@@ -15,6 +15,7 @@ import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileToCellViewModelMapper
 import io.redgreen.timelapse.foo.matchParent
+import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections
 
@@ -81,6 +82,7 @@ class AffectedFilesEntryPointPane : TitledParent(),
     val (gitDirectory, _, descendent, ancestor) = context
     return Single
       .fromCallable { getAffectedFilesUseCase.invoke(gitDirectory, descendent, ancestor) }
+      .publishMetric(GetAffectedFilesUseCase::Metric)
       .flatMap { if (it is Either.Right) Single.just(it.b) else Single.error((it as Either.Left).a) }
   }
 }

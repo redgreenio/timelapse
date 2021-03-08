@@ -10,6 +10,9 @@ import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.core.GitDirectory
 import io.redgreen.timelapse.core.TrackedFilePath
+import io.redgreen.timelapse.metrics.GetCommitsMetric
+import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
+import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.SchedulersProvider
 import java.io.File
 import org.eclipse.jgit.api.Git
@@ -82,6 +85,7 @@ object AffectedFilesEffectHandler {
             .fromCallable {
               getTrackedFilePaths(getTrackedFiles.gitDirectory)
             }
+            .publishMetric(::GetTrackedFilesMetric)
             .subscribeOn(ioScheduler)
         }
     }
@@ -118,6 +122,7 @@ object AffectedFilesEffectHandler {
             val affectingCommits = getAffectingCommits(repository, getCommitsAffectingFilePath)
             CommitsAffectingFilePathFetched(affectingCommits)
           }
+            .publishMetric(::GetCommitsMetric)
             .subscribeOn(schedulersProvider.io())
         }
     }

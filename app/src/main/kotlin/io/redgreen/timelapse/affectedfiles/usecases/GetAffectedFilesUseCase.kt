@@ -15,6 +15,7 @@ import io.redgreen.timelapse.extensions.isDelete
 import io.redgreen.timelapse.extensions.isInsert
 import io.redgreen.timelapse.extensions.isReplace
 import java.io.File
+import java.time.Duration
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.COPY
@@ -34,6 +35,8 @@ import org.eclipse.jgit.treewalk.EmptyTreeIterator
 import org.eclipse.jgit.util.io.DisabledOutputStream
 
 class GetAffectedFilesUseCase {
+  data class Metric(val duration: Duration)
+
   fun invoke(
     gitDirectory: GitDirectory,
     descendent: CommitHash,
