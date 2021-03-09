@@ -1,8 +1,7 @@
 package io.redgreen.timelapse.openrepo
 
-import java.io.File
+import io.redgreen.timelapse.core.GitDirectory
 import java.util.Optional
-import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.util.SystemReader
 
 class GitDetector {
@@ -20,12 +19,8 @@ class GitDetector {
     }
   }
 
-  fun isGitRepository(path: String): Boolean {
-    val maybeGitDirectory = File("$path/.git")
-    val repository = RepositoryBuilder()
-      .setGitDir(maybeGitDirectory)
-      .build()
-
-    return repository.refDatabase.refs.size != 0
-  }
+  @Suppress("DeprecatedCallableAddReplaceWith")
+  @Deprecated("Use [GitDirectory] instead")
+  fun isGitRepository(path: String): Boolean =
+    GitDirectory.from(path).isPresent
 }

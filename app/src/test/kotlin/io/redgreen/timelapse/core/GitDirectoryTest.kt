@@ -12,10 +12,8 @@ internal class GitDirectoryTest {
   companion object {
     @JvmStatic
     @Suppress("unused") // Used by JUnit parameterized test
-    fun gitDirectories(): List<String> {
-      return listOf(GitTestbed.path.absolutePath, SimpleAndroid.path.absolutePath)
-        .map { "$it/.git" }
-    }
+    fun gitDirectories(): List<String> =
+      listOf(GitTestbed.path.absolutePath, SimpleAndroid.path.absolutePath)
   }
 
   @Test

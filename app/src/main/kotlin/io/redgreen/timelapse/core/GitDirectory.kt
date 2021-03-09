@@ -2,6 +2,8 @@ package io.redgreen.timelapse.core
 
 import java.io.File
 import java.util.Optional
+import org.eclipse.jgit.lib.Constants.HEAD
+import org.eclipse.jgit.lib.RepositoryBuilder
 
 /* Not using a sealed class here because it can still expose a private constructor via copy constructors. Therefore,
  * we are also responsible for implementing [#hashCode], [#equals], and [#toString] functions. */
@@ -10,18 +12,16 @@ class GitDirectory private constructor(val path: String) {
     private const val GIT_DIRECTORY_NAME = ".git"
 
     fun from(path: String): Optional<GitDirectory> {
-      return if (isGitDirectoryNaiveCheck(path)) {
+      return if (isGitDirectoryCheck(path)) {
         Optional.of(GitDirectory(path))
       } else {
         Optional.empty()
       }
     }
 
-    private fun isGitDirectoryNaiveCheck(path: String): Boolean {
-      val possibleGitDirectory = File(path)
-      val isDirectoryPath = possibleGitDirectory.exists() && possibleGitDirectory.isDirectory
-      val isGitDirectory = possibleGitDirectory.name == GIT_DIRECTORY_NAME
-      return isDirectoryPath && isGitDirectory
+    private fun isGitDirectoryCheck(path: String): Boolean {
+      val head = RepositoryBuilder().setGitDir(File(path)).build().resolve(HEAD)
+      return head != null
     }
   }
 

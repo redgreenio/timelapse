@@ -9,7 +9,3 @@ out/
 
 # Working area to de-obfuscate crash traces
 proguard-lab/
-
-# Cloned repositories used in tests
-fixtures/git-testbed/
-fixtures/simple-android/

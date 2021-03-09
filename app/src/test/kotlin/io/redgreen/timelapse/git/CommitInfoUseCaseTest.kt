@@ -35,7 +35,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
 
 class CommitInfoUseCaseTest {
-  private val repository = openGitRepository(GitTestbed.path)
+  private val repository = openGitRepository(GitTestbed.path, true)
   private val useCase = CommitInfoUseCase(repository)
   private val commitHash = CommitHash(exhibitB) // exhibit b: add a new file
 

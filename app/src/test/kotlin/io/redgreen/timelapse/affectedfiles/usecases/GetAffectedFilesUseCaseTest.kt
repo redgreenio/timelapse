@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test
 
 internal class GetAffectedFilesUseCaseTest {
   private val useCase = GetAffectedFilesUseCase()
-  private val gitTestbedGitDirectory = GitDirectory.from("${GitTestbed.path.absolutePath}/.git").get()
+  private val gitTestbedGitDirectory = GitDirectory.from(GitTestbed.path.absolutePath).get()
 
   @Test
   fun `it should get changed files from an initial commit`() {

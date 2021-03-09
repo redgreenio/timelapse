@@ -23,7 +23,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import org.junit.jupiter.api.Test
 
 class GitFunctionsTest {
-  private val repository = openGitRepository(GitTestbed.path)
+  private val repository = openGitRepository(GitTestbed.path, true)
 
   @Test
   fun `it should get a list of files from initial commit`() {

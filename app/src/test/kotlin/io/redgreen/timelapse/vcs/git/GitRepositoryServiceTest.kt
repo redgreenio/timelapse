@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Test
 class GitRepositoryServiceTest {
   @Nested
   inner class GetChangedFiles {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
@@ -96,7 +96,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetContributions {
-    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path)
+    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path, true)
     private val repositoryService = GitRepositoryService(simpleAndroidRepository)
     private val commitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd"
 
@@ -182,7 +182,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetCommitOnOrAfter {
-    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path)
+    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path, true)
     private val repositoryService = GitRepositoryService(simpleAndroidRepository)
 
     @Test
@@ -218,7 +218,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetChangedFilePaths {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
@@ -284,7 +284,7 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should ignore deleted file paths between an ancestor and a descendant (simple-android)`() {
       // given
-      val repositoryService = GitRepositoryService(openGitRepository(SimpleAndroid.path))
+      val repositoryService = GitRepositoryService(openGitRepository(SimpleAndroid.path, true))
       val ancestorCommitId = "f7a3080ee72869bd9925eaef49cb0de75acc7083" // Update CHANGELOG (#2037)
       val descendantCommitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd" // Update CHANGELOG (#2043)
 
@@ -322,7 +322,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetBlobDiff {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test
@@ -444,7 +444,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetBlobDiffInformation {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path)
+    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
     private val repositoryService = GitRepositoryService(gitTestbedRepository)
 
     @Test

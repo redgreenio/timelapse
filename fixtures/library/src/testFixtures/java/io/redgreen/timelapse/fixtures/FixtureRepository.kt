@@ -2,7 +2,7 @@ package io.redgreen.timelapse.fixtures
 
 import java.io.File
 
-private const val GIT_REPOS_ROOT = "../fixtures/"
+private const val GIT_REPOS_ROOT = "../.git/modules/fixtures/"
 
 sealed class FixtureRepository(val path: File) {
   companion object {

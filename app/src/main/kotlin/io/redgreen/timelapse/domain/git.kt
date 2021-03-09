@@ -15,14 +15,18 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.treewalk.filter.PathFilter
 
-fun openGitRepository(repositoryPath: File): Repository {
-  val gitDirectory = "${repositoryPath.canonicalPath}${File.separator}.git"
+fun openGitRepository(repositoryPath: File, submoduleFromTest: Boolean = false): Repository {
+  val gitDirectory = if (submoduleFromTest) {
+    "${repositoryPath.canonicalPath}${File.separator}"
+  } else {
+    "${repositoryPath.canonicalPath}${File.separator}.git"
+  }
 
   val repository = FileRepositoryBuilder()
     .setGitDir(File(gitDirectory))
     .build()
 
-  return if (repository.branch != null) {
+  return if (repository.branch != null || submoduleFromTest) {
     repository
   } else {
     throw IllegalStateException("Not a git directory: ${repositoryPath.canonicalPath}")
