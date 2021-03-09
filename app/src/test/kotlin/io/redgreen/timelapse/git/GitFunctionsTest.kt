@@ -340,7 +340,7 @@ class GitFunctionsTest {
 
     // then
     assertThat(remoteBranches)
-      .containsExactly(
+      .containsAtLeast(
         Branch("refs/remotes/origin/HEAD", "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278"),
         Branch("refs/remotes/origin/branch-a", "68958540148efb4dd0dbfbb181df330deaffbe13"),
         Branch("refs/remotes/origin/branch-b", "2c132dd9e3e32b6493e7d8c8ad595ea40b54a278"),

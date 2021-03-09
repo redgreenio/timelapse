@@ -1,49 +1,64 @@
 # Timelapse
 
-Timelapse is an attempt to help developers understand large source files really fast.
+Timelapse onboards developers onto codebases before you make that cup of instant noodles!
 
 ## Project setup
 
-### macOS
+### Prerequisite
+You should also have access to the [git-testbed](https://github.com/redgreenio/git-testbed) repository.  
 
-Run the following script from the cloned project directory, and you should be ready to go!
+### Cloning
 
-```shell script
-./setup-dev
+The repository has submodules. If you haven't cloned the repository already, run:
+
+```shell
+git clone --recursive git@github.com:redgreenio/timelapse.git
 ```
 
-### Windows & Linux
+If you have already cloned the repository without the `--recursive` option. Then `cd` into the project directory and
+then run,
 
-After cloning the project, also clone the **git-testbed** and **simple-android** projects into the `fixtures` directory.
-
-**Git Testbed**
-
-```shell script
-git clone git@github.com:redgreenio/git-testbed.git
+```shell
+git submodule update --init --recursive
 ```
 
-**Simple Android**
+### Verification
 
-```shell script
-git clone git@github.com:simpledotorg/simple-android.git
+`cd` into the project directory and run the Gradle `test` task.
+
+**Windows**
+
+```shell
+gradlew test
 ```
 
-```shell script
-cd simple-android
-git checkout d26b2b56696e63bffa5700488dcfe0154ad8cecd
+***nix**
+
+```shell
+./gradlew test
 ```
 
-**ProGuard**
+If the build succeeds, we are all set!
+```shell
+> Task :app:test
 
-Create an empty directory inside the root directory for de-obfuscating ProGuard traces from production.
+yada yada yada…
 
-```shell script
+BUILD SUCCESSFUL in 18s
+31 actionable tasks: 31 executed
+```
+
+### ProGuard
+
+Create an new directory inside the project directory for de-obfuscating ProGuard traces from production.
+
+```shell
 mkdir proguard-lab
 ```
 
 ## Creating a release
 
-```shell script
+```shell
 gradlew jpackageImage jpackage
 ```
 
