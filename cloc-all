@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-cloc ./app/src && cloc ./visuals/src

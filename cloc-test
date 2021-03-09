@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-cloc ./app/src/test/kotlin && cloc ./visuals/src/test/kotlin
