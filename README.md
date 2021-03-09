@@ -5,7 +5,8 @@ Timelapse onboards developers onto codebases before you make that cup of instant
 ## Project setup
 
 ### Prerequisite
-You should also have access to the [git-testbed](https://github.com/redgreenio/git-testbed) repository.  
+
+You should also have access to the [git-testbed](https://github.com/redgreenio/git-testbed) repository.
 
 ### Cloning
 
@@ -24,33 +25,27 @@ git submodule update --init --recursive
 
 ### Verification
 
-`cd` into the project directory and run the Gradle `test` task.
+`cd` into the project directory and run the following Gradle tasks.
 
 **Windows**
 
 ```shell
-gradlew test
+gradlew test run
 ```
 
 ***nix**
 
 ```shell
-./gradlew test
+./gradlew test run
 ```
 
-If the build succeeds, we are all set!
-```shell
-> Task :app:test
+If the build succeeds, you should be able to see this screen! (or something even better)
 
-yada yada yada…
-
-BUILD SUCCESSFUL in 18s
-31 actionable tasks: 31 executed
-```
+![Verified](images/verified.png)
 
 ### ProGuard
 
-Create an new directory inside the project directory for de-obfuscating ProGuard traces from production.
+Create a new directory inside the project directory for de-obfuscating ProGuard traces from production.
 
 ```shell
 mkdir proguard-lab
