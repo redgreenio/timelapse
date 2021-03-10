@@ -82,7 +82,7 @@ dependencies {
 
 with(application) {
   applicationName = productName
-  mainClassName = "LauncherKt"
+  mainClass.set("LauncherKt")
 }
 
 val useIRBackend = true
