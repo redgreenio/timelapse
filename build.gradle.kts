@@ -16,7 +16,7 @@ buildscript {
   }
 
   subprojects {
-    /*apply { plugin("jacoco") }*/
+    apply { plugin("jacoco") }
 
     repositories {
       mavenCentral()
