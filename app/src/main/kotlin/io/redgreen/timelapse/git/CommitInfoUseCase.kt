@@ -2,6 +2,7 @@ package io.redgreen.timelapse.git
 
 import io.redgreen.timelapse.core.CommitHash
 import io.redgreen.timelapse.git.Ancestors.Many
+import io.redgreen.timelapse.git.Ancestors.None
 import io.redgreen.timelapse.git.Ancestors.One
 import io.redgreen.timelapse.vcs.Identity
 import java.nio.charset.Charset
@@ -57,10 +58,10 @@ class CommitInfoUseCase(
     }
 
     object Parent : Property<Ancestors>() {
-      override fun get(revCommit: RevCommit): Ancestors = if (revCommit.parentCount == 1) {
-        One(revCommit.parents.first().name)
-      } else {
-        Many(revCommit.parents.map(RevCommit::name).toList())
+      override fun get(revCommit: RevCommit): Ancestors = when (revCommit.parentCount) {
+        0 -> None
+        1 -> One(revCommit.parents.first().name)
+        else -> Many(revCommit.parents.map(RevCommit::name).toList())
       }
     }
 

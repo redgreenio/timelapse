@@ -73,6 +73,16 @@ class CommitInfoUseCaseTest {
   }
 
   @Test
+  fun `it should return None when querying the ancestor for the root commit`() {
+    // when
+    val ancestors = useCase.invoke(CommitHash(exhibitA), Parent)
+
+    // then
+    assertThat(ancestors)
+      .isEqualTo(Ancestors.None)
+  }
+
+  @Test
   fun `it should get more than one commit ID for a merge commit`() {
     // given
     val mergeCommitId = CommitHash(mergeEnglishIntoSpanish) // Merge branch 'english' into spanish
