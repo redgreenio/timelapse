@@ -1,5 +1,4 @@
 plugins {
-  kotlin("jvm")
   id("org.openjfx.javafxplugin") version "0.0.9"
 }
 
@@ -11,14 +10,4 @@ javafx {
 dependencies {
   implementation(project(":visuals"))
   implementation(project(":design"))
-}
-
-tasks {
-  compileKotlin {
-    kotlinOptions.jvmTarget = "15"
-  }
-
-  compileTestKotlin {
-    kotlinOptions.jvmTarget = "15"
-  }
 }

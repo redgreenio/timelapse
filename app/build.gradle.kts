@@ -3,7 +3,6 @@ import proguard.gradle.ProGuardTask
 
 plugins {
   application
-  kotlin("jvm")
   id("com.github.johnrengelman.shadow") version "6.1.0"
   id("org.openjfx.javafxplugin") version "0.0.9"
   id("org.beryx.runtime") version "1.12.1"
@@ -19,12 +18,6 @@ version = "1.0.0" /* Because, macOS apps can't have version numbers starting wit
 javafx {
   version = "15"
   modules("javafx.controls", "javafx.web")
-}
-
-object DependencyVersions {
-  internal const val mobius = "1.5.3"
-  internal const val junit = "5.6.0"
-  internal const val moshi = "1.11.0"
 }
 
 dependencies {
@@ -91,25 +84,7 @@ with(application) {
   mainClass.set("LauncherKt")
 }
 
-val useIRBackend = true
-
 tasks {
-  compileKotlin {
-    kotlinOptions.jvmTarget = "15"
-    kotlinOptions.useIR = useIRBackend
-    kotlinOptions.freeCompilerArgs = listOf("-Xinline-classes")
-  }
-
-  compileTestKotlin {
-    kotlinOptions.jvmTarget = "15"
-    kotlinOptions.useIR = useIRBackend
-    kotlinOptions.freeCompilerArgs = listOf("-Xinline-classes")
-  }
-
-  test {
-    useJUnitPlatform()
-  }
-
   register<ProGuardTask>("demoJar") {
     dependsOn("shadowJar")
     val shadowJar = "build/libs/app-${version}-all.jar"
@@ -174,12 +149,4 @@ runtime {
       }
     }
   }
-}
-
-tasks.jacocoTestReport {
-  reports {
-    xml.isEnabled = true
-  }
-
-  dependsOn(tasks.test)
 }

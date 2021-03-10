@@ -1,17 +1,6 @@
 plugins {
   `java-library`
-  kotlin("jvm")
   id("org.openjfx.javafxplugin") version "0.0.9"
-}
-
-tasks {
-  compileKotlin {
-    kotlinOptions.jvmTarget = "15"
-  }
-
-  compileTestKotlin {
-    kotlinOptions.jvmTarget = "15"
-  }
 }
 
 javafx {
