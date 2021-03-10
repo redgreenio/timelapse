@@ -1,4 +1,4 @@
-package toys.affectedfiles
+package liftoff.affectedfiles.props.callback
 
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 

@@ -1,10 +1,10 @@
-package toys.affectedfiles.view
+package liftoff.affectedfiles.props.view
 
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.core.TrackedFilePath
-import toys.affectedfiles.model.AffectingCommit
+import liftoff.affectedfiles.model.AffectingCommit
 
-interface AffectedFilesPropsView {
+interface AffectedFilesPropsUiView {
   fun populateGitRepos(gitRepos: List<GitRepo>)
   fun populateTrackedFiles(trackedFilePaths: List<TrackedFilePath>)
   fun populateAffectingCommits(affectingCommits: List<AffectingCommit>)

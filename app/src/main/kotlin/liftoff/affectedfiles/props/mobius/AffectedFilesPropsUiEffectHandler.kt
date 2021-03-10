@@ -1,4 +1,4 @@
-package toys.affectedfiles.model
+package liftoff.affectedfiles.props.mobius
 
 import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
@@ -15,27 +15,28 @@ import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
 import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.SchedulersProvider
 import java.io.File
+import liftoff.affectedfiles.model.AffectingCommit
+import liftoff.affectedfiles.props.callback.AffectedFileContextChangeListener
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.DiscoverGitRepos
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetCommitsAffectingFilePath
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetTrackedFiles
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.NotifyCommitSelected
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.CommitsAffectingFilePathFetched
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitReposFound
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.TrackedFilePathsFetched
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.treewalk.TreeWalk
-import toys.affectedfiles.AffectedFileContextChangeListener
-import toys.affectedfiles.model.AffectedFilesEffect.DiscoverGitRepos
-import toys.affectedfiles.model.AffectedFilesEffect.GetCommitsAffectingFilePath
-import toys.affectedfiles.model.AffectedFilesEffect.GetTrackedFiles
-import toys.affectedfiles.model.AffectedFilesEffect.NotifyCommitSelected
-import toys.affectedfiles.model.AffectedFilesEvent.CommitsAffectingFilePathFetched
-import toys.affectedfiles.model.AffectedFilesEvent.GitReposFound
-import toys.affectedfiles.model.AffectedFilesEvent.TrackedFilePathsFetched
 
-object AffectedFilesEffectHandler {
+object AffectedFilesPropsUiEffectHandler {
   fun from(
     listener: AffectedFileContextChangeListener,
     schedulersProvider: SchedulersProvider
-  ): ObservableTransformer<AffectedFilesEffect, AffectedFilesEvent> {
+  ): ObservableTransformer<AffectedFilesPropsUiEffect, AffectedFilesPropsUiEvent> {
     return RxMobius
-      .subtypeEffectHandler<AffectedFilesEffect, AffectedFilesEvent>()
+      .subtypeEffectHandler<AffectedFilesPropsUiEffect, AffectedFilesPropsUiEvent>()
       .addTransformer(DiscoverGitRepos::class.java, discoverGitReposTransformer(schedulersProvider.io()))
       .addTransformer(GetTrackedFiles::class.java, getTrackedFilesTransformer(schedulersProvider.io()))
       .addTransformer(
@@ -48,7 +49,7 @@ object AffectedFilesEffectHandler {
 
   private fun discoverGitReposTransformer(
     ioScheduler: Scheduler
-  ): ObservableTransformer<DiscoverGitRepos, AffectedFilesEvent> {
+  ): ObservableTransformer<DiscoverGitRepos, AffectedFilesPropsUiEvent> {
     return ObservableTransformer { discoverGitReposEvents ->
       discoverGitReposEvents
         .map { File(it.directoryPath) }
@@ -76,7 +77,7 @@ object AffectedFilesEffectHandler {
 
   private fun getTrackedFilesTransformer(
     ioScheduler: Scheduler
-  ): ObservableTransformer<GetTrackedFiles, AffectedFilesEvent> {
+  ): ObservableTransformer<GetTrackedFiles, AffectedFilesPropsUiEvent> {
     return ObservableTransformer { getTrackedFilesEvents ->
       getTrackedFilesEvents
         .distinctUntilChanged()
@@ -111,7 +112,7 @@ object AffectedFilesEffectHandler {
 
   private fun getCommitsAffectingFilePathTransformer(
     schedulersProvider: SchedulersProvider
-  ): ObservableTransformer<GetCommitsAffectingFilePath, AffectedFilesEvent> {
+  ): ObservableTransformer<GetCommitsAffectingFilePath, AffectedFilesPropsUiEvent> {
     return ObservableTransformer { getCommitsAffectingFilePathEvents ->
       getCommitsAffectingFilePathEvents
         .flatMapSingle { getCommitsAffectingFilePath ->
@@ -148,9 +149,23 @@ object AffectedFilesEffectHandler {
     val gitDirectory = GitDirectory.from(gitDirectoryPath).get()
 
     val descendentCommitHash = notifyCommitSelected.affectingCommit.commitHash
-    val resolvedAncestorCommitId = repository
-      .resolve("${descendentCommitHash.value}^1")?.name ?: descendentCommitHash.value
-    val ancestorCommitHash = CommitHash(resolvedAncestorCommitId)
-    listener.onChange(AffectedFileContext(gitDirectory, notifyCommitSelected.filePath, descendentCommitHash, ancestorCommitHash))
+    val ancestorCommitHash = getAncestorCommitHash(repository, descendentCommitHash.value)
+
+    val context = AffectedFileContext(
+      gitDirectory,
+      notifyCommitSelected.filePath,
+      descendentCommitHash,
+      ancestorCommitHash
+    )
+    listener.onChange(context)
+  }
+
+  private fun getAncestorCommitHash(
+    repository: Repository,
+    descendentCommitId: String
+  ): CommitHash {
+    val parentCommitId = repository.resolve("$descendentCommitId^1")?.name
+      ?: descendentCommitId
+    return CommitHash(parentCommitId)
   }
 }

@@ -1,4 +1,4 @@
-package toys.affectedfiles
+package liftoff.affectedfiles
 
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.liftoff.Liftoff
@@ -12,6 +12,7 @@ import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.scene.layout.Region
+import liftoff.affectedfiles.props.javafx.AffectedFilesPropsUi
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -31,10 +32,10 @@ class AffectedFilesLiftoff : Liftoff<AffectedFilesProps, AffectedFilesEntryPoint
   override val entryPoint: AffectedFilesEntryPointPane by fastLazy { AffectedFilesEntryPointPane() }
 
   override val props: AffectedFilesProps by fastLazy {
-    AffectedFilesProps(contextChanges) { (propsUi as AffectedFilesPropsPane).showAffectedFile(it) }
+    AffectedFilesProps(contextChanges) { (propsUi as AffectedFilesPropsUi).showAffectedFile(it) }
   }
 
-  override val propsUi: Region by fastLazy { AffectedFilesPropsPane(contextChanges) }
+  override val propsUi: Region by fastLazy { AffectedFilesPropsUi(contextChanges) }
 
   override val liftoffTitle: String = TITLE
 

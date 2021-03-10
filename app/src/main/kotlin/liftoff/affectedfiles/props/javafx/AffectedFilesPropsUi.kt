@@ -1,4 +1,4 @@
-package toys.affectedfiles
+package liftoff.affectedfiles.props.javafx
 
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.architecture.mobius.MobiusDelegate
@@ -15,18 +15,19 @@ import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
-import toys.affectedfiles.model.AffectedFilesEffectHandler
-import toys.affectedfiles.model.AffectedFilesEvent.*
-import toys.affectedfiles.model.AffectedFilesInit
-import toys.affectedfiles.model.AffectedFilesModel
-import toys.affectedfiles.model.AffectedFilesUpdate
-import toys.affectedfiles.model.AffectingCommit
-import toys.affectedfiles.view.AffectedFilesPropsView
-import toys.affectedfiles.view.AffectedFilesViewRenderer
+import liftoff.affectedfiles.model.AffectingCommit
+import liftoff.affectedfiles.props.callback.AffectedFileContextChangeListener
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffectHandler
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.*
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiInit
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiUpdate
+import liftoff.affectedfiles.props.view.AffectedFilesPropsUiView
+import liftoff.affectedfiles.props.view.AffectedFilesPropsUiViewRenderer
 
-class AffectedFilesPropsPane(
+class AffectedFilesPropsUi(
   private val affectedFilesContextSubject: BehaviorSubject<AffectedFileContext>,
-) : VBox(), AffectedFilesPropsView, AffectedFileContextChangeListener {
+) : VBox(), AffectedFilesPropsUiView, AffectedFileContextChangeListener {
 
   private companion object {
     private const val SPACING = 8.0
@@ -34,11 +35,11 @@ class AffectedFilesPropsPane(
 
   private val delegate by fastLazy {
     MobiusDelegate(
-      AffectedFilesModel.fetchingGitRepos,
-      AffectedFilesInit,
-      AffectedFilesUpdate,
-      AffectedFilesEffectHandler.from(this@AffectedFilesPropsPane, JavaFxSchedulersProvider),
-      AffectedFilesViewRenderer(this)
+      AffectedFilesPropsUiModel.fetchingGitRepos,
+      AffectedFilesPropsUiInit,
+      AffectedFilesPropsUiUpdate,
+      AffectedFilesPropsUiEffectHandler.from(this@AffectedFilesPropsUi, JavaFxSchedulersProvider),
+      AffectedFilesPropsUiViewRenderer(this)
     )
   }
 

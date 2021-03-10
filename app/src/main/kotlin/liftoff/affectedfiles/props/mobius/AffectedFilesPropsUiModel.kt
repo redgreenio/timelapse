@@ -1,4 +1,4 @@
-package toys.affectedfiles.model
+package liftoff.affectedfiles.props.mobius
 
 import io.redgreen.architecture.mobius.AsyncOp
 import io.redgreen.architecture.mobius.AsyncOp.Companion.content
@@ -8,8 +8,9 @@ import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.core.TrackedFilePath
 import java.util.Optional
 import java.util.Optional.empty
+import liftoff.affectedfiles.model.AffectingCommit
 
-data class AffectedFilesModel(
+data class AffectedFilesPropsUiModel(
   val gitReposAsyncOp: AsyncOp<List<GitRepo>, Nothing>,
   val selectedGitRepo: Optional<GitRepo>,
 
@@ -20,7 +21,7 @@ data class AffectedFilesModel(
   val selectedCommit: Optional<AffectingCommit>, // TODO This should be an effect!
 ) {
   companion object {
-    val fetchingGitRepos = AffectedFilesModel(
+    val fetchingGitRepos = AffectedFilesPropsUiModel(
       inFlight(),
       empty(),
       idle(),
@@ -30,31 +31,31 @@ data class AffectedFilesModel(
     )
   }
 
-  fun gitReposFound(gitRepos: List<GitRepo>): AffectedFilesModel =
+  fun gitReposFound(gitRepos: List<GitRepo>): AffectedFilesPropsUiModel =
     copy(gitReposAsyncOp = content(gitRepos))
 
-  fun gitRepoSelected(gitRepo: GitRepo): AffectedFilesModel = copy(
+  fun gitRepoSelected(gitRepo: GitRepo): AffectedFilesPropsUiModel = copy(
     selectedGitRepo = Optional.of(gitRepo),
     trackedFilesAsyncOp = inFlight()
   )
 
   fun trackedFilePathsFetched(
     filePaths: List<TrackedFilePath>
-  ): AffectedFilesModel =
+  ): AffectedFilesPropsUiModel =
     copy(trackedFilesAsyncOp = content(filePaths))
 
-  fun filePathSelected(filePath: TrackedFilePath): AffectedFilesModel = copy(
+  fun filePathSelected(filePath: TrackedFilePath): AffectedFilesPropsUiModel = copy(
     selectedFilePath = Optional.of(filePath),
     affectingCommitsAsyncOp = inFlight()
   )
 
   fun commitsAffectingFilePathFetched(
     affectingCommits: List<AffectingCommit>
-  ): AffectedFilesModel =
+  ): AffectedFilesPropsUiModel =
     copy(affectingCommitsAsyncOp = content(affectingCommits))
 
   fun affectingCommitSelected(
     affectingCommit: AffectingCommit
-  ): AffectedFilesModel =
+  ): AffectedFilesPropsUiModel =
     copy(selectedCommit = Optional.of(affectingCommit))
 }

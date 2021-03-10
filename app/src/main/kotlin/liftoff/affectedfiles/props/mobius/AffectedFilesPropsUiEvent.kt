@@ -1,30 +1,31 @@
-package toys.affectedfiles.model
+package liftoff.affectedfiles.props.mobius
 
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.core.TrackedFilePath
+import liftoff.affectedfiles.model.AffectingCommit
 
-sealed class AffectedFilesEvent {
+sealed class AffectedFilesPropsUiEvent {
   data class GitReposFound(
     val gitRepos: List<GitRepo>
-  ) : AffectedFilesEvent()
+  ) : AffectedFilesPropsUiEvent()
 
   data class GitRepoSelected(
     val gitRepo: GitRepo
-  ) : AffectedFilesEvent()
+  ) : AffectedFilesPropsUiEvent()
 
   data class TrackedFilePathsFetched(
     val trackedFilePaths: List<TrackedFilePath>
-  ) : AffectedFilesEvent()
+  ) : AffectedFilesPropsUiEvent()
 
   data class FilePathSelected(
     val filePath: TrackedFilePath
-  ) : AffectedFilesEvent()
+  ) : AffectedFilesPropsUiEvent()
 
   data class CommitsAffectingFilePathFetched(
     val affectingCommits: List<AffectingCommit>
-  ) : AffectedFilesEvent()
+  ) : AffectedFilesPropsUiEvent()
 
   data class AffectingCommitSelected(
     val affectingCommit: AffectingCommit
-  ) : AffectedFilesEvent()
+  ) : AffectedFilesPropsUiEvent()
 }

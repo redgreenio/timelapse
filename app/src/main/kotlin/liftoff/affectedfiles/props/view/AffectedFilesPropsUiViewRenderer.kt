@@ -1,20 +1,20 @@
-package toys.affectedfiles.view
+package liftoff.affectedfiles.props.view
 
 import io.redgreen.architecture.mobius.AsyncOp.Content
 import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.core.TrackedFilePath
-import toys.affectedfiles.model.AffectedFilesModel
-import toys.affectedfiles.model.AffectingCommit
+import liftoff.affectedfiles.model.AffectingCommit
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel
 
-class AffectedFilesViewRenderer(
-  private val view: AffectedFilesPropsView
-) : ViewRenderer<AffectedFilesModel> {
+class AffectedFilesPropsUiViewRenderer(
+  private val view: AffectedFilesPropsUiView
+) : ViewRenderer<AffectedFilesPropsUiModel> {
   private var gitReposMemoized: List<GitRepo>? = null
   private var trackedFilePathsMemoized: List<TrackedFilePath>? = null
   private var affectingCommitsMemoized: List<AffectingCommit>? = null
 
-  override fun render(model: AffectedFilesModel) {
+  override fun render(model: AffectedFilesPropsUiModel) {
     if (model.gitReposAsyncOp is Content && gitReposMemoized != model.gitReposAsyncOp.content) {
       gitReposMemoized = model.gitReposAsyncOp.content
 

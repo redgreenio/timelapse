@@ -1,24 +1,25 @@
-package toys.affectedfiles.model
+package liftoff.affectedfiles.props.mobius
 
 import com.spotify.mobius.Next
-import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
-import toys.affectedfiles.model.AffectedFilesEffect.GetCommitsAffectingFilePath
-import toys.affectedfiles.model.AffectedFilesEffect.GetTrackedFiles
-import toys.affectedfiles.model.AffectedFilesEffect.NotifyCommitSelected
-import toys.affectedfiles.model.AffectedFilesEvent.AffectingCommitSelected
-import toys.affectedfiles.model.AffectedFilesEvent.CommitsAffectingFilePathFetched
-import toys.affectedfiles.model.AffectedFilesEvent.FilePathSelected
-import toys.affectedfiles.model.AffectedFilesEvent.GitRepoSelected
-import toys.affectedfiles.model.AffectedFilesEvent.GitReposFound
-import toys.affectedfiles.model.AffectedFilesEvent.TrackedFilePathsFetched
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetCommitsAffectingFilePath
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetTrackedFiles
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.NotifyCommitSelected
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.AffectingCommitSelected
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.CommitsAffectingFilePathFetched
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.FilePathSelected
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitRepoSelected
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitReposFound
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.TrackedFilePathsFetched
 
-object AffectedFilesUpdate : Update<AffectedFilesModel, AffectedFilesEvent, AffectedFilesEffect> {
+object AffectedFilesPropsUiUpdate :
+  Update<AffectedFilesPropsUiModel, AffectedFilesPropsUiEvent, AffectedFilesPropsUiEffect> {
+
   override fun update(
-    model: AffectedFilesModel,
-    event: AffectedFilesEvent
-  ): Next<AffectedFilesModel, AffectedFilesEffect> {
+    model: AffectedFilesPropsUiModel,
+    event: AffectedFilesPropsUiEvent
+  ): Next<AffectedFilesPropsUiModel, AffectedFilesPropsUiEffect> {
     return when (event) {
       is GitReposFound -> next(
         model.gitReposFound(event.gitRepos)
