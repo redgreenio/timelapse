@@ -41,7 +41,7 @@ gradlew test run
 
 If the build succeeds, you should be able to see this screen! (or something even better)
 
-![Verified](images/verified.png)
+![Verified](IdeaProjects/timelapse/docs/images/verified.png)
 
 ### ProGuard
 
