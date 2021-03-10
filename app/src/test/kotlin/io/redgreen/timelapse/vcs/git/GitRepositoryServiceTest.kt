@@ -513,7 +513,7 @@ class GitRepositoryServiceTest {
       // then
       testObserver
         .assertError {
-          it is IllegalArgumentException && it.message == "Invalid commit ID: $commitId"
+          it is IllegalArgumentException && it.message == "Invalid descendent commit ID: $commitId"
         }
     }
   }

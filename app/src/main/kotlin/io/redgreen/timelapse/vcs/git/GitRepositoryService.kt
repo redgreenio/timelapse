@@ -207,7 +207,8 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
   ): Single<BlobDiffInformation> {
     return Single.create { emitter ->
       try {
-        val changedFilesCount = gitRepository.getChangedFilesInCommit(commitId).size
+        val changedFilesInCommit = gitRepository.getChangedFilesInCommit(commitId)
+        val changedFilesCount = changedFilesInCommit.size
         val message = gitRepository.getRevCommit(commitId).get().shortMessage
         val blobDiff = getBlobDiff(selectedFilePath, commitId).blockingGet()
         val diffLines = if (blobDiff is Simple) {
@@ -229,6 +230,8 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
         emitter.onSuccess(blobDiffInformation)
       } catch (e: NullPointerException) {
         emitter.onError(IllegalArgumentException("Invalid commit ID: $commitId", e))
+      } catch (e: IllegalArgumentException) {
+        emitter.onError(e)
       }
     }
   }

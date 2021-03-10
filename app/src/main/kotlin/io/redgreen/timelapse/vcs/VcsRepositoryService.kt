@@ -6,6 +6,7 @@ import io.redgreen.timelapse.domain.BlobDiff
 import java.time.LocalDate
 
 interface VcsRepositoryService {
+  @Deprecated("Use [GetAffectedFilesUseCase] instead.")
   fun getChangedFiles(commitId: String): Single<List<ChangedFile>>
 
   fun getContributions(
