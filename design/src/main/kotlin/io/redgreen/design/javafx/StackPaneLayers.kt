@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.visuals
+package io.redgreen.design.javafx
 
 import javafx.scene.Node
 import javafx.scene.layout.StackPane

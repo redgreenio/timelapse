@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.redgreen.architecture.Disposer
 import io.redgreen.architecture.EntryPoint
 import io.redgreen.architecture.RxJava3Disposer
-import io.redgreen.design.TitledParent
+import io.redgreen.design.javafx.TitledParent
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
 import io.redgreen.timelapse.affectedfiles.model.AffectedFile

@@ -1,6 +1,6 @@
 package io.redgreen.liftoff.javafx
 
-import io.redgreen.design.ResizableCanvas
+import io.redgreen.design.javafx.ResizableCanvas
 import io.redgreen.liftoff.javafx.extensions.drawDesignerGrid
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.layout.Pane

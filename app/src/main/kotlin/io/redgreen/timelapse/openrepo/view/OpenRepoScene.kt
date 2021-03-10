@@ -2,6 +2,7 @@ package io.redgreen.timelapse.openrepo.view
 
 import com.squareup.moshi.Moshi
 import io.redgreen.architecture.mobius.MobiusDelegate
+import io.redgreen.design.javafx.StackPaneLayers
 import io.redgreen.javafx.Fonts
 import io.redgreen.timelapse.DISPLAY_VERSION_NAME
 import io.redgreen.timelapse.foo.debug
@@ -26,7 +27,6 @@ import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_RE
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Stranger
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
-import io.redgreen.timelapse.visuals.StackPaneLayers
 import java.io.File
 import javafx.geometry.Insets
 import javafx.geometry.Pos.BOTTOM_RIGHT

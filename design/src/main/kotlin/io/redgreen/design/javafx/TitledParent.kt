@@ -1,4 +1,4 @@
-package io.redgreen.design
+package io.redgreen.design.javafx
 
 import javafx.scene.Node
 import javafx.scene.control.Label

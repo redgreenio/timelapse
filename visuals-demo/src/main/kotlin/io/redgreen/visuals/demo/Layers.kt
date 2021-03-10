@@ -1,6 +1,6 @@
 package io.redgreen.visuals.demo
 
-import io.redgreen.timelapse.visuals.StackPaneLayers
+import io.redgreen.design.javafx.StackPaneLayers
 import io.redgreen.visuals.demo.Greeting.FOUR
 import io.redgreen.visuals.demo.Greeting.ONE
 import io.redgreen.visuals.demo.Greeting.THREE

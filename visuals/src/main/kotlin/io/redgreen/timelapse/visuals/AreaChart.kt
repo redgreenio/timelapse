@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.visuals
 
-import io.redgreen.design.ResizableCanvas
+import io.redgreen.design.javafx.ResizableCanvas
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.WHITE
