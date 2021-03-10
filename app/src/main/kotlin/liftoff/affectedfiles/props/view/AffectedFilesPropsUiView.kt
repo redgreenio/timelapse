@@ -8,5 +8,6 @@ interface AffectedFilesPropsUiView {
   fun populateGitRepos(gitRepos: List<GitRepo>)
   fun populateTrackedFiles(trackedFilePaths: List<TrackedFilePath>)
   fun populateAffectingCommits(affectingCommits: List<AffectingCommit>)
+  fun clearAffectingCommitsList()
   fun clearAffectedFileCallbackText()
 }

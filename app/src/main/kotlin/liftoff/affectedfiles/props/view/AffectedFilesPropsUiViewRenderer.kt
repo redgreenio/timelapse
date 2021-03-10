@@ -1,6 +1,7 @@
 package liftoff.affectedfiles.props.view
 
 import io.redgreen.architecture.mobius.AsyncOp.Content
+import io.redgreen.architecture.mobius.AsyncOp.InFlight
 import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.core.TrackedFilePath
@@ -29,8 +30,11 @@ class AffectedFilesPropsUiViewRenderer(
       trackedFilePathsMemoized = model.trackedFilesAsyncOp.content
       with(view) {
         populateTrackedFiles(trackedFilePathsMemoized!!)
-        populateAffectingCommits(emptyList())
       }
+    }
+
+    if (model.affectingCommitsAsyncOp.value is InFlight) {
+      view.clearAffectingCommitsList()
     }
 
     if (model.affectingCommitsAsyncOp is Content && affectingCommitsMemoized != model.affectingCommitsAsyncOp.content

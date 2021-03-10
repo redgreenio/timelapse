@@ -106,6 +106,10 @@ class AffectedFilesPropsUi(
     }
   }
 
+  override fun clearAffectingCommitsList() {
+    affectingCommitsListView.items.clear()
+  }
+
   override fun clearAffectedFileCallbackText() {
     callbackLabel.text = null
   }
