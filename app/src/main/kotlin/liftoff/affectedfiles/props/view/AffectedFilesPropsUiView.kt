@@ -6,8 +6,12 @@ import liftoff.affectedfiles.model.AffectingCommit
 
 interface AffectedFilesPropsUiView {
   fun populateGitRepos(gitRepos: List<GitRepo>)
+
   fun populateTrackedFiles(trackedFilePaths: List<TrackedFilePath>)
+  fun clearTrackedFiles()
+
   fun populateAffectingCommits(affectingCommits: List<AffectingCommit>)
-  fun clearAffectingCommitsList()
+  fun clearAffectingCommits()
+
   fun clearAffectedFileCallbackText()
 }

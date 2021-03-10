@@ -1,7 +1,11 @@
 package liftoff.affectedfiles.props.view
 
+import com.spotify.diffuser.diffuser.Diffuser
+import com.spotify.diffuser.diffuser.Diffuser.into
+import com.spotify.diffuser.diffuser.Diffuser.intoAlways
+import com.spotify.diffuser.diffuser.Diffuser.map
+import io.redgreen.architecture.mobius.AsyncOp
 import io.redgreen.architecture.mobius.AsyncOp.Content
-import io.redgreen.architecture.mobius.AsyncOp.InFlight
 import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.core.TrackedFilePath
@@ -11,38 +15,45 @@ import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel
 class AffectedFilesPropsUiViewRenderer(
   private val view: AffectedFilesPropsUiView
 ) : ViewRenderer<AffectedFilesPropsUiModel> {
-  private var gitReposMemoized: List<GitRepo>? = null
-  private var trackedFilePathsMemoized: List<TrackedFilePath>? = null
-  private var affectingCommitsMemoized: List<AffectingCommit>? = null
+  private val diffuser = Diffuser(
+    map(AffectedFilesPropsUiModel::gitReposAsyncOp, into(::handleGitReposAsyncOp)),
+    map(AffectedFilesPropsUiModel::trackedFilesAsyncOp, into(::handleTrackedFilesAsyncOp)),
+    map(AffectedFilesPropsUiModel::affectingCommitsAsyncOp, into(::handleAffectingCommitsAsyncOp)),
+    intoAlways { view.clearAffectedFileCallbackText() }
+  )
 
   override fun render(model: AffectedFilesPropsUiModel) {
-    if (model.gitReposAsyncOp is Content && gitReposMemoized != model.gitReposAsyncOp.content) {
-      gitReposMemoized = model.gitReposAsyncOp.content
+    diffuser.run(model)
+  }
 
+  private fun handleGitReposAsyncOp(
+    asyncOp: AsyncOp<List<GitRepo>, Nothing>
+  ) {
+    if (asyncOp is Content) {
+      view.populateGitRepos(asyncOp.content)
+    } else {
       with(view) {
-        populateGitRepos(gitReposMemoized!!)
-        populateTrackedFiles(emptyList())
-        populateAffectingCommits(emptyList())
+        clearTrackedFiles()
+        clearAffectingCommits()
       }
     }
+  }
 
-    if (model.trackedFilesAsyncOp is Content && trackedFilePathsMemoized != model.trackedFilesAsyncOp.content) {
-      trackedFilePathsMemoized = model.trackedFilesAsyncOp.content
-      with(view) {
-        populateTrackedFiles(trackedFilePathsMemoized!!)
-      }
+  private fun handleTrackedFilesAsyncOp(
+    asyncOp: AsyncOp<List<TrackedFilePath>, Nothing>
+  ) {
+    if (asyncOp is Content) {
+      view.populateTrackedFiles(asyncOp.content)
+    } else {
+      view.clearAffectingCommits()
     }
+  }
 
-    if (model.affectingCommitsAsyncOp.value is InFlight) {
-      view.clearAffectingCommitsList()
+  private fun handleAffectingCommitsAsyncOp(
+    asyncOp: AsyncOp<List<AffectingCommit>, Nothing>
+  ) {
+    if (asyncOp is Content) {
+      view.populateAffectingCommits(asyncOp.content)
     }
-
-    if (model.affectingCommitsAsyncOp is Content && affectingCommitsMemoized != model.affectingCommitsAsyncOp.content
-    ) {
-      affectingCommitsMemoized = model.affectingCommitsAsyncOp.content
-      view.populateAffectingCommits(affectingCommitsMemoized!!)
-    }
-
-    view.clearAffectedFileCallbackText()
   }
 }

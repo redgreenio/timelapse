@@ -26,6 +26,9 @@ object DependencyVersions {
 }
 
 dependencies {
+  // Because https://github.com/spotify/diffuser is not published to Maven Central
+  api(files("libs/diffuser-0.0.5.jar"))
+
   api("io.reactivex.rxjava3:rxjava:3.0.10")
 
   api("com.spotify.mobius:mobius-core:$mobius")

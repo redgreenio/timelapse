@@ -97,6 +97,10 @@ class AffectedFilesPropsUi(
     }
   }
 
+  override fun clearTrackedFiles() {
+    trackedFilesComboBox.items.clear()
+  }
+
   override fun populateAffectingCommits(
     affectingCommits: List<AffectingCommit>
   ) {
@@ -106,7 +110,7 @@ class AffectedFilesPropsUi(
     }
   }
 
-  override fun clearAffectingCommitsList() {
+  override fun clearAffectingCommits() {
     affectingCommitsListView.items.clear()
   }
 
