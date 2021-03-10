@@ -17,31 +17,24 @@ import javafx.scene.layout.StackPane
 internal fun layersScene(): Scene {
   val greetingsStackPane = StackPane()
 
-  val greeting1Label = Label("Greeting 1")
-  val greeting2Label = Label("Greeting 2")
-  val greeting3Label = Label("Greeting 3")
-  val greeting4Label = Label("Greeting 4")
-
-  greetingsStackPane.children.addAll(greeting1Label, greeting2Label, greeting3Label, greeting4Label)
-
-  val layerManager = StackPaneLayers<Greeting>(greetingsStackPane).apply {
-    setLayer(ONE, greeting1Label)
-    setLayer(TWO, greeting2Label)
-    setLayer(THREE, greeting3Label)
-    setLayer(FOUR, greeting4Label)
+  val greetingLayers = StackPaneLayers<Greeting>(greetingsStackPane) {
+    Label("Greeting 1") at ONE
+    Label("Greeting 2") at TWO
+    Label("Greeting 3") at THREE
+    Label("Greeting 4") at FOUR
   }
 
   val button1 = Button("Button 1").apply {
-    setOnAction { layerManager.show(ONE) }
+    setOnAction { greetingLayers.show(ONE) }
   }
   val button2 = Button("Button 2").apply {
-    setOnAction { layerManager.show(TWO) }
+    setOnAction { greetingLayers.show(TWO) }
   }
   val button3 = Button("Button 3").apply {
-    setOnAction { layerManager.show(THREE) }
+    setOnAction { greetingLayers.show(THREE) }
   }
   val button4 = Button("Button 4").apply {
-    setOnAction { layerManager.show(FOUR) }
+    setOnAction { greetingLayers.show(FOUR) }
   }
 
   val buttons = HBox(10.0, button1, button2, button3, button4).apply {
@@ -53,7 +46,7 @@ internal fun layersScene(): Scene {
     bottom = buttons
   }
 
-  layerManager.show(ONE)
+  greetingLayers.show(ONE)
 
   return Scene(borderPane, 400.0, 400.0)
 }

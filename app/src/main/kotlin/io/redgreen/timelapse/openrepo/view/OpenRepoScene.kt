@@ -91,11 +91,12 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   private val recentProjectsStackPane = StackPane().apply {
     prefHeight = 230.0
     prefWidth = 560.0
-
-    children.addAll(recentRepositoriesStatusLabel, recentProjectsList)
   }
 
-  private val recentProjectsLayers = StackPaneLayers<RecentProjectsLayer>(recentProjectsStackPane)
+  private val recentProjectsLayers = StackPaneLayers<RecentProjectsLayer>(recentProjectsStackPane) {
+    recentRepositoriesStatusLabel at NO_RECENT_PROJECTS
+    recentProjectsList at RECENT_PROJECTS_LIST
+  }
 
   private val column = VBox().apply {
     children.addAll(
@@ -133,12 +134,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
       StackPane.setAlignment(appVersionLabel, BOTTOM_RIGHT)
     }
 
-    with(recentProjectsLayers) {
-      setLayer(NO_RECENT_PROJECTS, recentRepositoriesStatusLabel)
-      setLayer(RECENT_PROJECTS_LIST, recentProjectsList)
-
-      show(NO_RECENT_PROJECTS)
-    }
+    recentProjectsLayers.show(NO_RECENT_PROJECTS)
 
     mobiusDelegate.start()
   }
