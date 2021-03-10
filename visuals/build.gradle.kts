@@ -1,5 +1,3 @@
-import Build_gradle.DependencyVersions.junit
-
 plugins {
   `java-library`
   kotlin("jvm")
@@ -18,12 +16,14 @@ object DependencyVersions {
 dependencies {
   implementation(project(":design"))
 
-  testImplementation("io.arrow-kt:arrow-core-data:0.11.0")
-  testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
-  testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit")
-  testImplementation("com.google.truth:truth:1.0.1")
-  testImplementation("com.approvaltests:approvaltests:9.3.0")
+  testImplementation(deps.arrow.coreData)
+  testImplementation(deps.test.junit.api)
+  testImplementation(deps.test.junit.params)
+  testRuntimeOnly(deps.test.junit.engine)
+
+  testImplementation(deps.test.truth)
+
+  testImplementation(deps.test.approvalTests)
 }
 
 tasks {

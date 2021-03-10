@@ -1,6 +1,3 @@
-import Build_gradle.DependencyVersions.junit
-import Build_gradle.DependencyVersions.mobius
-import Build_gradle.DependencyVersions.moshi
 import org.gradle.internal.os.OperatingSystem
 import proguard.gradle.ProGuardTask
 
@@ -37,47 +34,56 @@ dependencies {
   implementation(project(":architecture"))
 
   implementation(kotlin("stdlib-jdk8"))
-  implementation("org.eclipse.jgit:org.eclipse.jgit:5.9.0.202009080501-r")
-  implementation("org.slf4j:slf4j-simple:1.7.30")
-  implementation("com.github.mfornos:humanize-slim:1.2.2")
-  implementation("org.apache.commons:commons-text:1.4")
-  implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359") {
+  implementation(deps.jgit)
+  implementation(deps.slf4jSimple) {
+    because("jgit prints a ton of log statements.")
+  }
+
+  implementation(deps.humanize.slim)
+  implementation(deps.humanize.jaxbApi) {
     because("Humanize requires this dependency explicitly after Java 11 upgrade.")
   }
-  implementation("io.sentry:sentry:3.1.0")
+
+  implementation(deps.commonsText)
+  implementation(deps.sentry)
 
   // FIXME: 05-12-2020
   // Begin Circus: We are pulling in RxJava 2 and RxJava 3 Bridge libraries just because we need the JavaFx scheduler.
   // Something to consider is to port the `JavaFxScheduler` class to RxJava 3 so that we can remove these dependencies.
-  implementation("io.reactivex.rxjava2:rxjavafx:2.2.2")
-  implementation("io.reactivex.rxjava2:rxjava:2.2.20") {
+  implementation(deps.rxJava2.javaFx)
+  implementation(deps.rxJava2.runtime) {
     because("JavaFx bindings requires the library.")
   }
-  implementation("com.github.akarnokd:rxjava3-bridge:3.0.0") {
+  implementation(deps.rxJava3.bridge) {
     because("JavaFx bindings for RxJava 3 is not available.")
   }
   // End Circus
 
-  implementation("com.squareup.moshi:moshi:$moshi")
-  kapt("com.squareup.moshi:moshi-kotlin-codegen:$moshi")
-  implementation("io.arrow-kt:arrow-core-data:0.11.0")
-  implementation("com.github.ben-manes.caffeine:caffeine:3.0.0")
-  implementation("org.greenrobot:eventbus:3.2.0") {
+  implementation(deps.moshi.runtime)
+  kapt(deps.moshi.apt)
+
+  implementation(deps.arrow.coreData)
+  implementation(deps.caffeine)
+  implementation(deps.eventBus) {
     because("Provides a decoupled API for analytics.")
   }
 
   testImplementation(testFixtures(project(":fixtures:library")))
-  testImplementation("org.junit.jupiter:junit-jupiter-api:$junit")
-  testImplementation("org.junit.jupiter:junit-jupiter-params:$junit")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit")
-  testImplementation("com.spotify.mobius:mobius-test:$mobius")
-  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0") {
+  testImplementation(deps.test.junit.api)
+  testImplementation(deps.test.junit.params)
+  testRuntimeOnly(deps.test.junit.engine)
+
+  testImplementation(deps.test.mockito.core)
+  testImplementation(deps.test.mockito.kotlin) {
     isTransitive = false
     because("we want the extension functions on the latest Mockito artifact.")
   }
-  testImplementation("org.mockito:mockito-core:3.7.7")
-  testImplementation("com.google.truth:truth:1.0.1")
-  testImplementation("com.approvaltests:approvaltests:9.3.0")
+
+  testImplementation(deps.test.truth)
+
+  testImplementation(deps.test.approvalTests)
+
+  testImplementation(deps.mobius.test)
 }
 
 with(application) {
