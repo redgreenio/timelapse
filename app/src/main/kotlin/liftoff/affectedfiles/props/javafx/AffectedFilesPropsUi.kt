@@ -2,14 +2,14 @@ package liftoff.affectedfiles.props.javafx
 
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.architecture.mobius.MobiusDelegate
-import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox
-import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
+import io.redgreen.liftoff.javafx.components.DiscoverGitDirectoriesComboBox
 import io.redgreen.liftoff.javafx.components.FileCommitsListView
 import io.redgreen.liftoff.javafx.components.FilesInRepoComboBox
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.git.model.AffectedFile
 import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections
@@ -43,7 +43,7 @@ class AffectedFilesPropsUi(
     )
   }
 
-  private val gitReposComboBox = DiscoverGitReposComboBox { gitRepo ->
+  private val gitReposComboBox = DiscoverGitDirectoriesComboBox { gitRepo ->
     delegate.notify(GitRepoSelected(gitRepo))
   }
 
@@ -79,12 +79,12 @@ class AffectedFilesPropsUi(
     affectedFilesContextSubject.onNext(context)
   }
 
-  override fun populateGitRepos(
-    gitRepos: List<GitRepo>
+  override fun populateGitDirectories(
+    gitDirectories: List<GitDirectory>
   ) {
     with(gitReposComboBox) {
       isDisable = false
-      items = FXCollections.observableArrayList(gitRepos)
+      items = FXCollections.observableArrayList(gitDirectories)
     }
   }
 

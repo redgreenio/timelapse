@@ -1,6 +1,6 @@
 package liftoff.affectedfiles.props.mobius
 
-import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
+import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
 import liftoff.affectedfiles.model.AffectingCommit
 
@@ -19,7 +19,7 @@ sealed class AffectedFilesPropsUiEffect {
   ) : AffectedFilesPropsUiEffect()
 
   data class NotifyCommitSelected(
-    val gitRepo: GitRepo,
+    val gitDirectory: GitDirectory,
     val filePath: TrackedFilePath,
     val affectingCommit: AffectingCommit
   ) : AffectedFilesPropsUiEffect()

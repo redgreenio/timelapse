@@ -4,15 +4,15 @@ import io.redgreen.architecture.mobius.AsyncOp
 import io.redgreen.architecture.mobius.AsyncOp.Companion.content
 import io.redgreen.architecture.mobius.AsyncOp.Companion.idle
 import io.redgreen.architecture.mobius.AsyncOp.Companion.inFlight
-import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
+import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
 import java.util.Optional
 import java.util.Optional.empty
 import liftoff.affectedfiles.model.AffectingCommit
 
 data class AffectedFilesPropsUiModel(
-  val gitReposAsyncOp: AsyncOp<List<GitRepo>, Nothing>,
-  val selectedGitRepo: Optional<GitRepo>,
+  val gitReposAsyncOp: AsyncOp<List<GitDirectory>, Nothing>,
+  val selectedGitDirectory: Optional<GitDirectory>,
 
   val trackedFilesAsyncOp: AsyncOp<List<TrackedFilePath>, Nothing>,
   val selectedFilePath: Optional<TrackedFilePath>,
@@ -31,11 +31,11 @@ data class AffectedFilesPropsUiModel(
     )
   }
 
-  fun gitReposFound(gitRepos: List<GitRepo>): AffectedFilesPropsUiModel =
-    copy(gitReposAsyncOp = content(gitRepos))
+  fun gitDirectoriesFound(gitDirectories: List<GitDirectory>): AffectedFilesPropsUiModel =
+    copy(gitReposAsyncOp = content(gitDirectories))
 
-  fun gitRepoSelected(gitRepo: GitRepo): AffectedFilesPropsUiModel = copy(
-    selectedGitRepo = Optional.of(gitRepo),
+  fun gitDirectorySelected(gitDirectory: GitDirectory): AffectedFilesPropsUiModel = copy(
+    selectedGitDirectory = Optional.of(gitDirectory),
     trackedFilesAsyncOp = inFlight()
   )
 

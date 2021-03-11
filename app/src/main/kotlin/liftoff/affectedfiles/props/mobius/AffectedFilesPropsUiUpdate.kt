@@ -21,13 +21,11 @@ object AffectedFilesPropsUiUpdate :
     event: AffectedFilesPropsUiEvent
   ): Next<AffectedFilesPropsUiModel, AffectedFilesPropsUiEffect> {
     return when (event) {
-      is GitReposFound -> next(
-        model.gitReposFound(event.gitRepos)
-      )
+      is GitReposFound -> next(model.gitDirectoriesFound(event.gitDirectories))
 
       is GitRepoSelected -> next(
-        model.gitRepoSelected(event.gitRepo),
-        setOf(GetTrackedFiles(event.gitRepo.gitDirectory.absolutePath))
+        model.gitDirectorySelected(event.gitDirectory),
+        setOf(GetTrackedFiles(event.gitDirectory.path))
       )
 
       is TrackedFilePathsFetched -> next(
@@ -35,7 +33,7 @@ object AffectedFilesPropsUiUpdate :
       )
 
       is FilePathSelected -> {
-        val gitDirectory = model.selectedGitRepo.get().gitDirectory.absolutePath
+        val gitDirectory = model.selectedGitDirectory.get().path
         next(
           model.filePathSelected(event.filePath),
           setOf(GetCommitsAffectingFilePath(gitDirectory, event.filePath))
@@ -50,7 +48,7 @@ object AffectedFilesPropsUiUpdate :
         model.affectingCommitSelected(event.affectingCommit),
         setOf(
           NotifyCommitSelected(
-            model.selectedGitRepo.get(),
+            model.selectedGitDirectory.get(),
             model.selectedFilePath.get(),
             event.affectingCommit
           )

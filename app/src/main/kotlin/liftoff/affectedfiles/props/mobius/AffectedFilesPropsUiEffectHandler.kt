@@ -4,8 +4,6 @@ import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
-import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox
-import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.git.model.CommitHash
 import io.redgreen.timelapse.git.model.GitDirectory
@@ -15,6 +13,7 @@ import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
 import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.SchedulersProvider
 import java.io.File
+import java.util.Optional
 import liftoff.affectedfiles.model.AffectingCommit
 import liftoff.affectedfiles.props.callback.AffectedFileContextChangeListener
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.DiscoverGitRepos
@@ -55,24 +54,25 @@ object AffectedFilesPropsUiEffectHandler {
         .map { File(it.directoryPath) }
         .flatMapSingle {
           Single
-            .fromCallable { naiveGetPossibleGitProjects(it) }
+            .fromCallable { naiveGetPossibleGitDirectories(it) }
             .subscribeOn(ioScheduler)
             .map { GitReposFound(it) }
         }
     }
   }
 
-  private fun naiveGetPossibleGitProjects(
+  private fun naiveGetPossibleGitDirectories(
     gitProjectsRoot: File
-  ): List<GitRepo> {
-    val gitRepos = gitProjectsRoot
+  ): List<GitDirectory> {
+    val gitDirectories = gitProjectsRoot
       .list()!!
-      .map { File("${gitProjectsRoot.absolutePath}/$it/.git") }
-      .filter { it.exists() }
-      .map(DiscoverGitReposComboBox::GitRepo)
+      .map { "${gitProjectsRoot.absolutePath}/$it/.git" }
+      .filter { File(it).exists() }
+      .map(GitDirectory::from)
+      .map(Optional<GitDirectory>::get)
       .toMutableList()
-    gitRepos.sortBy { it.gitDirectory.absolutePath.toLowerCase() }
-    return gitRepos
+    gitDirectories.sortBy { it.path.toLowerCase() }
+    return gitDirectories
   }
 
   private fun getTrackedFilesTransformer(
@@ -144,7 +144,7 @@ object AffectedFilesPropsUiEffectHandler {
     notifyCommitSelected: NotifyCommitSelected,
     listener: AffectedFileContextChangeListener
   ) {
-    val gitDirectoryPath = notifyCommitSelected.gitRepo.gitDirectory.absolutePath
+    val gitDirectoryPath = notifyCommitSelected.gitDirectory.path
     val repository = RepositoryBuilder().setGitDir(File(gitDirectoryPath)).build()
     val gitDirectory = GitDirectory.from(gitDirectoryPath).get()
 

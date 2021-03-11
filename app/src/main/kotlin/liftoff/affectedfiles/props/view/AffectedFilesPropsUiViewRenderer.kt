@@ -7,7 +7,7 @@ import com.spotify.diffuser.diffuser.Diffuser.map
 import io.redgreen.architecture.mobius.AsyncOp
 import io.redgreen.architecture.mobius.AsyncOp.Content
 import io.redgreen.architecture.mobius.view.ViewRenderer
-import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
+import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
 import javafx.application.Platform
 import liftoff.affectedfiles.model.AffectingCommit
@@ -28,10 +28,10 @@ class AffectedFilesPropsUiViewRenderer(
   }
 
   private fun handleGitReposAsyncOp(
-    asyncOp: AsyncOp<List<GitRepo>, Nothing>
+    asyncOp: AsyncOp<List<GitDirectory>, Nothing>
   ) {
     if (asyncOp is Content) {
-      view.populateGitRepos(asyncOp.content)
+      view.populateGitDirectories(asyncOp.content)
     } else {
       with(view) {
         clearTrackedFiles()
@@ -45,6 +45,8 @@ class AffectedFilesPropsUiViewRenderer(
   ) {
     if (asyncOp is Content) {
       view.populateTrackedFiles(asyncOp.content)
+    } else {
+      view.clearAffectingCommits()
     }
   }
 
