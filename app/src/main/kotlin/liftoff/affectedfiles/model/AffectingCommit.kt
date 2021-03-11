@@ -1,6 +1,6 @@
 package liftoff.affectedfiles.model
 
-import io.redgreen.timelapse.core.CommitHash
+import io.redgreen.timelapse.git.model.CommitHash
 
 data class AffectingCommit(
   val commitHash: CommitHash,

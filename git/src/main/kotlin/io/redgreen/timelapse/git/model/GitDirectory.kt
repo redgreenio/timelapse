@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.core
+package io.redgreen.timelapse.git.model
 
 import java.io.File
 import java.util.Optional
@@ -9,8 +9,6 @@ import org.eclipse.jgit.lib.RepositoryBuilder
  * we are also responsible for implementing [#hashCode], [#equals], and [#toString] functions. */
 class GitDirectory private constructor(val path: String) {
   companion object {
-    private const val GIT_DIRECTORY_NAME = ".git"
-
     fun from(path: String): Optional<GitDirectory> {
       return if (isGitDirectoryCheck(path)) {
         Optional.of(GitDirectory(path))

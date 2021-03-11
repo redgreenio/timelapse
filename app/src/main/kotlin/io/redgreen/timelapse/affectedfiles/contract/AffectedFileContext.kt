@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.affectedfiles.contract
 
-import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.core.GitDirectory
-import io.redgreen.timelapse.core.TrackedFilePath
+import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.GitDirectory
+import io.redgreen.timelapse.git.model.TrackedFilePath
 
 data class AffectedFileContext(
   val gitDirectory: GitDirectory,

@@ -1,6 +1,4 @@
-package io.redgreen.timelapse.affectedfiles.model
-
-import io.redgreen.timelapse.core.TrackedFilePath
+package io.redgreen.timelapse.git.model
 
 sealed class AffectedFile(
   open val filePath: TrackedFilePath

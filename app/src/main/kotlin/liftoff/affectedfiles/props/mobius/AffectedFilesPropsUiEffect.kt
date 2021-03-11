@@ -1,7 +1,7 @@
 package liftoff.affectedfiles.props.mobius
 
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
-import io.redgreen.timelapse.core.TrackedFilePath
+import io.redgreen.timelapse.git.model.TrackedFilePath
 import liftoff.affectedfiles.model.AffectingCommit
 
 sealed class AffectedFilesPropsUiEffect {

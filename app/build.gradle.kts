@@ -25,6 +25,7 @@ dependencies {
   implementation(project(":design"))
   implementation(project(":liftoff")) // TODO: 02/03/21 Create a new source set of exploratory tests
   implementation(project(":architecture"))
+  implementation(project(":git"))
 
   implementation(kotlin("stdlib-jdk8"))
   implementation(deps.jgit)

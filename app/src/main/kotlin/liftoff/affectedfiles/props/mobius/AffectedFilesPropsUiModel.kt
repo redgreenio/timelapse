@@ -5,7 +5,7 @@ import io.redgreen.architecture.mobius.AsyncOp.Companion.content
 import io.redgreen.architecture.mobius.AsyncOp.Companion.idle
 import io.redgreen.architecture.mobius.AsyncOp.Companion.inFlight
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
-import io.redgreen.timelapse.core.TrackedFilePath
+import io.redgreen.timelapse.git.model.TrackedFilePath
 import java.util.Optional
 import java.util.Optional.empty
 import liftoff.affectedfiles.model.AffectingCommit

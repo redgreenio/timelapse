@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile
+import io.redgreen.timelapse.git.model.AffectedFile
 
 sealed class AffectedFileCellViewModel {
   data class FileCell(

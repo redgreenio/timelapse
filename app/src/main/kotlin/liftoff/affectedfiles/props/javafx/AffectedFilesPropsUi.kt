@@ -7,10 +7,10 @@ import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.liftoff.javafx.components.FileCommitsListView
 import io.redgreen.liftoff.javafx.components.FilesInRepoComboBox
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile
-import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.core.TrackedFilePath
 import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.git.model.AffectedFile
+import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.TrackedFilePath
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections
 import javafx.scene.control.Label

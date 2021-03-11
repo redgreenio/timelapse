@@ -8,7 +8,7 @@ import io.redgreen.architecture.mobius.AsyncOp
 import io.redgreen.architecture.mobius.AsyncOp.Content
 import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
-import io.redgreen.timelapse.core.TrackedFilePath
+import io.redgreen.timelapse.git.model.TrackedFilePath
 import javafx.application.Platform
 import liftoff.affectedfiles.model.AffectingCommit
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel

@@ -1,15 +1,8 @@
-package io.redgreen.timelapse.affectedfiles.usecases
+package io.redgreen.timelapse.git.usecases
 
 import arrow.core.Either
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.core.GitDirectory
-import io.redgreen.timelapse.core.TrackedFilePath
-import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
+import io.redgreen.timelapse.fixtures.GitFixture.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
@@ -26,6 +19,13 @@ import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_4_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_A_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_B_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_C_TXT
+import io.redgreen.timelapse.git.model.AffectedFile.Added
+import io.redgreen.timelapse.git.model.AffectedFile.Deleted
+import io.redgreen.timelapse.git.model.AffectedFile.Modified
+import io.redgreen.timelapse.git.model.AffectedFile.Moved
+import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.GitDirectory
+import io.redgreen.timelapse.git.model.TrackedFilePath
 import org.junit.jupiter.api.Test
 
 internal class GetAffectedFilesUseCaseTest {

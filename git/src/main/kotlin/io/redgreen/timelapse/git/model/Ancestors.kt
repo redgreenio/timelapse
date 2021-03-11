@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.git
+package io.redgreen.timelapse.git.model
 
 sealed class Ancestors {
   object None : Ancestors()

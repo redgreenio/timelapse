@@ -1,8 +1,8 @@
-package io.redgreen.timelapse.core
+package io.redgreen.timelapse.git.model
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.fixtures.FixtureRepository.SimpleAndroid
 import io.redgreen.timelapse.fixtures.GitTestbed
+import io.redgreen.timelapse.fixtures.SimpleAndroid
 import java.io.File
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest

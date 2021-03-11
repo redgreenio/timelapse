@@ -1,10 +1,11 @@
-package io.redgreen.timelapse.git
+package io.redgreen.timelapse.git.usecases
 
-import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.git.Ancestors.Many
-import io.redgreen.timelapse.git.Ancestors.None
-import io.redgreen.timelapse.git.Ancestors.One
-import io.redgreen.timelapse.vcs.Identity
+import io.redgreen.timelapse.git.model.Ancestors
+import io.redgreen.timelapse.git.model.Ancestors.Many
+import io.redgreen.timelapse.git.model.Ancestors.None
+import io.redgreen.timelapse.git.model.Ancestors.One
+import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.Identity
 import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.util.Calendar.DAY_OF_MONTH
@@ -151,7 +152,14 @@ class CommitInfoUseCase(
     zip: (A, B, C, D, E, F) -> T
   ): T {
     val revCommit = revCommitFor(commitHash)
-    return zip(a.get(revCommit), b.get(revCommit), c.get(revCommit), d.get(revCommit), e.get(revCommit), f.get(revCommit))
+    return zip(
+      a.get(revCommit),
+      b.get(revCommit),
+      c.get(revCommit),
+      d.get(revCommit),
+      e.get(revCommit),
+      f.get(revCommit)
+    )
   }
 
   private fun revCommitFor(commitHash: CommitHash): RevCommit =

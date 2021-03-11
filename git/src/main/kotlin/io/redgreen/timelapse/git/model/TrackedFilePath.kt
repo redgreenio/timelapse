@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.core
+package io.redgreen.timelapse.git.model
 
 /** Represents a file path tracked by Git. */
 inline class TrackedFilePath(val value: String) {

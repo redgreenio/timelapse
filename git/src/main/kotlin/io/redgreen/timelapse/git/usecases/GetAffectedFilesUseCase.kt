@@ -1,19 +1,16 @@
-package io.redgreen.timelapse.affectedfiles.usecases
+package io.redgreen.timelapse.git.usecases
 
 import arrow.core.Either
 import arrow.core.Either.Companion.left
 import arrow.core.Either.Companion.right
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
-import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.core.GitDirectory
-import io.redgreen.timelapse.core.TrackedFilePath
-import io.redgreen.timelapse.extensions.isDelete
-import io.redgreen.timelapse.extensions.isInsert
-import io.redgreen.timelapse.extensions.isReplace
+import io.redgreen.timelapse.git.model.AffectedFile
+import io.redgreen.timelapse.git.model.AffectedFile.Added
+import io.redgreen.timelapse.git.model.AffectedFile.Deleted
+import io.redgreen.timelapse.git.model.AffectedFile.Modified
+import io.redgreen.timelapse.git.model.AffectedFile.Moved
+import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.GitDirectory
+import io.redgreen.timelapse.git.model.TrackedFilePath
 import java.io.File
 import java.time.Duration
 import org.eclipse.jgit.diff.DiffEntry
@@ -186,4 +183,14 @@ class GetAffectedFilesUseCase {
       calculateInsertions(header)
     )
   }
+
+  /* Implemented using information from [Edit] documentation. */
+  private fun Edit.isInsert(): Boolean =
+    beginA == endA && beginB < endB
+
+  private fun Edit.isDelete(): Boolean =
+    beginA < endA && beginB == endB
+
+  private fun Edit.isReplace(): Boolean =
+    beginA < endA && beginB < endB
 }

@@ -1,28 +1,28 @@
-package io.redgreen.timelapse.git
+package io.redgreen.timelapse.git.usecases
 
 import arrow.core.Tuple4
 import arrow.core.Tuple5
 import arrow.core.Tuple6
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitH
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitI
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.mergeEnglishIntoSpanish
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.Author
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.AuthoredLocalDateTime
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.CommittedLocalDateTime
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.Committer
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.Encoding
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.FullMessage
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.Parent
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.ParentCount
-import io.redgreen.timelapse.git.CommitInfoUseCase.Property.ShortMessage
-import io.redgreen.timelapse.vcs.Identity
+import io.redgreen.timelapse.git.model.Ancestors
+import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.Identity
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Author
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.AuthoredLocalDateTime
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.CommittedLocalDateTime
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Committer
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Encoding
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.FullMessage
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Parent
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.ParentCount
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.ShortMessage
 import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.Month.OCTOBER
@@ -35,8 +35,7 @@ import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
 
 class CommitInfoUseCaseTest {
-  private val repository = openGitRepository(GitTestbed.path, true)
-  private val useCase = CommitInfoUseCase(repository)
+  private val useCase = CommitInfoUseCase(GitTestbed.repository)
   private val commitHash = CommitHash(exhibitB) // exhibit b: add a new file
 
   @ParameterizedTest

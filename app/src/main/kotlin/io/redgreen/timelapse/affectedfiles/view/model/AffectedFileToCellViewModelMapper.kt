@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.DirectoryCell
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import io.redgreen.timelapse.git.model.AffectedFile
 
 object AffectedFileToCellViewModelMapper {
   fun map(

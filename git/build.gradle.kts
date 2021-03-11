@@ -2,6 +2,8 @@ dependencies {
   implementation(deps.arrow.coreData)
   implementation(deps.jgit)
 
+  testImplementation(testFixtures(project(":fixtures:library")))
+
   testImplementation(deps.test.junit.api)
   testImplementation(deps.test.junit.params)
   testRuntimeOnly(deps.test.junit.engine)

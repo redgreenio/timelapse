@@ -4,9 +4,9 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.liftoff.Liftoff
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
-import io.redgreen.timelapse.affectedfiles.usecases.GetAffectedFilesUseCase
 import io.redgreen.timelapse.affectedfiles.view.javafx.AffectedFilesEntryPointPane
 import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.git.usecases.GetAffectedFilesUseCase
 import io.redgreen.timelapse.metrics.GetCommitsMetric
 import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
 import javafx.application.Application

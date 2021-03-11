@@ -1,11 +1,11 @@
 package io.redgreen.timelapse.affectedfiles.view.model
 
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
+import io.redgreen.timelapse.git.model.AffectedFile
+import io.redgreen.timelapse.git.model.AffectedFile.Added
+import io.redgreen.timelapse.git.model.AffectedFile.Deleted
+import io.redgreen.timelapse.git.model.AffectedFile.Modified
+import io.redgreen.timelapse.git.model.AffectedFile.Moved
 
 /**
  * Comparators are usually implemented to sort objects in ascending order. This one, on the other hand uses the

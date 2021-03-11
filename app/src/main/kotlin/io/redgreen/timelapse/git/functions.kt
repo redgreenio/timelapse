@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.git
 
 import arrow.core.Either
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile
-import io.redgreen.timelapse.affectedfiles.usecases.GetAffectedFilesUseCase
-import io.redgreen.timelapse.core.CommitHash
-import io.redgreen.timelapse.core.GitDirectory
+import io.redgreen.timelapse.git.model.AffectedFile
+import io.redgreen.timelapse.git.model.CommitHash
+import io.redgreen.timelapse.git.model.GitDirectory
+import io.redgreen.timelapse.git.usecases.GetAffectedFilesUseCase
 import io.redgreen.timelapse.vcs.ChangedFile
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE

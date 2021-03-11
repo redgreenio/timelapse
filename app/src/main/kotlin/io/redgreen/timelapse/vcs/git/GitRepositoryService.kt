@@ -10,12 +10,12 @@ import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.git.getChangedFilesInCommit
+import io.redgreen.timelapse.git.model.Identity
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.Contribution
-import io.redgreen.timelapse.vcs.Identity
 import io.redgreen.timelapse.vcs.VcsRepositoryService
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream

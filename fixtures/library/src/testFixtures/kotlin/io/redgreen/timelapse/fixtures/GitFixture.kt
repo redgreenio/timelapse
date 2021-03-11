@@ -1,19 +1,26 @@
 package io.redgreen.timelapse.fixtures
 
 import java.io.File
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 
 private const val GIT_REPOS_ROOT = "../.git/modules/fixtures/"
 
-sealed class FixtureRepository(val path: File) {
+sealed class GitFixture(val path: File) {
   companion object {
     const val INVALID_COMMIT_ID = "invalid-commit-id"
     const val NON_EXISTENT_FILE_PATH = "non/existent/file/path/non-existent-file.txt"
   }
 
-  object SimpleAndroid : FixtureRepository(File("${GIT_REPOS_ROOT}simple-android"))
+  val repository: Repository
+    get() {
+      return FileRepositoryBuilder().setGitDir(path).build()
+    }
 }
 
-object GitTestbed : FixtureRepository(File("${GIT_REPOS_ROOT}git-testbed")) {
+object SimpleAndroid : GitFixture(File("${GIT_REPOS_ROOT}simple-android"))
+
+object GitTestbed : GitFixture(File("${GIT_REPOS_ROOT}git-testbed")) {
   object Commit {
     /** exhibit a: add three new files */
     const val exhibitA = "b6748190194e697df97d3dd9801af4f55d763ef9"

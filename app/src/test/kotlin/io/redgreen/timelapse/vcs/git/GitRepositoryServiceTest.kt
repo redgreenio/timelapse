@@ -3,9 +3,8 @@ package io.redgreen.timelapse.vcs.git
 import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
 import io.redgreen.timelapse.domain.openGitRepository
-import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.INVALID_COMMIT_ID
-import io.redgreen.timelapse.fixtures.FixtureRepository.Companion.NON_EXISTENT_FILE_PATH
-import io.redgreen.timelapse.fixtures.FixtureRepository.SimpleAndroid
+import io.redgreen.timelapse.fixtures.GitFixture.Companion.INVALID_COMMIT_ID
+import io.redgreen.timelapse.fixtures.GitFixture.Companion.NON_EXISTENT_FILE_PATH
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
@@ -21,12 +20,13 @@ import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_4_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_A_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_B_TXT
 import io.redgreen.timelapse.fixtures.GitTestbed.Content.FILE_C_TXT
+import io.redgreen.timelapse.fixtures.SimpleAndroid
+import io.redgreen.timelapse.git.model.Identity
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.vcs.Contribution
-import io.redgreen.timelapse.vcs.Identity
 import java.time.LocalDate
 import java.time.Month.OCTOBER
 import org.junit.jupiter.api.Nested

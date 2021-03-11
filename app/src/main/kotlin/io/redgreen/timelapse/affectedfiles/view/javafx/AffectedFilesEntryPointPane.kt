@@ -9,12 +9,12 @@ import io.redgreen.architecture.RxJava3Disposer
 import io.redgreen.design.javafx.TitledParent
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFilesProps
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile
-import io.redgreen.timelapse.affectedfiles.usecases.GetAffectedFilesUseCase
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileToCellViewModelMapper
 import io.redgreen.timelapse.foo.matchParent
+import io.redgreen.timelapse.git.model.AffectedFile
+import io.redgreen.timelapse.git.usecases.GetAffectedFilesUseCase
 import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections

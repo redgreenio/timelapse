@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.openrepo
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.fixtures.FixtureRepository.SimpleAndroid
+import io.redgreen.timelapse.fixtures.SimpleAndroid
 import org.junit.jupiter.api.Test
 
 class GitDetectorTest {

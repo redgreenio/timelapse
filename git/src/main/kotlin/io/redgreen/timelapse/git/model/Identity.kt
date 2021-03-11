@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.vcs
+package io.redgreen.timelapse.git.model
 
 data class Identity(
   val name: String,

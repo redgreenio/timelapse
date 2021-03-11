@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.openrepo
 
-import io.redgreen.timelapse.core.GitDirectory
+import io.redgreen.timelapse.git.model.GitDirectory
 import java.util.Optional
 import org.eclipse.jgit.util.SystemReader
 

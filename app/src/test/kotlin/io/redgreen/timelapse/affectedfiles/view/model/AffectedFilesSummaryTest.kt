@@ -1,12 +1,12 @@
 package io.redgreen.timelapse.affectedfiles.view.model;
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Added
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Deleted
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Modified
-import io.redgreen.timelapse.affectedfiles.model.AffectedFile.Moved
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell
-import io.redgreen.timelapse.core.TrackedFilePath
+import io.redgreen.timelapse.git.model.AffectedFile.Added
+import io.redgreen.timelapse.git.model.AffectedFile.Deleted
+import io.redgreen.timelapse.git.model.AffectedFile.Modified
+import io.redgreen.timelapse.git.model.AffectedFile.Moved
+import io.redgreen.timelapse.git.model.TrackedFilePath
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
