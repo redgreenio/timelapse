@@ -6,5 +6,6 @@ include(
   "fixtures:library",
   "design",
   "liftoff",
-  "architecture"
+  "architecture",
+  "git"
 )

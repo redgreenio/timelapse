@@ -66,13 +66,13 @@ dependencies {
   testImplementation(deps.test.junit.params)
   testRuntimeOnly(deps.test.junit.engine)
 
+  testImplementation(deps.test.truth)
+
   testImplementation(deps.test.mockito.core)
   testImplementation(deps.test.mockito.kotlin) {
     isTransitive = false
-    because("we want the extension functions on the latest Mockito artifact.")
+    because("we want extension functions on the 'latest' Mockito artifact.")
   }
-
-  testImplementation(deps.test.truth)
 
   testImplementation(deps.test.approvalTests)
 
