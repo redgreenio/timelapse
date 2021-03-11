@@ -63,7 +63,7 @@ class CommitInfoUseCaseTest {
         Committer to Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
         AuthoredLocalDateTime to LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
         CommittedLocalDateTime to LocalDateTime.of(2020, OCTOBER, 16, 7, 14),
-        Parent to Ancestors.One(exhibitA), // "b6748190194e697df97d3dd9801af4f55d763ef9"
+        Parent to Ancestors.One(CommitHash(exhibitA)), // "b6748190194e697df97d3dd9801af4f55d763ef9"
       )
         .map { Arguments.of(it) }
         .toList()
@@ -90,15 +90,12 @@ class CommitInfoUseCaseTest {
     val ancestors = useCase.invoke(mergeCommitId, Parent)
 
     // then
+    val commitHashes = listOf(
+      exhibitI, // exhibit i: pre-merge modification (Spanish)
+      exhibitH // exhibit h: pre-merge modification (English)
+    ).map(::CommitHash)
     assertThat(ancestors)
-      .isEqualTo(
-        Ancestors.Many(
-          listOf(
-            exhibitI, // exhibit i: pre-merge modification (Spanish)
-            exhibitH // exhibit h: pre-merge modification (English)
-          )
-        )
-      )
+      .isEqualTo(Ancestors.Many(commitHashes))
   }
 
   @Test

@@ -61,8 +61,8 @@ class CommitInfoUseCase(
     object Parent : Property<Ancestors>() {
       override fun get(revCommit: RevCommit): Ancestors = when (revCommit.parentCount) {
         0 -> None
-        1 -> One(revCommit.parents.first().name)
-        else -> Many(revCommit.parents.map(RevCommit::name).toList())
+        1 -> One(CommitHash(revCommit.parents.first().name))
+        else -> Many(revCommit.parents.map(RevCommit::name).map(::CommitHash))
       }
     }
 
