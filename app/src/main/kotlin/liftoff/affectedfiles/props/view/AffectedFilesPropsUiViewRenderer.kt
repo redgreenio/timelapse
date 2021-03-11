@@ -9,6 +9,7 @@ import io.redgreen.architecture.mobius.AsyncOp.Content
 import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.liftoff.javafx.components.DiscoverGitReposComboBox.GitRepo
 import io.redgreen.timelapse.core.TrackedFilePath
+import javafx.application.Platform
 import liftoff.affectedfiles.model.AffectingCommit
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel
 
@@ -23,7 +24,7 @@ class AffectedFilesPropsUiViewRenderer(
   )
 
   override fun render(model: AffectedFilesPropsUiModel) {
-    diffuser.run(model)
+    Platform.runLater { diffuser.run(model) }
   }
 
   private fun handleGitReposAsyncOp(
@@ -44,8 +45,6 @@ class AffectedFilesPropsUiViewRenderer(
   ) {
     if (asyncOp is Content) {
       view.populateTrackedFiles(asyncOp.content)
-    } else {
-      view.clearAffectingCommits()
     }
   }
 
@@ -54,6 +53,8 @@ class AffectedFilesPropsUiViewRenderer(
   ) {
     if (asyncOp is Content) {
       view.populateAffectingCommits(asyncOp.content)
+    } else {
+      view.clearAffectingCommits()
     }
   }
 }

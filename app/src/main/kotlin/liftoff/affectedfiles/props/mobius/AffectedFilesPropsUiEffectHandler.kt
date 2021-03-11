@@ -41,7 +41,7 @@ object AffectedFilesPropsUiEffectHandler {
       .addTransformer(GetTrackedFiles::class.java, getTrackedFilesTransformer(schedulersProvider.io()))
       .addTransformer(
         GetCommitsAffectingFilePath::class.java,
-        getCommitsAffectingFilePathTransformer(schedulersProvider)
+        getCommitsAffectingFilePathTransformer(schedulersProvider.io())
       )
       .addConsumer(NotifyCommitSelected::class.java, { notifyContextChange(it, listener) }, schedulersProvider.io())
       .build()
@@ -111,7 +111,7 @@ object AffectedFilesPropsUiEffectHandler {
   }
 
   private fun getCommitsAffectingFilePathTransformer(
-    schedulersProvider: SchedulersProvider
+    ioScheduler: Scheduler
   ): ObservableTransformer<GetCommitsAffectingFilePath, AffectedFilesPropsUiEvent> {
     return ObservableTransformer { getCommitsAffectingFilePathEvents ->
       getCommitsAffectingFilePathEvents
@@ -124,7 +124,7 @@ object AffectedFilesPropsUiEffectHandler {
             CommitsAffectingFilePathFetched(affectingCommits)
           }
             .publishMetric(::GetCommitsMetric)
-            .subscribeOn(schedulersProvider.io())
+            .subscribeOn(ioScheduler)
         }
     }
   }
