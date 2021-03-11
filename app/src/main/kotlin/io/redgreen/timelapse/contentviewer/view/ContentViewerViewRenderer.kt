@@ -30,7 +30,7 @@ class ContentViewerViewRenderer(
   }
 
   private fun isContentLoaded(model: ContentViewerModel): Boolean =
-    model.loadBlobDiffAsyncOp.value is AsyncOp.Content && model.loadBlobDiffInformationAsyncOp is AsyncOp.Content
+    model.loadBlobDiffAsyncOp is AsyncOp.Content && model.loadBlobDiffInformationAsyncOp is AsyncOp.Content
 
   private fun ContentViewerView.showContent(model: ContentViewerModel) {
     val blobDiffInformation = (model.loadBlobDiffInformationAsyncOp as AsyncOp.Content<BlobDiffInformation>).content
