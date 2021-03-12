@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.gradle
 
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -60,5 +61,12 @@ class TimelapsePlugin : Plugin<Project> {
 
   private fun Project.configureOtherPlugins() {
     apply { plugin("com.github.ben-manes.versions") }
+
+    tasks.withType<DependencyUpdatesTask>() {
+      rejectVersionIf {
+        val versionName = candidate.version
+        versionName.endsWith("-M1") || versionName.contains("-ea")
+      }
+    }
   }
 }
