@@ -10,8 +10,8 @@ object deps {
   const val jgit = "org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r"
   const val caffeine = "com.github.ben-manes.caffeine:caffeine:3.0.0"
   const val eventBus = "org.greenrobot:eventbus:3.2.0"
-  const val commonsText = "org.apache.commons:commons-text:1.4"
-  const val sentry = "io.sentry:sentry:3.1.0"
+  const val commonsText = "org.apache.commons:commons-text:1.9"
+  const val sentry = "io.sentry:sentry:4.3.0"
   const val slf4jSimple = "org.slf4j:slf4j-simple:1.7.30"
   const val controlsFx = "org.controlsfx:controlsfx:11.1.0"
 
@@ -20,7 +20,7 @@ object deps {
   }
 
   object rxJava2 {
-    const val runtime = "io.reactivex.rxjava2:rxjava:2.2.20"
+    const val runtime = "io.reactivex.rxjava2:rxjava:2.2.21"
     const val javaFx = "io.reactivex.rxjava2:rxjavafx:2.2.2"
   }
 
@@ -54,11 +54,11 @@ object deps {
     }
 
     object mockito {
-      const val core = "org.mockito:mockito-core:3.7.7"
+      const val core = "org.mockito:mockito-core:3.8.0"
       const val kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     }
 
-    const val truth = "com.google.truth:truth:1.0.1"
-    const val approvalTests = "com.approvaltests:approvaltests:9.3.0"
+    const val truth = "com.google.truth:truth:1.1.2"
+    const val approvalTests = "com.approvaltests:approvaltests:10.2.0"
   }
 }
