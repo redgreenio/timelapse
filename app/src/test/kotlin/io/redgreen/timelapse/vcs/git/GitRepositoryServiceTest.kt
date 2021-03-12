@@ -2,7 +2,6 @@ package io.redgreen.timelapse.vcs.git
 
 import io.redgreen.timelapse.contentviewer.data.BlobDiffInformation
 import io.redgreen.timelapse.domain.BlobDiff
-import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.fixtures.GitFixture.Companion.INVALID_COMMIT_ID
 import io.redgreen.timelapse.fixtures.GitFixture.Companion.NON_EXISTENT_FILE_PATH
 import io.redgreen.timelapse.fixtures.GitTestbed
@@ -35,8 +34,7 @@ import org.junit.jupiter.api.Test
 class GitRepositoryServiceTest {
   @Nested
   inner class GetChangedFiles {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
-    private val repositoryService = GitRepositoryService(gitTestbedRepository)
+    private val repositoryService = GitRepositoryService(GitTestbed.repository)
 
     @Test
     fun `it should get changed files from an initial commit`() {
@@ -96,8 +94,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetContributions {
-    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path, true)
-    private val repositoryService = GitRepositoryService(simpleAndroidRepository)
+    private val repositoryService = GitRepositoryService(SimpleAndroid.repository)
     private val commitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd"
 
     @Test
@@ -182,8 +179,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetCommitOnOrAfter {
-    private val simpleAndroidRepository = openGitRepository(SimpleAndroid.path, true)
-    private val repositoryService = GitRepositoryService(simpleAndroidRepository)
+    private val repositoryService = GitRepositoryService(SimpleAndroid.repository)
 
     @Test
     fun `it should return the first commit on a given date`() {
@@ -218,8 +214,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetChangedFilePaths {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
-    private val repositoryService = GitRepositoryService(gitTestbedRepository)
+    private val repositoryService = GitRepositoryService(GitTestbed.repository)
 
     @Test
     fun `it should return changed file paths for initial commit`() {
@@ -284,7 +279,7 @@ class GitRepositoryServiceTest {
     @Test
     fun `it should ignore deleted file paths between an ancestor and a descendant (simple-android)`() {
       // given
-      val repositoryService = GitRepositoryService(openGitRepository(SimpleAndroid.path, true))
+      val repositoryService = GitRepositoryService(SimpleAndroid.repository)
       val ancestorCommitId = "f7a3080ee72869bd9925eaef49cb0de75acc7083" // Update CHANGELOG (#2037)
       val descendantCommitId = "d26b2b56696e63bffa5700488dcfe0154ad8cecd" // Update CHANGELOG (#2043)
 
@@ -322,8 +317,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetBlobDiff {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
-    private val repositoryService = GitRepositoryService(gitTestbedRepository)
+    private val repositoryService = GitRepositoryService(GitTestbed.repository)
 
     @Test
     fun `it should get the blob diff of a simple commit`() {
@@ -444,8 +438,7 @@ class GitRepositoryServiceTest {
 
   @Nested
   inner class GetBlobDiffInformation {
-    private val gitTestbedRepository = openGitRepository(GitTestbed.path, true)
-    private val repositoryService = GitRepositoryService(gitTestbedRepository)
+    private val repositoryService = GitRepositoryService(GitTestbed.repository)
 
     @Test
     fun `it should fetch blob diff information for a simple commit`() {

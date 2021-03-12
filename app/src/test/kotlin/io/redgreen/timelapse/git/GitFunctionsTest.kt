@@ -4,7 +4,6 @@ import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.domain.getBlobDiff
-import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitA
 import io.redgreen.timelapse.fixtures.GitTestbed.Commit.exhibitB
@@ -23,7 +22,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import org.junit.jupiter.api.Test
 
 class GitFunctionsTest {
-  private val repository = openGitRepository(GitTestbed.path, true)
+  private val repository = GitTestbed.repository
 
   @Test
   fun `it should get a list of files from initial commit`() {

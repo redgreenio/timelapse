@@ -1,12 +1,13 @@
 package io.redgreen.timelapse.git.model
 
+import io.sentry.Sentry
 import java.io.File
 import java.util.Optional
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.RepositoryBuilder
 
-/* Not using a sealed class here because it can still expose a private constructor via copy constructors. Therefore,
- * we are also responsible for implementing [#hashCode], [#equals], and [#toString] functions. */
+/* Not using a data class here because it can still expose a private constructor via copy constructors.
+ * Therefore, we are also responsible for implementing [#hashCode], [#equals], and [#toString] functions. */
 class GitDirectory private constructor(val path: String) {
   companion object {
     fun from(path: String): Optional<GitDirectory> {
@@ -18,8 +19,12 @@ class GitDirectory private constructor(val path: String) {
     }
 
     private fun isGitDirectoryCheck(path: String): Boolean {
-      val head = RepositoryBuilder().setGitDir(File(path)).build().resolve(HEAD)
-      return head != null
+      return try {
+        RepositoryBuilder().setGitDir(File(path)).build().resolve(HEAD) != null
+      } catch (e: Throwable) {
+        Sentry.captureException(e, "Git directory check.")
+        false
+      }
     }
   }
 

@@ -11,14 +11,31 @@ data class RecentRepository(
 ) {
   companion object {
     private const val TILDE = "~"
+    private const val GIT_DIRECTORY = ".git"
   }
 
   val title: String by fastLazy {
-    path.substring(path.lastIndexOf(File.separatorChar) + 1)
+    if (path.endsWith(GIT_DIRECTORY)) {
+      path.split(File.separatorChar).dropLast(1).last()
+    } else {
+      path.substring(path.lastIndexOf(File.separatorChar) + 1)
+    }
   }
 
-  fun subtitle(userHomeDirectory: String): String {
-    val replacement = if (userHomeDirectory.endsWith(File.separatorChar)) "$TILDE${File.separatorChar}" else TILDE
-    return path.replace(userHomeDirectory, replacement)
+  fun subtitle(userHomeDirectoryPath: String): String {
+    val replacement = if (userHomeDirectoryPath.endsWith(File.separatorChar)) {
+      "$TILDE${File.separatorChar}"
+    } else {
+      TILDE
+    }
+    return if (path.endsWith(GIT_DIRECTORY)) {
+      path
+        .replace(userHomeDirectoryPath, replacement)
+        .split(File.separatorChar)
+        .dropLast(1)
+        .joinToString("${File.separatorChar}")
+    } else {
+      path.replace(userHomeDirectoryPath, replacement)
+    }
   }
 }

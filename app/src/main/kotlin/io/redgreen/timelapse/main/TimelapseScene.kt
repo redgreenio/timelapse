@@ -9,11 +9,11 @@ import io.redgreen.timelapse.domain.getBlobDiff
 import io.redgreen.timelapse.domain.getCommitHistoryText
 import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
-import io.redgreen.timelapse.domain.readFileFromCommitId
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.readingarea.CommitInformationPane
 import io.redgreen.timelapse.ui.ReadingPane
@@ -46,7 +46,6 @@ import javafx.scene.layout.RowConstraints
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
 import kotlin.math.round
-import org.eclipse.jgit.lib.Repository
 
 private const val AREA_CHART_HEIGHT = 100.0
 
@@ -58,7 +57,8 @@ class TimelapseScene(private val project: String) :
   ReadingAreaContract,
   FileSelectionListener {
 
-  private val gitRepository by lazy { openGitRepository(File(project)) }
+  private val projectDirectory = File(project).parentFile.absolutePath
+  private val gitRepository by lazy { openGitRepository(GitDirectory.from(project).get()) }
   private lateinit var changes: List<Change>
   private lateinit var filePath: String
 
@@ -137,7 +137,7 @@ class TimelapseScene(private val project: String) :
   private val peoplePane by fastLazy { PeoplePane(gitRepository) }
 
   private val fileExplorerPane by fastLazy {
-    FileExplorerPane(project, gitRepository, this)
+    FileExplorerPane(projectDirectory, gitRepository, this)
   }
 
   private val rightPane by fastLazy {
@@ -176,7 +176,7 @@ class TimelapseScene(private val project: String) :
     this.filePath = filePath
 
     // Get change history
-    val gitFollowOutput = getCommitHistoryText(project, filePath, startDateEndDate)
+    val gitFollowOutput = getCommitHistoryText(projectDirectory, filePath, startDateEndDate)
     changes = parseGitFollowOutput(gitFollowOutput)
       .reversed()
 
@@ -225,13 +225,6 @@ class TimelapseScene(private val project: String) :
 
     changedFilesPane.selectFileAndRevision(filePath, selectedChange.commitId)
     peoplePane.selectFileAndRevision(filePath, selectedChange.commitId)
-  }
-
-  private fun Repository.getChangeText(
-    filePath: String,
-    commitId: String
-  ): String {
-    return readFileFromCommitId(commitId, filePath)
   }
 
   override fun showChangedFileDiff(commitId: String, changedFile: ChangedFile) {

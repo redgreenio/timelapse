@@ -1,6 +1,7 @@
 dependencies {
   implementation(deps.arrow.coreData)
   implementation(deps.jgit)
+  implementation(deps.sentry)
 
   testImplementation(testFixtures(project(":fixtures:library")))
 

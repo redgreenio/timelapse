@@ -1,6 +1,5 @@
 package io.redgreen.timelapse.openrepo
 
-import io.redgreen.timelapse.git.model.GitDirectory
 import java.util.Optional
 import org.eclipse.jgit.util.SystemReader
 
@@ -18,9 +17,4 @@ class GitDetector {
       Optional.empty()
     }
   }
-
-  @Suppress("DeprecatedCallableAddReplaceWith")
-  @Deprecated("Use [GitDirectory] instead")
-  fun isGitRepository(path: String): Boolean =
-    GitDirectory.from(path).isPresent
 }

@@ -4,14 +4,17 @@ import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Scheduler
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
+import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.SchedulersProvider
+import java.util.Optional
 import org.slf4j.LoggerFactory
 
 class OpenRepoEffectHandler {
   companion object {
+    private const val GIT_DIRECTORY = ".git"
     private val logger = LoggerFactory.getLogger(ContentViewerEffectHandler::class.java)
 
     fun from(
@@ -26,7 +29,7 @@ class OpenRepoEffectHandler {
         .addAction(DisplayFileChooser::class.java, { view.displayFileChooser() }, schedulersProvider.ui())
         .addTransformer(
           DetectGitRepository::class.java,
-          detectGitRepositoryTransformer(gitDetector, schedulersProvider.io())
+          detectGitRepositoryTransformer(schedulersProvider.io())
         )
         .addConsumer(
           UpdateRecentRepositories::class.java,
@@ -70,19 +73,31 @@ class OpenRepoEffectHandler {
     }
 
     private fun detectGitRepositoryTransformer(
-      gitDetector: GitDetector,
       scheduler: Scheduler
     ): ObservableTransformer<DetectGitRepository, OpenRepoEvent> {
       return ObservableTransformer { events ->
         events
-          .map {
-            if (gitDetector.isGitRepository(it.path)) {
-              GitRepositoryDetected(it.path)
-            } else {
-              GitRepositoryNotDetected(it.path)
-            }
-          }
+          .map(::toDetectGitRepositoryResult)
           .subscribeOn(scheduler)
+      }
+    }
+
+    private fun toDetectGitRepositoryResult(event: DetectGitRepository): OpenRepoEvent {
+      val gitDirectoryOptional = getGitDirectory(event.path)
+      return if (gitDirectoryOptional.isPresent) {
+        GitRepositoryDetected(gitDirectoryOptional.get().path)
+      } else {
+        GitRepositoryNotDetected(event.path)
+      }
+    }
+
+    private fun getGitDirectory(path: String): Optional<GitDirectory> {
+      val bestGuessGitDirectoryPath = "${path}/$GIT_DIRECTORY"
+      val maybeGitDirectory = GitDirectory.from(bestGuessGitDirectoryPath)
+      return if (maybeGitDirectory.isPresent) {
+        maybeGitDirectory
+      } else {
+        GitDirectory.from(path)
       }
     }
 
