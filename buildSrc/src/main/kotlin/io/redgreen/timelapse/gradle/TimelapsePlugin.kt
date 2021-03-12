@@ -17,6 +17,7 @@ class TimelapsePlugin : Plugin<Project> {
       configureKotlin()
       configureJacoco()
       configureJUnit()
+      configureOtherPlugins()
     }
   }
 
@@ -55,5 +56,9 @@ class TimelapsePlugin : Plugin<Project> {
     tasks.withType<Test> {
       useJUnitPlatform()
     }
+  }
+
+  private fun Project.configureOtherPlugins() {
+    apply { plugin("com.github.ben-manes.versions") }
   }
 }
