@@ -20,8 +20,6 @@ sealed class GitFixture(val path: File) {
 
 object SimpleAndroid : GitFixture(File("${GIT_REPOS_ROOT}simple-android"))
 
-object NestedGitRepo : GitFixture(File("../fixtures/nested-git-repo/.git"))
-
 object GitTestbed : GitFixture(File("${GIT_REPOS_ROOT}git-testbed")) {
   object Commit {
     /** exhibit a: add three new files */

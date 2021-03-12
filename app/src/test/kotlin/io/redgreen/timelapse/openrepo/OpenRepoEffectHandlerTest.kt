@@ -5,8 +5,6 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.architecture.mobius.testCase
-import io.redgreen.timelapse.fixtures.NestedGitRepo
-import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
@@ -83,20 +81,6 @@ class OpenRepoEffectHandlerTest {
 
     testCase
       .assertNoOutgoingEvents()
-  }
-
-  @Test
-  fun `it should return repository detected if the path points to a git repository`() {
-    // given
-    val path = NestedGitRepo.path.absolutePath
-
-    // when
-    testCase.dispatch(DetectGitRepository(path))
-
-    // then
-    val gitDirectory = GitDirectory.from(path).get()
-    testCase
-      .assertOutgoingEvents(GitRepositoryDetected(gitDirectory.path))
   }
 
   @Test
