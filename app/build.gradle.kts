@@ -5,7 +5,7 @@ plugins {
   application
   id("com.github.johnrengelman.shadow") version "6.1.0"
   id("org.openjfx.javafxplugin") version "0.0.9"
-  id("org.beryx.runtime") version "1.12.1"
+  id("org.beryx.runtime") version "1.12.2"
   kotlin("kapt")
 }
 

@@ -25,7 +25,7 @@ object deps {
   }
 
   object rxJava3 {
-    const val runtime = "io.reactivex.rxjava3:rxjava:3.0.10"
+    const val runtime = "io.reactivex.rxjava3:rxjava:3.0.11"
     const val bridge = "com.github.akarnokd:rxjava3-bridge:3.0.0"
   }
 
