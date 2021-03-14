@@ -65,9 +65,9 @@ class GitRepositoryServiceTest {
         Modification(FILE_1_TXT),
         Deletion(FILE_3_TXT),
         Deletion(FILE_4_TXT),
+        Rename(FILE_A_TXT, FILE_2_TXT),
         Addition(FILE_B_TXT),
-        Addition(FILE_C_TXT),
-        Rename(FILE_A_TXT, FILE_2_TXT)
+        Addition(FILE_C_TXT)
       )
       testObserver
         .assertValue(changedFiles)
