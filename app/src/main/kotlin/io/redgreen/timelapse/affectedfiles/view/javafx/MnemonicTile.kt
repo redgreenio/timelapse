@@ -50,7 +50,8 @@ class MnemonicTile : Label() {
 
     val classesToRemove = MnemonicAppearance
       .values()
-      /* Minus the current CSS class. Otherwise, the label will flicker until we add the css class for the change type */
+      /* Minus the current CSS class. Otherwise, the label will flicker until we add the css class back to
+       * the change type. */
       .map(MnemonicAppearance::cssClass) - appearance.cssClass
 
     with(styleClass) {

@@ -18,7 +18,9 @@ import javafx.scene.layout.VBox
 import liftoff.affectedfiles.model.AffectingCommit
 import liftoff.affectedfiles.props.callback.AffectedFileContextChangeListener
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffectHandler
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.*
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.AffectingCommitSelected
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.FilePathSelected
+import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitRepoSelected
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiInit
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiUpdate

@@ -92,7 +92,7 @@ class GitRepositoryService(private val gitRepository: Repository) : VcsRepositor
       val lineCount = try {
         gitRepository.countLinesInFile(revCommit.get(), filePath)
       } catch (exception: MissingObjectException) {
-        emitter.onError(IllegalArgumentException("Non-existent file path at $commitId: $filePath"))
+        emitter.onError(IllegalArgumentException("Non-existent file path at $commitId: $filePath", exception))
         return@create
       }
       for (index in 0 until lineCount) {
