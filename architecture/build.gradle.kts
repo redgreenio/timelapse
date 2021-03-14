@@ -1,11 +1,3 @@
-plugins {
-  id("org.openjfx.javafxplugin") version "0.0.9"
-}
-
-javafx {
-  version = "15"
-  modules("javafx.controls")
-}
 
 dependencies {
   // Because https://github.com/spotify/diffuser is not published to Maven Central

@@ -3,10 +3,10 @@ import proguard.gradle.ProGuardTask
 
 plugins {
   application
-  id("com.github.johnrengelman.shadow") version "6.1.0"
-  id("org.openjfx.javafxplugin") version "0.0.9"
-  id("org.beryx.runtime") version "1.12.2"
+  id("timelapse-javafx")
   kotlin("kapt")
+  id("com.github.johnrengelman.shadow") version "6.1.0"
+  id("org.beryx.runtime") version "1.12.2"
 }
 
 val productName = "Timelapse Studio"
@@ -16,7 +16,6 @@ group = "io.redgreen"
 version = "1.0.0" /* Because, macOS apps can't have version numbers starting with '0'. */
 
 javafx {
-  version = "15"
   modules("javafx.controls", "javafx.web")
 }
 
