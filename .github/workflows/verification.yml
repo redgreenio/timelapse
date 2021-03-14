@@ -33,8 +33,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          submodules: recursive
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
 
       - name: Setup JDK
         uses: actions/setup-java@v1
