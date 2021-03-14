@@ -39,12 +39,12 @@ class GetAffectedFilesUseCase {
     descendent: CommitHash,
     ancestor: CommitHash
   ): Either<IllegalArgumentException, List<AffectedFile>> {
-    val repository = RepositoryBuilder().setGitDir(File(gitDirectory.path)).build()
-
-    return try {
-      right(getAffectedFiles(repository, descendent, ancestor))
-    } catch (exception: IllegalArgumentException) {
-      left(exception)
+    RepositoryBuilder().setGitDir(File(gitDirectory.path)).build().use { repository ->
+      return try {
+        right(getAffectedFiles(repository, descendent, ancestor))
+      } catch (exception: IllegalArgumentException) {
+        left(exception)
+      }
     }
   }
 

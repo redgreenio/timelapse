@@ -120,8 +120,11 @@ object AffectedFilesPropsUiEffectHandler {
             val repository = RepositoryBuilder()
               .setGitDir(File(getCommitsAffectingFilePath.gitDirectory))
               .build()
-            val affectingCommits = getAffectingCommits(repository, getCommitsAffectingFilePath)
-            CommitsAffectingFilePathFetched(affectingCommits)
+
+            repository.use {
+              val affectingCommits = getAffectingCommits(it, getCommitsAffectingFilePath)
+              CommitsAffectingFilePathFetched(affectingCommits)
+            }
           }
             .publishMetric(::GetCommitsMetric)
             .subscribeOn(ioScheduler)
