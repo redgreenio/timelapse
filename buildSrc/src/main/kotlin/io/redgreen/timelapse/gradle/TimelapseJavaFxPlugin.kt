@@ -9,6 +9,6 @@ class TimelapseJavaFxPlugin : Plugin<Project> {
     target.apply { plugin("org.openjfx.javafxplugin") }
 
     val javaFxOptions = target.extensions.findByName("javafx") as JavaFXOptions
-    javaFxOptions.version = "15"
+    javaFxOptions.version = "15.0.1"
   }
 }
