@@ -93,6 +93,12 @@ class TimelapsePlugin : Plugin<Project> {
     tasks.withType<Detekt> {
       jvmTarget = "15"
       baseline.set(file("$projectDir/detekt/baseline.xml"))
+
+      with(reports) {
+        xml.enabled = true
+        html.enabled = true
+        txt.enabled = false
+      }
     }
   }
 }
