@@ -1,6 +1,6 @@
 [submodule "fixtures/git-testbed"]
 	path = fixtures/git-testbed
-	url = git@github.com:redgreenio/git-testbed.git
+	url = https://github.com/redgreenio/git-testbed
 [submodule "fixtures/simple-android"]
 	path = fixtures/simple-android
-	url = git@github.com:ragunathjawahar/simple-android.git
+	url = https://github.com/ragunathjawahar/simple-android
