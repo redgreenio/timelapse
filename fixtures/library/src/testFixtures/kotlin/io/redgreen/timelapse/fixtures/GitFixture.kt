@@ -2,9 +2,10 @@ package io.redgreen.timelapse.fixtures
 
 import java.io.File
 import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+import org.eclipse.jgit.lib.RepositoryBuilder
 
-private const val GIT_REPOS_ROOT = "../.git/modules/fixtures/"
+private const val FILE_IN_ROOT_DIRECTORY = ".northstar"
+private val GIT_REPOS_ROOT = "${findProjectRoot()}/.git/modules/fixtures/"
 
 sealed class GitFixture(val path: File) {
   companion object {
@@ -14,7 +15,7 @@ sealed class GitFixture(val path: File) {
 
   val repository: Repository
     get() {
-      return FileRepositoryBuilder().setGitDir(path).build()
+      return RepositoryBuilder().setGitDir(path).build()
     }
 }
 
@@ -63,4 +64,18 @@ object GitTestbed : GitFixture(File("${GIT_REPOS_ROOT}git-testbed")) {
     const val FILE_B_TXT = "file-b.txt"
     const val FILE_C_TXT = "file-c.txt"
   }
+}
+
+private fun findProjectRoot(): String {
+  return System.getProperty("user.dir")
+    .split(File.separatorChar)
+    .scan("" to false) { (path, _), directory ->
+      val pathToInspect = "$path${File.separatorChar}$directory"
+      val possiblyNorthstarPath = "$pathToInspect${File.separatorChar}$FILE_IN_ROOT_DIRECTORY"
+
+      pathToInspect to File(possiblyNorthstarPath).exists()
+    }
+    .filter { (_, foundNorthstar) -> foundNorthstar }
+    .map(Pair<String, Boolean>::first)
+    .first()
 }
