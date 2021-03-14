@@ -1,3 +1,10 @@
+plugins {
+  id("timelapse-javafx")
+}
+
+javafx {
+  modules("javafx.controls")
+}
 
 dependencies {
   // Because https://github.com/spotify/diffuser is not published to Maven Central

@@ -10,9 +10,10 @@ import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.redgreen.architecture.mobius.dev.DevLogger
 import io.redgreen.architecture.mobius.view.ViewRenderer
+import javafx.application.Platform
 import kotlin.LazyThreadSafetyMode.NONE
 
-class MobiusDelegate<M, E, F>(
+class MobiusDelegate<M : Any, E, F>(
   private val initialModel: M,
   private val init: Init<M, F>?,
   private val update: Update<M, E, F>,
@@ -45,7 +46,9 @@ class MobiusDelegate<M, E, F>(
     Connectable<M, E> {
       object : Connection<M> {
         override fun accept(model: M) {
-          viewRenderer.render(model)
+          Platform.runLater {
+            viewRenderer.render(model)
+          }
         }
 
         override fun dispose() {
