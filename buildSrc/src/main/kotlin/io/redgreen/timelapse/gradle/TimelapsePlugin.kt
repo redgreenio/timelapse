@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.gradle
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import org.gradle.api.Plugin
@@ -79,6 +80,10 @@ class TimelapsePlugin : Plugin<Project> {
     apply { plugin("com.github.ben-manes.versions") }
 
     tasks.withType<DependencyUpdatesTask> {
+      gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
+      checkForGradleUpdate = true
+      outputFormatter = "json"
+
       rejectVersionIf { isNonStable(candidate.version) }
     }
   }
