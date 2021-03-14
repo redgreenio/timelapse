@@ -70,16 +70,16 @@ class TimelapsePlugin : Plugin<Project> {
   }
 
   private fun Project.configureVersions() {
+    fun isNonStable(version: String): Boolean {
+      val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+      val regex = Regex("^[0-9,.v-]+(-r)?$")
+      return !stableKeyword && !regex.matches(version)
+    }
+
     apply { plugin("com.github.ben-manes.versions") }
 
     tasks.withType<DependencyUpdatesTask> {
-      rejectVersionIf {
-        val versionName = candidate.version.toLowerCase()
-        versionName.endsWith("-m1")
-            || versionName.contains("-ea")
-            || versionName.contains("-rc")
-            || versionName.contains("-alpha")
-      }
+      rejectVersionIf { isNonStable(candidate.version) }
     }
   }
 
