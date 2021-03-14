@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.gradle
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import io.gitlab.arturbosch.detekt.Detekt
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -18,13 +19,21 @@ class TimelapsePlugin : Plugin<Project> {
       configureKotlin()
       configureJacoco()
       configureJUnit()
-      configureOtherPlugins()
+      configureVersions()
+      configureDetekt()
     }
   }
 
   private fun Project.configureRepositories() {
     repositories {
-      mavenCentral()
+      mavenCentral {
+        content {
+          // just allow to include kotlinx projects
+          // detekt needs 'kotlinx-html' for the html report
+          includeGroup("org.jetbrains.kotlinx")
+        }
+      }
+      jcenter()
     }
   }
 
@@ -59,7 +68,7 @@ class TimelapsePlugin : Plugin<Project> {
     }
   }
 
-  private fun Project.configureOtherPlugins() {
+  private fun Project.configureVersions() {
     apply { plugin("com.github.ben-manes.versions") }
 
     tasks.withType<DependencyUpdatesTask>() {
@@ -67,6 +76,14 @@ class TimelapsePlugin : Plugin<Project> {
         val versionName = candidate.version
         versionName.endsWith("-M1") || versionName.contains("-ea")
       }
+    }
+  }
+
+  private fun Project.configureDetekt() {
+    apply { plugin("io.gitlab.arturbosch.detekt") }
+
+    tasks.withType<Detekt> {
+      jvmTarget = "15"
     }
   }
 }
