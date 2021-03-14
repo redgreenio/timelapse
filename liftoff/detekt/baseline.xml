@@ -8,6 +8,5 @@
     <ID>MagicNumber:GraphicsContext.kt$202</ID>
     <ID>MagicNumber:GraphicsContext.kt$255</ID>
     <ID>MagicNumber:Liftoff.kt$Liftoff$8.0</ID>
-    <ID>UnusedPrivateMember:FilesInRepoComboBox.kt$FilesInRepoComboBox$private fun Repository.getFilePaths(): List&lt;String&gt;</ID>
   </CurrentIssues>
 </SmellBaseline>
