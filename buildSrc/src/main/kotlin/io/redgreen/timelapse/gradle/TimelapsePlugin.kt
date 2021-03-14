@@ -74,7 +74,9 @@ class TimelapsePlugin : Plugin<Project> {
     tasks.withType<DependencyUpdatesTask>() {
       rejectVersionIf {
         val versionName = candidate.version
-        versionName.endsWith("-M1") || versionName.contains("-ea")
+        versionName.endsWith("-M1")
+            || versionName.contains("-ea")
+            || versionName.contains("-RC")
       }
     }
   }
