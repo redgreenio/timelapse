@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongParameterList:AreaChartModel.kt$( values: List&lt;Int&gt;, viewportWidth: Int, viewportHeight: Int, minimumValue: Int, yScale: Int, xAxisDistanceBetweenValues: Double, outPoints: MutableList&lt;Point&gt;, )</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$0.4</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$0.5</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$125</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$186</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$194</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$198</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$219</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$240</ID>
+    <ID>MagicNumber:AreaChart.kt$AreaChart$94</ID>
+    <ID>MagicNumber:LargeButton.kt$LargeButton$12</ID>
+    <ID>MagicNumber:LargeButton.kt$LargeButton$14</ID>
+    <ID>MagicNumber:LargeButton.kt$LargeButton$16.0</ID>
+    <ID>MagicNumber:LargeButton.kt$LargeButton$4.0</ID>
+    <ID>MagicNumber:TitledSeparator.kt$TitledSeparator$1.2</ID>
+    <ID>MagicNumber:TitledSeparator.kt$TitledSeparator$12</ID>
+    <ID>MagicNumber:TitledSeparator.kt$TitledSeparator$16.0</ID>
+    <ID>MagicNumber:TitledSeparator.kt$TitledSeparator$4.0</ID>
+    <ID>MagicNumber:TitledSeparator.kt$TitledSeparator$430.0</ID>
+    <ID>MagicNumber:TitledSeparator.kt$TitledSeparator$560.0</ID>
+  </CurrentIssues>
+</SmellBaseline>

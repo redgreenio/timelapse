@@ -2,6 +2,7 @@ package io.redgreen.timelapse.gradle
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -71,7 +72,7 @@ class TimelapsePlugin : Plugin<Project> {
   private fun Project.configureVersions() {
     apply { plugin("com.github.ben-manes.versions") }
 
-    tasks.withType<DependencyUpdatesTask>() {
+    tasks.withType<DependencyUpdatesTask> {
       rejectVersionIf {
         val versionName = candidate.version
         versionName.endsWith("-M1")
@@ -84,8 +85,13 @@ class TimelapsePlugin : Plugin<Project> {
   private fun Project.configureDetekt() {
     apply { plugin("io.gitlab.arturbosch.detekt") }
 
+    tasks.withType<DetektCreateBaselineTask> {
+      baseline.set(file("$projectDir/detekt/baseline.xml"))
+    }
+
     tasks.withType<Detekt> {
       jvmTarget = "15"
+      baseline.set(file("$projectDir/detekt/baseline.xml"))
     }
   }
 }

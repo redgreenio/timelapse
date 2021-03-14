@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>MagicNumber:AreaChart.kt$4</ID>
+    <ID>MagicNumber:AreaChart.kt$5</ID>
+    <ID>MagicNumber:Layers.kt$10.0</ID>
+    <ID>MagicNumber:Layers.kt$400.0</ID>
+    <ID>MagicNumber:Layers.kt$8.0</ID>
+    <ID>MagicNumber:Themes.kt$480.0</ID>
+    <ID>MagicNumber:Themes.kt$640.0</ID>
+    <ID>TopLevelPropertyNaming:AreaChart.kt$private const val areaChartHeight = 150</ID>
+    <ID>TopLevelPropertyNaming:AreaChart.kt$private const val areaChartWidth = 800</ID>
+  </CurrentIssues>
+</SmellBaseline>
