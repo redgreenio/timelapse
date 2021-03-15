@@ -10,8 +10,6 @@ import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.foo.toLocalDateTime
 import io.redgreen.timelapse.vcs.git.GitRepositoryService
-import java.io.File
-import java.time.LocalDate
 import javafx.application.Platform
 import javafx.collections.FXCollections
 import javafx.scene.control.ComboBox
@@ -21,9 +19,11 @@ import javafx.scene.control.TreeItem
 import javafx.scene.control.TreeView
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
-import kotlin.system.measureTimeMillis
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.Repository
+import java.io.File
+import java.time.LocalDate
+import kotlin.system.measureTimeMillis
 
 private const val GIT_PATH_SEPARATOR = '/'
 

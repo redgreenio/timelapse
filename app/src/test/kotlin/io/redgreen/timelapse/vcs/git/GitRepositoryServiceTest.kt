@@ -26,10 +26,10 @@ import io.redgreen.timelapse.vcs.ChangedFile.Deletion
 import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.vcs.Contribution
-import java.time.LocalDate
-import java.time.Month.OCTOBER
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
+import java.time.Month.OCTOBER
 
 class GitRepositoryServiceTest {
   @Nested
@@ -154,8 +154,8 @@ class GitRepositoryServiceTest {
       // then
       testObserver
         .assertError {
-          it is IllegalArgumentException
-              && it.message == "Invalid commit ID: $invalidCommitId"
+          it is IllegalArgumentException &&
+            it.message == "Invalid commit ID: $invalidCommitId"
         }
         .assertNoValues()
     }
@@ -170,8 +170,8 @@ class GitRepositoryServiceTest {
       // then
       testObserver
         .assertError {
-          it is java.lang.IllegalArgumentException
-              && it.message == "Non-existent file path at $commitId: $NON_EXISTENT_FILE_PATH"
+          it is java.lang.IllegalArgumentException &&
+            it.message == "Non-existent file path at $commitId: $NON_EXISTENT_FILE_PATH"
         }
         .assertNoValues()
     }
@@ -415,7 +415,7 @@ class GitRepositoryServiceTest {
             -Hola, mundo!
             +Hola, world!
             
-          """.trimIndent()
+            """.trimIndent()
           ),
 
           BlobDiff.Simple(
@@ -429,7 +429,7 @@ class GitRepositoryServiceTest {
             -Hello, world!
             +Hola, world!
             
-          """.trimIndent()
+            """.trimIndent()
           )
         )
       )

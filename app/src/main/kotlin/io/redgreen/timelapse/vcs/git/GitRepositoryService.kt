@@ -15,12 +15,6 @@ import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
 import io.redgreen.timelapse.vcs.Contribution
 import io.redgreen.timelapse.vcs.VcsRepositoryService
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.nio.charset.Charset
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.Optional
 import org.eclipse.jgit.api.BlameCommand
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.DELETE
@@ -34,6 +28,12 @@ import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.treewalk.filter.PathFilter
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Optional
 
 private typealias ContributionCount = Int
 

@@ -26,7 +26,7 @@ class PeoplePane(private val gitRepository: Repository) : BorderPane() {
   private val contributorsTable by fastLazy {
     TableView<Contribution>().apply {
       isEditable = false
-      columnResizePolicy = CONSTRAINED_RESIZE_POLICY;
+      columnResizePolicy = CONSTRAINED_RESIZE_POLICY
 
       val nameColumn = TableColumn<Contribution, String>(COLUMN_NAME).apply {
         setCellValueFactory { SimpleObjectProperty(it.value.author.name) }

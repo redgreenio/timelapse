@@ -8,8 +8,8 @@ import javafx.geometry.Insets
 import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.VBox
-import kotlin.math.ceil
 import org.eclipse.jgit.lib.Repository
+import kotlin.math.ceil
 
 class CommitInformationPane(
   private val gitRepository: Repository
@@ -41,7 +41,7 @@ class CommitInformationPane(
     totalNumberOfCommits: Int
   ) {
     val commit = gitRepository.getCommit(selectedChange.commitId)
-    val position = "${currentPosition}/${totalNumberOfCommits}"
+    val position = "$currentPosition/$totalNumberOfCommits"
     val progressPercent = ((currentPosition).toDouble() / totalNumberOfCommits) * 100
     val progressPercentText = String.format("%.2f", ceil(progressPercent)).replace(".00", "")
     val committedDate = commit.committerIdent.`when`

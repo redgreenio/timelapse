@@ -24,8 +24,6 @@ import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.Commit
-import java.io.File
-import java.time.LocalDate
 import javafx.application.Platform
 import javafx.geometry.Insets
 import javafx.scene.Scene
@@ -45,6 +43,8 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.RowConstraints
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
+import java.io.File
+import java.time.LocalDate
 import kotlin.math.round
 
 private const val AREA_CHART_HEIGHT = 100.0

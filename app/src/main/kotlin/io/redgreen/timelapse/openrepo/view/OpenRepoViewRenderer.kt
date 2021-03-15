@@ -24,7 +24,7 @@ class OpenRepoViewRenderer(
         displayWelcomeMessage(Greeter(model.gitUsername.username))
       }
 
-      when(model.recentRepositoriesAsyncOp.value) {
+      when (model.recentRepositoriesAsyncOp.value) {
         Idle, InFlight -> displayRecentRepositoriesStatus(LOADING)
         is Content -> showListOrEmpty(model)
         is Failure -> displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)

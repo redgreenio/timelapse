@@ -31,10 +31,12 @@ internal class AffectedFilesListView : ListView<AffectedFileCellViewModel>() {
   }
 
   init {
-    skinProperty().addListener(InvalidationListener {
-      bindScrollBars()
-      children.addAll(verticalScrollbar, horizontalScrollbar)
-    })
+    skinProperty().addListener(
+      InvalidationListener {
+        bindScrollBars()
+        children.addAll(verticalScrollbar, horizontalScrollbar)
+      }
+    )
     styleClass.add(CSS_CLASS_LIST_VIEW)
 
     verticalScrollbar.visibleProperty().bind(verticalScrollbar.visibleAmountProperty().isNotEqualTo(0))

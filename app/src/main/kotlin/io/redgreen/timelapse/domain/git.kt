@@ -3,8 +3,6 @@ package io.redgreen.timelapse.domain
 import io.redgreen.timelapse.domain.BlobDiff.Merge
 import io.redgreen.timelapse.domain.BlobDiff.Simple
 import io.redgreen.timelapse.git.model.GitDirectory
-import java.io.ByteArrayOutputStream
-import java.io.File
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.ObjectId
@@ -15,6 +13,8 @@ import org.eclipse.jgit.revwalk.RevTree
 import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.eclipse.jgit.treewalk.filter.PathFilter
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 fun openGitRepository(gitDirectory: GitDirectory): Repository {
   return RepositoryBuilder().setGitDir(File(gitDirectory.path)).build()

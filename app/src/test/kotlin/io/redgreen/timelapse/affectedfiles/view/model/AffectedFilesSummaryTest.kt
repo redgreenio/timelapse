@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.affectedfiles.view.model;
+package io.redgreen.timelapse.affectedfiles.view.model
 
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.affectedfiles.view.model.AffectedFileCellViewModel.FileCell

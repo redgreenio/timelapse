@@ -87,7 +87,7 @@ class ContentViewerUpdateTest {
           @@ -0,0 +1 @@
           +Hello World!
           
-        """.trimIndent()
+      """.trimIndent()
     )
     withUpdateSpec
       .given(fileAndRevisionSelected)

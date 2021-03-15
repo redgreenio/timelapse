@@ -9,8 +9,8 @@ import io.redgreen.timelapse.openrepo.data.RecentRepository
 import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.SchedulersProvider
-import java.util.Optional
 import org.slf4j.LoggerFactory
+import java.util.Optional
 
 class OpenRepoEffectHandler {
   companion object {
@@ -92,7 +92,7 @@ class OpenRepoEffectHandler {
     }
 
     private fun getGitDirectory(path: String): Optional<GitDirectory> {
-      val bestGuessGitDirectoryPath = "${path}/$GIT_DIRECTORY"
+      val bestGuessGitDirectoryPath = "$path/$GIT_DIRECTORY"
       val maybeGitDirectory = GitDirectory.from(bestGuessGitDirectoryPath)
       return if (maybeGitDirectory.isPresent) {
         maybeGitDirectory

@@ -45,7 +45,7 @@ private fun gitLogCommand(
     val endDateExclusive = endDate.plusDays(1)
     arrayOf(
       "git", "--git-dir", gitDirectory, "log", "--oneline", "-M", "--stat", "--no-merges",
-      "--since", startDate.toGitDate(), "--until", endDateExclusive.toGitDate(),/* "--follow",*/ "--", filePath,
+      "--since", startDate.toGitDate(), "--until", endDateExclusive.toGitDate(), /* "--follow",*/ "--", filePath,
     )
   }
 }

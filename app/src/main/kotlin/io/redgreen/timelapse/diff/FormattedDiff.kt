@@ -46,7 +46,7 @@ class FormattedDiff internal constructor(val lines: List<DiffLine>) {
 
     private fun headerLineCount(diffModeLine: String): Int {
       val newOrDeletedFile = diffModeLine.startsWith(DIFF_MODE_NEW_FILE) ||
-          diffModeLine.startsWith(DIFF_MODE_DELETED)
+        diffModeLine.startsWith(DIFF_MODE_DELETED)
       return if (newOrDeletedFile) {
         HEADER_LINES_COUNT_NEW_OR_DELETED_FILE
       } else {

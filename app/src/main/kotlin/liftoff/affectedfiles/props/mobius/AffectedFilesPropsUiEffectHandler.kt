@@ -12,8 +12,6 @@ import io.redgreen.timelapse.metrics.GetCommitsMetric
 import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
 import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.SchedulersProvider
-import java.io.File
-import java.util.Optional
 import liftoff.affectedfiles.model.AffectingCommit
 import liftoff.affectedfiles.props.callback.AffectedFileContextChangeListener
 import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.DiscoverGitRepos
@@ -28,6 +26,8 @@ import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.treewalk.TreeWalk
+import java.io.File
+import java.util.Optional
 
 object AffectedFilesPropsUiEffectHandler {
   fun from(

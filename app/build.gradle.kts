@@ -87,9 +87,9 @@ with(application) {
 tasks {
   register<ProGuardTask>("demoJar") {
     dependsOn("shadowJar")
-    val shadowJar = "build/libs/app-${version}-all.jar"
-    val demoJar = "build/libs/timelapse-${version}-demo.jar"
-    val mappingFile = "build/libs/mapping-${version}.txt"
+    val shadowJar = "build/libs/app-$version-all.jar"
+    val demoJar = "build/libs/timelapse-$version-demo.jar"
+    val mappingFile = "build/libs/mapping-$version.txt"
 
     // Library jars
     val javaHome = System.getProperty("java.home")

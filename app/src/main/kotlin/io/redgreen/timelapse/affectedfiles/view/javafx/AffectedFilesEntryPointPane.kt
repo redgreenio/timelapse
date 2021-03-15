@@ -19,7 +19,8 @@ import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections
 
-class AffectedFilesEntryPointPane : TitledParent(),
+class AffectedFilesEntryPointPane :
+  TitledParent(),
   EntryPoint<AffectedFilesProps>,
   Disposer<Disposable> by RxJava3Disposer() {
 

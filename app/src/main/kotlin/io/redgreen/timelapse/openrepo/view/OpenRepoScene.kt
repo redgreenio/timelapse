@@ -27,7 +27,6 @@ import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_RE
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Stranger
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
-import java.io.File
 import javafx.geometry.Insets
 import javafx.geometry.Pos.BOTTOM_RIGHT
 import javafx.geometry.Pos.TOP_CENTER
@@ -44,6 +43,7 @@ import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.stage.DirectoryChooser
 import javafx.stage.Stage
+import java.io.File
 
 private const val SCENE_WIDTH = 720.0
 private const val SCENE_HEIGHT = 552.0

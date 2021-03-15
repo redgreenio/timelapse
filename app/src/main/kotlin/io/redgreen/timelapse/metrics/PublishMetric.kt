@@ -4,10 +4,10 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.core.SingleSource
 import io.reactivex.rxjava3.core.SingleTransformer
 import io.reactivex.rxjava3.schedulers.Timed
+import org.greenrobot.eventbus.EventBus
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
-import org.greenrobot.eventbus.EventBus
 
 fun <T, M> Single<T>.publishMetric(
   toMetric: (Duration) -> M

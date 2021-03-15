@@ -72,7 +72,7 @@ class ContentViewerViewRendererTest {
           @@ -0,0 +1 @@
           +Hello World!
           
-      """.trimIndent()
+    """.trimIndent()
 
     val blobDiffInformation = BlobDiffInformation(
       selectedFilePath,
