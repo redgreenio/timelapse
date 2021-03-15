@@ -8,12 +8,14 @@ import io.redgreen.timelapse.git.model.CommitHash
 import io.redgreen.timelapse.git.model.Identity
 import java.nio.charset.Charset
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.util.Calendar
 import java.util.Calendar.DAY_OF_MONTH
 import java.util.Calendar.HOUR
 import java.util.Calendar.MINUTE
 import java.util.Calendar.MONTH
 import java.util.Calendar.YEAR
-import java.util.Calendar.getInstance
 import java.util.Date
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
@@ -41,9 +43,9 @@ class CommitInfoUseCase(
       }
     }
 
-    object AuthoredLocalDateTime : Property<LocalDateTime>() {
-      override fun get(revCommit: RevCommit): LocalDateTime =
-        getLocalDateTime(revCommit.authorIdent.`when`)
+    object AuthoredZonedDateTime : Property<ZonedDateTime>() {
+      override fun get(revCommit: RevCommit): ZonedDateTime =
+        revCommit.authorIdent.`when`.toZonedDateTime()
     }
 
     object Committer : Property<Identity>() {
@@ -53,9 +55,9 @@ class CommitInfoUseCase(
       }
     }
 
-    object CommittedLocalDateTime : Property<LocalDateTime>() {
-      override fun get(revCommit: RevCommit): LocalDateTime =
-        getLocalDateTime(revCommit.committerIdent.`when`)
+    object CommittedZonedDateTime : Property<ZonedDateTime>() {
+      override fun get(revCommit: RevCommit): ZonedDateTime =
+        revCommit.committerIdent.`when`.toZonedDateTime()
     }
 
     object Parent : Property<Ancestors>() {
@@ -76,15 +78,17 @@ class CommitInfoUseCase(
         revCommit.encoding
     }
 
-    internal fun getLocalDateTime(date: Date): LocalDateTime {
-      val calendar = getInstance().apply {
-        time = date
-      }
+    internal fun Date.toZonedDateTime(): ZonedDateTime {
+      val calendar = Calendar.getInstance()
+      calendar.time = this
 
       with(calendar) {
         // The first month of the year in the Gregorian and Julian calendars is JANUARY which is 0
         val month = get(MONTH) + 1
-        return LocalDateTime.of(get(YEAR), month, get(DAY_OF_MONTH), get(HOUR), get(MINUTE))
+        val localDateTime = LocalDateTime.of(get(YEAR), month, get(DAY_OF_MONTH), get(HOUR), get(MINUTE))
+        return ZonedDateTime
+          .of(localDateTime, timeZone.toZoneId())
+          .withZoneSameInstant(ZoneId.of("UTC"))
       }
     }
   }
