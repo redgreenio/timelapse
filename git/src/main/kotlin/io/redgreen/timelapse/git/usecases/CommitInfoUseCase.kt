@@ -6,6 +6,8 @@ import io.redgreen.timelapse.git.model.Ancestors.None
 import io.redgreen.timelapse.git.model.Ancestors.One
 import io.redgreen.timelapse.git.model.CommitHash
 import io.redgreen.timelapse.git.model.Identity
+import org.eclipse.jgit.lib.Repository
+import org.eclipse.jgit.revwalk.RevCommit
 import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -17,8 +19,6 @@ import java.util.Calendar.MINUTE
 import java.util.Calendar.MONTH
 import java.util.Calendar.YEAR
 import java.util.Date
-import org.eclipse.jgit.lib.Repository
-import org.eclipse.jgit.revwalk.RevCommit
 
 class CommitInfoUseCase(
   private val repository: Repository

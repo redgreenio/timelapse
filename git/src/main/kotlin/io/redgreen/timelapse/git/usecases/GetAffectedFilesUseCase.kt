@@ -11,8 +11,6 @@ import io.redgreen.timelapse.git.model.AffectedFile.Moved
 import io.redgreen.timelapse.git.model.CommitHash
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
-import java.io.File
-import java.time.Duration
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.ADD
 import org.eclipse.jgit.diff.DiffEntry.ChangeType.COPY
@@ -30,6 +28,8 @@ import org.eclipse.jgit.patch.HunkHeader
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.treewalk.EmptyTreeIterator
 import org.eclipse.jgit.util.io.DisabledOutputStream
+import java.io.File
+import java.time.Duration
 
 class GetAffectedFilesUseCase {
   data class Metric(val duration: Duration)

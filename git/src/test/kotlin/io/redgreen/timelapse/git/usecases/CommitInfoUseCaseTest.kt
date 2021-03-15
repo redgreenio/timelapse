@@ -23,18 +23,18 @@ import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.FullMessage
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Parent
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.ParentCount
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.ShortMessage
-import java.nio.charset.Charset
-import java.time.LocalDateTime
-import java.time.Month.OCTOBER
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.util.stream.Stream
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
+import java.nio.charset.Charset
+import java.time.LocalDateTime
+import java.time.Month.OCTOBER
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.util.stream.Stream
 
 class CommitInfoUseCaseTest {
   private val useCase = CommitInfoUseCase(GitTestbed.repository)

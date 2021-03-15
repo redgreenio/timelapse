@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.git.model
 
 import io.sentry.Sentry
-import java.io.File
-import java.util.Optional
 import org.eclipse.jgit.lib.Constants.HEAD
 import org.eclipse.jgit.lib.RepositoryBuilder
+import java.io.File
+import java.util.Optional
 
 /* Not using a data class here because it can still expose a private constructor via copy constructors.
  * Therefore, we are also responsible for implementing [#hashCode], [#equals], and [#toString] functions. */

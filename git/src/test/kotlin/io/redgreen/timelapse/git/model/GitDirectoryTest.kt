@@ -3,10 +3,10 @@ package io.redgreen.timelapse.git.model
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.fixtures.GitTestbed
 import io.redgreen.timelapse.fixtures.SimpleAndroid
-import java.io.File
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import java.io.File
 
 internal class GitDirectoryTest {
   companion object {
