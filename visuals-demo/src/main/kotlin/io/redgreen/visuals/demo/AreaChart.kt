@@ -24,9 +24,12 @@ private val areaChart = AreaChart().apply {
 
 @Suppress("unused")
 internal fun areaChartScene(): Scene {
-  return Scene(Pane().apply {
-    children.add(areaChart)
-    areaChart.prefWidthProperty().bind(widthProperty())
-    areaChart.prefHeightProperty().bind(heightProperty())
-  }, areaChartWidth.toDouble(), areaChartHeight.toDouble())
+  return Scene(
+    Pane().apply {
+      children.add(areaChart)
+      areaChart.prefWidthProperty().bind(widthProperty())
+      areaChart.prefHeightProperty().bind(heightProperty())
+    },
+    areaChartWidth.toDouble(), areaChartHeight.toDouble()
+  )
 }
