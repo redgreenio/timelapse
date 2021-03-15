@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.fixtures
 
-import java.io.File
 import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
+import java.io.File
 
 private const val FILE_IN_ROOT_DIRECTORY = ".northstar"
 private val GIT_REPOS_ROOT = "${findProjectRoot()}/.git/modules/fixtures/"
