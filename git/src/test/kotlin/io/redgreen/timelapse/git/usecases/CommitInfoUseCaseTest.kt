@@ -15,8 +15,8 @@ import io.redgreen.timelapse.git.model.CommitHash
 import io.redgreen.timelapse.git.model.Identity
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Author
-import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.AuthoredLocalDateTime
-import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.CommittedLocalDateTime
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.AuthoredZonedDateTime
+import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.CommittedZonedDateTime
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Committer
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.Encoding
 import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.FullMessage
@@ -26,6 +26,8 @@ import io.redgreen.timelapse.git.usecases.CommitInfoUseCase.Property.ShortMessag
 import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.Month.OCTOBER
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.stream.Stream
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -61,8 +63,8 @@ class CommitInfoUseCaseTest {
         ParentCount to 1,
         Author to Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
         Committer to Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
-        AuthoredLocalDateTime to LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
-        CommittedLocalDateTime to LocalDateTime.of(2020, OCTOBER, 16, 7, 14),
+        AuthoredZonedDateTime to LocalDateTime.of(2020, OCTOBER, 16, 6, 2).toUtc(),
+        CommittedZonedDateTime to LocalDateTime.of(2020, OCTOBER, 16, 7, 14).toUtc(),
         Parent to Ancestors.One(CommitHash(exhibitA)), // "b6748190194e697df97d3dd9801af4f55d763ef9"
       )
         .map { Arguments.of(it) }
@@ -128,7 +130,7 @@ class CommitInfoUseCaseTest {
   @Test
   fun `it should query 4 properties`() {
     // when
-    val tuple4 = useCase.invoke(commitHash, ShortMessage, Author, AuthoredLocalDateTime, Committer, ::Tuple4)
+    val tuple4 = useCase.invoke(commitHash, ShortMessage, Author, AuthoredZonedDateTime, Committer, ::Tuple4)
 
     // then
     assertThat(tuple4)
@@ -136,7 +138,7 @@ class CommitInfoUseCaseTest {
         Tuple4(
           "exhibit b: add a new file",
           Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
-          LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
+          LocalDateTime.of(2020, OCTOBER, 16, 6, 2).toUtc(),
           Identity("Ragunath Jawahar", "ragunath@redgreen.io")
         )
       )
@@ -149,9 +151,9 @@ class CommitInfoUseCaseTest {
       commitHash,
       ShortMessage,
       Author,
-      AuthoredLocalDateTime,
+      AuthoredZonedDateTime,
       Committer,
-      CommittedLocalDateTime,
+      CommittedZonedDateTime,
       ::Tuple5
     )
 
@@ -161,9 +163,9 @@ class CommitInfoUseCaseTest {
         Tuple5(
           "exhibit b: add a new file",
           Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
-          LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
+          LocalDateTime.of(2020, OCTOBER, 16, 6, 2).toUtc(),
           Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
-          LocalDateTime.of(2020, OCTOBER, 16, 7, 14)
+          LocalDateTime.of(2020, OCTOBER, 16, 7, 14).toUtc()
         )
       )
   }
@@ -175,9 +177,9 @@ class CommitInfoUseCaseTest {
       commitHash,
       ShortMessage,
       Author,
-      AuthoredLocalDateTime,
+      AuthoredZonedDateTime,
       Committer,
-      CommittedLocalDateTime,
+      CommittedZonedDateTime,
       ParentCount,
       ::Tuple6
     )
@@ -188,11 +190,15 @@ class CommitInfoUseCaseTest {
         Tuple6(
           "exhibit b: add a new file",
           Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
-          LocalDateTime.of(2020, OCTOBER, 16, 6, 2),
+          LocalDateTime.of(2020, OCTOBER, 16, 6, 2).toUtc(),
           Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
-          LocalDateTime.of(2020, OCTOBER, 16, 7, 14),
+          LocalDateTime.of(2020, OCTOBER, 16, 7, 14).toUtc(),
           1
         )
       )
   }
 }
+
+private fun LocalDateTime.toUtc(): ZonedDateTime =
+  ZonedDateTime.of(this, ZoneId.of("Asia/Kolkata"))
+    .withZoneSameInstant(ZoneId.of("UTC"))
