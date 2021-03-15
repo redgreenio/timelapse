@@ -23,6 +23,7 @@ class TimelapsePlugin : Plugin<Project> {
       configureJUnit()
       configureVersions()
       configureDetekt()
+      configureKtlint()
     }
   }
 
@@ -105,5 +106,9 @@ class TimelapsePlugin : Plugin<Project> {
         txt.enabled = false
       }
     }
+  }
+
+  private fun Project.configureKtlint() {
+    apply { plugin("org.jlleitschuh.gradle.ktlint") }
   }
 }

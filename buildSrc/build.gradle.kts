@@ -14,6 +14,7 @@ dependencies {
   implementation("com.github.ben-manes:gradle-versions-plugin:0.38.0")
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.16.0")
   implementation("org.openjfx:javafx-plugin:0.0.9")
+  implementation("org.jlleitschuh.gradle:ktlint-gradle:10.0.0")
 }
 
 gradlePlugin {
