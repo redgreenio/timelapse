@@ -4,7 +4,7 @@ import com.spotify.mobius.First
 import com.spotify.mobius.MobiusLoop
 import com.spotify.mobius.Next
 
-class DevLogger<M, E, F> : MobiusLoop.Logger<M, E,  F> {
+class DevLogger<M, E, F> : MobiusLoop.Logger<M, E, F> {
   private companion object {
     private const val printLogs = false
   }
