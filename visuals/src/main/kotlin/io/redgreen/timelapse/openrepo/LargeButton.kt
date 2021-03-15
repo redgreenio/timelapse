@@ -25,11 +25,13 @@ class LargeButton(
   }
 
   init {
-    background = Background(BackgroundFill(
-      Color.web("#DCEDFE"),
-      CornerRadii(4.0),
-      Insets.EMPTY
-    ))
+    background = Background(
+      BackgroundFill(
+        Color.web("#DCEDFE"),
+        CornerRadii(4.0),
+        Insets.EMPTY
+      )
+    )
 
     val vBox = VBox().apply {
       val titleLabel = Label(title).apply {
