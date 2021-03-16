@@ -1,5 +1,8 @@
+import java.net.URI
+
 repositories {
   mavenCentral()
+  mavenCentral { url = URI.create("https://plugins.gradle.org/m2/") }
   gradlePluginPortal()
 }
 
