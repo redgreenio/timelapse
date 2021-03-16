@@ -4,11 +4,7 @@ Timelapse onboards developers onto codebases before you make that cup of instant
 
 ## Project setup
 
-### Prerequisite
-
-You should also have access to the [git-testbed](https://github.com/redgreenio/git-testbed) repository.
-
-### Cloning
+### Clone
 
 The repository has submodules. If you haven't cloned the repository already, run:
 
@@ -23,7 +19,7 @@ then run,
 git submodule update --init --recursive
 ```
 
-### Verification
+### Verify & run
 
 `cd` into the project directory and run the following Gradle tasks.
 
@@ -33,13 +29,13 @@ git submodule update --init --recursive
 gradlew test run
 ```
 
-***nix**
+**Linux & macOS**
 
 ```shell
 ./gradlew test run
 ```
 
-If the build succeeds, you should be able to see this screen! (or something even better)
+If the build succeeds, you should be able to see this screen!
 
 ![Verified](docs/images/verified.png)
 
