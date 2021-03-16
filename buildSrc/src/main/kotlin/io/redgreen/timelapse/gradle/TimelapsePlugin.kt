@@ -2,6 +2,7 @@ package io.redgreen.timelapse.gradle
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import com.github.benmanes.gradle.versions.updates.gradle.GradleReleaseChannel
+import deps
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import org.gradle.api.Plugin
@@ -11,6 +12,7 @@ import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import plugins as pluginDeps
 
 class TimelapsePlugin : Plugin<Project> {
   private val inUseFreeCompilerArgs = listOf("-Xinline-classes")
@@ -41,11 +43,11 @@ class TimelapsePlugin : Plugin<Project> {
   }
 
   private fun Project.configureKotlin() {
-    apply { plugin("org.jetbrains.kotlin.jvm") }
+    apply { plugin(pluginDeps.kotlinJvm.id) }
 
     tasks.withType<KotlinCompile>().configureEach {
       kotlinOptions {
-        jvmTarget = "15"
+        jvmTarget = deps.versions.java
         @Suppress("SuspiciousCollectionReassignment")
         freeCompilerArgs += inUseFreeCompilerArgs
         useIR = true
@@ -54,7 +56,7 @@ class TimelapsePlugin : Plugin<Project> {
   }
 
   private fun Project.configureJacoco() {
-    apply { plugin("jacoco") }
+    apply { plugin(pluginDeps.jacoco.id) }
 
     tasks.withType<JacocoReport> {
       reports {
@@ -78,7 +80,7 @@ class TimelapsePlugin : Plugin<Project> {
       return !stableKeyword && !regex.matches(version)
     }
 
-    apply { plugin("com.github.ben-manes.versions") }
+    apply { plugin(pluginDeps.versions.id) }
 
     tasks.withType<DependencyUpdatesTask> {
       gradleReleaseChannel = GradleReleaseChannel.CURRENT.id
@@ -90,14 +92,14 @@ class TimelapsePlugin : Plugin<Project> {
   }
 
   private fun Project.configureDetekt() {
-    apply { plugin("io.gitlab.arturbosch.detekt") }
+    apply { plugin(pluginDeps.detekt.id) }
 
     tasks.withType<DetektCreateBaselineTask> {
       baseline.set(file("$projectDir/detekt/baseline.xml"))
     }
 
     tasks.withType<Detekt> {
-      jvmTarget = "15"
+      jvmTarget = deps.versions.java
       baseline.set(file("$projectDir/detekt/baseline.xml"))
 
       with(reports) {
@@ -109,6 +111,6 @@ class TimelapsePlugin : Plugin<Project> {
   }
 
   private fun Project.configureKtlint() {
-    apply { plugin("org.jlleitschuh.gradle.ktlint") }
+    apply { plugin(pluginDeps.ktlint.id) }
   }
 }
