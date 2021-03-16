@@ -10,24 +10,8 @@ on:
       - main
 
 jobs:
-  detekt:
-    name: Detekt
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 15
-
-      - name: Run Detekt
-        run: ./gradlew detekt
-
-  unit-tests:
-    name: Unit Tests
+  build-verification:
+    name: Build Verfication
     runs-on: ubuntu-latest
 
     steps:
@@ -42,13 +26,13 @@ jobs:
         with:
           java-version: 15
 
-      - name: Install Git
-        run: sudo apt-get install git
+      - name: Run Detekt
+        run: ./gradlew detekt
 
       - name: Run Unit Tests with Coverage
         run: ./gradlew test jacocoTestReport
 
-      - name: Publish Test Report
+      - name: Publish Test Report (only during failures)
         uses: mikepenz/action-junit-report@v2
         if: ${{ failure() }}
         with:
