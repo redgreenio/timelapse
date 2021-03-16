@@ -21,7 +21,7 @@ class AffectedFilesSummaryTest {
       return listOf(
         listOf(FileCell(Added(TrackedFilePath("Hello.txt"), 12))) to "1 added",
         listOf(FileCell(Modified(TrackedFilePath("BeenHere.txt"), 96, 11))) to "1 modified",
-        listOf(FileCell(Moved(TrackedFilePath("InTheRightPlace.txt"), TrackedFilePath("WasHere.txt"), 1, 1))) to "1 moved",
+        listOf(FileCell(Moved(TrackedFilePath("NowHere.txt"), TrackedFilePath("WasHere.txt"), 1, 1))) to "1 moved",
         listOf(FileCell(Deleted(TrackedFilePath("ServedMyPurpose.txt"), 101))) to "1 deleted",
       )
     }

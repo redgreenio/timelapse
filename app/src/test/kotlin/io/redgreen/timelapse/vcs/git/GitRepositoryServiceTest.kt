@@ -400,7 +400,6 @@ class GitRepositoryServiceTest {
         }
     }
 
-    // FIXME: 04-12-2020 This is duplicated code. Consider moving these into a Gradle Test Fixtures project
     private fun getMergeBlobDiff(): BlobDiff.Merge {
       return BlobDiff.Merge(
         listOf(

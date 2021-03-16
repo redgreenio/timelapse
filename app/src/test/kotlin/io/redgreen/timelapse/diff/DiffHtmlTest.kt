@@ -3,7 +3,6 @@ package io.redgreen.timelapse.diff
 import org.approvaltests.Approvals
 import org.junit.jupiter.api.Test
 
-// FIXME: 19-11-2020 Approved files are too large and styling changes affect all tests,
 // consider tests that separate structure and style.
 class DiffHtmlTest {
   @Test
@@ -54,7 +53,7 @@ class DiffHtmlTest {
   fun `escape HTML characters`() {
     // given
     val rawXmlDiff = """
-      diff --git a/app/src/main/res/drawable/background_facility_progress_shimmer.xml b/app/src/main/res/drawable/background_facility_progress_shimmer.xml
+      diff --git a/facility_progress_shimmer.xml b/facility_progress_shimmer.xml
       new file mode 100644
       index 0000000..0a87cfd
       --- /dev/null
@@ -203,7 +202,7 @@ class DiffHtmlTest {
   fun `replace tabs with 4 spaces`() {
     // given
     val tabsDiff = """
-      diff --git a/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java b/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java
+      diff --git a/GitCloneTaskTest.java b/GitCloneTaskTest.java
       index 1d7187a..9f9d459 100644
       --- a/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java
       +++ b/org.eclipse.jgit.ant.test/src/org/eclipse/jgit/ant/tasks/GitCloneTaskTest.java

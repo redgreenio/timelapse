@@ -149,7 +149,7 @@ class FormattedDiffTest {
   fun `it should create a formatted diff with multiple sections`() {
     // given
     val rawDiff = """
-      diff --git a/retrofit/src/main/java/retrofit/RequestBuilder.java b/retrofit/src/main/java/retrofit/RequestBuilder.java
+      diff --git a/retrofit/RequestBuilder.java b/retrofit/RequestBuilder.java
       index 0b85c43..e49ded2 100644
       --- a/retrofit/src/main/java/retrofit/RequestBuilder.java
       +++ b/retrofit/src/main/java/retrofit/RequestBuilder.java
