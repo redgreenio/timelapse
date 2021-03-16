@@ -1,8 +1,8 @@
-package liftoff.affectedfiles.props.view
+package affectedfiles.props.view
 
+import affectedfiles.model.AffectingCommit
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
-import liftoff.affectedfiles.model.AffectingCommit
 
 interface AffectedFilesPropsUiView {
   fun populateGitDirectories(gitDirectories: List<GitDirectory>)

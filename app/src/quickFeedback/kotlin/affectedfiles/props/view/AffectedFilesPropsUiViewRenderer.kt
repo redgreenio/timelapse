@@ -1,5 +1,7 @@
-package liftoff.affectedfiles.props.view
+package affectedfiles.props.view
 
+import affectedfiles.model.AffectingCommit
+import affectedfiles.props.mobius.AffectedFilesPropsUiModel
 import com.spotify.diffuser.diffuser.Diffuser
 import com.spotify.diffuser.diffuser.Diffuser.into
 import com.spotify.diffuser.diffuser.Diffuser.intoAlways
@@ -10,8 +12,6 @@ import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
 import javafx.application.Platform
-import liftoff.affectedfiles.model.AffectingCommit
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel
 
 class AffectedFilesPropsUiViewRenderer(
   private val view: AffectedFilesPropsUiView

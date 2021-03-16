@@ -19,10 +19,20 @@ javafx {
   modules("javafx.controls", "javafx.web")
 }
 
+sourceSets {
+  create("quickFeedback") {
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().output
+  }
+}
+
+internal val quickFeedbackImplementation by configurations.getting {
+  extendsFrom(configurations.implementation.get())
+}
+
 dependencies {
   implementation(project(":visuals"))
   implementation(project(":design"))
-  implementation(project(":liftoff")) // TODO: 02/03/21 Create a new source set of exploratory tests
   implementation(project(":architecture"))
   implementation(project(":git"))
 
@@ -77,6 +87,8 @@ dependencies {
   testImplementation(deps.test.approvalTests)
 
   testImplementation(deps.mobius.test)
+
+  quickFeedbackImplementation(project(":liftoff"))
 }
 
 with(application) {

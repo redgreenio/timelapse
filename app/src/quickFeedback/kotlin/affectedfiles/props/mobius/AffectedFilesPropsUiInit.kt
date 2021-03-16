@@ -1,9 +1,9 @@
-package liftoff.affectedfiles.props.mobius
+package affectedfiles.props.mobius
 
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.DiscoverGitRepos
 import com.spotify.mobius.First
 import com.spotify.mobius.First.first
 import com.spotify.mobius.Init
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.DiscoverGitRepos
 
 object AffectedFilesPropsUiInit : Init<AffectedFilesPropsUiModel, AffectedFilesPropsUiEffect> {
   override fun init(

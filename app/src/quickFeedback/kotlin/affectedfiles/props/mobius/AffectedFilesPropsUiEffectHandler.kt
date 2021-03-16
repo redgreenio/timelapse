@@ -1,5 +1,14 @@
-package liftoff.affectedfiles.props.mobius
+package affectedfiles.props.mobius
 
+import affectedfiles.model.AffectingCommit
+import affectedfiles.props.callback.AffectedFileContextChangeListener
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.DiscoverGitRepos
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetCommitsAffectingFilePath
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetTrackedFiles
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.NotifyCommitSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.CommitsAffectingFilePathFetched
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitReposFound
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.TrackedFilePathsFetched
 import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Scheduler
@@ -12,15 +21,6 @@ import io.redgreen.timelapse.metrics.GetCommitsMetric
 import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
 import io.redgreen.timelapse.metrics.publishMetric
 import io.redgreen.timelapse.platform.SchedulersProvider
-import liftoff.affectedfiles.model.AffectingCommit
-import liftoff.affectedfiles.props.callback.AffectedFileContextChangeListener
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.DiscoverGitRepos
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetCommitsAffectingFilePath
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetTrackedFiles
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.NotifyCommitSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.CommitsAffectingFilePathFetched
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitReposFound
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.TrackedFilePathsFetched
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Repository

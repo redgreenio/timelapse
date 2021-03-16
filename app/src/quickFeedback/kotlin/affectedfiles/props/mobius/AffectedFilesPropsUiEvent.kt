@@ -1,8 +1,8 @@
-package liftoff.affectedfiles.props.mobius
+package affectedfiles.props.mobius
 
+import affectedfiles.model.AffectingCommit
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
-import liftoff.affectedfiles.model.AffectingCommit
 
 sealed class AffectedFilesPropsUiEvent {
   data class GitReposFound(

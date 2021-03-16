@@ -1,17 +1,17 @@
-package liftoff.affectedfiles.props.mobius
+package affectedfiles.props.mobius
 
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetCommitsAffectingFilePath
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetTrackedFiles
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffect.NotifyCommitSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.AffectingCommitSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.CommitsAffectingFilePathFetched
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.FilePathSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitRepoSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitReposFound
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.TrackedFilePathsFetched
 import com.spotify.mobius.Next
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetCommitsAffectingFilePath
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.GetTrackedFiles
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffect.NotifyCommitSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.AffectingCommitSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.CommitsAffectingFilePathFetched
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.FilePathSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitRepoSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitReposFound
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.TrackedFilePathsFetched
 
 object AffectedFilesPropsUiUpdate :
   Update<AffectedFilesPropsUiModel, AffectedFilesPropsUiEvent, AffectedFilesPropsUiEffect> {

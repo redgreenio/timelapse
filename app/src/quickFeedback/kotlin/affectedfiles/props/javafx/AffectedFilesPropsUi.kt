@@ -1,5 +1,16 @@
-package liftoff.affectedfiles.props.javafx
+package affectedfiles.props.javafx
 
+import affectedfiles.model.AffectingCommit
+import affectedfiles.props.callback.AffectedFileContextChangeListener
+import affectedfiles.props.mobius.AffectedFilesPropsUiEffectHandler
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.AffectingCommitSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.FilePathSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitRepoSelected
+import affectedfiles.props.mobius.AffectedFilesPropsUiInit
+import affectedfiles.props.mobius.AffectedFilesPropsUiModel
+import affectedfiles.props.mobius.AffectedFilesPropsUiUpdate
+import affectedfiles.props.view.AffectedFilesPropsUiView
+import affectedfiles.props.view.AffectedFilesPropsUiViewRenderer
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.liftoff.javafx.components.DiscoverGitDirectoriesComboBox
@@ -15,17 +26,6 @@ import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
 import javafx.collections.FXCollections
 import javafx.scene.control.Label
 import javafx.scene.layout.VBox
-import liftoff.affectedfiles.model.AffectingCommit
-import liftoff.affectedfiles.props.callback.AffectedFileContextChangeListener
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEffectHandler
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.AffectingCommitSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.FilePathSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiEvent.GitRepoSelected
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiInit
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiModel
-import liftoff.affectedfiles.props.mobius.AffectedFilesPropsUiUpdate
-import liftoff.affectedfiles.props.view.AffectedFilesPropsUiView
-import liftoff.affectedfiles.props.view.AffectedFilesPropsUiViewRenderer
 
 class AffectedFilesPropsUi(
   private val affectedFilesContextSubject: BehaviorSubject<AffectedFileContext>,

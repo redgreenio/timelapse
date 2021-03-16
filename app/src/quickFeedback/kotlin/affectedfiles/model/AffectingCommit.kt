@@ -1,4 +1,4 @@
-package liftoff.affectedfiles.model
+package affectedfiles.model
 
 import io.redgreen.timelapse.git.model.CommitHash
 

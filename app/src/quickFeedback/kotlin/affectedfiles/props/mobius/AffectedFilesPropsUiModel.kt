@@ -1,12 +1,12 @@
-package liftoff.affectedfiles.props.mobius
+package affectedfiles.props.mobius
 
+import affectedfiles.model.AffectingCommit
 import io.redgreen.architecture.mobius.AsyncOp
 import io.redgreen.architecture.mobius.AsyncOp.Companion.content
 import io.redgreen.architecture.mobius.AsyncOp.Companion.idle
 import io.redgreen.architecture.mobius.AsyncOp.Companion.inFlight
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.git.model.TrackedFilePath
-import liftoff.affectedfiles.model.AffectingCommit
 import java.util.Optional
 import java.util.Optional.empty
 

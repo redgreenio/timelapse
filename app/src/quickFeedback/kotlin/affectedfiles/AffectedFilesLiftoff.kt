@@ -1,5 +1,6 @@
-package liftoff.affectedfiles
+package affectedfiles
 
+import affectedfiles.props.javafx.AffectedFilesPropsUi
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.redgreen.liftoff.Liftoff
 import io.redgreen.timelapse.affectedfiles.contract.AffectedFileContext
@@ -12,7 +13,6 @@ import io.redgreen.timelapse.metrics.GetTrackedFilesMetric
 import javafx.application.Application
 import javafx.geometry.Dimension2D
 import javafx.scene.layout.Region
-import liftoff.affectedfiles.props.javafx.AffectedFilesPropsUi
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
