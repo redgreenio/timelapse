@@ -28,8 +28,8 @@ class TimelapseApp : Application() {
   override fun start(primaryStage: Stage) {
     val repositoryPath = if (parameters.raw.size != 0) parameters.raw.first() else null
     val shouldLaunchTimelapseScene = repositoryPath != null
-    val sceneToShow = if (shouldLaunchTimelapseScene) {
-      TimelapseScene(repositoryPath!!)
+    val sceneToShow = if (shouldLaunchTimelapseScene && repositoryPath != null) {
+      TimelapseScene(repositoryPath)
     } else {
       OpenRepoScene()
     }

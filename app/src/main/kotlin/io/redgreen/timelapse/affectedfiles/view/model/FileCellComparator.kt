@@ -21,13 +21,6 @@ object FileCellComparator : Comparator<FileCell> {
   private const val ZERO_BECAUSE_ADDED_FILE_CANT_HAVE_DELETIONS = 0
   private const val BOTH_ARE_SAME = 0
 
-  private val affectedFileRanks = mapOf(
-    Added::class to 1,
-    Modified::class to 2,
-    Moved::class to 3,
-    Deleted::class to 4,
-  )
-
   override fun compare(
     fileCell1: FileCell,
     fileCell2: FileCell
@@ -56,8 +49,12 @@ object FileCellComparator : Comparator<FileCell> {
     }
   }
 
-  private fun getRank(affectedFile: AffectedFile): Int =
-    affectedFileRanks[affectedFile::class]!!
+  private fun getRank(affectedFile: AffectedFile): Int = when (affectedFile) {
+    is Added -> 1
+    is Modified -> 2
+    is Moved -> 3
+    is Deleted -> 4
+  }
 
   private fun compareFileNames(
     filename1: String,
