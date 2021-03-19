@@ -10,7 +10,7 @@ object deps {
   }
 
   const val jgit = "org.eclipse.jgit:org.eclipse.jgit:5.10.0.202012080955-r"
-  const val caffeine = "com.github.ben-manes.caffeine:caffeine:3.0.0"
+  const val caffeine = "com.github.ben-manes.caffeine:caffeine:3.0.1"
   const val eventBus = "org.greenrobot:eventbus:3.2.0"
   const val commonsText = "org.apache.commons:commons-text:1.9"
   const val sentry = "io.sentry:sentry:4.3.0"
