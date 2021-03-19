@@ -3,7 +3,6 @@ plugins {
 }
 
 javafx {
-  version = "15"
   modules("javafx.controls")
 }
 
