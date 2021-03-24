@@ -55,7 +55,7 @@ fun main() {
     .filter { registry[it.filePath]!! > if (filterSingleChangeFiles) 1 else 0 }
     .filter { filesInCurrentRevision.contains(it.filePath) }
     .toMutableList()
-  couplingRows.sortDescending() //.sortByDescending { it.changeCount }
+  couplingRows.sortDescending() // .sortByDescending { it.changeCount }
 
   val table = table {
     header {
@@ -116,7 +116,7 @@ private fun isSameModule(
   changedFilePathDirectory: String
 ): Boolean {
   return changedFilePath.startsWith(inspectedFilePathDirectory) ||
-      (changedFilePathDirectory.isNotBlank() && inspectedFilePathDirectory.endsWith(changedFilePathDirectory))
+    (changedFilePathDirectory.isNotBlank() && inspectedFilePathDirectory.endsWith(changedFilePathDirectory))
 }
 
 @Suppress("SameParameterValue")

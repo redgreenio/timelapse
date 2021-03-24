@@ -1,10 +1,10 @@
 package toys
 
 import com.google.gson.Gson
-import java.io.File
-import java.io.FileNotFoundException
 import toys.FileSystemNode.Directory
 import toys.FileSystemNode.TextFile
+import java.io.File
+import java.io.FileNotFoundException
 
 private val exclusions = listOf(
   ".icns",
@@ -49,7 +49,7 @@ fun main() {
 
   filteredFiles
     .onEach {
-      val pathInGitRepository = "$projectName/${it}"
+      val pathInGitRepository = "$projectName/$it"
       val lineCount = try {
         countLines("${gitDirectory.absolutePath}/$it")
       } catch (e: FileNotFoundException) {

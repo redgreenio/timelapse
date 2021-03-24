@@ -1,13 +1,13 @@
 package toys
 
 import com.github.tomaslanger.chalk.Chalk
-import java.io.File
-import java.lang.Integer.parseInt
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE
 import toys.PercentChange.Decrease
 import toys.PercentChange.Increase
 import toys.PercentChange.NoChange
+import java.io.File
+import java.lang.Integer.parseInt
 
 abstract class Configuration(
   val gitDirectory: String,
@@ -78,7 +78,13 @@ fun main() {
   val releasePairs = firstCommitPlusReleases.zip(releaseCommits)
 
   val releaseDiffSummaries = releasePairs
-    .map { (branchA, branchB) -> getDiffStat(currentConfiguration.gitDirectory, branchA.second, branchB.second) to branchB }
+    .map { (branchA, branchB) ->
+      getDiffStat(
+        currentConfiguration.gitDirectory,
+        branchA.second,
+        branchB.second
+      ) to branchB
+    }
     .map { (diff, branch) -> diff.lines().takeLast(2).dropLast(1).first() to branch }
     .map { (summary, branch) -> displayName(branch.first) to parseSummary(summary) }
 
@@ -87,19 +93,34 @@ fun main() {
   val boundary =
     "============================================================================================================="
   println(boundary)
-  println("${Chalk.on("Releases").bold()}                 ║ ${Chalk.on("Files Changed").bold()} | ${Chalk.on("%").bold()}           ║ ${Chalk.on("Insertions").bold()} | ${Chalk.on("%").bold()}            ║ ${Chalk.on("Deletions").bold()} | ${Chalk.on("%").bold()}")
+  println(
+    "${Chalk.on("Releases").bold()}                 ║ ${Chalk.on("Files Changed").bold()} | ${
+    Chalk.on("%").bold()
+    }           ║ ${Chalk.on("Insertions").bold()} | ${Chalk.on("%").bold()}            ║ ${
+    Chalk.on("Deletions").bold()
+    } | ${Chalk.on("%").bold()}"
+  )
   println(boundary)
-  val firstReleaseDiffStat = parseSummary(getDiffStat(
-    currentConfiguration.gitDirectory,
-    currentConfiguration.firstCommitId,
-    releaseCommits.first().second
-  ).lines().takeLast(2).dropLast(1).first())
-  println(" (initial) -> ${displayName(releaseCommits.first().first)} ║ ${firstReleaseDiffStat.filesChanged.toString().padStart(13)} | ${"-".padStart(11)} ║ ${firstReleaseDiffStat.insertions.toString().padStart(10)} | ${"-".padStart(12)} ║ ${firstReleaseDiffStat.deletions.toString().padStart(9)} | ${"-".padStart(12)}")
+  val firstReleaseDiffStat = parseSummary(
+    getDiffStat(
+      currentConfiguration.gitDirectory,
+      currentConfiguration.firstCommitId,
+      releaseCommits.first().second
+    ).lines().takeLast(2).dropLast(1).first()
+  )
+  println(
+    " (initial) -> ${displayName(releaseCommits.first().first)} ║ ${
+    firstReleaseDiffStat.filesChanged.toString().padStart(13)
+    } | ${"-".padStart(11)} ║ ${
+    firstReleaseDiffStat.insertions.toString().padStart(10)
+    } | ${"-".padStart(12)} ║ ${firstReleaseDiffStat.deletions.toString().padStart(9)} | ${"-".padStart(12)}"
+  )
 
   releaseDiffSummaries.zip(releaseDiffSummariesWithoutFirst) { (previousBranch, previousDiffSummary), (currentBranch, currentDiffSummary) ->
     val filesChangedPercentChange =
       PercentChange.calculate(currentDiffSummary.filesChanged, previousDiffSummary.filesChanged)
-    val filesChangedSuffix = if (filesChangedPercentChange is Increase) "▲" else if (filesChangedPercentChange is Decrease) "▼" else ""
+    val filesChangedSuffix =
+      if (filesChangedPercentChange is Increase) "▲" else if (filesChangedPercentChange is Decrease) "▼" else ""
     val filesChangedPercentText = String.format("%.02f%% $filesChangedSuffix", filesChangedPercentChange.number)
 
     val insertionsPercentChange = PercentChange.calculate(currentDiffSummary.insertions, previousDiffSummary.insertions)
@@ -108,30 +129,39 @@ fun main() {
     val insertionsPercentText = String.format("%.02f%% $insertionsSuffix", insertionsPercentChange.number)
 
     val deletionsPercentChange = PercentChange.calculate(currentDiffSummary.deletions, previousDiffSummary.deletions)
-    val deletionsSuffix = if (deletionsPercentChange is Increase) "▲" else if (deletionsPercentChange is Decrease) "▼" else ""
-    val deletionsPercentText =  String.format("%.02f%% $deletionsSuffix", deletionsPercentChange.number)
+    val deletionsSuffix =
+      if (deletionsPercentChange is Increase) "▲" else if (deletionsPercentChange is Decrease) "▼" else ""
+    val deletionsPercentText = String.format("%.02f%% $deletionsSuffix", deletionsPercentChange.number)
 
     val versionChange = "$previousBranch -> $currentBranch"
 
-    val coloredDeletionsPercentText = when(deletionsPercentChange) {
+    val coloredDeletionsPercentText = when (deletionsPercentChange) {
       is Decrease -> Chalk.on(deletionsPercentText.padStart(12)).red()
       is Increase -> Chalk.on(deletionsPercentText.padStart(12)).green()
       NoChange -> Chalk.on(deletionsPercentText.padStart(12)).gray()
     }
 
-    val coloredInsertionsPercentText = when(insertionsPercentChange) {
+    val coloredInsertionsPercentText = when (insertionsPercentChange) {
       is Decrease -> Chalk.on(insertionsPercentText.padStart(12)).red()
       is Increase -> Chalk.on(insertionsPercentText.padStart(12)).green()
       NoChange -> Chalk.on(insertionsPercentText.padStart(12)).gray()
     }
 
-    val coloredFilesChangedPercentText = when(filesChangedPercentChange) {
+    val coloredFilesChangedPercentText = when (filesChangedPercentChange) {
       is Decrease -> Chalk.on(filesChangedPercentText.padStart(11)).red()
       is Increase -> Chalk.on(filesChangedPercentText.padStart(11)).green()
       NoChange -> Chalk.on(filesChangedPercentText.padStart(11)).red().gray()
     }
 
-    println("$versionChange ║ ${currentDiffSummary.filesChanged.toString().padStart(13)} | $coloredFilesChangedPercentText ║ ${currentDiffSummary.insertions.toString().padStart(10)} | $coloredInsertionsPercentText ║ ${currentDiffSummary.deletions.toString().padStart(9)} | $coloredDeletionsPercentText")
+    println(
+      "$versionChange ║ ${
+      currentDiffSummary.filesChanged.toString().padStart(13)
+      } | $coloredFilesChangedPercentText ║ ${
+      currentDiffSummary.insertions.toString().padStart(10)
+      } | $coloredInsertionsPercentText ║ ${
+      currentDiffSummary.deletions.toString().padStart(9)
+      } | $coloredDeletionsPercentText"
+    )
   }
   println(boundary)
 }
