@@ -3,7 +3,6 @@ package io.redgreen.timelapse.search
 import arrow.core.Tuple3
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.search.Occurrence.Segment
-import java.util.stream.Stream
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.params.ParameterizedTest
@@ -11,6 +10,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
 import org.junit.jupiter.params.provider.ValueSource
+import java.util.stream.Stream
 
 class FilePathIndexTest {
   private val filePaths = listOf(
@@ -86,7 +86,6 @@ class FilePathIndexTest {
 
     // when
     val matches = filePathIndex.search(extension)
-
 
     // then
     val expectedSegments = listOf(

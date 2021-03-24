@@ -22,6 +22,11 @@ fun main() {
 }
 
 class TimelapseExperimentApp : Application() {
+  companion object {
+    private const val WIDTH = 300.0
+    private const val HEIGHT = 400.0
+  }
+
   private val filePaths = listOf(
     "io/redgreen/timelapse/diff/Patch.kt",
     "io/redgreen/timelapse/diff/FormattedDiff.kt",
@@ -54,7 +59,7 @@ class TimelapseExperimentApp : Application() {
     showMatches(filePaths.map(::Match))
 
     with(primaryStage) {
-      scene = Scene(borderPane, 300.0, 400.0)
+      scene = Scene(borderPane, WIDTH, HEIGHT)
       show()
     }
   }
