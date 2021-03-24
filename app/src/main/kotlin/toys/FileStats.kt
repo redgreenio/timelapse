@@ -1,3 +1,5 @@
+@file:Suppress("MaxLineLength")
+
 package toys
 
 import com.google.gson.Gson

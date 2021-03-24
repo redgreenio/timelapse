@@ -1,13 +1,16 @@
+@file:Suppress("MagicNumber", "MaxLineLength", "LongMethod")
+
 package toys
 
 import com.github.tomaslanger.chalk.Chalk
+import java.io.File
+import java.lang.Integer.parseInt
+import java.util.Locale
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE
 import toys.PercentChange.Decrease
 import toys.PercentChange.Increase
 import toys.PercentChange.NoChange
-import java.io.File
-import java.lang.Integer.parseInt
 
 abstract class Configuration(
   val gitDirectory: String,
@@ -93,13 +96,7 @@ fun main() {
   val boundary =
     "============================================================================================================="
   println(boundary)
-  println(
-    "${Chalk.on("Releases").bold()}                 ║ ${Chalk.on("Files Changed").bold()} | ${
-    Chalk.on("%").bold()
-    }           ║ ${Chalk.on("Insertions").bold()} | ${Chalk.on("%").bold()}            ║ ${
-    Chalk.on("Deletions").bold()
-    } | ${Chalk.on("%").bold()}"
-  )
+  println("${Chalk.on("Releases").bold()}                 ║ ${Chalk.on("Files Changed").bold()} | ${Chalk.on("%").bold()}           ║ ${Chalk.on("Insertions").bold()} | ${Chalk.on("%").bold()}            ║ ${Chalk.on("Deletions").bold()} | ${Chalk.on("%").bold()}")
   println(boundary)
   val firstReleaseDiffStat = parseSummary(
     getDiffStat(
@@ -108,30 +105,17 @@ fun main() {
       releaseCommits.first().second
     ).lines().takeLast(2).dropLast(1).first()
   )
-  println(
-    " (initial) -> ${displayName(releaseCommits.first().first)} ║ ${
-    firstReleaseDiffStat.filesChanged.toString().padStart(13)
-    } | ${"-".padStart(11)} ║ ${
-    firstReleaseDiffStat.insertions.toString().padStart(10)
-    } | ${"-".padStart(12)} ║ ${firstReleaseDiffStat.deletions.toString().padStart(9)} | ${"-".padStart(12)}"
-  )
+  println(" (initial) -> ${displayName(releaseCommits.first().first)} ║ ${firstReleaseDiffStat.filesChanged.toString().padStart(13)} | ${"-".padStart(11)} ║ ${firstReleaseDiffStat.insertions.toString().padStart(10)} | ${"-".padStart(12)} ║ ${firstReleaseDiffStat.deletions.toString().padStart(9)} | ${"-".padStart(12)}")
 
   releaseDiffSummaries.zip(releaseDiffSummariesWithoutFirst) { (previousBranch, previousDiffSummary), (currentBranch, currentDiffSummary) ->
-    val filesChangedPercentChange =
-      PercentChange.calculate(currentDiffSummary.filesChanged, previousDiffSummary.filesChanged)
-    val filesChangedSuffix =
-      if (filesChangedPercentChange is Increase) "▲" else if (filesChangedPercentChange is Decrease) "▼" else ""
-    val filesChangedPercentText = String.format("%.02f%% $filesChangedSuffix", filesChangedPercentChange.number)
+    val (filesChangedPercentChange, filesChangedPercentText) =
+      percentText(currentDiffSummary.filesChanged, previousDiffSummary.filesChanged)
 
-    val insertionsPercentChange = PercentChange.calculate(currentDiffSummary.insertions, previousDiffSummary.insertions)
-    val insertionsSuffix =
-      if (insertionsPercentChange is Increase) "▲" else if (insertionsPercentChange is Decrease) "▼" else ""
-    val insertionsPercentText = String.format("%.02f%% $insertionsSuffix", insertionsPercentChange.number)
+    val (insertionsPercentChange, insertionsPercentText) =
+      percentText(currentDiffSummary.insertions, previousDiffSummary.insertions)
 
-    val deletionsPercentChange = PercentChange.calculate(currentDiffSummary.deletions, previousDiffSummary.deletions)
-    val deletionsSuffix =
-      if (deletionsPercentChange is Increase) "▲" else if (deletionsPercentChange is Decrease) "▼" else ""
-    val deletionsPercentText = String.format("%.02f%% $deletionsSuffix", deletionsPercentChange.number)
+    val (deletionsPercentChange, deletionsPercentText) =
+      percentText(currentDiffSummary.deletions, previousDiffSummary.deletions)
 
     val versionChange = "$previousBranch -> $currentBranch"
 
@@ -155,15 +139,25 @@ fun main() {
 
     println(
       "$versionChange ║ ${
-      currentDiffSummary.filesChanged.toString().padStart(13)
+        currentDiffSummary.filesChanged.toString().padStart(13)
       } | $coloredFilesChangedPercentText ║ ${
-      currentDiffSummary.insertions.toString().padStart(10)
+        currentDiffSummary.insertions.toString().padStart(10)
       } | $coloredInsertionsPercentText ║ ${
-      currentDiffSummary.deletions.toString().padStart(9)
+        currentDiffSummary.deletions.toString().padStart(9)
       } | $coloredDeletionsPercentText"
     )
   }
   println(boundary)
+}
+
+private fun percentText(
+  currentCount: Int,
+  previousCount: Int
+): Pair<PercentChange, String> {
+  val percentChange = PercentChange.calculate(currentCount, previousCount)
+  val suffix = if (percentChange is Increase) "▲" else if (percentChange is Decrease) "▼" else ""
+  val percentText = String.format(Locale.ENGLISH, "%.02f%% $suffix", percentChange.number)
+  return Pair(percentChange, percentText)
 }
 
 private fun getDiffStat(gitDirectory: String, commitA: String, commitB: String): String {

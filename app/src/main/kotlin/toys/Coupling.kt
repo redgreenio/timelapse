@@ -1,7 +1,10 @@
+@file:Suppress("MagicNumber")
+
 package toys
 
 import com.github.tomaslanger.chalk.Chalk
 import com.jakewharton.picnic.table
+import java.util.Locale
 import toys.Relationship.DifferentModule
 import toys.Relationship.SameModule
 import toys.Relationship.TestModule
@@ -80,13 +83,16 @@ fun main() {
         val relationship = guessRelationship(filePath, row.filePath)
         val filePathValue = relationship.colorByRelationship(row.filePath)
         val countByTotalCommits = relationship.colorByRelationship(" $count/$totalCommits ")
-        val couplingPercentText = relationship.colorByRelationship(String.format(" %.02f%% ", couplingDegreePercent))
+        val couplingPercentText = relationship.colorByRelationship(formatToPercent(couplingDegreePercent))
 
         row(filePathValue, countByTotalCommits, couplingPercentText)
       }
   }
   println(table)
 }
+
+private fun formatToPercent(couplingDegreePercent: Double) =
+  String.format(Locale.ENGLISH, " %.02f%% ", couplingDegreePercent)
 
 private fun Relationship.colorByRelationship(
   text: String

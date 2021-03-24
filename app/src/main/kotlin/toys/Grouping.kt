@@ -1,6 +1,6 @@
 package toys
 
-private const val filenames = """
+private const val FILENAMES = """
   DiscreteDomain.java
   NullsLastOrdering.java
   ImmutableSortedMap.java
@@ -227,7 +227,7 @@ private const val filenames = """
 """
 
 fun main() {
-  val groupedFiles = filenames
+  val groupedFiles = FILENAMES
     .split("\n")
     .map { it.trim() }
     .filter { it.isNotBlank() }
