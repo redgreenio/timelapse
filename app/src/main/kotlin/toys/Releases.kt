@@ -3,14 +3,14 @@
 package toys
 
 import com.github.tomaslanger.chalk.Chalk
-import java.io.File
-import java.lang.Integer.parseInt
-import java.util.Locale
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand.ListMode.REMOTE
 import toys.PercentChange.Decrease
 import toys.PercentChange.Increase
 import toys.PercentChange.NoChange
+import java.io.File
+import java.lang.Integer.parseInt
+import java.util.Locale
 
 abstract class Configuration(
   val gitDirectory: String,
@@ -139,11 +139,11 @@ fun main() {
 
     println(
       "$versionChange ║ ${
-        currentDiffSummary.filesChanged.toString().padStart(13)
+      currentDiffSummary.filesChanged.toString().padStart(13)
       } | $coloredFilesChangedPercentText ║ ${
-        currentDiffSummary.insertions.toString().padStart(10)
+      currentDiffSummary.insertions.toString().padStart(10)
       } | $coloredInsertionsPercentText ║ ${
-        currentDiffSummary.deletions.toString().padStart(9)
+      currentDiffSummary.deletions.toString().padStart(9)
       } | $coloredDeletionsPercentText"
     )
   }

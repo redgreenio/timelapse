@@ -4,10 +4,10 @@ package toys
 
 import com.github.tomaslanger.chalk.Chalk
 import com.jakewharton.picnic.table
-import java.util.Locale
 import toys.Relationship.DifferentModule
 import toys.Relationship.SameModule
 import toys.Relationship.TestModule
+import java.util.Locale
 
 typealias FilePath = String
 typealias Count = Int
