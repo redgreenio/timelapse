@@ -87,7 +87,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, invalidInitialCommitHash, invalidInitialCommitHash)
 
     // then
-    val actualThrowable = (either as Either.Left).a
+    val actualThrowable = (either as Either.Left).value
     assertThat(actualThrowable)
       .isInstanceOf(IllegalArgumentException::class.java)
     assertThat(actualThrowable.message)
@@ -105,7 +105,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, invalidDescendentHash, ancestorHash)
 
     // then
-    val actualThrowable = (either as Either.Left).a
+    val actualThrowable = (either as Either.Left).value
     assertThat(actualThrowable)
       .isInstanceOf(IllegalArgumentException::class.java)
     assertThat(actualThrowable.message)
@@ -123,7 +123,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, descendentHash, invalidAncestorHash)
 
     // then
-    val actualThrowable = (either as Either.Left).a
+    val actualThrowable = (either as Either.Left).value
     assertThat(actualThrowable)
       .isInstanceOf(IllegalArgumentException::class.java)
     assertThat(actualThrowable.message)
