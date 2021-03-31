@@ -26,7 +26,7 @@ fun Repository.getChangedFilesInCommit(commitId: String): List<ChangedFile> {
   val affectedFilesEither = GetAffectedFilesUseCase()
     .invoke(gitDirectory, CommitHash(commitId), ancestorCommitHash)
   if (affectedFilesEither is Either.Left) {
-    throw affectedFilesEither.a
+    throw affectedFilesEither.value
   }
 
   val affectedFiles = (affectedFilesEither as Either.Right).value
