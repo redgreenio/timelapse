@@ -18,7 +18,7 @@ object deps {
   const val controlsFx = "org.controlsfx:controlsfx:11.1.0"
 
   object arrow {
-    const val coreData = "io.arrow-kt:arrow-core-data:0.11.0"
+    const val coreData = "io.arrow-kt:arrow-core-data:0.12.0"
   }
 
   object rxJava2 {
