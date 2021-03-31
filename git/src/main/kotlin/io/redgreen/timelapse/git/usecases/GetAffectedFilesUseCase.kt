@@ -1,8 +1,6 @@
 package io.redgreen.timelapse.git.usecases
 
 import arrow.core.Either
-import arrow.core.Either.Companion.left
-import arrow.core.Either.Companion.right
 import io.redgreen.timelapse.git.model.AffectedFile
 import io.redgreen.timelapse.git.model.AffectedFile.Added
 import io.redgreen.timelapse.git.model.AffectedFile.Deleted
@@ -41,9 +39,9 @@ class GetAffectedFilesUseCase {
   ): Either<IllegalArgumentException, List<AffectedFile>> {
     RepositoryBuilder().setGitDir(File(gitDirectory.path)).build().use { repository ->
       return try {
-        right(getAffectedFiles(repository, descendent, ancestor))
+        Either.Right(getAffectedFiles(repository, descendent, ancestor))
       } catch (exception: IllegalArgumentException) {
-        left(exception)
+        Either.Left(exception)
       }
     }
   }
