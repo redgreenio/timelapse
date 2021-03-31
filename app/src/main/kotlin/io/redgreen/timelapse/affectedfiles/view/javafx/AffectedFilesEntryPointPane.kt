@@ -84,6 +84,6 @@ class AffectedFilesEntryPointPane :
     return Single
       .fromCallable { getAffectedFilesUseCase.invoke(gitDirectory, descendent, ancestor) }
       .publishMetric(GetAffectedFilesUseCase::Metric)
-      .flatMap { if (it is Either.Right) Single.just(it.b) else Single.error((it as Either.Left).a) }
+      .flatMap { if (it is Either.Right) Single.just(it.value) else Single.error((it as Either.Left).a) }
   }
 }

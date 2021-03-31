@@ -29,7 +29,7 @@ fun Repository.getChangedFilesInCommit(commitId: String): List<ChangedFile> {
     throw affectedFilesEither.a
   }
 
-  val affectedFiles = (affectedFilesEither as Either.Right).b
+  val affectedFiles = (affectedFilesEither as Either.Right).value
   return affectedFiles.map {
     when (it) {
       is AffectedFile.Added -> ChangedFile.Addition(it.filePath.value)

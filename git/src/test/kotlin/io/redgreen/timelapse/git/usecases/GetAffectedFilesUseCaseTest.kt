@@ -45,7 +45,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, CommitHash(descendent), CommitHash(ancestor))
 
     // then
-    val actualAffectedFiles = (either as Either.Right).b
+    val actualAffectedFiles = (either as Either.Right).value
     assertThat(actualAffectedFiles)
       .containsExactly(
         Added(TrackedFilePath(FILE_1_TXT), 0),
@@ -65,7 +65,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, descendent, ancestor)
 
     // then
-    val actualAffectedFiles = (either as Either.Right).b
+    val actualAffectedFiles = (either as Either.Right).value
     assertThat(actualAffectedFiles)
       .containsExactly(
         Modified(TrackedFilePath(FILE_1_TXT), 1, 1),
@@ -141,7 +141,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
 
     // then
-    val actualAffectedFiles = (either as Either.Right).b
+    val actualAffectedFiles = (either as Either.Right).value
     assertThat(actualAffectedFiles)
       .containsExactly(
         Modified(TrackedFilePath(FILE_1_TXT), 0, 1),
@@ -163,7 +163,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
 
     // then
-    val actualAffectedFiles = (either as Either.Right).b
+    val actualAffectedFiles = (either as Either.Right).value
     assertThat(actualAffectedFiles)
       .containsExactly(
         Added(TrackedFilePath(FILE_4_TXT), 0)
@@ -181,7 +181,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
 
     // then
-    val actualAffectedFiles = (either as Either.Right).b
+    val actualAffectedFiles = (either as Either.Right).value
     assertThat(actualAffectedFiles)
       .containsExactly(
         Modified(TrackedFilePath(FILE_1_TXT), 0, 1)
@@ -199,7 +199,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
 
     // then
-    val actualAffectedFiles = (either as Either.Right).b
+    val actualAffectedFiles = (either as Either.Right).value
     assertThat(actualAffectedFiles)
       .containsExactly(
         Deleted(TrackedFilePath(FILE_4_TXT), 0)
@@ -217,7 +217,7 @@ internal class GetAffectedFilesUseCaseTest {
       .invoke(gitTestbedGitDirectory, descendentCommitHash, ancestorCommitHash)
 
     // then
-    val actualAffectedFiles = (either as Either.Right).b
+    val actualAffectedFiles = (either as Either.Right).value
     assertThat(actualAffectedFiles)
       .containsExactly(
         Moved(TrackedFilePath(FILE_4_TXT), TrackedFilePath(FILE_1_COPY_TXT), 0, 0)
