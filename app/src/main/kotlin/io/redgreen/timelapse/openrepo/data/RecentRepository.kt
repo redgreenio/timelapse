@@ -15,12 +15,13 @@ data class RecentRepository(
   }
 
   init {
-    require(path.endsWith(GIT_DIRECTORY)) { "Path should end with a '.git' directory, but was: $path" }
+    val endsWithGitDirectory = isGitDirectory(path)
+    require(endsWithGitDirectory) { "Path should end with a '.git' directory, but was: $path" }
   }
 
   val title: String by fastLazy {
-    if (path.endsWith(GIT_DIRECTORY)) {
-      path.split(File.separatorChar).dropLast(1).last()
+    if (isGitDirectory(path)) {
+      path.split(File.separatorChar).filter { it.isNotEmpty() }.dropLast(1).last()
     } else {
       path.substring(path.lastIndexOf(File.separatorChar) + 1)
     }
@@ -32,14 +33,20 @@ data class RecentRepository(
     } else {
       TILDE
     }
-    return if (path.endsWith(GIT_DIRECTORY)) {
+    return if (isGitDirectory(path)) {
+      val segmentsToDrop = if (path.endsWith(File.separatorChar)) 2 else 1
       path
         .replace(userHomeDirectoryPath, replacement)
         .split(File.separatorChar)
-        .dropLast(1)
+        .dropLast(segmentsToDrop)
         .joinToString("${File.separatorChar}")
     } else {
       path.replace(userHomeDirectoryPath, replacement)
     }
+  }
+
+  private fun isGitDirectory(path: String): Boolean {
+    return path.endsWith(GIT_DIRECTORY) ||
+      path.endsWith("$GIT_DIRECTORY${File.separatorChar}")
   }
 }

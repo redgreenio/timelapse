@@ -75,4 +75,14 @@ class RecentRepositoryTest {
     assertThat(exception.message)
       .isEqualTo("Path should end with a '.git' directory, but was: $invalidDirectoryPath")
   }
+
+  @Test
+  fun `it should allow dot git directories with a trailing slash`() {
+    val path = "$userHome/PyCharmProjects/django/.git/"
+
+    assertThat(RecentRepository(path).title)
+      .isEqualTo("django")
+    assertThat(RecentRepository(path).subtitle(userHome))
+      .isEqualTo("~/PyCharmProjects/django")
+  }
 }
