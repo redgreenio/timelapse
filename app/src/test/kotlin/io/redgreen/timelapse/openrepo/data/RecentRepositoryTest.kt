@@ -56,7 +56,16 @@ class RecentRepositoryTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = ["/Users/varsha/mobius-demo"])
+  @ValueSource(
+    strings = [
+      "",
+      "/Users/varsha/mobius-demo",
+      "/Users/varsha/hello-world/git",
+      "/Users/varsha/todo/.gitignore",
+      "/Users/varsha/focus/.gitignore",
+      "/Users/varsha/zoom/.gi",
+    ]
+  )
   fun `it should not allow directory paths that don't point to a 'dot git' directory`(
     invalidDirectoryPath: String
   ) {
