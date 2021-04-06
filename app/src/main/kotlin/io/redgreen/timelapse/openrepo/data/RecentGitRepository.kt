@@ -4,6 +4,10 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.io.File
 
+/**
+ * Represents the path to a recently opened Git directory. The path should end with '.git', otherwise the
+ * constructor will throw an exception.
+ */
 @JsonClass(generateAdapter = true)
 data class RecentGitRepository(
   @Json(name = "path") val path: String
