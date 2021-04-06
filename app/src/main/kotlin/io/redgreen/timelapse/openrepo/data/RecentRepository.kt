@@ -19,8 +19,8 @@ data class RecentRepository(
     require(isGitDirectory(path)) { "Path should end with a '.git' directory, but was: $path" }
   }
 
-  val title: String by fastLazy {
-    path
+  fun title(): String {
+    return path
       .split(SEPARATOR_CHAR)
       .filter { it.isNotEmpty() }
       .dropLast(1)

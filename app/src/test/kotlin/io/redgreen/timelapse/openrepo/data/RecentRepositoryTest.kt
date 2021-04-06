@@ -12,7 +12,7 @@ class RecentRepositoryTest {
   @Test
   fun `it should use the name of the leaf directory as title`() {
     val path = "$userHome/PyCharmProjects/django/.git"
-    assertThat(RecentRepository(path).title)
+    assertThat(RecentRepository(path).title())
       .isEqualTo("django")
   }
 
@@ -44,7 +44,7 @@ class RecentRepositoryTest {
   @Test
   fun `it should use the name of the project directory if the path is pointing to a git directory`() {
     val path = "/django/.git"
-    assertThat(RecentRepository(path).title)
+    assertThat(RecentRepository(path).title())
       .isEqualTo("django")
   }
 
@@ -80,7 +80,7 @@ class RecentRepositoryTest {
   fun `it should allow dot git directories with a trailing slash`() {
     val path = "$userHome/PyCharmProjects/django/.git/"
 
-    assertThat(RecentRepository(path).title)
+    assertThat(RecentRepository(path).title())
       .isEqualTo("django")
     assertThat(RecentRepository(path).subtitle(userHome))
       .isEqualTo("~/PyCharmProjects/django")

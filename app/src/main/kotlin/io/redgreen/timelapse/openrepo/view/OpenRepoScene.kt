@@ -207,7 +207,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     recentRepository: RecentRepository,
     index: Int
   ): LargeButton {
-    val title = recentRepository.title
+    val title = recentRepository.title()
     val subtitle = recentRepository.subtitle()
 
     return LargeButton(title, subtitle).apply {
