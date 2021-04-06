@@ -33,16 +33,12 @@ data class RecentRepository(
     } else {
       TILDE
     }
-    return if (isGitDirectory(path)) {
-      val segmentsToDrop = if (path.endsWith(File.separatorChar)) 2 else 1
-      path
-        .replace(userHomeDirectoryPath, replacement)
-        .split(File.separatorChar)
-        .dropLast(segmentsToDrop)
-        .joinToString("${File.separatorChar}")
-    } else {
-      path.replace(userHomeDirectoryPath, replacement)
-    }
+    val segmentsToDrop = if (path.endsWith(File.separatorChar)) 2 else 1
+    return path
+      .replace(userHomeDirectoryPath, replacement)
+      .split(File.separatorChar)
+      .dropLast(segmentsToDrop)
+      .joinToString("${File.separatorChar}")
   }
 
   private fun isGitDirectory(path: String): Boolean {
