@@ -85,4 +85,14 @@ class RecentGitRepositoryTest {
     assertThat(RecentGitRepository(path).subtitle(userHome))
       .isEqualTo("~/PyCharmProjects/django")
   }
+
+  @Test
+  fun `it should get title and subtitle for a root git repository`() {
+    val path = "/retrofit/.git/"
+
+    assertThat(RecentGitRepository(path).title())
+      .isEqualTo("retrofit")
+    assertThat(RecentGitRepository(path).subtitle(userHome))
+      .isEqualTo("/retrofit")
+  }
 }
