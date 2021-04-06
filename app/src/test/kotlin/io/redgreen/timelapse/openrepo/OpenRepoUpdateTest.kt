@@ -6,7 +6,7 @@ import com.spotify.mobius.test.NextMatchers.hasNoEffects
 import com.spotify.mobius.test.NextMatchers.hasNoModel
 import com.spotify.mobius.test.UpdateSpec.assertThatNext
 import io.redgreen.architecture.mobius.spec
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import org.junit.jupiter.api.Test
 
 class OpenRepoUpdateTest {
@@ -123,7 +123,7 @@ class OpenRepoUpdateTest {
       "~/Users/ajay/GitHubProjects/angular/.git",
       "~/Users/ajay/GitHubProjects/JGit/.git"
     )
-      .map(::RecentRepository)
+      .map(::RecentGitRepository)
 
     withUpdateSpec
       .given(gitUsernameFound)
@@ -153,7 +153,7 @@ class OpenRepoUpdateTest {
   fun `when the user selects a recent repository, then update the recent repos list and open the repository`() {
     val retrofit = "/Users/ajay/IdeaProjects/retrofit/.git"
     val angular = "~/GitHubProjects/angular/.git"
-    val recentRepositories = listOf(retrofit, angular).map(::RecentRepository)
+    val recentRepositories = listOf(retrofit, angular).map(::RecentGitRepository)
 
     val hasRecentRepositories = gitUsernameFound
       .hasRecentRepositories(recentRepositories)

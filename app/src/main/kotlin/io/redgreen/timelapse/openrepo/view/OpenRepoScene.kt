@@ -18,7 +18,7 @@ import io.redgreen.timelapse.openrepo.OpenRepoInit
 import io.redgreen.timelapse.openrepo.OpenRepoModel
 import io.redgreen.timelapse.openrepo.OpenRepoUpdate
 import io.redgreen.timelapse.openrepo.TitledSeparator
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene.RecentProjectsLayer.NO_RECENT_PROJECTS
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene.RecentProjectsLayer.RECENT_PROJECTS_LIST
@@ -162,7 +162,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   }
 
   override fun displayRecentRepositories(
-    recentRepositories: List<RecentRepository>
+    recentGitRepositories: List<RecentGitRepository>
   ) {
     // FIXME: 12/12/20 This requires a proper fix. The list is duplicated whenever render is called.
     // Call this function only if previous list is different from the current list.
@@ -170,7 +170,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
       return
     }
     recentProjectsLayers.show(RECENT_PROJECTS_LIST)
-    val recentRepositoriesButtons = recentRepositories.mapIndexed { index, recentRepository ->
+    val recentRepositoriesButtons = recentGitRepositories.mapIndexed { index, recentRepository ->
       buildRecentRepositoryButton(recentRepository, index)
     }
     recentProjectsList.children.addAll(recentRepositoriesButtons)
@@ -204,11 +204,11 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   }
 
   private fun buildRecentRepositoryButton(
-    recentRepository: RecentRepository,
+    recentGitRepository: RecentGitRepository,
     index: Int
   ): LargeButton {
-    val title = recentRepository.title()
-    val subtitle = recentRepository.subtitle()
+    val title = recentGitRepository.title()
+    val subtitle = recentGitRepository.subtitle()
 
     return LargeButton(title, subtitle).apply {
       setOnMouseClicked { mobiusDelegate.notify(OpenRecentRepository(index)) }

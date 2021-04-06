@@ -5,7 +5,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.architecture.mobius.testCase
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
@@ -105,7 +105,7 @@ class OpenRepoEffectHandlerTest {
     testCase.dispatch(UpdateRecentRepositories(repositoryPath))
 
     // then
-    verify(recentRepositoriesStorage).update(RecentRepository(repositoryPath))
+    verify(recentRepositoriesStorage).update(RecentGitRepository(repositoryPath))
     verifyNoMoreInteractions(recentRepositoriesStorage)
 
     testCase
@@ -165,7 +165,7 @@ class OpenRepoEffectHandlerTest {
       "~/IdeaProjects/timelapse/.git",
       "~/IdeaProjects/square/retrofit/.git"
     )
-      .map(::RecentRepository)
+      .map(::RecentGitRepository)
 
     whenever(recentRepositoriesStorage.getRecentRepositories())
       .thenReturn(recentRepositories)

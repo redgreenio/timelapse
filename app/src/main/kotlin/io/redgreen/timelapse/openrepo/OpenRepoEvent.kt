@@ -2,7 +2,7 @@ package io.redgreen.timelapse.openrepo
 
 import io.redgreen.architecture.mobius.annotations.EffectEvent
 import io.redgreen.architecture.mobius.annotations.UiEvent
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 
 sealed class OpenRepoEvent
 
@@ -42,7 +42,7 @@ object NoRecentRepositories : OpenRepoEvent()
 
 @EffectEvent(GetRecentRepositories::class)
 data class HasRecentRepositories(
-  val recentRepositories: List<RecentRepository>
+  val recentGitRepositories: List<RecentGitRepository>
 ) : OpenRepoEvent()
 
 @EffectEvent(GetRecentRepositories::class)

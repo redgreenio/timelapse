@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.openrepo.storage
 
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 
 interface RecentRepositoriesStorage {
-  fun update(recentRepository: RecentRepository)
-  fun getRecentRepositories(): List<RecentRepository>
+  fun update(recentGitRepository: RecentGitRepository)
+  fun getRecentRepositories(): List<RecentGitRepository>
 }

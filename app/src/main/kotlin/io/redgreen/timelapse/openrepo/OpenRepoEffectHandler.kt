@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Scheduler
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
 import io.redgreen.timelapse.git.model.GitDirectory
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.SchedulersProvider
@@ -33,7 +33,7 @@ class OpenRepoEffectHandler {
         )
         .addConsumer(
           UpdateRecentRepositories::class.java,
-          { recentRepositoriesStorage.update(RecentRepository(it.path)) },
+          { recentRepositoriesStorage.update(RecentGitRepository(it.path)) },
           schedulersProvider.io()
         )
         .addConsumer(OpenGitRepository::class.java, { view.openGitRepository(it.path) }, schedulersProvider.ui())

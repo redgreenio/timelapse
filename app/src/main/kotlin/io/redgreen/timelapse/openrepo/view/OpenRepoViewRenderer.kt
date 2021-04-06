@@ -7,7 +7,7 @@ import io.redgreen.architecture.mobius.AsyncOp.InFlight
 import io.redgreen.architecture.mobius.view.ViewRenderer
 import io.redgreen.timelapse.openrepo.OpenRepoModel
 import io.redgreen.timelapse.openrepo.data.GitUsername
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.LOADING
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_REPOSITORIES
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
@@ -24,7 +24,7 @@ class OpenRepoViewRenderer(
         displayWelcomeMessage(Greeter(model.gitUsername.username))
       }
 
-      when (model.recentRepositoriesAsyncOp.value) {
+      when (model.recentGitRepositoriesAsyncOp.value) {
         Idle, InFlight -> displayRecentRepositoriesStatus(LOADING)
         is Content -> showListOrEmpty(model)
         is Failure -> displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
@@ -33,8 +33,8 @@ class OpenRepoViewRenderer(
   }
 
   private fun OpenRepoView.showListOrEmpty(model: OpenRepoModel) {
-    val recentRepositoriesAsyncOp = model.recentRepositoriesAsyncOp
-    val recentRepositories = (recentRepositoriesAsyncOp as Content<List<RecentRepository>>).content
+    val recentRepositoriesAsyncOp = model.recentGitRepositoriesAsyncOp
+    val recentRepositories = (recentRepositoriesAsyncOp as Content<List<RecentGitRepository>>).content
     if (recentRepositories.isEmpty()) {
       displayRecentRepositoriesStatus(NO_RECENT_REPOSITORIES)
     } else {

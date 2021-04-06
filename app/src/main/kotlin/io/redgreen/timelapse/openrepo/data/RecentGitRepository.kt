@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 import java.io.File
 
 @JsonClass(generateAdapter = true)
-data class RecentRepository(
+data class RecentGitRepository(
   @Json(name = "path") val path: String
 ) {
   companion object {

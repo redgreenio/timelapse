@@ -2,7 +2,7 @@ package io.redgreen.timelapse.openrepo.storage
 
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.Moshi
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -38,7 +38,7 @@ class PreferencesRecentRepositoriesStorageIntegrationTest {
   @Test
   fun `it should return a recent repository if the storage had one`() {
     // given
-    val counterRepository = RecentRepository(counter)
+    val counterRepository = RecentGitRepository(counter)
     recentRepositoriesStorage.update(counterRepository)
 
     // when
@@ -52,7 +52,7 @@ class PreferencesRecentRepositoriesStorageIntegrationTest {
   @Test
   fun `it should return a list of recent repositories if the storage had more than one (in LIFO order)`() {
     // given
-    val recentRepositories = listOf(counter, helloServices).map(::RecentRepository)
+    val recentRepositories = listOf(counter, helloServices).map(::RecentGitRepository)
     recentRepositories.onEach(recentRepositoriesStorage::update)
 
     // when
@@ -61,8 +61,8 @@ class PreferencesRecentRepositoriesStorageIntegrationTest {
     // then
     assertThat(actualRecentRepositories)
       .containsExactly(
-        RecentRepository(helloServices),
-        RecentRepository(counter)
+        RecentGitRepository(helloServices),
+        RecentGitRepository(counter)
       )
       .inOrder()
   }
@@ -71,10 +71,10 @@ class PreferencesRecentRepositoriesStorageIntegrationTest {
   fun `it should move the recently opened repository to the top of the list`() {
     // given
     val catchUp = "~/AndroidStudioProjects/CatchUp/.git"
-    val recentRepositories = listOf(counter, helloServices, catchUp).reversed().map(::RecentRepository)
+    val recentRepositories = listOf(counter, helloServices, catchUp).reversed().map(::RecentGitRepository)
     recentRepositories.onEach(recentRepositoriesStorage::update)
 
-    recentRepositoriesStorage.update(RecentRepository(catchUp))
+    recentRepositoriesStorage.update(RecentGitRepository(catchUp))
 
     // when
     val actualRecentRepositories = recentRepositoriesStorage.getRecentRepositories()
@@ -82,9 +82,9 @@ class PreferencesRecentRepositoriesStorageIntegrationTest {
     // then
     assertThat(actualRecentRepositories)
       .containsExactly(
-        RecentRepository(catchUp),
-        RecentRepository(counter),
-        RecentRepository(helloServices)
+        RecentGitRepository(catchUp),
+        RecentGitRepository(counter),
+        RecentGitRepository(helloServices)
       )
       .inOrder()
   }

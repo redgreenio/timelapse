@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import io.redgreen.timelapse.openrepo.OpenRepoModel
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.LOADING
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_REPOSITORIES
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
@@ -100,17 +100,17 @@ class OpenRepoViewRendererTest {
   @Test
   fun `it should render recent repositories if available`() {
     // given
-    val recentRepositories = listOf(RecentRepository("~/IdeaProjects/JGit/.git"))
+    val recentGitRepositories = listOf(RecentGitRepository("~/IdeaProjects/JGit/.git"))
     val hasRecentRepositories = OpenRepoModel
       .start()
       .cannotFindGitUsername()
-      .hasRecentRepositories(recentRepositories)
+      .hasRecentRepositories(recentGitRepositories)
 
     // when
     viewRenderer.render(hasRecentRepositories)
 
     // then
     verify(view).displayWelcomeMessage(Stranger)
-    verify(view).displayRecentRepositories(recentRepositories)
+    verify(view).displayRecentRepositories(recentGitRepositories)
   }
 }

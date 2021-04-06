@@ -5,11 +5,11 @@ import io.redgreen.architecture.mobius.AsyncOp.Companion.content
 import io.redgreen.architecture.mobius.AsyncOp.Companion.failure
 import io.redgreen.architecture.mobius.AsyncOp.Companion.idle
 import io.redgreen.timelapse.openrepo.data.GitUsername
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 
 data class OpenRepoModel(
   val gitUsername: GitUsername,
-  val recentRepositoriesAsyncOp: AsyncOp<List<RecentRepository>, GetRecentRepositories.Failure> = idle()
+  val recentGitRepositoriesAsyncOp: AsyncOp<List<RecentGitRepository>, GetRecentRepositories.Failure> = idle()
 ) {
   companion object {
     fun start(): OpenRepoModel {
@@ -28,16 +28,16 @@ data class OpenRepoModel(
   }
 
   fun noRecentRepositories(): OpenRepoModel {
-    return copy(recentRepositoriesAsyncOp = content(emptyList()))
+    return copy(recentGitRepositoriesAsyncOp = content(emptyList()))
   }
 
   fun hasRecentRepositories(
-    recentRepositories: List<RecentRepository>
+    recentGitRepositories: List<RecentGitRepository>
   ): OpenRepoModel {
-    return copy(recentRepositoriesAsyncOp = content(recentRepositories))
+    return copy(recentGitRepositoriesAsyncOp = content(recentGitRepositories))
   }
 
   fun failedToGetRecentRepositories(): OpenRepoModel {
-    return copy(recentRepositoriesAsyncOp = failure(GetRecentRepositories.Failure.Unknown))
+    return copy(recentGitRepositoriesAsyncOp = failure(GetRecentRepositories.Failure.Unknown))
   }
 }

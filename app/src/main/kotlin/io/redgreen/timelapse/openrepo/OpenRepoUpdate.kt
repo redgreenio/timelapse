@@ -5,7 +5,7 @@ import com.spotify.mobius.Next.dispatch
 import com.spotify.mobius.Next.next
 import com.spotify.mobius.Update
 import io.redgreen.architecture.mobius.AsyncOp.Content
-import io.redgreen.timelapse.openrepo.data.RecentRepository
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 
 object OpenRepoUpdate : Update<OpenRepoModel, OpenRepoEvent, OpenRepoEffect> {
   override fun update(
@@ -27,10 +27,10 @@ object OpenRepoUpdate : Update<OpenRepoModel, OpenRepoEvent, OpenRepoEffect> {
 
       is GitRepositoryNotDetected -> dispatch(setOf(ShowNotAGitRepositoryError(event.path)))
       is NoRecentRepositories -> next(model.noRecentRepositories())
-      is HasRecentRepositories -> next(model.hasRecentRepositories(event.recentRepositories))
+      is HasRecentRepositories -> next(model.hasRecentRepositories(event.recentGitRepositories))
       is UnableToGetRecentRepositories -> next(model.failedToGetRecentRepositories())
       is OpenRecentRepository -> {
-        val path = (model.recentRepositoriesAsyncOp as Content<List<RecentRepository>>).content[event.index].path
+        val path = (model.recentGitRepositoriesAsyncOp as Content<List<RecentGitRepository>>).content[event.index].path
         dispatch(setOf(UpdateRecentRepositories(path), OpenGitRepository(path)))
       }
     }
