@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Scheduler
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
-import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
+import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.SchedulersProvider
 import org.slf4j.LoggerFactory
@@ -19,7 +19,7 @@ class OpenRepoEffectHandler {
 
     fun from(
       gitDetector: GitDetector,
-      recentRepositoriesStorage: RecentRepositoriesStorage,
+      recentGitRepositoriesStorage: RecentGitRepositoriesStorage,
       view: OpenRepoView,
       schedulersProvider: SchedulersProvider
     ): ObservableTransformer<OpenRepoEffect, OpenRepoEvent> {
@@ -33,7 +33,7 @@ class OpenRepoEffectHandler {
         )
         .addConsumer(
           UpdateRecentRepositories::class.java,
-          { recentRepositoriesStorage.update(RecentGitRepository(it.path)) },
+          { recentGitRepositoriesStorage.update(RecentGitRepository(it.path)) },
           schedulersProvider.io()
         )
         .addConsumer(OpenGitRepository::class.java, { view.openGitRepository(it.path) }, schedulersProvider.ui())
@@ -44,7 +44,7 @@ class OpenRepoEffectHandler {
         )
         .addTransformer(
           GetRecentRepositories::class.java,
-          getRecentRepositoriesTransformer(recentRepositoriesStorage, schedulersProvider.io())
+          getRecentRepositoriesTransformer(recentGitRepositoriesStorage, schedulersProvider.io())
         )
         .build()
     }
@@ -102,21 +102,21 @@ class OpenRepoEffectHandler {
     }
 
     private fun getRecentRepositoriesTransformer(
-      recentRepositoriesStorage: RecentRepositoriesStorage,
+      recentGitRepositoriesStorage: RecentGitRepositoriesStorage,
       scheduler: Scheduler
     ): ObservableTransformer<GetRecentRepositories, OpenRepoEvent> {
       return ObservableTransformer { getRecentRepositoriesEvents ->
         getRecentRepositoriesEvents
           .subscribeOn(scheduler)
-          .map { toRecentRepositoriesResultEvent(recentRepositoriesStorage) }
+          .map { toRecentRepositoriesResultEvent(recentGitRepositoriesStorage) }
       }
     }
 
     private fun toRecentRepositoriesResultEvent(
-      recentRepositoriesStorage: RecentRepositoriesStorage
+      recentGitRepositoriesStorage: RecentGitRepositoriesStorage
     ): OpenRepoEvent {
       return try {
-        val recentRepositories = recentRepositoriesStorage.getRecentRepositories()
+        val recentRepositories = recentGitRepositoriesStorage.getRecentRepositories()
         if (recentRepositories.isNotEmpty()) {
           HasRecentRepositories(recentRepositories)
         } else {

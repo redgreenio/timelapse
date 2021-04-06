@@ -7,9 +7,9 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class PreferencesRecentRepositoriesStorageIntegrationTest {
+class PreferencesRecentGitRepositoriesStorageIntegrationTest {
   private val moshi = Moshi.Builder().build()
-  private val recentRepositoriesStorage = PreferencesRecentRepositoriesStorage(moshi)
+  private val recentRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(moshi)
 
   // Repository paths
   private val counter = "~/FlutterProjects/counter/.git"

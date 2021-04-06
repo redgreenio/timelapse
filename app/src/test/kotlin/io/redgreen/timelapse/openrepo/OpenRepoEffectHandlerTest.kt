@@ -6,7 +6,7 @@ import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.architecture.mobius.testCase
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
-import io.redgreen.timelapse.openrepo.storage.RecentRepositoriesStorage
+import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.ImmediateSchedulersProvider
 import org.junit.jupiter.api.AfterEach
@@ -16,10 +16,10 @@ import java.util.Optional
 class OpenRepoEffectHandlerTest {
   private val gitDetector = mock<GitDetector>()
   private val view = mock<OpenRepoView>()
-  private val recentRepositoriesStorage = mock<RecentRepositoriesStorage>()
+  private val recentGitRepositoriesStorage = mock<RecentGitRepositoriesStorage>()
 
   private val testCase = OpenRepoEffectHandler
-    .from(gitDetector, recentRepositoriesStorage, view, ImmediateSchedulersProvider)
+    .from(gitDetector, recentGitRepositoriesStorage, view, ImmediateSchedulersProvider)
     .testCase()
 
   @AfterEach
@@ -105,8 +105,8 @@ class OpenRepoEffectHandlerTest {
     testCase.dispatch(UpdateRecentRepositories(repositoryPath))
 
     // then
-    verify(recentRepositoriesStorage).update(RecentGitRepository(repositoryPath))
-    verifyNoMoreInteractions(recentRepositoriesStorage)
+    verify(recentGitRepositoriesStorage).update(RecentGitRepository(repositoryPath))
+    verifyNoMoreInteractions(recentGitRepositoriesStorage)
 
     testCase
       .assertNoOutgoingEvents()
@@ -147,7 +147,7 @@ class OpenRepoEffectHandlerTest {
   @Test
   fun `it should return no recent repositories if the list is empty`() {
     // given
-    whenever(recentRepositoriesStorage.getRecentRepositories())
+    whenever(recentGitRepositoriesStorage.getRecentRepositories())
       .thenReturn(emptyList())
 
     // when
@@ -167,7 +167,7 @@ class OpenRepoEffectHandlerTest {
     )
       .map(::RecentGitRepository)
 
-    whenever(recentRepositoriesStorage.getRecentRepositories())
+    whenever(recentGitRepositoriesStorage.getRecentRepositories())
       .thenReturn(recentRepositories)
 
     // when
@@ -181,7 +181,7 @@ class OpenRepoEffectHandlerTest {
   @Test
   fun `it should return unable to get recent repositories if there is an exception`() {
     // given
-    whenever(recentRepositoriesStorage.getRecentRepositories())
+    whenever(recentGitRepositoriesStorage.getRecentRepositories())
       .thenThrow(RuntimeException("Error retrieving recent repositories :("))
 
     // when

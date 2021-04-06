@@ -19,7 +19,7 @@ import io.redgreen.timelapse.openrepo.OpenRepoModel
 import io.redgreen.timelapse.openrepo.OpenRepoUpdate
 import io.redgreen.timelapse.openrepo.TitledSeparator
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
-import io.redgreen.timelapse.openrepo.storage.PreferencesRecentRepositoriesStorage
+import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene.RecentProjectsLayer.NO_RECENT_PROJECTS
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene.RecentProjectsLayer.RECENT_PROJECTS_LIST
 import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.LOADING
@@ -115,13 +115,13 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
 
   private val mobiusDelegate by fastLazy {
     val gitDetector = GitDetector()
-    val recentRepositoriesStorage = PreferencesRecentRepositoriesStorage(Moshi.Builder().build())
+    val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(Moshi.Builder().build())
 
     MobiusDelegate(
       OpenRepoModel.start(),
       OpenRepoInit,
       OpenRepoUpdate,
-      OpenRepoEffectHandler.from(gitDetector, recentRepositoriesStorage, this, JavaFxSchedulersProvider),
+      OpenRepoEffectHandler.from(gitDetector, recentGitRepositoriesStorage, this, JavaFxSchedulersProvider),
       OpenRepoViewRenderer(this)
     )
   }
