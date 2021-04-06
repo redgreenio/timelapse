@@ -12,6 +12,7 @@ data class RecentRepository(
   companion object {
     private const val TILDE = "~"
     private const val GIT_DIRECTORY = ".git"
+    private val SEPARATOR_CHAR = File.separatorChar
   }
 
   init {
@@ -20,7 +21,7 @@ data class RecentRepository(
 
   val title: String by fastLazy {
     path
-      .split(File.separatorChar)
+      .split(SEPARATOR_CHAR)
       .filter { it.isNotEmpty() }
       .dropLast(1)
       .last()
@@ -28,22 +29,22 @@ data class RecentRepository(
 
   fun subtitle(userHomeDirectoryPath: String): String {
     val pathPrefix = getPrefixBasedOn(userHomeDirectoryPath)
-    val segmentsToDrop = if (path.endsWith(File.separatorChar)) 2 else 1
+    val segmentsToDrop = if (path.endsWith(SEPARATOR_CHAR)) 2 else 1
     return path
       .replace(userHomeDirectoryPath, pathPrefix)
-      .split(File.separatorChar)
+      .split(SEPARATOR_CHAR)
       .dropLast(segmentsToDrop)
-      .joinToString("${File.separatorChar}")
+      .joinToString("$SEPARATOR_CHAR")
   }
 
   private fun isGitDirectory(path: String): Boolean {
     return path.endsWith(GIT_DIRECTORY) ||
-      path.endsWith("$GIT_DIRECTORY${File.separatorChar}")
+      path.endsWith("$GIT_DIRECTORY$SEPARATOR_CHAR")
   }
 
   private fun getPrefixBasedOn(userHomeDirectoryPath: String): String {
-    return if (userHomeDirectoryPath.endsWith(File.separatorChar)) {
-      "$TILDE${File.separatorChar}"
+    return if (userHomeDirectoryPath.endsWith(SEPARATOR_CHAR)) {
+      "$TILDE$SEPARATOR_CHAR"
     } else {
       TILDE
     }
