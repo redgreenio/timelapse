@@ -100,7 +100,7 @@ class OpenRepoViewRendererTest {
   @Test
   fun `it should render recent repositories if available`() {
     // given
-    val recentRepositories = listOf(RecentRepository("~/IdeaProjects/JGit"))
+    val recentRepositories = listOf(RecentRepository("~/IdeaProjects/JGit/.git"))
     val hasRecentRepositories = OpenRepoModel
       .start()
       .cannotFindGitUsername()

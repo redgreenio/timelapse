@@ -2,7 +2,6 @@ package io.redgreen.timelapse.openrepo.data
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import io.redgreen.timelapse.foo.fastLazy
 import java.io.File
 
 @JsonClass(generateAdapter = true)

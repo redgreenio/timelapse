@@ -99,7 +99,7 @@ class OpenRepoEffectHandlerTest {
   @Test
   fun `it should update the list of recent projects`() {
     // given
-    val repositoryPath = "~/IdeaProjects/timelapse"
+    val repositoryPath = "~/IdeaProjects/timelapse/.git"
 
     // when
     testCase.dispatch(UpdateRecentRepositories(repositoryPath))
@@ -161,7 +161,10 @@ class OpenRepoEffectHandlerTest {
   @Test
   fun `it should return a list of recent repositories if they are available`() {
     // given
-    val recentRepositories = listOf("~/IdeaProjects/timelapse", "~/IdeaProjects/square/retrofit")
+    val recentRepositories = listOf(
+      "~/IdeaProjects/timelapse/.git",
+      "~/IdeaProjects/square/retrofit/.git"
+    )
       .map(::RecentRepository)
 
     whenever(recentRepositoriesStorage.getRecentRepositories())

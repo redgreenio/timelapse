@@ -119,7 +119,10 @@ class OpenRepoUpdateTest {
 
   @Test
   fun `when there are recent repositories, list recent repositories`() {
-    val recentRepositories = listOf("~/Users/ajay/GitHubProjects/angular", "~/Users/ajay/GitHubProjects/JGit")
+    val recentRepositories = listOf(
+      "~/Users/ajay/GitHubProjects/angular/.git",
+      "~/Users/ajay/GitHubProjects/JGit/.git"
+    )
       .map(::RecentRepository)
 
     withUpdateSpec
@@ -148,8 +151,8 @@ class OpenRepoUpdateTest {
 
   @Test
   fun `when the user selects a recent repository, then update the recent repos list and open the repository`() {
-    val retrofit = "/Users/ajay/IdeaProjects/retrofit"
-    val angular = "~/GitHubProjects/angular"
+    val retrofit = "/Users/ajay/IdeaProjects/retrofit/.git"
+    val angular = "~/GitHubProjects/angular/.git"
     val recentRepositories = listOf(retrofit, angular).map(::RecentRepository)
 
     val hasRecentRepositories = gitUsernameFound

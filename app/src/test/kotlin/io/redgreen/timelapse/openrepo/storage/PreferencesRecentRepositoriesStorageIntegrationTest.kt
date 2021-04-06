@@ -12,8 +12,8 @@ class PreferencesRecentRepositoriesStorageIntegrationTest {
   private val recentRepositoriesStorage = PreferencesRecentRepositoriesStorage(moshi)
 
   // Repository paths
-  private val counter = "~/FlutterProjects/counter"
-  private val helloServices = "~/GoProjects/hello-services"
+  private val counter = "~/FlutterProjects/counter/.git"
+  private val helloServices = "~/GoProjects/hello-services/.git"
 
   @BeforeEach
   fun setup() {
@@ -70,7 +70,7 @@ class PreferencesRecentRepositoriesStorageIntegrationTest {
   @Test
   fun `it should move the recently opened repository to the top of the list`() {
     // given
-    val catchUp = "~/AndroidStudioProjects/CatchUp"
+    val catchUp = "~/AndroidStudioProjects/CatchUp/.git"
     val recentRepositories = listOf(counter, helloServices, catchUp).reversed().map(::RecentRepository)
     recentRepositories.onEach(recentRepositoriesStorage::update)
 
