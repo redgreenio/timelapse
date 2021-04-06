@@ -14,6 +14,10 @@ data class RecentRepository(
     private const val GIT_DIRECTORY = ".git"
   }
 
+  init {
+    require(path.endsWith(GIT_DIRECTORY)) { "Path should end with a '.git' directory, but was: $path" }
+  }
+
   val title: String by fastLazy {
     if (path.endsWith(GIT_DIRECTORY)) {
       path.split(File.separatorChar).dropLast(1).last()
