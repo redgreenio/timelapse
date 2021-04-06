@@ -20,11 +20,11 @@ data class RecentRepository(
   }
 
   val title: String by fastLazy {
-    if (isGitDirectory(path)) {
-      path.split(File.separatorChar).filter { it.isNotEmpty() }.dropLast(1).last()
-    } else {
-      path.substring(path.lastIndexOf(File.separatorChar) + 1)
-    }
+    path
+      .split(File.separatorChar)
+      .filter { it.isNotEmpty() }
+      .dropLast(1)
+      .last()
   }
 
   fun subtitle(userHomeDirectoryPath: String): String {
