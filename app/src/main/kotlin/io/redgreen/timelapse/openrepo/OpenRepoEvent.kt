@@ -6,6 +6,14 @@ import io.redgreen.timelapse.openrepo.data.RecentRepository
 
 sealed class OpenRepoEvent
 
+@UiEvent
+object ChooseGitRepository : OpenRepoEvent()
+
+@UiEvent
+data class OpenRecentRepository(
+  val index: Int
+) : OpenRepoEvent()
+
 @EffectEvent(FindGitUsername::class)
 object GitUsernameNotFound : OpenRepoEvent()
 
@@ -13,9 +21,6 @@ object GitUsernameNotFound : OpenRepoEvent()
 data class GitUsernameFound(
   val username: String
 ) : OpenRepoEvent()
-
-@UiEvent
-object ChooseGitRepository : OpenRepoEvent()
 
 @EffectEvent(DisplayFileChooser::class)
 data class GitRepositoryChosen(
@@ -42,8 +47,3 @@ data class HasRecentRepositories(
 
 @EffectEvent(GetRecentRepositories::class)
 object UnableToGetRecentRepositories : OpenRepoEvent()
-
-@UiEvent
-data class OpenRecentRepository(
-  val index: Int
-) : OpenRepoEvent()
