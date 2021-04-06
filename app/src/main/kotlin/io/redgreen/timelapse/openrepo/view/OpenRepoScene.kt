@@ -208,7 +208,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     index: Int
   ): LargeButton {
     val title = recentRepository.title
-    val subtitle = recentRepository.subtitle(System.getProperty("user.home"))
+    val subtitle = recentRepository.subtitle()
 
     return LargeButton(title, subtitle).apply {
       setOnMouseClicked { mobiusDelegate.notify(OpenRecentRepository(index)) }

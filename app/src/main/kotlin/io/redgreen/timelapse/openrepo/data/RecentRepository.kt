@@ -27,7 +27,7 @@ data class RecentRepository(
       .last()
   }
 
-  fun subtitle(userHomeDirectoryPath: String): String {
+  fun subtitle(userHomeDirectoryPath: String = System.getProperty("user.home")): String {
     val pathPrefix = getPrefixBasedOn(userHomeDirectoryPath)
     val segmentsToDrop = if (path.endsWith(SEPARATOR_CHAR)) 2 else 1
     return path
