@@ -121,6 +121,7 @@ class OpenRepoEffectHandlerTest {
     testCase.dispatch(OpenGitRepository(repositoryPath))
 
     // then
+    verify(view).closeWelcomeStage()
     verify(view).openGitRepository(repositoryPath)
     verifyNoMoreInteractions(view)
 

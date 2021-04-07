@@ -36,7 +36,10 @@ class OpenRepoEffectHandler {
           { recentGitRepositoriesStorage.update(RecentGitRepository(it.path)) },
           schedulersProvider.io()
         )
-        .addConsumer(OpenGitRepository::class.java, { view.openGitRepository(it.path) }, schedulersProvider.ui())
+        .addConsumer(OpenGitRepository::class.java, {
+          view.closeWelcomeStage()
+          view.openGitRepository(it.path)
+        }, schedulersProvider.ui())
         .addConsumer(
           ShowNotAGitRepositoryError::class.java,
           { view.showNotAGitRepositoryError(it.path) },
