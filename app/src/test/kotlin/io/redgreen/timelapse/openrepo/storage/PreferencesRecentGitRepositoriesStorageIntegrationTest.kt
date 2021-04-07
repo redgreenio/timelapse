@@ -9,7 +9,10 @@ import org.junit.jupiter.api.Test
 
 class PreferencesRecentGitRepositoriesStorageIntegrationTest {
   private val moshi = Moshi.Builder().build()
-  private val recentRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(moshi)
+  private val recentRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(moshi, TestUserSettingsNode::class)
+
+  /* Used to keep test data separate from production data :) */
+  private class TestUserSettingsNode
 
   // Repository paths
   private val counter = "~/FlutterProjects/counter/.git"

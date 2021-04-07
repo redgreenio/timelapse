@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ForbiddenComment:AffectedFilesPropsUi.kt$AffectedFilesPropsUi$// FIXME: 06/03/21 stop the delegate</ID>
     <ID>ForbiddenComment:ChangedFilesPane.kt$ChangedFilesPane$// TODO: 18-11-2020, Define and refine UI</ID>
     <ID>ForbiddenComment:CodeViewer.kt$CodeViewer$// FIXME: 14-11-2020 Consider getting rid of this shell class!</ID>
     <ID>ForbiddenComment:ContentViewerPane.kt$ContentViewerPane$// TODO: 05-12-2020</ID>
@@ -46,13 +45,11 @@
     <ID>MagicNumber:TimelapseScene.kt$TimelapseScene$0.82</ID>
     <ID>MagicNumber:TimelapseScene.kt$TimelapseScene$50.0</ID>
     <ID>MagicNumber:parsers.kt$3</ID>
-    <ID>MatchingDeclarationName:Transformer.kt$NodeTransformer&lt;I : Node&lt;out Comparable&lt;*&gt;&gt;, O&gt;</ID>
     <ID>MaxLineLength:DiffHtml.kt$ | &lt;td class=</ID>
+    <ID>PackageNaming:UserSettingsNode.kt$package io.redgreen.timelapse.do_not_rename</ID>
     <ID>ReturnCount:FileCellComparator.kt$FileCellComparator$override fun compare( fileCell1: FileCell, fileCell2: FileCell ): Int</ID>
     <ID>SpreadOperator:Launcher.kt$(TimelapseApp::class.java, *args)</ID>
     <ID>SpreadOperator:PeoplePane.kt$PeoplePane$(*contributions.toTypedArray())</ID>
-    <ID>SpreadOperator:PreferencesRecentRepositoriesStorage.kt$PreferencesRecentRepositoriesStorage$(recentRepository, *availableRecentRepositories)</ID>
-    <ID>SwallowedException:PreferencesRecentRepositoriesStorage.kt$PreferencesRecentRepositoriesStorage$catch (e: JsonDataException) { emptyList() }</ID>
     <ID>TooGenericExceptionCaught:GitRepositoryService.kt$GitRepositoryService$e: NullPointerException</ID>
     <ID>TooGenericExceptionCaught:OpenRepoEffectHandler.kt$OpenRepoEffectHandler.Companion$e: RuntimeException</ID>
     <ID>TooManyFunctions:ContentViewerPane.kt$ContentViewerPane : BorderPaneContentViewerView</ID>
