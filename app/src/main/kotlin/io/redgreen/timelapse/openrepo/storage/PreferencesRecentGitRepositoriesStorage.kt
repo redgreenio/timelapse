@@ -4,13 +4,16 @@ import com.google.common.annotations.VisibleForTesting
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
+import io.redgreen.timelapse.do_not_rename.UserSettingsNode
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import org.slf4j.LoggerFactory
 import java.util.prefs.Preferences
+import kotlin.reflect.KClass
 
 class PreferencesRecentGitRepositoriesStorage(
-  moshi: Moshi
+  moshi: Moshi,
+  preferencesNodeClass: KClass<*> = UserSettingsNode::class
 ) : RecentGitRepositoriesStorage {
   companion object {
     private const val KEY_RECENT_REPOSITORIES = "recent_repositories"
@@ -25,7 +28,7 @@ class PreferencesRecentGitRepositoriesStorage(
     Types.newParameterizedType(List::class.java, RecentGitRepository::class.java)
   )
 
-  private val preferences = Preferences.userRoot()
+  private val preferences = Preferences.userNodeForPackage(preferencesNodeClass.java)
 
   override fun update(recentGitRepository: RecentGitRepository) {
     val existingRecentRepositories = getRecentRepositories().toMutableList()
