@@ -36,10 +36,7 @@ class OpenRepoEffectHandler {
           { recentGitRepositoriesStorage.update(RecentGitRepository(it.path)) },
           schedulersProvider.io()
         )
-        .addConsumer(OpenGitRepository::class.java, {
-          view.closeWelcomeStage()
-          view.openGitRepository(it.path)
-        }, schedulersProvider.ui())
+        .addConsumer(OpenGitRepository::class.java, { openWorkbench(view, it.path) }, schedulersProvider.ui())
         .addConsumer(
           ShowNotAGitRepositoryError::class.java,
           { view.showNotAGitRepositoryError(it.path) },
@@ -50,6 +47,16 @@ class OpenRepoEffectHandler {
           getRecentRepositoriesTransformer(recentGitRepositoriesStorage, schedulersProvider.io())
         )
         .build()
+    }
+
+    private fun openWorkbench(
+      view: OpenRepoView,
+      gitRepositoryPath: String
+    ) {
+      with(view) {
+        closeWelcomeStage()
+        openGitRepository(gitRepositoryPath)
+      }
     }
 
     private fun findGitUsernameTransformer(

@@ -6,6 +6,7 @@ import io.redgreen.design.javafx.StackPaneLayers
 import io.redgreen.javafx.Fonts
 import io.redgreen.timelapse.DISPLAY_VERSION_NAME
 import io.redgreen.timelapse.foo.debug
+import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.ChooseGitRepository
@@ -189,6 +190,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     debug { "Opening repository: $path" }
 
     Stage().apply {
+      exitOnClose()
       scene = TimelapseScene(path)
       isResizable = true
       isMaximized = true
