@@ -1,12 +1,11 @@
 package io.redgreen.timelapse
 
+import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
 import io.sentry.Sentry
 import javafx.application.Application
-import javafx.application.Platform
 import javafx.stage.Stage
-import kotlin.system.exitProcess
 
 private const val ALPHA = "\uD835\uDEFC"
 private const val APP_NAME = "Timelapse Studio (Pre-$ALPHA)"
@@ -26,6 +25,8 @@ class TimelapseApp : Application() {
   }
 
   override fun start(primaryStage: Stage) {
+    primaryStage.exitOnClose()
+
     val repositoryPath = if (parameters.raw.size != 0) parameters.raw.first() else null
     val shouldLaunchTimelapseScene = repositoryPath != null
     val sceneToShow = if (shouldLaunchTimelapseScene && repositoryPath != null) {
@@ -40,12 +41,6 @@ class TimelapseApp : Application() {
       title = APP_NAME
       centerOnScreen()
       show()
-
-      setOnCloseRequest {
-        // FIXME: 19-11-2020 The application does not exit due to running thread pool executors? Shut down Mobius loops?
-        Platform.exit()
-        exitProcess(0)
-      }
     }
   }
 }
