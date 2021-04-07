@@ -102,7 +102,17 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
     val lastOpenedRepository = recentRepositoriesStorage.getLastOpenedRepository()
 
     // then
-    assertThat(lastOpenedRepository)
+    assertThat(lastOpenedRepository.get())
       .isEqualTo(RecentGitRepository(catchUp))
+  }
+
+  @Test
+  fun `it should return empty if the user has not opened any projects before`() {
+    // when
+    val lastOpenedRepository = recentRepositoriesStorage.getLastOpenedRepository()
+
+    // then
+    assertThat(lastOpenedRepository.isEmpty)
+      .isTrue()
   }
 }
