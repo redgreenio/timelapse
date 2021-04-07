@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.design.javafx.StackPaneLayers
 import io.redgreen.javafx.Fonts
+import io.redgreen.timelapse.APP_NAME
 import io.redgreen.timelapse.DISPLAY_VERSION_NAME
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.exitOnClose
@@ -192,6 +193,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     Stage().apply {
       exitOnClose()
       scene = TimelapseScene(path)
+      title = APP_NAME
       isResizable = true
       isMaximized = true
     }.show()
