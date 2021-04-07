@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Show directories before files in the File Explorer.
+
+### Fixed
+
+- 'Not a git directory' bug if the working tree contains a 'config' directory.
+
 ### Changed
 
 - Sort files and directories in ascending order inside the File Explorer.
