@@ -9,6 +9,8 @@
 ### Fixed
 
 - 'Not a git directory' bug if the working tree contains a 'config' directory.
+- Weird window transition form welcome screen to the workbench.
+- Exit process after closing the window.
 
 ### Changed
 
