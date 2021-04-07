@@ -178,7 +178,7 @@ class RecentGitRepositoryTest {
 
     assertThat(RecentGitRepository(path).title())
       .isEqualTo("retrofit")
-    assertThat(RecentGitRepository(path).subtitle(userHome))
+    assertThat(RecentGitRepository(path).subtitle(userHomeOnWindows))
       .isEqualTo("""C:\retrofit""")
   }
 }
