@@ -188,11 +188,11 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   override fun openGitRepository(path: String) {
     debug { "Opening repository: $path" }
 
-    with(window as Stage) {
+    Stage().apply {
       scene = TimelapseScene(path)
       isResizable = true
       isMaximized = true
-    }
+    }.show()
   }
 
   override fun showNotAGitRepositoryError(path: String) {
@@ -201,6 +201,10 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
       headerText = "Not a Git repository"
       contentText = "'$path' is not a Git repository."
     }.showAndWait()
+  }
+
+  override fun closeWelcomeStage() {
+    (window as Stage).close()
   }
 
   private fun buildRecentRepositoryButton(

@@ -9,4 +9,5 @@ interface OpenRepoView {
   fun displayFileChooser()
   fun openGitRepository(path: String)
   fun showNotAGitRepositoryError(path: String)
+  fun closeWelcomeStage()
 }
