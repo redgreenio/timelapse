@@ -91,4 +91,18 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it should give us the latest projects from the recent list`() {
+    // given
+    val catchUp = "~/AndroidStudioProjects/CatchUp/.git"
+    recentRepositoriesStorage.update(RecentGitRepository(catchUp))
+
+    // when
+    val lastOpenedRepository = recentRepositoriesStorage.getLastOpenedRepository()
+
+    // then
+    assertThat(lastOpenedRepository)
+      .isEqualTo(RecentGitRepository(catchUp))
+  }
 }
