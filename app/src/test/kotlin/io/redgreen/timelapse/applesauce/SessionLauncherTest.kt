@@ -7,27 +7,50 @@ import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import java.util.Optional
 
 class SessionLauncherTest {
+  private val recentGitRepositoriesStorage = mock<RecentGitRepositoriesStorage>()
+
   @Test
   fun `it should launch the workbench if the user quit previous session with an active project`() {
     // given
     val gitRepositoryPath = "/Users/varsha/twitter-clone/.git"
 
-    val recentGitRepositoriesStorage = mock<RecentGitRepositoriesStorage>()
     whenever(recentGitRepositoriesStorage.getLastOpenedRepository())
       .thenReturn(Optional.of(RecentGitRepository(gitRepositoryPath)))
     val checkIfIsGitRepo: (path: String) -> Boolean = { true }
 
     val launcher = SessionLauncher(recentGitRepositoriesStorage, checkIfIsGitRepo)
 
+    val launchWelcomeScreenAction: () -> Unit = { fail("Expected to launch the Workbench action") }
+    val launchWorkbenchAction: (String) -> Unit = mock()
+
     // when
-    val launchWorkbenchAction = mock<(gitRepositoryPath: String) -> Unit>()
-    launcher.tryRestorePreviousSession(launchWorkbenchAction)
+    launcher.tryRestorePreviousSession(launchWorkbenchAction, launchWelcomeScreenAction)
 
     // then
     verify(launchWorkbenchAction).invoke(gitRepositoryPath)
     verifyNoMoreInteractions(launchWorkbenchAction)
+  }
+
+  @Test
+  fun `it should launch the welcome screen for a first time user`() {
+    // given
+    whenever(recentGitRepositoriesStorage.getLastOpenedRepository())
+      .thenReturn(Optional.empty())
+
+    val launcher = SessionLauncher(recentGitRepositoriesStorage) {
+      fail("Do not perform this check if there is no last opened repository")
+    }
+
+    val launchWelcomeScreenAction = mock<() -> Unit>()
+    val launchWorkbenchAction: (String) -> Unit = { fail("Expected to launch the Welcome Screen action") }
+
+    // when
+    launcher.tryRestorePreviousSession(launchWorkbenchAction, launchWelcomeScreenAction)
+    verify(launchWelcomeScreenAction).invoke()
+    verifyNoMoreInteractions(launchWelcomeScreenAction)
   }
 }
