@@ -4,6 +4,7 @@ import com.spotify.mobius.rx3.RxMobius
 import io.reactivex.rxjava3.core.ObservableTransformer
 import io.reactivex.rxjava3.core.Scheduler
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
+import io.redgreen.timelapse.foo.appendDotGit
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
@@ -14,7 +15,6 @@ import java.util.Optional
 
 class OpenRepoEffectHandler {
   companion object {
-    private const val GIT_DIRECTORY = ".git"
     private val logger = LoggerFactory.getLogger(ContentViewerEffectHandler::class.java)
 
     fun from(
@@ -102,8 +102,7 @@ class OpenRepoEffectHandler {
     }
 
     private fun getGitDirectory(path: String): Optional<GitDirectory> {
-      val bestGuessGitDirectoryPath = "$path/$GIT_DIRECTORY"
-      val maybeGitDirectory = GitDirectory.from(bestGuessGitDirectoryPath)
+      val maybeGitDirectory = GitDirectory.from(path.appendDotGit())
       return if (maybeGitDirectory.isPresent) {
         maybeGitDirectory
       } else {
