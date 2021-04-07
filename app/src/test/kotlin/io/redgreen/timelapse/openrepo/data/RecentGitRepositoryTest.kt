@@ -181,4 +181,15 @@ class RecentGitRepositoryTest {
     assertThat(RecentGitRepository(path).subtitle(userHomeOnWindows))
       .isEqualTo("""C:\retrofit""")
   }
+
+  @Test
+  @EnabledOnOs(OS.WINDOWS)
+  fun `it should get title for repository from a different drive other than the user's home drive`() {
+    val path = """D:\Projects\varsha-onboarding\.git"""
+
+    assertThat(RecentGitRepository(path).title())
+      .isEqualTo("varsha-onboarding")
+    assertThat(RecentGitRepository(path).subtitle(userHomeOnWindows))
+      .isEqualTo("""D:\Projects\varsha-onboarding""")
+  }
 }
