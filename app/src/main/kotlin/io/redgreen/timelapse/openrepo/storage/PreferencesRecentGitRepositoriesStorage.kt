@@ -17,7 +17,7 @@ class PreferencesRecentGitRepositoriesStorage(
 ) : RecentGitRepositoriesStorage {
   companion object {
     private const val KEY_RECENT_REPOSITORIES = "recent_repositories"
-    private const val DEFAULT_EMPTY_JSON = "{}"
+    private const val DEFAULT_EMPTY_JSON = "[]"
   }
 
   private val logger by fastLazy {
@@ -50,6 +50,10 @@ class PreferencesRecentGitRepositoriesStorage(
       logger.error("Unexpected preferences JSON format {}", recentRepositoriesJson, e)
       emptyList()
     } ?: emptyList()
+  }
+
+  override fun getLastOpenedRepository(): RecentGitRepository {
+    return getRecentRepositories().first()
   }
 
   @VisibleForTesting
