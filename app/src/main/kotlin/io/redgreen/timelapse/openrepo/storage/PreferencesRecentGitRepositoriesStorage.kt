@@ -8,6 +8,7 @@ import io.redgreen.timelapse.do_not_rename.UserSettingsNode
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import org.slf4j.LoggerFactory
+import java.util.Optional
 import java.util.prefs.Preferences
 import kotlin.reflect.KClass
 
@@ -52,8 +53,8 @@ class PreferencesRecentGitRepositoriesStorage(
     } ?: emptyList()
   }
 
-  override fun getLastOpenedRepository(): RecentGitRepository {
-    return getRecentRepositories().first()
+  override fun getLastOpenedRepository(): Optional<RecentGitRepository> {
+    return Optional.ofNullable(getRecentRepositories().firstOrNull())
   }
 
   @VisibleForTesting
