@@ -3,6 +3,7 @@ package io.redgreen.timelapse.openrepo.storage
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.Moshi
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
+import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -114,5 +115,19 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
     // then
     assertThat(lastOpenedRepository.isEmpty)
       .isTrue()
+  }
+
+  @Test
+  fun `it should update the previous destination where the user quit from`() {
+    // given
+    val destination = WELCOME_SCREEN
+
+    // when
+    recentRepositoriesStorage.setQuitDestination(destination)
+
+    // then
+    val actualDestination = recentRepositoriesStorage.getQuitDestination()
+    assertThat(actualDestination)
+      .isEqualTo(destination)
   }
 }
