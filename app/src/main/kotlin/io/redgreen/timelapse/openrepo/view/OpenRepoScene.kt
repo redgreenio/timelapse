@@ -8,6 +8,7 @@ import io.redgreen.timelapse.DISPLAY_VERSION_NAME
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.foo.launchScene
 import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.ChooseGitRepository
 import io.redgreen.timelapse.openrepo.GitDetector
@@ -61,6 +62,12 @@ private const val TITLE_RECENT_REPOSITORIES = "Recent repositories"
 private val grayTextFill = Color.web("#8F8F8F")
 
 class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoView {
+  companion object {
+    fun launch(stage: Stage) {
+      launchScene(stage, OpenRepoScene(), false)
+    }
+  }
+
   private val welcomeUserLabel = Label().apply {
     font = Fonts.robotoRegular(24)
   }
