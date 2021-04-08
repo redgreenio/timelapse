@@ -4,7 +4,7 @@ Timelapse onboards developers onto codebases before you make that cup of instant
 
 ## Project setup
 
-### Clone
+### Step 1 of 3 - Clone
 
 The repository has submodules. If you haven't cloned the repository already, run:
 
@@ -19,7 +19,7 @@ then run,
 git submodule update --init --recursive
 ```
 
-### Verify & run
+### Step 2 of 3 - Verify & run
 
 `cd` into the project directory and run the following Gradle tasks.
 
@@ -38,6 +38,18 @@ gradlew test run
 If the build succeeds, you should be able to see this screen!
 
 ![Verified](docs/images/verified.png)
+
+### Step 3 of 3 - Install Git hooks
+
+**Windows**
+
+Not supported yet.
+
+**Linux & macOS**
+
+```shell
+./gradlew installGitHooks
+```
 
 ### ProGuard
 
