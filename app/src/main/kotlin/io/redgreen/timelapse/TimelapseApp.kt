@@ -2,7 +2,9 @@ package io.redgreen.timelapse
 
 import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.main.TimelapseScene
+import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
+import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
 import io.sentry.Sentry
 import javafx.application.Application
 import javafx.stage.Stage
@@ -25,7 +27,9 @@ class TimelapseApp : Application() {
   }
 
   override fun start(primaryStage: Stage) {
-    primaryStage.exitOnClose()
+    primaryStage.exitOnClose {
+      PreferencesRecentGitRepositoriesStorage().setQuitDestination(WELCOME_SCREEN)
+    }
 
     val repositoryPath = if (parameters.raw.size != 0) parameters.raw.first() else null
     val shouldLaunchTimelapseScene = repositoryPath != null
