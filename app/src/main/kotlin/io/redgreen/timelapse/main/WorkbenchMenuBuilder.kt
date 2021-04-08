@@ -25,10 +25,10 @@ class WorkbenchMenuBuilder {
   }
 
   private fun buildFileMenu(scene: Scene): Menu {
-    val fileMenu = Menu(MENU_FILE)
-    val closeProjectMenuItem = buildProjectCloseMenuItem(scene)
-    fileMenu.items.add(closeProjectMenuItem)
-    return fileMenu
+    return Menu(MENU_FILE).apply {
+      mnemonicParsingProperty().set(true)
+      items.add(buildProjectCloseMenuItem(scene))
+    }
   }
 
   private fun buildProjectCloseMenuItem(scene: Scene): MenuItem {
