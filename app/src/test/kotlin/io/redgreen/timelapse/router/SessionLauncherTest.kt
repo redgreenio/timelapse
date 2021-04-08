@@ -2,41 +2,16 @@ package io.redgreen.timelapse.router
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
-import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
 import io.redgreen.timelapse.router.Destination.WORKBENCH
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
-import java.util.Optional
 
 class SessionLauncherTest {
-  private val recentGitRepositoriesStorage = mock<RecentGitRepositoriesStorage>()
-
-  @Test
-  fun `it should launch the welcome screen if a last opened repository entry exists but the location doesn't exist`() {
-    // given
-    whenever(recentGitRepositoriesStorage.getLastOpenedRepository())
-      .thenReturn(Optional.of(RecentGitRepository("/Users/varsha/twitter-clone/.git")))
-
-    val launcher = SessionLauncher(recentGitRepositoriesStorage) {
-      false
-    }
-
-    val launchWelcomeScreenAction = mock<() -> Unit>()
-    val launchWorkbenchAction: (String) -> Unit = { fail("Expected to launch the Welcome Screen action") }
-
-    // when
-    launcher.tryRestorePreviousSession(launchWorkbenchAction, launchWelcomeScreenAction)
-
-    // then
-    verify(launchWelcomeScreenAction).invoke()
-  }
-
   @Nested
   inner class FirstTimeUser {
     private val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(
@@ -120,7 +95,6 @@ class SessionLauncherTest {
       preferencesNodeClass = UserExitedFromWorkbenchSettingsNode::class
     )
     private val gitRepositoryPath = "/Users/varsha/twitter-clone/.git"
-    private val launchWorkbenchAction: (String) -> Unit = mock()
 
     @BeforeEach
     fun setup() {
@@ -135,15 +109,33 @@ class SessionLauncherTest {
       // given
       val checkIfIsGitRepo: (path: String) -> Boolean = { true }
       val launcher = SessionLauncher(recentGitRepositoriesStorage, checkIfIsGitRepo)
+      val launchWorkbenchAction: (String) -> Unit = mock()
 
       // when
       launcher.tryRestorePreviousSession(
         launchWorkbenchAction,
-        { fail("Expected to launch the Workbench action") }
+        { fail("Expected to launch the workbench, but launched welcome screen instead.") }
       )
 
       // then
       verify(launchWorkbenchAction).invoke(gitRepositoryPath)
+    }
+
+    @Test
+    fun `it should launch welcome screen if a last opened repository doesn't exist`() {
+      // given
+      val checkIfIsGitRepo: (path: String) -> Boolean = { false }
+      val launcher = SessionLauncher(recentGitRepositoriesStorage, checkIfIsGitRepo)
+      val launchWelcomeScreenAction = mock<() -> Unit>()
+
+      // when
+      launcher.tryRestorePreviousSession(
+        { fail("Expected to launch the welcome screen action, but launched workbench instead.") },
+        launchWelcomeScreenAction
+      )
+
+      // then
+      verify(launchWelcomeScreenAction).invoke()
     }
   }
 
