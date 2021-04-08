@@ -28,7 +28,7 @@ class TimelapseApp : Application() {
 
   override fun start(primaryStage: Stage) {
     primaryStage.exitOnClose {
-      PreferencesRecentGitRepositoriesStorage().setQuitDestination(WELCOME_SCREEN)
+      PreferencesRecentGitRepositoriesStorage().setSessionExitDestination(WELCOME_SCREEN)
     }
 
     val repositoryPath = if (parameters.raw.size != 0) parameters.raw.first() else null

@@ -8,6 +8,6 @@ interface RecentGitRepositoriesStorage {
   fun update(recentGitRepository: RecentGitRepository)
   fun getRecentRepositories(): List<RecentGitRepository>
   fun getLastOpenedRepository(): Optional<RecentGitRepository>
-  fun setQuitDestination(welcomeScreen: Destination)
-  fun getQuitDestination(): Destination
+  fun setSessionExitDestination(destination: Destination)
+  fun getSessionExitDestination(): Destination
 }

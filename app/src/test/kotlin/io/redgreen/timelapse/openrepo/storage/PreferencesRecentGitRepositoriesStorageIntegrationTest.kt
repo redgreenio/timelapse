@@ -130,10 +130,10 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
   @MethodSource("destinations")
   fun `it should update the previous destination where the user quit from`(destination: Destination) {
     // when
-    recentRepositoriesStorage.setQuitDestination(destination)
+    recentRepositoriesStorage.setSessionExitDestination(destination)
 
     // then
-    val actualDestination = recentRepositoriesStorage.getQuitDestination()
+    val actualDestination = recentRepositoriesStorage.getSessionExitDestination()
     assertThat(actualDestination)
       .isEqualTo(destination)
   }

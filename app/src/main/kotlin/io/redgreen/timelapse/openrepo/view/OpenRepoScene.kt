@@ -192,7 +192,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
 
     Stage().apply {
       exitOnClose {
-        PreferencesRecentGitRepositoriesStorage().setQuitDestination(WORKBENCH)
+        PreferencesRecentGitRepositoriesStorage().setSessionExitDestination(WORKBENCH)
       }
       scene = TimelapseScene(path)
       title = APP_NAME
