@@ -10,8 +10,9 @@ fun Region.matchParent(parent: Region) {
   this.prefHeightProperty().bind(parent.heightProperty())
 }
 
-fun Stage.exitOnClose(): Stage {
+fun Stage.exitOnClose(beforeExitAction: () -> Unit = {}): Stage {
   setOnCloseRequest {
+    beforeExitAction()
     Platform.exit()
     exitProcess(0)
   }
