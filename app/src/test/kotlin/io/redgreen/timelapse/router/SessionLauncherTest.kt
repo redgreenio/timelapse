@@ -48,6 +48,8 @@ class SessionLauncherTest {
 
     // when
     launcher.tryRestorePreviousSession(launchWorkbenchAction, launchWelcomeScreenAction)
+
+    // then
     verify(launchWelcomeScreenAction).invoke()
   }
 
@@ -66,6 +68,8 @@ class SessionLauncherTest {
 
     // when
     launcher.tryRestorePreviousSession(launchWorkbenchAction, launchWelcomeScreenAction)
+
+    // then
     verify(launchWelcomeScreenAction).invoke()
   }
 }
