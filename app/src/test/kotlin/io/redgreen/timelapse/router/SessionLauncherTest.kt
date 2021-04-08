@@ -7,6 +7,7 @@ import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
+import io.redgreen.timelapse.router.Destination.WORKBENCH
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -15,27 +16,6 @@ import java.util.Optional
 
 class SessionLauncherTest {
   private val recentGitRepositoriesStorage = mock<RecentGitRepositoriesStorage>()
-
-  @Test
-  fun `it should launch the workbench if the user quit previous session with an active project`() {
-    // given
-    val gitRepositoryPath = "/Users/varsha/twitter-clone/.git"
-
-    whenever(recentGitRepositoriesStorage.getLastOpenedRepository())
-      .thenReturn(Optional.of(RecentGitRepository(gitRepositoryPath)))
-    val checkIfIsGitRepo: (path: String) -> Boolean = { true }
-
-    val launcher = SessionLauncher(recentGitRepositoriesStorage, checkIfIsGitRepo)
-
-    val launchWelcomeScreenAction: () -> Unit = { fail("Expected to launch the Workbench action") }
-    val launchWorkbenchAction: (String) -> Unit = mock()
-
-    // when
-    launcher.tryRestorePreviousSession(launchWorkbenchAction, launchWelcomeScreenAction)
-
-    // then
-    verify(launchWorkbenchAction).invoke(gitRepositoryPath)
-  }
 
   @Test
   fun `it should launch the welcome screen if a last opened repository entry exists but the location doesn't exist`() {
@@ -133,4 +113,39 @@ class SessionLauncherTest {
   }
 
   class UserExitedFromWelcomeScreenSettingsNode
+
+  @Nested
+  inner class UserExitedFromWorkbench {
+    private val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(
+      preferencesNodeClass = UserExitedFromWorkbenchSettingsNode::class
+    )
+    private val gitRepositoryPath = "/Users/varsha/twitter-clone/.git"
+    private val launchWorkbenchAction: (String) -> Unit = mock()
+
+    @BeforeEach
+    fun setup() {
+      with(recentGitRepositoriesStorage) {
+        setSessionExitDestination(WORKBENCH)
+        update(RecentGitRepository(gitRepositoryPath))
+      }
+    }
+
+    @Test
+    fun `it should launch the workbench with previously opened repository`() {
+      // given
+      val checkIfIsGitRepo: (path: String) -> Boolean = { true }
+      val launcher = SessionLauncher(recentGitRepositoriesStorage, checkIfIsGitRepo)
+
+      // when
+      launcher.tryRestorePreviousSession(
+        launchWorkbenchAction,
+        { fail("Expected to launch the Workbench action") }
+      )
+
+      // then
+      verify(launchWorkbenchAction).invoke(gitRepositoryPath)
+    }
+  }
+
+  class UserExitedFromWorkbenchSettingsNode
 }
