@@ -3,7 +3,6 @@ package io.redgreen.timelapse.openrepo.view
 import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.design.javafx.StackPaneLayers
 import io.redgreen.javafx.Fonts
-import io.redgreen.timelapse.APP_NAME
 import io.redgreen.timelapse.DISPLAY_VERSION_NAME
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.exitOnClose
@@ -29,7 +28,7 @@ import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_RE
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Stranger
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
-import io.redgreen.timelapse.router.Destination.WORKBENCH
+import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
 import javafx.geometry.Insets
 import javafx.geometry.Pos.BOTTOM_RIGHT
 import javafx.geometry.Pos.TOP_CENTER
@@ -65,6 +64,9 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   companion object {
     fun launch(stage: Stage) {
       launchScene(stage, OpenRepoScene(), false)
+      stage.exitOnClose {
+        PreferencesRecentGitRepositoriesStorage().setSessionExitDestination(WELCOME_SCREEN)
+      }
     }
   }
 
@@ -196,16 +198,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
 
   override fun openGitRepository(path: String) {
     debug { "Opening repository: $path" }
-
-    Stage().apply {
-      exitOnClose {
-        PreferencesRecentGitRepositoriesStorage().setSessionExitDestination(WORKBENCH)
-      }
-      scene = TimelapseScene(path)
-      title = APP_NAME
-      isResizable = true
-      isMaximized = true
-    }.show()
+    TimelapseScene.launch(Stage(), path)
   }
 
   override fun showNotAGitRepositoryError(path: String) {

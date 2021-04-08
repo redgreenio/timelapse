@@ -12,11 +12,14 @@ import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
 import io.redgreen.timelapse.foo.debug
+import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.foo.launchScene
 import io.redgreen.timelapse.git.model.GitDirectory
+import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.readingarea.CommitInformationPane
+import io.redgreen.timelapse.router.Destination.WORKBENCH
 import io.redgreen.timelapse.ui.ReadingPane
 import io.redgreen.timelapse.vcs.ChangedFile
 import io.redgreen.timelapse.vcs.ChangedFile.Addition
@@ -61,6 +64,9 @@ class TimelapseScene(private val project: String) :
   companion object {
     fun launch(stage: Stage, gitRepositoryPath: String) {
       launchScene(stage, TimelapseScene(gitRepositoryPath), true)
+      stage.exitOnClose {
+        PreferencesRecentGitRepositoriesStorage().setSessionExitDestination(WORKBENCH)
+      }
     }
   }
 
