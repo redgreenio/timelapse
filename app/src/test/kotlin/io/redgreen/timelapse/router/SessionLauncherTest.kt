@@ -82,6 +82,8 @@ class SessionLauncherTest {
     private val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(
       preferencesNodeClass = UserExitedFromWelcomeScreenSettingsNode::class
     )
+    private val sessionLauncher = SessionLauncher(recentGitRepositoriesStorage) { true }
+    private val launchWelcomeScreenAction = mock<() -> Unit>()
 
     @BeforeEach
     fun setup() {
@@ -92,8 +94,21 @@ class SessionLauncherTest {
     fun `it should launch the welcome screen (no recent repositories)`() {
       // given
       recentGitRepositoriesStorage.clearRecentRepositories()
-      val sessionLauncher = SessionLauncher(recentGitRepositoriesStorage) { true }
-      val launchWelcomeScreenAction = mock<() -> Unit>()
+
+      // when
+      sessionLauncher.tryRestorePreviousSession(
+        { fail("Expected to launch the welcome screen, but launched workbench instead.") },
+        launchWelcomeScreenAction
+      )
+
+      // then
+      verify(launchWelcomeScreenAction).invoke()
+    }
+
+    @Test
+    fun `it should launch the welcome screen (has recent repositories)`() {
+      // given
+      recentGitRepositoriesStorage.update(RecentGitRepository("/Users/JackSparrow/black-pearl/.git"))
 
       // when
       sessionLauncher.tryRestorePreviousSession(
