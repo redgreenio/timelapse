@@ -1,6 +1,5 @@
 package io.redgreen.timelapse
 
-import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
@@ -27,15 +26,9 @@ class TimelapseApp : Application() {
   }
 
   override fun start(primaryStage: Stage) {
-    val preferencesRecentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage()
-    SessionLauncher(preferencesRecentGitRepositoriesStorage).tryRestorePreviousSession(
+    SessionLauncher(PreferencesRecentGitRepositoriesStorage()).tryRestorePreviousSession(
       { TimelapseScene.launch(primaryStage, it) },
       { OpenRepoScene.launch(primaryStage) }
     )
-
-    primaryStage.exitOnClose {
-      val destination = preferencesRecentGitRepositoriesStorage.getSessionExitDestination()
-      preferencesRecentGitRepositoriesStorage.setSessionExitDestination(destination)
-    }
   }
 }
