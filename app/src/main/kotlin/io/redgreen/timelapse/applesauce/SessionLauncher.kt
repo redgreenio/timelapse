@@ -23,6 +23,8 @@ class SessionLauncher(
 
     if (checkIfIsGitRepo(lastOpenedRepositoryPath)) {
       launchWorkbenchAction(lastOpenedRepositoryPath)
+    } else {
+      launchWelcomeScreenAction()
     }
   }
 }
