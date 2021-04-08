@@ -13,6 +13,7 @@ import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.fastLazy
+import io.redgreen.timelapse.foo.launchScene
 import io.redgreen.timelapse.git.model.GitDirectory
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.readingarea.CommitInformationPane
@@ -43,6 +44,7 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.RowConstraints
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
+import javafx.stage.Stage
 import java.io.File
 import java.time.LocalDate
 import kotlin.math.round
@@ -56,6 +58,11 @@ class TimelapseScene(private val project: String) :
   Scene(BorderPane(), Screen.getPrimary().bounds.width, Screen.getPrimary().bounds.height),
   ReadingAreaContract,
   FileSelectionListener {
+  companion object {
+    fun launch(stage: Stage, gitRepositoryPath: String) {
+      launchScene(stage, TimelapseScene(gitRepositoryPath), true)
+    }
+  }
 
   private val projectDirectory = File(project).parentFile.absolutePath
   private val gitRepository by lazy { openGitRepository(GitDirectory.from(project).get()) }
