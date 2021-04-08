@@ -1,13 +1,13 @@
 package io.redgreen.timelapse
 
 import io.redgreen.timelapse.foo.exitOnClose
+import io.redgreen.timelapse.foo.launchScene
 import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
 import io.redgreen.timelapse.router.SessionLauncher
 import io.sentry.Sentry
 import javafx.application.Application
-import javafx.scene.Scene
 import javafx.stage.Stage
 
 private const val ALPHA = "\uD835\uDEFC"
@@ -30,7 +30,7 @@ class TimelapseApp : Application() {
   override fun start(primaryStage: Stage) {
     val preferencesRecentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage()
     SessionLauncher(preferencesRecentGitRepositoriesStorage).tryRestorePreviousSession(
-      { launchWorkbench(primaryStage, it) },
+      { TimelapseScene.launch(primaryStage, it) },
       { launchWelcomeScreen(primaryStage) }
     )
 
@@ -40,21 +40,7 @@ class TimelapseApp : Application() {
     }
   }
 
-  private fun launchWorkbench(stage: Stage, gitRepositoryPath: String) {
-    launchScene(stage, TimelapseScene(gitRepositoryPath), true)
-  }
-
   private fun launchWelcomeScreen(stage: Stage) {
     launchScene(stage, OpenRepoScene(), false)
-  }
-
-  private fun launchScene(stage: Stage, sceneToShow: Scene, resizable: Boolean) {
-    with(stage) {
-      scene = sceneToShow
-      isResizable = resizable
-      title = APP_NAME
-      centerOnScreen()
-      show()
-    }
   }
 }
