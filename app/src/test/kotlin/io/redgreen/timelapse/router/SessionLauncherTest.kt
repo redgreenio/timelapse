@@ -4,7 +4,11 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
+import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
+import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import java.util.Optional
@@ -72,4 +76,35 @@ class SessionLauncherTest {
     // then
     verify(launchWelcomeScreenAction).invoke()
   }
+
+  @Nested
+  inner class UserExitedFromWelcomeScreen {
+    private val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(
+      preferencesNodeClass = UserExitedFromWelcomeScreenSettingsNode::class
+    )
+
+    @BeforeEach
+    fun setup() {
+      recentGitRepositoriesStorage.setSessionExitDestination(WELCOME_SCREEN)
+    }
+
+    @Test
+    fun `it should launch the welcome screen (no recent repositories)`() {
+      // given
+      recentGitRepositoriesStorage.clearRecentRepositories()
+      val sessionLauncher = SessionLauncher(recentGitRepositoriesStorage) { true }
+      val launchWelcomeScreenAction = mock<() -> Unit>()
+
+      // when
+      sessionLauncher.tryRestorePreviousSession(
+        { fail("Expected to launch the welcome screen, but launched workbench instead.") },
+        launchWelcomeScreenAction
+      )
+
+      // then
+      verify(launchWelcomeScreenAction).invoke()
+    }
+  }
+
+  class UserExitedFromWelcomeScreenSettingsNode
 }
