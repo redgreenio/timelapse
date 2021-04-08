@@ -38,26 +38,6 @@ class SessionLauncherTest {
   }
 
   @Test
-  fun `it should launch the welcome screen for a first time user`() {
-    // given
-    whenever(recentGitRepositoriesStorage.getLastOpenedRepository())
-      .thenReturn(Optional.empty())
-
-    val launcher = SessionLauncher(recentGitRepositoriesStorage) {
-      fail("Do not perform this check if there is no last opened repository")
-    }
-
-    val launchWelcomeScreenAction = mock<() -> Unit>()
-    val launchWorkbenchAction: (String) -> Unit = { fail("Expected to launch the Welcome Screen action") }
-
-    // when
-    launcher.tryRestorePreviousSession(launchWorkbenchAction, launchWelcomeScreenAction)
-
-    // then
-    verify(launchWelcomeScreenAction).invoke()
-  }
-
-  @Test
   fun `it should launch the welcome screen if a last opened repository entry exists but the location doesn't exist`() {
     // given
     whenever(recentGitRepositoriesStorage.getLastOpenedRepository())
@@ -76,6 +56,37 @@ class SessionLauncherTest {
     // then
     verify(launchWelcomeScreenAction).invoke()
   }
+
+  @Nested
+  inner class FirstTimeUser {
+    private val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(
+      preferencesNodeClass = FirstTimeUserSettingsNode::class
+    )
+
+    @BeforeEach
+    fun setup() {
+      recentGitRepositoriesStorage.clearSessionExitDestination()
+      recentGitRepositoriesStorage.clearRecentRepositories()
+    }
+
+    @Test
+    fun `it should launch the welcome screen (first time user)`() {
+      // given
+      val sessionLauncher = SessionLauncher(recentGitRepositoriesStorage) { false }
+      val launchWelcomeScreenAction = mock<() -> Unit>()
+
+      // when
+      sessionLauncher.tryRestorePreviousSession(
+        { fail("Expected to launch the welcome screen, but launched workbench instead.") },
+        launchWelcomeScreenAction
+      )
+
+      // then
+      verify(launchWelcomeScreenAction).invoke()
+    }
+  }
+
+  class FirstTimeUserSettingsNode
 
   @Nested
   inner class UserExitedFromWelcomeScreen {

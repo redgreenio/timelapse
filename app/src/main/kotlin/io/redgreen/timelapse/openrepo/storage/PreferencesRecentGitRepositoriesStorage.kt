@@ -73,4 +73,9 @@ class PreferencesRecentGitRepositoriesStorage(
   internal fun clearRecentRepositories() {
     preferences.remove(KEY_RECENT_REPOSITORIES)
   }
+
+  @VisibleForTesting
+  internal fun clearSessionExitDestination() {
+    preferences.remove(KEY_SESSION_EXIT_DESTINATION)
+  }
 }
