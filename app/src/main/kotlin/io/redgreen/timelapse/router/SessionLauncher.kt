@@ -17,11 +17,6 @@ class SessionLauncher(
       return
     }
 
-    if (recentGitRepositoriesStorage.getLastOpenedRepository().isEmpty) {
-      launchWelcomeScreenAction()
-      return
-    }
-
     val lastOpenedRepositoryPath = recentGitRepositoriesStorage
       .getLastOpenedRepository()
       .get()
