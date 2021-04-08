@@ -5,6 +5,7 @@
 ### Added
 
 - Show directories before files in the File Explorer.
+- Close current project from the File menu.
 
 ### Fixed
 

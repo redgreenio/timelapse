@@ -34,3 +34,7 @@ fun launchScene(
     show()
   }
 }
+
+fun Scene.closeWindow() {
+  (window as Stage).close()
+}

@@ -4,6 +4,7 @@ import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.design.javafx.StackPaneLayers
 import io.redgreen.javafx.Fonts
 import io.redgreen.timelapse.DISPLAY_VERSION_NAME
+import io.redgreen.timelapse.foo.closeWindow
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.foo.fastLazy
@@ -210,7 +211,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
   }
 
   override fun closeWelcomeStage() {
-    (window as Stage).close()
+    closeWindow()
   }
 
   private fun buildRecentRepositoryButton(
