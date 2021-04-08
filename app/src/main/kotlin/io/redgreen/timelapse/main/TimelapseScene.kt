@@ -53,7 +53,7 @@ private const val NO_PADDING = 0.0
 private const val PADDING = 10.0
 
 class TimelapseScene(private val project: String) :
-  Scene(SplitPane(), Screen.getPrimary().bounds.width, Screen.getPrimary().bounds.height),
+  Scene(BorderPane(), Screen.getPrimary().bounds.width, Screen.getPrimary().bounds.height),
   ReadingAreaContract,
   FileSelectionListener {
 
@@ -156,12 +156,15 @@ class TimelapseScene(private val project: String) :
   }
 
   init {
-    (root as SplitPane).apply {
-      items.addAll(fileExplorerPane, centerPane, rightPane)
-      setDividerPositions(0.18, 0.82)
+    (root as BorderPane).apply {
+      val splitPane = SplitPane(fileExplorerPane, centerPane, rightPane).apply {
+        setDividerPositions(0.18, 0.82)
+      }
+      center = splitPane
     }
 
     setupHotKeys(this)
+    WorkbenchMenuBuilder().installMenu(this)
   }
 
   private fun moveFocusToReadingPane() {
