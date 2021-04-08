@@ -7,6 +7,8 @@ import com.squareup.moshi.Types
 import io.redgreen.timelapse.do_not_rename.UserSettingsNode
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
+import io.redgreen.timelapse.router.Destination
+import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
 import org.slf4j.LoggerFactory
 import java.util.Optional
 import java.util.prefs.Preferences
@@ -18,6 +20,7 @@ class PreferencesRecentGitRepositoriesStorage(
 ) : RecentGitRepositoriesStorage {
   companion object {
     private const val KEY_RECENT_REPOSITORIES = "recent_repositories"
+    private const val KEY_QUIT_DESTINATION = "quit_destination"
     private const val DEFAULT_EMPTY_JSON = "[]"
   }
 
@@ -55,6 +58,15 @@ class PreferencesRecentGitRepositoriesStorage(
 
   override fun getLastOpenedRepository(): Optional<RecentGitRepository> {
     return Optional.ofNullable(getRecentRepositories().firstOrNull())
+  }
+
+  override fun setQuitDestination(welcomeScreen: Destination) {
+    preferences.put(KEY_QUIT_DESTINATION, welcomeScreen.name)
+  }
+
+  override fun getQuitDestination(): Destination {
+    val destinationString = preferences.get(KEY_QUIT_DESTINATION, WELCOME_SCREEN.name)
+    return Destination.valueOf(destinationString)
   }
 
   @VisibleForTesting
