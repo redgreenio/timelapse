@@ -15,7 +15,7 @@ import java.util.prefs.Preferences
 import kotlin.reflect.KClass
 
 class PreferencesRecentGitRepositoriesStorage(
-  moshi: Moshi,
+  moshi: Moshi = Moshi.Builder().build(),
   preferencesNodeClass: KClass<*> = UserSettingsNode::class
 ) : RecentGitRepositoriesStorage {
   companion object {

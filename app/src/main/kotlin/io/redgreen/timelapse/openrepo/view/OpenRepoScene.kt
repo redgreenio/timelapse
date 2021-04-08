@@ -1,6 +1,5 @@
 package io.redgreen.timelapse.openrepo.view
 
-import com.squareup.moshi.Moshi
 import io.redgreen.architecture.mobius.MobiusDelegate
 import io.redgreen.design.javafx.StackPaneLayers
 import io.redgreen.javafx.Fonts
@@ -29,6 +28,7 @@ import io.redgreen.timelapse.openrepo.view.RecentRepositoriesStatus.NO_RECENT_RE
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Greeter
 import io.redgreen.timelapse.openrepo.view.WelcomeMessage.Stranger
 import io.redgreen.timelapse.platform.JavaFxSchedulersProvider
+import io.redgreen.timelapse.router.Destination.WORKBENCH
 import javafx.geometry.Insets
 import javafx.geometry.Pos.BOTTOM_RIGHT
 import javafx.geometry.Pos.TOP_CENTER
@@ -117,7 +117,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
 
   private val mobiusDelegate by fastLazy {
     val gitDetector = GitDetector()
-    val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(Moshi.Builder().build())
+    val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage()
 
     MobiusDelegate(
       OpenRepoModel.start(),
@@ -191,7 +191,9 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     debug { "Opening repository: $path" }
 
     Stage().apply {
-      exitOnClose()
+      exitOnClose {
+        PreferencesRecentGitRepositoriesStorage().setQuitDestination(WORKBENCH)
+      }
       scene = TimelapseScene(path)
       title = APP_NAME
       isResizable = true
