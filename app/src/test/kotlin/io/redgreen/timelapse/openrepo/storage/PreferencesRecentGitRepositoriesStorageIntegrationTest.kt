@@ -3,12 +3,21 @@ package io.redgreen.timelapse.openrepo.storage
 import com.google.common.truth.Truth.assertThat
 import com.squareup.moshi.Moshi
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
-import io.redgreen.timelapse.router.Destination.WELCOME_SCREEN
+import io.redgreen.timelapse.router.Destination
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class PreferencesRecentGitRepositoriesStorageIntegrationTest {
+  companion object {
+    @JvmStatic
+    @Suppress("unused") // Because, method source for a parameterized test
+    fun destinations(): List<Destination> =
+      Destination.values().toList()
+  }
+
   private val moshi = Moshi.Builder().build()
   private val recentRepositoriesStorage = PreferencesRecentGitRepositoriesStorage(moshi, TestUserSettingsNode::class)
 
@@ -117,11 +126,9 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
       .isTrue()
   }
 
-  @Test
-  fun `it should update the previous destination where the user quit from`() {
-    // given
-    val destination = WELCOME_SCREEN
-
+  @ParameterizedTest
+  @MethodSource("destinations")
+  fun `it should update the previous destination where the user quit from`(destination: Destination) {
     // when
     recentRepositoriesStorage.setQuitDestination(destination)
 
