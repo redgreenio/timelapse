@@ -4,7 +4,6 @@ import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
-import io.redgreen.timelapse.router.Destination.WORKBENCH
 import io.redgreen.timelapse.router.SessionLauncher
 import io.sentry.Sentry
 import javafx.application.Application
@@ -30,17 +29,13 @@ class TimelapseApp : Application() {
 
   override fun start(primaryStage: Stage) {
     val preferencesRecentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage()
-    val destination = preferencesRecentGitRepositoriesStorage.getSessionExitDestination()
-    if (destination == WORKBENCH) {
-      SessionLauncher(preferencesRecentGitRepositoriesStorage).tryRestorePreviousSession(
-        { launchWorkbench(primaryStage, it) },
-        { launchWelcomeScreen(primaryStage) }
-      )
-    } else {
-      launchWelcomeScreen(primaryStage)
-    }
+    SessionLauncher(preferencesRecentGitRepositoriesStorage).tryRestorePreviousSession(
+      { launchWorkbench(primaryStage, it) },
+      { launchWelcomeScreen(primaryStage) }
+    )
 
     primaryStage.exitOnClose {
+      val destination = preferencesRecentGitRepositoriesStorage.getSessionExitDestination()
       preferencesRecentGitRepositoriesStorage.setSessionExitDestination(destination)
     }
   }
