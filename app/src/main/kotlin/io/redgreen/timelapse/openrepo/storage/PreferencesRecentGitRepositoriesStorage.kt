@@ -20,7 +20,7 @@ class PreferencesRecentGitRepositoriesStorage(
 ) : RecentGitRepositoriesStorage {
   companion object {
     private const val KEY_RECENT_REPOSITORIES = "recent_repositories"
-    private const val KEY_QUIT_DESTINATION = "quit_destination"
+    private const val KEY_SESSION_EXIT_DESTINATION = "session_exit_destination"
     private const val DEFAULT_EMPTY_JSON = "[]"
   }
 
@@ -60,12 +60,12 @@ class PreferencesRecentGitRepositoriesStorage(
     return Optional.ofNullable(getRecentRepositories().firstOrNull())
   }
 
-  override fun setQuitDestination(welcomeScreen: Destination) {
-    preferences.put(KEY_QUIT_DESTINATION, welcomeScreen.name)
+  override fun setSessionExitDestination(destination: Destination) {
+    preferences.put(KEY_SESSION_EXIT_DESTINATION, destination.name)
   }
 
-  override fun getQuitDestination(): Destination {
-    val destinationString = preferences.get(KEY_QUIT_DESTINATION, WELCOME_SCREEN.name)
+  override fun getSessionExitDestination(): Destination {
+    val destinationString = preferences.get(KEY_SESSION_EXIT_DESTINATION, WELCOME_SCREEN.name)
     return Destination.valueOf(destinationString)
   }
 
