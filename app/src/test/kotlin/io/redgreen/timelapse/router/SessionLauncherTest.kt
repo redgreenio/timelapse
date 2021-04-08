@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.applesauce
+package io.redgreen.timelapse.router
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
