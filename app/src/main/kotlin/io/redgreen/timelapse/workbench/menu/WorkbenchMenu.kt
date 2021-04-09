@@ -2,6 +2,7 @@ package io.redgreen.timelapse.workbench.menu
 
 import io.redgreen.timelapse.foo.closeWindow
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import javafx.scene.Scene
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
@@ -12,7 +13,6 @@ import javafx.stage.Stage
 object WorkbenchMenu {
   private const val MENU_FILE = "File"
   private const val MENU_ITEM_CLOSE_PROJECT = "Close Project"
-  private const val MENU_FILE_MENU_OPEN_RECENT = "Open Recent"
 
   private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = false
 
@@ -47,6 +47,6 @@ object WorkbenchMenu {
   }
 
   private fun buildOpenRecentMenu(): Menu {
-    return Menu(MENU_FILE_MENU_OPEN_RECENT)
+    return Empty.toJavaFxMenu()
   }
 }
