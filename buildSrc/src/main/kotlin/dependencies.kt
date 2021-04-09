@@ -4,7 +4,7 @@ object deps {
   object versions {
     const val mobius = "1.5.3"
     const val junit = "5.7.1"
-    const val moshi = "1.11.0"
+    const val moshi = "1.12.0"
     const val java = "15"
     const val javaFx = "16"
   }
