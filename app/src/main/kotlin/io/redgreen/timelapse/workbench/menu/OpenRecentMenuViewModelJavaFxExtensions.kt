@@ -6,6 +6,7 @@ import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
 
 private const val MENU_FILE_MENU_OPEN_RECENT = "Open Recent"
+private const val MENU_OPEN_MENU_ITEM_CLEAR_RECENT = "Clear Recent"
 
 @Suppress("unused") // Because, the type `Empty` itself provides us enough information.
 fun Empty.toJavaFxMenu(): Menu {
@@ -17,7 +18,7 @@ fun Empty.toJavaFxMenu(): Menu {
 fun NonEmpty.toJavaFxMenu(): Menu {
   val menuItems = menuItemViewModels.map {
     when (it) {
-      OpenRecentMenuItemViewModel.ClearRecent -> MenuItem("Clear Recent")
+      OpenRecentMenuItemViewModel.ClearRecent -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT)
       is OpenRecentMenuItemViewModel.RecentRepository -> MenuItem(it.repositoryDirectory)
     }
   }
