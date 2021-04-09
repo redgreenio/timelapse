@@ -9,16 +9,14 @@ import javafx.scene.control.MenuItem
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 
-class WorkbenchMenuBuilder {
-  companion object {
-    private const val MENU_FILE = "File"
-    private const val MENU_ITEM_CLOSE_PROJECT = "Close Project"
-    private const val MENU_FILE_MENU_OPEN_RECENT = "Open Recent"
+object WorkbenchMenu {
+  private const val MENU_FILE = "File"
+  private const val MENU_ITEM_CLOSE_PROJECT = "Close Project"
+  private const val MENU_FILE_MENU_OPEN_RECENT = "Open Recent"
 
-    private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = false
-  }
+  private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = false
 
-  fun installMenu(scene: Scene) {
+  fun install(scene: Scene) {
     val menuBar = MenuBar().apply {
       useSystemMenuBarProperty().set(true)
     }
