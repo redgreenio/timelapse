@@ -1,8 +1,8 @@
 package io.redgreen.timelapse.workbench.menu
 
 import io.redgreen.timelapse.foo.closeWindow
+import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
 import io.redgreen.timelapse.workbench.menu.javafx.toJavaFxMenu
 import javafx.scene.Scene
 import javafx.scene.control.Menu
@@ -48,8 +48,8 @@ object WorkbenchMenu {
   }
 
   private fun buildOpenRecentMenu(): Menu {
-    val menuItemViewModels = listOf("Shopping", "Coffee")
-      .map(OpenRecentMenuItemViewModel::RecentRepository) + OpenRecentMenuItemViewModel.ClearRecent
-    return (NonEmpty(menuItemViewModels) as OpenRecentMenuViewModel).toJavaFxMenu()
+    return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
+      .invoke()
+      .toJavaFxMenu()
   }
 }
