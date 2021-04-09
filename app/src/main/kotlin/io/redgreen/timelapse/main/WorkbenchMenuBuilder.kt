@@ -13,6 +13,9 @@ class WorkbenchMenuBuilder {
   companion object {
     private const val MENU_FILE = "File"
     private const val MENU_ITEM_CLOSE_PROJECT = "Close Project"
+    private const val MENU_FILE_MENU_OPEN_RECENT = "Open Recent"
+
+    private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = false
   }
 
   fun installMenu(scene: Scene) {
@@ -27,7 +30,12 @@ class WorkbenchMenuBuilder {
   private fun buildFileMenu(scene: Scene): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.add(buildProjectCloseMenuItem(scene))
+
+      if (FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER) {
+        items.addAll(buildOpenRecentMenu(), buildProjectCloseMenuItem(scene))
+      } else {
+        items.add(buildProjectCloseMenuItem(scene))
+      }
     }
   }
 
@@ -38,5 +46,9 @@ class WorkbenchMenuBuilder {
         OpenRepoScene.launch(Stage())
       }
     }
+  }
+
+  private fun buildOpenRecentMenu(): Menu {
+    return Menu(MENU_FILE_MENU_OPEN_RECENT)
   }
 }
