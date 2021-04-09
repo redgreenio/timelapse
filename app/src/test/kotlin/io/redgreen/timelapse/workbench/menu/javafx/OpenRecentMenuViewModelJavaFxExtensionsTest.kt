@@ -5,49 +5,57 @@ import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.ClearRec
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.RecentRepository
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
+import io.redgreen.truth.extensions.javafx.MenuItemSubject.Companion.assertThat
 import org.junit.jupiter.api.Test
 
 class OpenRecentMenuViewModelJavaFxExtensionsTest {
   @Test
   fun `it should create a disabled JavaFx open recent menu when there are not recent repositories`() {
     // given & when
-    val javaFxEmptyOpenRecentMenu = Empty.toJavaFxMenu()
+    val disabledOpenRecentJavaFxMenu = Empty.toJavaFxMenu()
 
     // then
-    assertThat(javaFxEmptyOpenRecentMenu.text)
+    assertThat(disabledOpenRecentJavaFxMenu.text)
       .isEqualTo("Open Recent")
-    assertThat(javaFxEmptyOpenRecentMenu.isDisable)
+    assertThat(disabledOpenRecentJavaFxMenu.isDisable)
       .isTrue()
   }
 
   @Test
   fun `it should create an enabled JavaFx open recent menu with recent repositories and a clear menu item`() {
     // given
-    val shoppingAppRepository = "/Projects/shopping-app/.git"
-    val coffeeRepository = "/Projects/coffee/.git"
-    val recentRepositoryMenuItemViewModels = listOf(shoppingAppRepository, coffeeRepository)
+    val recentRepositoryMenuItemViewModels = listOf(
+      "/Projects/shopping-app/.git",
+      "/Projects/coffee/.git"
+    )
       .map(::RecentRepository)
     val openRecentMenuItemViewModels = recentRepositoryMenuItemViewModels + ClearRecent
 
     // when
-    val javaFxNonEmptyOpenRecentMenu = NonEmpty(openRecentMenuItemViewModels)
+    val openRecentJavaFxMenu = NonEmpty(openRecentMenuItemViewModels)
       .toJavaFxMenu()
 
     // then
-    assertThat(javaFxNonEmptyOpenRecentMenu.text)
+    assertThat(openRecentJavaFxMenu.text)
       .isEqualTo("Open Recent")
-    assertThat(javaFxNonEmptyOpenRecentMenu.isDisable)
+    assertThat(openRecentJavaFxMenu.isDisable)
       .isFalse()
 
-    val recentMenuItemProperties = javaFxNonEmptyOpenRecentMenu
-      .items
-      .map { it.text to !it.isDisable }
-    assertThat(recentMenuItemProperties)
-      .containsExactly(
-        shoppingAppRepository to true,
-        coffeeRepository to true,
-        "Clear Recent" to true
-      )
-      .inOrder()
+    assertThat(openRecentJavaFxMenu.items)
+      .hasSize(3)
+
+    val (repositoryMenuItem1, repositoryMenuItem2, clearMenuItem) = openRecentJavaFxMenu.items
+
+    assertThat(repositoryMenuItem1)
+      .hasText("/Projects/shopping-app/.git")
+      .isEnabled()
+
+    assertThat(repositoryMenuItem2)
+      .hasText("/Projects/coffee/.git")
+      .isEnabled()
+
+    assertThat(clearMenuItem)
+      .hasText("Clear Recent")
+      .isEnabled()
   }
 }
