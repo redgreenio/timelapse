@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.main
+package io.redgreen.timelapse.workbench.menu
 
 import io.redgreen.timelapse.foo.closeWindow
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene

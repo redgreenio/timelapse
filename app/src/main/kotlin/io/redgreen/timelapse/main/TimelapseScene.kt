@@ -28,6 +28,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.Commit
+import io.redgreen.timelapse.workbench.menu.WorkbenchMenuBuilder
 import javafx.application.Platform
 import javafx.geometry.Insets
 import javafx.scene.Scene
