@@ -31,5 +31,7 @@ fun OpenRecentMenuViewModel.toJavaFxMenu(): Menu = when (this) {
 
 private fun toMenuItem(menuItemViewModel: OpenRecentMenuItemViewModel): MenuItem = when (menuItemViewModel) {
   OpenRecentMenuItemViewModel.ClearRecent -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT)
-  is OpenRecentMenuItemViewModel.RecentRepository -> MenuItem(menuItemViewModel.repositoryDirectory)
+  is OpenRecentMenuItemViewModel.RecentRepository -> MenuItem(menuItemViewModel.repositoryDirectory).apply {
+    isDisable = !menuItemViewModel.isPresent
+  }
 }
