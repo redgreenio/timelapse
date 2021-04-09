@@ -1,20 +1,25 @@
 package io.redgreen.timelapse.workbench.menu
 
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.EmptyMenu
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmptyMenu
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.ClearRecent
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.RecentRepository
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
 
 class OpenRecentMenuViewModelUseCase(
   private val repositoriesStorage: RecentGitRepositoriesStorage
 ) {
   fun invoke(): OpenRecentMenuViewModel {
-    val recentRepositories = repositoriesStorage.getRecentRepositories()
-    return if (recentRepositories.isEmpty()) {
-      EmptyMenu
+    val menuItemViewModels = repositoriesStorage
+      .getRecentRepositories()
+      .map(RecentGitRepository::path)
+      .map(::RecentRepository)
+
+    return if (menuItemViewModels.isEmpty()) {
+      Empty
     } else {
-      val menuItemViewModels = recentRepositories
-        .map { NonEmptyMenu.RecentRepositoryMenuItemViewModel(it.path) }
-      NonEmptyMenu(menuItemViewModels + NonEmptyMenu.ClearRecentsMenuItemViewModel)
+      NonEmpty(menuItemViewModels + ClearRecent)
     }
   }
 }

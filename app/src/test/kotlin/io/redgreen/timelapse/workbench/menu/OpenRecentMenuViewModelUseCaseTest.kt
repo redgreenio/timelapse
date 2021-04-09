@@ -5,10 +5,10 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.EmptyMenu
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmptyMenu
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmptyMenu.ClearRecentsMenuItemViewModel
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmptyMenu.RecentRepositoryMenuItemViewModel
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.ClearRecent
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.RecentRepository
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
 import org.junit.jupiter.api.Test
 
 class OpenRecentMenuViewModelUseCaseTest {
@@ -26,7 +26,7 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     // then
     assertThat(openRecentMenuViewModel)
-      .isEqualTo(EmptyMenu)
+      .isEqualTo(Empty)
   }
 
   @Test
@@ -42,13 +42,13 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     // then
     assertThat(openRecentMenuViewModel)
-      .isInstanceOf(NonEmptyMenu::class.java)
+      .isInstanceOf(NonEmpty::class.java)
 
-    assertThat((openRecentMenuViewModel as NonEmptyMenu).contents)
+    assertThat((openRecentMenuViewModel as NonEmpty).menuItemViewModels)
       .containsExactly(
-        RecentRepositoryMenuItemViewModel("/Projects/shopping-app/.git"),
-        RecentRepositoryMenuItemViewModel("/Projects/coffee/.git"),
-        ClearRecentsMenuItemViewModel
+        RecentRepository("/Projects/shopping-app/.git"),
+        RecentRepository("/Projects/coffee/.git"),
+        ClearRecent
       )
       .inOrder()
   }
