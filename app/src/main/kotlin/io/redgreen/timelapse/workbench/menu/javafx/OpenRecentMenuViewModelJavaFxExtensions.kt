@@ -1,5 +1,7 @@
-package io.redgreen.timelapse.workbench.menu
+package io.redgreen.timelapse.workbench.menu.javafx
 
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
 import javafx.scene.control.Menu
