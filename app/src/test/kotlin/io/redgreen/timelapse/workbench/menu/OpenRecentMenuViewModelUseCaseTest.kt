@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 
 class OpenRecentMenuViewModelUseCaseTest {
   private val repositoriesStorage = mock<RecentGitRepositoriesStorage>()
-  private val useCase = OpenRecentMenuViewModelUseCase(repositoriesStorage)
+  private val useCase = OpenRecentMenuViewModelUseCase(repositoriesStorage) { true }
 
   @Test
   fun `it should return an empty view model when there are no recent repositories`() {
@@ -48,6 +48,33 @@ class OpenRecentMenuViewModelUseCaseTest {
       .containsExactly(
         RecentRepository("/Projects/shopping-app/.git"),
         RecentRepository("/Projects/coffee/.git"),
+        ClearRecent
+      )
+      .inOrder()
+  }
+
+  @Test
+  fun `it should disable missing repository items from recent repositories menu`() {
+    // given
+    val missingRepository = "/Projects/coffee/.git"
+    val useCase = OpenRecentMenuViewModelUseCase(repositoriesStorage) { it != missingRepository }
+
+    val recentRepositories = listOf("/Projects/shopping-app/.git", missingRepository)
+      .map(::RecentGitRepository)
+    whenever(repositoriesStorage.getRecentRepositories())
+      .thenReturn(recentRepositories)
+
+    // when
+    val openRecentMenuViewModel = useCase.invoke()
+
+    // then
+    assertThat(openRecentMenuViewModel)
+      .isInstanceOf(NonEmpty::class.java)
+
+    assertThat((openRecentMenuViewModel as NonEmpty).menuItemViewModels)
+      .containsExactly(
+        RecentRepository("/Projects/shopping-app/.git"),
+        RecentRepository(missingRepository, false),
         ClearRecent
       )
       .inOrder()
