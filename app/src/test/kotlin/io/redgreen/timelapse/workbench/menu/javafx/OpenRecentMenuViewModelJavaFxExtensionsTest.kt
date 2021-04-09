@@ -25,8 +25,9 @@ class OpenRecentMenuViewModelJavaFxExtensionsTest {
     // given
     val shoppingAppRepository = "/Projects/shopping-app/.git"
     val coffeeRepository = "/Projects/coffee/.git"
-    val openRecentMenuItemViewModels = listOf(shoppingAppRepository, coffeeRepository)
-      .map(::RecentRepository) + ClearRecent
+    val recentRepositoryMenuItemViewModels = listOf(shoppingAppRepository, coffeeRepository)
+      .map(::RecentRepository)
+    val openRecentMenuItemViewModels = recentRepositoryMenuItemViewModels + ClearRecent
 
     // when
     val javaFxNonEmptyOpenRecentMenu = NonEmpty(openRecentMenuItemViewModels)
