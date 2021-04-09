@@ -43,7 +43,9 @@ If the build succeeds, you should be able to see this screen!
 
 **Windows**
 
-Not supported yet.
+```shell
+gradlew installGitHooks
+```
 
 **Linux & macOS**
 
