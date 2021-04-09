@@ -12,7 +12,7 @@ import javafx.stage.Stage
 
 object WorkbenchMenu {
   private const val MENU_FILE = "File"
-  private const val MENU_ITEM_CLOSE_PROJECT = "Close Project"
+  private const val MENU_FILE_MENU_ITEM_CLOSE_PROJECT = "Close Project"
 
   private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = false
 
@@ -38,7 +38,7 @@ object WorkbenchMenu {
   }
 
   private fun buildProjectCloseMenuItem(scene: Scene): MenuItem {
-    return MenuItem(MENU_ITEM_CLOSE_PROJECT).apply {
+    return MenuItem(MENU_FILE_MENU_ITEM_CLOSE_PROJECT).apply {
       setOnAction {
         scene.closeWindow()
         OpenRepoScene.launch(Stage())
