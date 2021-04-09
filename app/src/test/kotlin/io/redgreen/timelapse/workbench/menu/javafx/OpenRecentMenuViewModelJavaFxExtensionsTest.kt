@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.workbench.menu
+package io.redgreen.timelapse.workbench.menu.javafx
 
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.ClearRecent

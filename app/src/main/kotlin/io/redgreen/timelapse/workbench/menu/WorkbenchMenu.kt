@@ -3,6 +3,7 @@ package io.redgreen.timelapse.workbench.menu
 import io.redgreen.timelapse.foo.closeWindow
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
+import io.redgreen.timelapse.workbench.menu.javafx.toJavaFxMenu
 import javafx.scene.Scene
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
