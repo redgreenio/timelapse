@@ -58,4 +58,42 @@ class OpenRecentMenuViewModelJavaFxExtensionsTest {
       .hasText("Clear Recent")
       .isEnabled()
   }
+
+  @Test
+  fun `it should create an enabled open recent menu with recent repositories (disable missing) and a clear menu item`() {
+    // given
+    val recentRepositoryMenuItemViewModels = listOf(
+      "/Projects/shopping-app/.git",
+      "/Projects/coffee/.git"
+    )
+      .map { RecentRepository(it, false) }
+    val openRecentMenuItemViewModels = recentRepositoryMenuItemViewModels + ClearRecent
+
+    // when
+    val openRecentJavaFxMenu = NonEmpty(openRecentMenuItemViewModels)
+      .toJavaFxMenu()
+
+    // then
+    assertThat(openRecentJavaFxMenu.text)
+      .isEqualTo("Open Recent")
+    assertThat(openRecentJavaFxMenu.isDisable)
+      .isFalse()
+
+    assertThat(openRecentJavaFxMenu.items)
+      .hasSize(3)
+
+    val (repositoryMenuItem1, repositoryMenuItem2, clearMenuItem) = openRecentJavaFxMenu.items
+
+    assertThat(repositoryMenuItem1)
+      .hasText("/Projects/shopping-app/.git")
+      .isDisabled()
+
+    assertThat(repositoryMenuItem2)
+      .hasText("/Projects/coffee/.git")
+      .isDisabled()
+
+    assertThat(clearMenuItem)
+      .hasText("Clear Recent")
+      .isEnabled()
+  }
 }
