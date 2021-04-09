@@ -15,4 +15,6 @@ sealed class OpenRecentMenuItemViewModel {
   ) : OpenRecentMenuItemViewModel()
 
   object ClearRecent : OpenRecentMenuItemViewModel()
+
+  object Separator : OpenRecentMenuItemViewModel()
 }
