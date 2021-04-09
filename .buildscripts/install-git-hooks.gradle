@@ -2,7 +2,10 @@ def hooksDirectoryPath = rootProject.rootDir.canonicalPath + "${File.separatorCh
 
 tasks.create(name: 'installGitHooks') {
     doLast {
-        Runtime.getRuntime().exec("chmod -R +x .git/hooks/");
+        def runningOnWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+        if (!runningOnWindows) {
+            Runtime.getRuntime().exec("chmod -R +x .git/hooks/");
+        }
     }
 }
 
