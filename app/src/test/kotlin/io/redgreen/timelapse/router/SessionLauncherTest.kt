@@ -107,8 +107,8 @@ class SessionLauncherTest {
     @Test
     fun `it should launch the workbench with previously opened repository`() {
       // given
-      val checkIfIsGitRepo: (path: String) -> Boolean = { true }
-      val launcher = SessionLauncher(recentGitRepositoriesStorage, checkIfIsGitRepo)
+      val isGitRepositoryPredicate: (path: String) -> Boolean = { true }
+      val launcher = SessionLauncher(recentGitRepositoriesStorage, isGitRepositoryPredicate)
       val launchWorkbenchAction: (String) -> Unit = mock()
 
       // when
@@ -124,8 +124,8 @@ class SessionLauncherTest {
     @Test
     fun `it should launch welcome screen if a last opened repository doesn't exist`() {
       // given
-      val checkIfIsGitRepo: (path: String) -> Boolean = { false }
-      val launcher = SessionLauncher(recentGitRepositoriesStorage, checkIfIsGitRepo)
+      val isGitRepositoryPredicate: (path: String) -> Boolean = { false }
+      val launcher = SessionLauncher(recentGitRepositoriesStorage, isGitRepositoryPredicate)
       val launchWelcomeScreenAction = mock<() -> Unit>()
 
       // when
