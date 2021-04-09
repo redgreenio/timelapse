@@ -16,20 +16,18 @@ fun Empty.toJavaFxMenu(): Menu {
 }
 
 fun NonEmpty.toJavaFxMenu(): Menu {
-  val menuItems = menuItemViewModels.map {
-    when (it) {
-      OpenRecentMenuItemViewModel.ClearRecent -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT)
-      is OpenRecentMenuItemViewModel.RecentRepository -> MenuItem(it.repositoryDirectory)
-    }
-  }
+  val menuItems = menuItemViewModels.map(::toMenuItem)
   return Menu(MENU_FILE_MENU_OPEN_RECENT).apply {
     this.items.addAll(menuItems)
   }
 }
 
-fun OpenRecentMenuViewModel.toJavaFxMenu(): Menu {
-  return when (this) {
-    Empty -> (this as Empty).toJavaFxMenu()
-    is NonEmpty -> this.toJavaFxMenu()
-  }
+fun OpenRecentMenuViewModel.toJavaFxMenu(): Menu = when (this) {
+  Empty -> (this as Empty).toJavaFxMenu()
+  is NonEmpty -> this.toJavaFxMenu()
+}
+
+private fun toMenuItem(menuItemViewModel: OpenRecentMenuItemViewModel): MenuItem = when (menuItemViewModel) {
+  OpenRecentMenuItemViewModel.ClearRecent -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT)
+  is OpenRecentMenuItemViewModel.RecentRepository -> MenuItem(menuItemViewModel.repositoryDirectory)
 }
