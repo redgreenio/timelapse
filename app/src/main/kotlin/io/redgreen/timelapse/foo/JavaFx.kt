@@ -36,5 +36,9 @@ fun launchScene(
 }
 
 fun Scene.closeWindow() {
-  (window as Stage).close()
+  val stage = window as Stage
+  if (System.getProperty("os.name").toLowerCase().contains("mac") && stage.isFullScreen) {
+    stage.isFullScreen = false
+  }
+  stage.close()
 }
