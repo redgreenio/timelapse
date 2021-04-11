@@ -31,7 +31,7 @@ object WorkbenchMenu {
       mnemonicParsingProperty().set(true)
 
       if (FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER) {
-        items.addAll(buildOpenRecentMenu(), buildProjectCloseMenuItem(scene))
+        items.addAll(buildOpenRecentMenu(scene), buildProjectCloseMenuItem(scene))
       } else {
         items.add(buildProjectCloseMenuItem(scene))
       }
@@ -47,9 +47,9 @@ object WorkbenchMenu {
     }
   }
 
-  private fun buildOpenRecentMenu(): Menu {
+  private fun buildOpenRecentMenu(scene: Scene): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
       .invoke()
-      .toJavaFxMenu()
+      .toJavaFxMenu(scene)
   }
 }
