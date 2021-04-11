@@ -14,23 +14,23 @@ import javafx.scene.control.SeparatorMenuItem
 private const val MENU_FILE_MENU_OPEN_RECENT = "Open Recent"
 private const val MENU_OPEN_MENU_ITEM_CLEAR_RECENT = "Clear Recent"
 
+fun OpenRecentMenuViewModel.toJavaFxMenu(): Menu = when (this) {
+  Empty -> (this as Empty).toJavaFxMenu()
+  is NonEmpty -> this.toJavaFxMenu()
+}
+
 @Suppress("unused") // Because, the type `Empty` itself provides us enough information.
-fun Empty.toJavaFxMenu(): Menu {
+private fun Empty.toJavaFxMenu(): Menu {
   return Menu(MENU_FILE_MENU_OPEN_RECENT).apply {
     isDisable = true
   }
 }
 
-fun NonEmpty.toJavaFxMenu(): Menu {
+private fun NonEmpty.toJavaFxMenu(): Menu {
   val menuItems = menuItemViewModels.map(::toMenuItem)
   return Menu(MENU_FILE_MENU_OPEN_RECENT).apply {
     this.items.addAll(menuItems)
   }
-}
-
-fun OpenRecentMenuViewModel.toJavaFxMenu(): Menu = when (this) {
-  Empty -> (this as Empty).toJavaFxMenu()
-  is NonEmpty -> this.toJavaFxMenu()
 }
 
 private fun toMenuItem(menuItemViewModel: OpenRecentMenuItemViewModel): MenuItem = when (menuItemViewModel) {
