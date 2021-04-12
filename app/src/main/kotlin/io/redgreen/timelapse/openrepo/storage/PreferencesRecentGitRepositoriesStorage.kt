@@ -69,8 +69,7 @@ class PreferencesRecentGitRepositoriesStorage(
     return Destination.valueOf(destinationString)
   }
 
-  @VisibleForTesting
-  internal fun clearRecentRepositories() {
+  public fun clearRecentRepositories() {
     preferences.remove(KEY_RECENT_REPOSITORIES)
   }
 

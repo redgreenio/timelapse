@@ -17,11 +17,14 @@ object WorkbenchMenu {
 
   private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = false
 
-  fun install(scene: Scene) {
+  fun install(scene: Scene, refreshMenu: Boolean = false) {
     val menuBar = MenuBar().apply {
       useSystemMenuBarProperty().set(true)
     }
 
+    if (refreshMenu) {
+      menuBar.menus.clear()
+    }
     menuBar.menus.add(buildFileMenu(scene))
     (scene.root as BorderPane).top = menuBar
   }
