@@ -181,18 +181,21 @@ class TimelapseScene(private val project: String) :
       center = splitPane
     }
 
-    val scene = this
     setupHotKeys(this)
-    WorkbenchMenu.install(
-      scene,
-      project,
-      listener = object : OpenRecentMenuItemsClickListener {
-        override fun onRecentRepositoryClicked(gitDirectoryPath: String) {
-          scene.closeWindow()
-          launch(Stage(), gitDirectoryPath)
-        }
+
+    val scene = this
+    val menuItemsClickListener = object : OpenRecentMenuItemsClickListener {
+      override fun onRecentRepositoryClicked(directoryPath: String) {
+        scene.closeWindow()
+        launch(Stage(), directoryPath)
       }
-    )
+
+      override fun onClearRecentClicked() {
+        PreferencesRecentGitRepositoriesStorage().clearRecentRepositories(project)
+        WorkbenchMenu.install(scene, project, true, this)
+      }
+    }
+    WorkbenchMenu.install(scene, project, listener = menuItemsClickListener)
   }
 
   private fun moveFocusToReadingPane() {
