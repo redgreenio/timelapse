@@ -1,3 +1,5 @@
 package io.redgreen.timelapse.workbench.menu
 
-interface OpenRecentMenuItemsClickListener
+interface OpenRecentMenuItemsClickListener {
+  fun onRecentRepositoryClicked(gitDirectoryPath: String)
+}
