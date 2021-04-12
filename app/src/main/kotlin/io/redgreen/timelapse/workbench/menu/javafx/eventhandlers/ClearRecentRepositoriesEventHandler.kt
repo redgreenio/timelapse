@@ -6,9 +6,12 @@ import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.Scene
 
-class ClearRecentRepositoriesEventHandler(private val scene: Scene) : EventHandler<ActionEvent> {
+class ClearRecentRepositoriesEventHandler(
+  private val scene: Scene,
+  private val currentGitRepositoryPath: String
+) : EventHandler<ActionEvent> {
   override fun handle(event: ActionEvent) {
-    PreferencesRecentGitRepositoriesStorage().clearRecentRepositories()
-    WorkbenchMenu.install(scene, "", true)
+    PreferencesRecentGitRepositoriesStorage().clearRecentRepositories(currentGitRepositoryPath)
+    WorkbenchMenu.install(scene, currentGitRepositoryPath, true)
   }
 }
