@@ -23,7 +23,11 @@ fun OpenRecentMenuViewModel.toJavaFxMenu(
   currentGitRepositoryPath: String
 ): Menu = when (this) {
   EmptyMenuViewModel -> (this as EmptyMenuViewModel).toJavaFxMenu()
-  is NonEmptyMenuViewModel -> this.toJavaFxMenu(scene, currentGitRepositoryPath)
+  is NonEmptyMenuViewModel -> this.toJavaFxMenu(
+    scene,
+    currentGitRepositoryPath,
+    object : OpenRecentMenuItemsClickListener {}
+  )
 }
 
 @Suppress("unused") // Because, the type `Empty` itself provides us enough information.
@@ -35,10 +39,11 @@ private fun EmptyMenuViewModel.toJavaFxMenu(): Menu {
 
 private fun NonEmptyMenuViewModel.toJavaFxMenu(
   scene: Scene,
-  currentGitRepositoryPath: String
+  currentGitRepositoryPath: String,
+  listener: OpenRecentMenuItemsClickListener
 ): Menu {
   val menuItems = menuItemViewModels
-    .map { toMenuItem(it, scene, currentGitRepositoryPath, object : OpenRecentMenuItemsClickListener {}) }
+    .map { toMenuItem(it, scene, currentGitRepositoryPath, listener) }
   return Menu(MENU_FILE_MENU_OPEN_RECENT).apply {
     this.items.addAll(menuItems)
   }
