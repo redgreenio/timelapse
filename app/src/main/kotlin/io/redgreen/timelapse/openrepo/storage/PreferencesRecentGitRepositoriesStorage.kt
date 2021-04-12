@@ -73,7 +73,7 @@ class PreferencesRecentGitRepositoriesStorage(
     return Destination.valueOf(destinationString)
   }
 
-  fun clearRecentRepositories() {
+  override fun clearRecentRepositories() {
     preferences.remove(KEY_RECENT_REPOSITORIES)
   }
 
