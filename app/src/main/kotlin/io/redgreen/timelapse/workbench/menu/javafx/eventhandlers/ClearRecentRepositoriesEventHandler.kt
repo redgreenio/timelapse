@@ -1,11 +1,14 @@
 package io.redgreen.timelapse.workbench.menu.javafx.eventhandlers
 
+import io.redgreen.timelapse.foo.closeWindow
+import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemsClickListener
 import io.redgreen.timelapse.workbench.menu.WorkbenchMenu
 import javafx.event.ActionEvent
 import javafx.event.EventHandler
 import javafx.scene.Scene
+import javafx.stage.Stage
 
 class ClearRecentRepositoriesEventHandler(
   private val scene: Scene,
@@ -17,7 +20,12 @@ class ClearRecentRepositoriesEventHandler(
       scene,
       currentGitRepositoryPath,
       true,
-      object : OpenRecentMenuItemsClickListener {}
+      object : OpenRecentMenuItemsClickListener {
+        override fun onRecentRepositoryClicked(gitDirectoryPath: String) {
+          scene.closeWindow()
+          TimelapseScene.launch(Stage(), currentGitRepositoryPath)
+        }
+      }
     )
   }
 }

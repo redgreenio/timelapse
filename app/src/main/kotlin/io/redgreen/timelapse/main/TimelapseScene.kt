@@ -11,6 +11,7 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
+import io.redgreen.timelapse.foo.closeWindow
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.foo.fastLazy
@@ -180,8 +181,18 @@ class TimelapseScene(private val project: String) :
       center = splitPane
     }
 
+    val scene = this
     setupHotKeys(this)
-    WorkbenchMenu.install(this, project, listener = object : OpenRecentMenuItemsClickListener {})
+    WorkbenchMenu.install(
+      scene,
+      project,
+      listener = object : OpenRecentMenuItemsClickListener {
+        override fun onRecentRepositoryClicked(gitDirectoryPath: String) {
+          scene.closeWindow()
+          launch(Stage(), gitDirectoryPath)
+        }
+      }
+    )
   }
 
   private fun moveFocusToReadingPane() {
