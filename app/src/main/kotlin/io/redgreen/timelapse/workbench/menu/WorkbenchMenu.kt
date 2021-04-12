@@ -27,21 +27,18 @@ object WorkbenchMenu {
     if (refreshMenu) {
       menuBar.menus.clear()
     }
-    menuBar.menus.add(buildFileMenu(scene, currentGitRepositoryPath))
+    menuBar.menus.add(buildFileMenu(scene, currentGitRepositoryPath, object : OpenRecentMenuItemsClickListener {}))
     (scene.root as BorderPane).top = menuBar
   }
 
-  private fun buildFileMenu(scene: Scene, currentGitRepositoryPath: String): Menu {
+  private fun buildFileMenu(
+    scene: Scene,
+    currentGitRepositoryPath: String,
+    listener: OpenRecentMenuItemsClickListener
+  ): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.addAll(
-        buildOpenRecentMenu(
-          scene,
-          currentGitRepositoryPath,
-          object : OpenRecentMenuItemsClickListener {}
-        ),
-        buildProjectCloseMenuItem(scene)
-      )
+      items.addAll(buildOpenRecentMenu(scene, currentGitRepositoryPath, listener), buildProjectCloseMenuItem(scene))
     }
   }
 
