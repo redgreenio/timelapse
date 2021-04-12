@@ -7,14 +7,3 @@ sealed class OpenRecentMenuViewModel {
     val menuItemViewModels: List<OpenRecentMenuItemViewModel>
   ) : OpenRecentMenuViewModel()
 }
-
-sealed class OpenRecentMenuItemViewModel {
-  data class RecentRepository(
-    val repositoryDirectory: String,
-    val isPresent: Boolean = true
-  ) : OpenRecentMenuItemViewModel()
-
-  object ClearRecent : OpenRecentMenuItemViewModel()
-
-  object Separator : OpenRecentMenuItemViewModel()
-}
