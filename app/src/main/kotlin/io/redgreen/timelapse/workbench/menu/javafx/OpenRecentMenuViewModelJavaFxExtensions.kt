@@ -38,7 +38,9 @@ private fun toMenuItem(
   menuItemViewModel: OpenRecentMenuItemViewModel,
   scene: Scene
 ): MenuItem = when (menuItemViewModel) {
-  ClearRecent -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT)
+  ClearRecent -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
+    onAction = ClearRecentRepositoriesEventHandler(scene)
+  }
   is RecentRepository -> MenuItem(menuItemViewModel.repositoryDirectory).apply {
     isDisable = !menuItemViewModel.isPresent
     onAction = OpenRecentRepositoryEventHandler(scene, menuItemViewModel.repositoryDirectory)
