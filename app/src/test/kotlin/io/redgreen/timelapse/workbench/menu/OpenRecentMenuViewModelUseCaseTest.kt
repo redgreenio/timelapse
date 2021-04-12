@@ -11,6 +11,9 @@ class OpenRecentMenuViewModelUseCaseTest {
   private val repositoriesStorage = mock<RecentGitRepositoriesStorage>()
   private val useCase = OpenRecentMenuViewModelUseCase(repositoriesStorage) { true }
 
+  private val shoppingAppRecentRepository = RecentGitRepository("/Projects/shopping-app/.git")
+  private val coffeeRecentRepository = RecentGitRepository("/Projects/coffee/.git")
+
   @Test
   fun `it should return an empty view model when there are no recent repositories`() {
     // given
@@ -28,8 +31,7 @@ class OpenRecentMenuViewModelUseCaseTest {
   @Test
   fun `it should return recent repositories menu items and clear recent menu items if there are recent repositories`() {
     // given
-    val recentRepositories = listOf("/Projects/shopping-app/.git", "/Projects/coffee/.git")
-      .map(::RecentGitRepository)
+    val recentRepositories = listOf(shoppingAppRecentRepository, coffeeRecentRepository)
     whenever(repositoriesStorage.getRecentRepositories())
       .thenReturn(recentRepositories)
 
@@ -42,8 +44,8 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     assertThat((openRecentMenuViewModel as NonEmptyMenuViewModel).menuItemViewModels)
       .containsExactly(
-        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git")),
-        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/coffee/.git")),
+        RecentRepositoryMenuItemViewModel(shoppingAppRecentRepository),
+        RecentRepositoryMenuItemViewModel(coffeeRecentRepository),
         SeparatorMenuItemViewModel,
         ClearRecentMenuItemViewModel
       )
@@ -53,11 +55,9 @@ class OpenRecentMenuViewModelUseCaseTest {
   @Test
   fun `it should disable missing repository items from recent repositories menu`() {
     // given
-    val missingRepository = "/Projects/coffee/.git"
-    val useCase = OpenRecentMenuViewModelUseCase(repositoriesStorage) { it != missingRepository }
+    val useCase = OpenRecentMenuViewModelUseCase(repositoriesStorage) { it != coffeeRecentRepository.path }
 
-    val recentRepositories = listOf("/Projects/shopping-app/.git", missingRepository)
-      .map(::RecentGitRepository)
+    val recentRepositories = listOf(shoppingAppRecentRepository, coffeeRecentRepository)
     whenever(repositoriesStorage.getRecentRepositories())
       .thenReturn(recentRepositories)
 
@@ -70,8 +70,8 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     assertThat((openRecentMenuViewModel as NonEmptyMenuViewModel).menuItemViewModels)
       .containsExactly(
-        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git")),
-        RecentRepositoryMenuItemViewModel(RecentGitRepository(missingRepository), false),
+        RecentRepositoryMenuItemViewModel(shoppingAppRecentRepository),
+        RecentRepositoryMenuItemViewModel(coffeeRecentRepository, false),
         SeparatorMenuItemViewModel,
         ClearRecentMenuItemViewModel
       )
