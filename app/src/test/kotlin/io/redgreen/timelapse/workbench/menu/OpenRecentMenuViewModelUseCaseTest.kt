@@ -42,8 +42,8 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     assertThat((openRecentMenuViewModel as NonEmptyMenuViewModel).menuItemViewModels)
       .containsExactly(
-        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git"), true),
-        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/coffee/.git"), true),
+        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git")),
+        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/coffee/.git")),
         SeparatorMenuItemViewModel,
         ClearRecentMenuItemViewModel
       )
@@ -70,7 +70,7 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     assertThat((openRecentMenuViewModel as NonEmptyMenuViewModel).menuItemViewModels)
       .containsExactly(
-        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git"), true),
+        RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git")),
         RecentRepositoryMenuItemViewModel(RecentGitRepository(missingRepository), false),
         SeparatorMenuItemViewModel,
         ClearRecentMenuItemViewModel
