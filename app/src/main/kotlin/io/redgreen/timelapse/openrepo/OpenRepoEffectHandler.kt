@@ -6,7 +6,6 @@ import io.reactivex.rxjava3.core.Scheduler
 import io.redgreen.timelapse.contentviewer.ContentViewerEffectHandler
 import io.redgreen.timelapse.foo.appendDotGit
 import io.redgreen.timelapse.git.model.GitDirectory
-import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoView
 import io.redgreen.timelapse.platform.SchedulersProvider
@@ -30,11 +29,6 @@ class OpenRepoEffectHandler {
         .addTransformer(
           DetectGitRepository::class.java,
           detectGitRepositoryTransformer(schedulersProvider.io())
-        )
-        .addConsumer(
-          UpdateRecentRepositories::class.java,
-          { recentGitRepositoriesStorage.update(RecentGitRepository(it.path)) },
-          schedulersProvider.io()
         )
         .addConsumer(OpenGitRepository::class.java, { openWorkbench(view, it.path) }, schedulersProvider.ui())
         .addConsumer(
