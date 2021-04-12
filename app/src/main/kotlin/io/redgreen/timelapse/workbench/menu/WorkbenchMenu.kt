@@ -15,7 +15,7 @@ object WorkbenchMenu {
   private const val MENU_FILE = "File"
   private const val MENU_FILE_MENU_ITEM_CLOSE_PROJECT = "Close Project"
 
-  fun install(scene: Scene, refreshMenu: Boolean = false) {
+  fun install(scene: Scene, currentGitRepositoryPath: String, refreshMenu: Boolean = false) {
     val menuBar = MenuBar().apply {
       useSystemMenuBarProperty().set(true)
     }
@@ -23,14 +23,14 @@ object WorkbenchMenu {
     if (refreshMenu) {
       menuBar.menus.clear()
     }
-    menuBar.menus.add(buildFileMenu(scene))
+    menuBar.menus.add(buildFileMenu(scene, currentGitRepositoryPath))
     (scene.root as BorderPane).top = menuBar
   }
 
-  private fun buildFileMenu(scene: Scene): Menu {
+  private fun buildFileMenu(scene: Scene, currentGitRepositoryPath: String): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.addAll(buildOpenRecentMenu(scene), buildProjectCloseMenuItem(scene))
+      items.addAll(buildOpenRecentMenu(scene, currentGitRepositoryPath), buildProjectCloseMenuItem(scene))
     }
   }
 
@@ -43,9 +43,9 @@ object WorkbenchMenu {
     }
   }
 
-  private fun buildOpenRecentMenu(scene: Scene): Menu {
+  private fun buildOpenRecentMenu(scene: Scene, currentGitRepositoryPath: String): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
-      .invoke()
+      .invoke(currentGitRepositoryPath)
       .toJavaFxMenu(scene)
   }
 }
