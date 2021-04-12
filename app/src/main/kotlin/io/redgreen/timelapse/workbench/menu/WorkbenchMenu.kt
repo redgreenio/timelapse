@@ -34,7 +34,14 @@ object WorkbenchMenu {
   private fun buildFileMenu(scene: Scene, currentGitRepositoryPath: String): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.addAll(buildOpenRecentMenu(scene, currentGitRepositoryPath), buildProjectCloseMenuItem(scene))
+      items.addAll(
+        buildOpenRecentMenu(
+          scene,
+          currentGitRepositoryPath,
+          object : OpenRecentMenuItemsClickListener {}
+        ),
+        buildProjectCloseMenuItem(scene)
+      )
     }
   }
 
@@ -47,9 +54,13 @@ object WorkbenchMenu {
     }
   }
 
-  private fun buildOpenRecentMenu(scene: Scene, currentGitRepositoryPath: String): Menu {
+  private fun buildOpenRecentMenu(
+    scene: Scene,
+    currentGitRepositoryPath: String,
+    listener: OpenRecentMenuItemsClickListener
+  ): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
       .invoke(currentGitRepositoryPath)
-      .toJavaFxMenu(scene, currentGitRepositoryPath, object : OpenRecentMenuItemsClickListener {})
+      .toJavaFxMenu(scene, currentGitRepositoryPath, listener)
   }
 }
