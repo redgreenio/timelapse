@@ -14,7 +14,7 @@ class OpenRecentMenuViewModelUseCase(
     val menuItemViewModels = repositoriesStorage
       .getRecentRepositories()
       .map(RecentGitRepository::path)
-      .map { RecentRepository(it, isGitRepositoryPredicate(it)) }
+      .map { RecentRepositoryMenuItemViewModel(it, isGitRepositoryPredicate(it)) }
 
     return if (menuItemViewModels.isEmpty()) {
       Empty

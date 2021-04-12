@@ -5,7 +5,7 @@ import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
-import io.redgreen.timelapse.workbench.menu.RecentRepository
+import io.redgreen.timelapse.workbench.menu.RecentRepositoryMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.SeparatorMenuItemViewModel
 import javafx.scene.Scene
 import javafx.scene.control.Menu
@@ -41,7 +41,7 @@ private fun toMenuItem(
   ClearRecentMenuItemViewModel -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
     onAction = ClearRecentRepositoriesEventHandler(scene)
   }
-  is RecentRepository -> MenuItem(menuItemViewModel.repositoryDirectory).apply {
+  is RecentRepositoryMenuItemViewModel -> MenuItem(menuItemViewModel.repositoryDirectory).apply {
     isDisable = !menuItemViewModel.isPresent
     onAction = OpenRecentRepositoryEventHandler(scene, menuItemViewModel.repositoryDirectory)
   }
