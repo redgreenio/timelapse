@@ -17,9 +17,12 @@ import javafx.scene.control.SeparatorMenuItem
 private const val MENU_FILE_MENU_OPEN_RECENT = "Open Recent"
 private const val MENU_OPEN_MENU_ITEM_CLEAR_RECENT = "Clear Recent"
 
-fun OpenRecentMenuViewModel.toJavaFxMenu(scene: Scene): Menu = when (this) {
+fun OpenRecentMenuViewModel.toJavaFxMenu(
+  scene: Scene,
+  currentGitRepositoryPath: String
+): Menu = when (this) {
   EmptyMenuViewModel -> (this as EmptyMenuViewModel).toJavaFxMenu()
-  is NonEmptyMenuViewModel -> this.toJavaFxMenu(scene)
+  is NonEmptyMenuViewModel -> this.toJavaFxMenu(scene, currentGitRepositoryPath)
 }
 
 @Suppress("unused") // Because, the type `Empty` itself provides us enough information.
@@ -29,8 +32,11 @@ private fun EmptyMenuViewModel.toJavaFxMenu(): Menu {
   }
 }
 
-private fun NonEmptyMenuViewModel.toJavaFxMenu(scene: Scene): Menu {
-  val menuItems = menuItemViewModels.map { toMenuItem(it, scene) }
+private fun NonEmptyMenuViewModel.toJavaFxMenu(
+  scene: Scene,
+  currentGitRepositoryPath: String
+): Menu {
+  val menuItems = menuItemViewModels.map { toMenuItem(it, scene, currentGitRepositoryPath) }
   return Menu(MENU_FILE_MENU_OPEN_RECENT).apply {
     this.items.addAll(menuItems)
   }
@@ -38,10 +44,11 @@ private fun NonEmptyMenuViewModel.toJavaFxMenu(scene: Scene): Menu {
 
 private fun toMenuItem(
   menuItemViewModel: OpenRecentMenuItemViewModel,
-  scene: Scene
+  scene: Scene,
+  currentGitRepositoryPath: String
 ): MenuItem = when (menuItemViewModel) {
   ClearRecentMenuItemViewModel -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
-    onAction = ClearRecentRepositoriesEventHandler(scene)
+    onAction = ClearRecentRepositoriesEventHandler(scene, currentGitRepositoryPath)
   }
   is RecentRepositoryMenuItemViewModel -> MenuItem(menuItemViewModel.recentRepository.title()).apply {
     isDisable = !menuItemViewModel.isPresent
