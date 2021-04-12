@@ -46,7 +46,7 @@ private fun toMenuItem(
   }
   is RecentRepositoryMenuItemViewModel -> MenuItem(menuItemViewModel.recentRepository.title()).apply {
     isDisable = !menuItemViewModel.isPresent
-    onAction = EventHandler { listener.onRecentRepositoryClicked(menuItemViewModel.recentRepository.path) }
+    onAction = EventHandler { listener.onRecentClicked(menuItemViewModel.recentRepository.path) }
   }
   SeparatorMenuItemViewModel -> SeparatorMenuItem()
 }
