@@ -22,6 +22,9 @@ class PreferencesRecentGitRepositoriesStorage(
     private const val KEY_RECENT_REPOSITORIES = "recent_repositories"
     private const val KEY_SESSION_EXIT_DESTINATION = "session_exit_destination"
     private const val DEFAULT_EMPTY_JSON = "[]"
+
+    private const val DEFAULT_MAX_RECENT_REPOSITORIES_COUNT = 30
+    private var maxRecentRepositoriesCount = DEFAULT_MAX_RECENT_REPOSITORIES_COUNT
   }
 
   private val logger by fastLazy {
@@ -41,7 +44,8 @@ class PreferencesRecentGitRepositoriesStorage(
       existingRecentRepositories.removeAt(recentRepositoryIndex)
     }
 
-    val updatedRecentRepositories = listOf(recentGitRepository) + existingRecentRepositories
+    val updatedRecentRepositories = (listOf(recentGitRepository) + existingRecentRepositories)
+      .take(maxRecentRepositoriesCount)
     val updatedRecentRepositoriesJson = recentRepositoryListAdapter.toJson(updatedRecentRepositories)
     preferences.put(KEY_RECENT_REPOSITORIES, updatedRecentRepositoriesJson)
   }
@@ -76,5 +80,11 @@ class PreferencesRecentGitRepositoriesStorage(
   @VisibleForTesting
   internal fun clearSessionExitDestination() {
     preferences.remove(KEY_SESSION_EXIT_DESTINATION)
+  }
+
+  @VisibleForTesting
+  internal fun setMaxRecentRepositoriesCount(count: Int): AutoCloseable {
+    maxRecentRepositoriesCount = count
+    return AutoCloseable { maxRecentRepositoriesCount = DEFAULT_MAX_RECENT_REPOSITORIES_COUNT }
   }
 }
