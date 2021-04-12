@@ -2,7 +2,7 @@ package io.redgreen.timelapse.workbench.menu.javafx
 
 import io.redgreen.timelapse.workbench.menu.ClearRecentMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.EmptyMenuViewModel
-import io.redgreen.timelapse.workbench.menu.NonEmpty
+import io.redgreen.timelapse.workbench.menu.NonEmptyMenuViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.RecentRepositoryMenuItemViewModel
@@ -17,7 +17,7 @@ private const val MENU_OPEN_MENU_ITEM_CLEAR_RECENT = "Clear Recent"
 
 fun OpenRecentMenuViewModel.toJavaFxMenu(scene: Scene): Menu = when (this) {
   EmptyMenuViewModel -> (this as EmptyMenuViewModel).toJavaFxMenu()
-  is NonEmpty -> this.toJavaFxMenu(scene)
+  is NonEmptyMenuViewModel -> this.toJavaFxMenu(scene)
 }
 
 @Suppress("unused") // Because, the type `Empty` itself provides us enough information.
@@ -27,7 +27,7 @@ private fun EmptyMenuViewModel.toJavaFxMenu(): Menu {
   }
 }
 
-private fun NonEmpty.toJavaFxMenu(scene: Scene): Menu {
+private fun NonEmptyMenuViewModel.toJavaFxMenu(scene: Scene): Menu {
   val menuItems = menuItemViewModels.map { toMenuItem(it, scene) }
   return Menu(MENU_FILE_MENU_OPEN_RECENT).apply {
     this.items.addAll(menuItems)
