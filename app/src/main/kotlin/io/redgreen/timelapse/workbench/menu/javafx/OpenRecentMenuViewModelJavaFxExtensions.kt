@@ -41,9 +41,9 @@ private fun toMenuItem(
   ClearRecentMenuItemViewModel -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
     onAction = ClearRecentRepositoriesEventHandler(scene)
   }
-  is RecentRepositoryMenuItemViewModel -> MenuItem(menuItemViewModel.repositoryDirectory).apply {
+  is RecentRepositoryMenuItemViewModel -> MenuItem(menuItemViewModel.recentRepository.path).apply {
     isDisable = !menuItemViewModel.isPresent
-    onAction = OpenRecentRepositoryEventHandler(scene, menuItemViewModel.repositoryDirectory)
+    onAction = OpenRecentRepositoryEventHandler(scene, menuItemViewModel.recentRepository.path)
   }
   SeparatorMenuItemViewModel -> SeparatorMenuItem()
 }
