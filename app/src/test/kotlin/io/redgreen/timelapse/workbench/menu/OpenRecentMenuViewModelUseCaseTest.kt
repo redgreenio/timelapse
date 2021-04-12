@@ -6,7 +6,6 @@ import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
 import org.junit.jupiter.api.Test
 
 class OpenRecentMenuViewModelUseCaseTest {
