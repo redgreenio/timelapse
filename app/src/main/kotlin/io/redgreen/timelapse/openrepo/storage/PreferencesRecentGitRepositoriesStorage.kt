@@ -73,8 +73,12 @@ class PreferencesRecentGitRepositoriesStorage(
     return Destination.valueOf(destinationString)
   }
 
-  override fun clearRecentRepositories() {
+  override fun clearRecentRepositories(vararg keepRepositoryPaths: String) {
+    val repositoryToKeep = getRecentRepositories()
+      .firstOrNull { keepRepositoryPaths.isNotEmpty() && it.path == keepRepositoryPaths.first() }
+
     preferences.remove(KEY_RECENT_REPOSITORIES)
+    repositoryToKeep?.let { update(it) }
   }
 
   @VisibleForTesting

@@ -10,5 +10,5 @@ interface RecentGitRepositoriesStorage {
   fun getLastOpenedRepository(): Optional<RecentGitRepository>
   fun setSessionExitDestination(destination: Destination)
   fun getSessionExitDestination(): Destination
-  fun clearRecentRepositories()
+  fun clearRecentRepositories(vararg keepRepositoryPaths: String)
 }

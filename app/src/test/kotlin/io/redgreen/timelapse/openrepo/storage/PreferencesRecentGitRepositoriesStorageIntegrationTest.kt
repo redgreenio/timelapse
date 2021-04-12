@@ -139,7 +139,7 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
   }
 
   @Test
-  fun `it should clear recently opened repositories`() {
+  fun `it should clear all recently opened repositories`() {
     // given
     recentRepositoriesStorage.update(RecentGitRepository(counter))
     recentRepositoriesStorage.update(RecentGitRepository(helloServices))
@@ -176,5 +176,24 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
         )
         .inOrder()
     }
+  }
+
+  @Test
+  fun `it should not clear the excluded repository from the list`() {
+    // given
+    recentRepositoriesStorage.update(RecentGitRepository(counter))
+    recentRepositoriesStorage.update(RecentGitRepository(helloServices))
+    recentRepositoriesStorage.update(RecentGitRepository(catchUp))
+
+    assertThat(recentRepositoriesStorage.getRecentRepositories())
+      .hasSize(3)
+
+    // when
+    recentRepositoriesStorage.clearRecentRepositories(catchUp)
+
+    // then
+    assertThat(recentRepositoriesStorage.getRecentRepositories())
+      .containsExactly(RecentGitRepository(catchUp))
+      .inOrder()
   }
 }
