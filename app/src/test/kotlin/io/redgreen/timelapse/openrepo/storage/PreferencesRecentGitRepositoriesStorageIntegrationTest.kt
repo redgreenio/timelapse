@@ -137,4 +137,21 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
     assertThat(actualDestination)
       .isEqualTo(destination)
   }
+
+  @Test
+  fun `it should clear recently opened repositories`() {
+    // given
+    recentRepositoriesStorage.update(RecentGitRepository(counter))
+    recentRepositoriesStorage.update(RecentGitRepository(helloServices))
+
+    assertThat(recentRepositoriesStorage.getRecentRepositories())
+      .hasSize(2)
+
+    // when
+    recentRepositoriesStorage.clearRecentRepositories()
+
+    // then
+    assertThat(recentRepositoriesStorage.getRecentRepositories())
+      .isEmpty()
+  }
 }
