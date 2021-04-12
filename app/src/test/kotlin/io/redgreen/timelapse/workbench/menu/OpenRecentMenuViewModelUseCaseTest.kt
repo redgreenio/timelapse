@@ -22,7 +22,7 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     // then
     assertThat(openRecentMenuViewModel)
-      .isEqualTo(Empty)
+      .isEqualTo(EmptyMenuViewModel)
   }
 
   @Test
