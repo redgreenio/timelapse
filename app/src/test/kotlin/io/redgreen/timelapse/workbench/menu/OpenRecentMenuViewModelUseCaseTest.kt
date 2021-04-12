@@ -111,4 +111,18 @@ class OpenRecentMenuViewModelUseCaseTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it should return an empty view model when the recent list is empty`() {
+    // given
+    whenever(repositoriesStorage.getRecentRepositories())
+      .thenReturn(emptyList())
+
+    // when
+    val openRecentMenuViewModel = useCase.invoke(saripaarRecentRepository.path)
+
+    // then
+    assertThat(openRecentMenuViewModel)
+      .isEqualTo(EmptyMenuViewModel)
+  }
 }
