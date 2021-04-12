@@ -6,15 +6,15 @@ import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesSt
 import javafx.scene.Scene
 import javafx.stage.Stage
 
-interface OpenRecentMenuItemsClickListener {
+interface FileMenuItemsClickListener {
   fun onClearRecentClicked()
   fun onRecentRepositoryClicked(directoryPath: String)
 }
 
-class DefaultOpenRecentMenuItemsClickListener(
+class DefaultFileMenuItemsClickListener(
   private val scene: Scene,
   private val openRepositoryPath: String
-) : OpenRecentMenuItemsClickListener {
+) : FileMenuItemsClickListener {
   override fun onRecentRepositoryClicked(directoryPath: String) {
     scene.closeWindow()
     TimelapseScene.launch(Stage(), directoryPath)

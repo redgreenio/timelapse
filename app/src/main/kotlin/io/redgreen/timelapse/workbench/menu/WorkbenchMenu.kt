@@ -19,7 +19,7 @@ object WorkbenchMenu {
     scene: Scene,
     currentRepositoryPath: String,
     refreshMenu: Boolean = false,
-    listener: OpenRecentMenuItemsClickListener
+    listener: FileMenuItemsClickListener
   ) {
     val menuBar = MenuBar().apply {
       useSystemMenuBarProperty().set(true)
@@ -35,26 +35,27 @@ object WorkbenchMenu {
   private fun buildFileMenu(
     scene: Scene,
     currentRepositoryPath: String,
-    listener: OpenRecentMenuItemsClickListener
+    listener: FileMenuItemsClickListener
   ): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.addAll(buildOpenRecentMenu(currentRepositoryPath, listener), buildProjectCloseMenuItem(scene))
+      items.addAll(buildOpenRecentMenu(currentRepositoryPath, listener), buildProjectCloseMenuItem(scene, listener))
     }
   }
 
-  private fun buildProjectCloseMenuItem(scene: Scene): MenuItem {
+  private fun buildProjectCloseMenuItem(scene: Scene, listener: FileMenuItemsClickListener): MenuItem {
     return MenuItem(MENU_FILE_MENU_ITEM_CLOSE_PROJECT).apply {
       setOnAction {
         scene.closeWindow()
         OpenRepoScene.launch(Stage())
+        println(listener)
       }
     }
   }
 
   private fun buildOpenRecentMenu(
     currentRepositoryPath: String,
-    listener: OpenRecentMenuItemsClickListener
+    listener: FileMenuItemsClickListener
   ): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
       .invoke(currentRepositoryPath)
