@@ -4,6 +4,7 @@ import io.redgreen.timelapse.workbench.menu.ClearRecentMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.EmptyMenuViewModel
 import io.redgreen.timelapse.workbench.menu.NonEmptyMenuViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel
+import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemsClickListener
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.RecentRepositoryMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.SeparatorMenuItemViewModel
@@ -36,7 +37,8 @@ private fun NonEmptyMenuViewModel.toJavaFxMenu(
   scene: Scene,
   currentGitRepositoryPath: String
 ): Menu {
-  val menuItems = menuItemViewModels.map { toMenuItem(it, scene, currentGitRepositoryPath) }
+  val menuItems = menuItemViewModels
+    .map { toMenuItem(it, scene, currentGitRepositoryPath, object : OpenRecentMenuItemsClickListener {}) }
   return Menu(MENU_FILE_MENU_OPEN_RECENT).apply {
     this.items.addAll(menuItems)
   }
@@ -45,10 +47,12 @@ private fun NonEmptyMenuViewModel.toJavaFxMenu(
 private fun toMenuItem(
   menuItemViewModel: OpenRecentMenuItemViewModel,
   scene: Scene,
-  currentGitRepositoryPath: String
+  currentGitRepositoryPath: String,
+  listener: OpenRecentMenuItemsClickListener
 ): MenuItem = when (menuItemViewModel) {
   ClearRecentMenuItemViewModel -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
     onAction = ClearRecentRepositoriesEventHandler(scene, currentGitRepositoryPath)
+    println(listener)
   }
   is RecentRepositoryMenuItemViewModel -> MenuItem(menuItemViewModel.recentRepository.title()).apply {
     isDisable = !menuItemViewModel.isPresent
