@@ -7,7 +7,7 @@ sealed class OpenRecentMenuItemViewModel
 data class RecentRepositoryMenuItemViewModel(
   val repositoryDirectory: String,
   val isPresent: Boolean = true,
-  val recentRepository: RecentGitRepository? = null,
+  val recentRepository: RecentGitRepository,
 ) : OpenRecentMenuItemViewModel()
 
 object ClearRecentMenuItemViewModel : OpenRecentMenuItemViewModel()
