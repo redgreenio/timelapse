@@ -11,7 +11,6 @@ import io.redgreen.timelapse.domain.openGitRepository
 import io.redgreen.timelapse.domain.parseGitFollowOutput
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane
 import io.redgreen.timelapse.fileexplorer.view.FileExplorerPane.FileSelectionListener
-import io.redgreen.timelapse.foo.closeWindow
 import io.redgreen.timelapse.foo.debug
 import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.foo.fastLazy
@@ -30,7 +29,7 @@ import io.redgreen.timelapse.vcs.ChangedFile.Modification
 import io.redgreen.timelapse.vcs.ChangedFile.Rename
 import io.redgreen.timelapse.visuals.AreaChart
 import io.redgreen.timelapse.visuals.Commit
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemsClickListener
+import io.redgreen.timelapse.workbench.menu.DefaultOpenRecentMenuItemsClickListener
 import io.redgreen.timelapse.workbench.menu.WorkbenchMenu
 import javafx.application.Platform
 import javafx.geometry.Insets
@@ -183,19 +182,8 @@ class TimelapseScene(private val project: String) :
 
     setupHotKeys(this)
 
-    val scene = this
-    val menuItemsClickListener = object : OpenRecentMenuItemsClickListener {
-      override fun onRecentRepositoryClicked(directoryPath: String) {
-        scene.closeWindow()
-        launch(Stage(), directoryPath)
-      }
-
-      override fun onClearRecentClicked() {
-        PreferencesRecentGitRepositoriesStorage().clearRecentRepositories(project)
-        WorkbenchMenu.install(scene, project, true, this)
-      }
-    }
-    WorkbenchMenu.install(scene, project, listener = menuItemsClickListener)
+    val menuItemsClickListener = DefaultOpenRecentMenuItemsClickListener(this, project)
+    WorkbenchMenu.install(this, project, listener = menuItemsClickListener)
   }
 
   private fun moveFocusToReadingPane() {

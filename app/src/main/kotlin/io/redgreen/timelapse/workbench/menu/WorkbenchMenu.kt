@@ -17,7 +17,7 @@ object WorkbenchMenu {
 
   fun install(
     scene: Scene,
-    currentGitRepositoryPath: String,
+    currentRepositoryPath: String,
     refreshMenu: Boolean = false,
     listener: OpenRecentMenuItemsClickListener
   ) {
@@ -28,18 +28,18 @@ object WorkbenchMenu {
     if (refreshMenu) {
       menuBar.menus.clear()
     }
-    menuBar.menus.add(buildFileMenu(scene, currentGitRepositoryPath, listener))
+    menuBar.menus.add(buildFileMenu(scene, currentRepositoryPath, listener))
     (scene.root as BorderPane).top = menuBar
   }
 
   private fun buildFileMenu(
     scene: Scene,
-    currentGitRepositoryPath: String,
+    currentRepositoryPath: String,
     listener: OpenRecentMenuItemsClickListener
   ): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.addAll(buildOpenRecentMenu(currentGitRepositoryPath, listener), buildProjectCloseMenuItem(scene))
+      items.addAll(buildOpenRecentMenu(currentRepositoryPath, listener), buildProjectCloseMenuItem(scene))
     }
   }
 
@@ -53,11 +53,11 @@ object WorkbenchMenu {
   }
 
   private fun buildOpenRecentMenu(
-    currentGitRepositoryPath: String,
+    currentRepositoryPath: String,
     listener: OpenRecentMenuItemsClickListener
   ): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
-      .invoke(currentGitRepositoryPath)
+      .invoke(currentRepositoryPath)
       .toJavaFxMenu(listener)
   }
 }
