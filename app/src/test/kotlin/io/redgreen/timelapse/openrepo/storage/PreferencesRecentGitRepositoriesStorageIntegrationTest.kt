@@ -27,6 +27,7 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
   // Repository paths
   private val counter = "~/FlutterProjects/counter/.git"
   private val helloServices = "~/GoProjects/hello-services/.git"
+  private val catchUp = "~/AndroidStudioProjects/CatchUp/.git"
 
   @BeforeEach
   fun setup() {
@@ -83,7 +84,6 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
   @Test
   fun `it should move the recently opened repository to the top of the list`() {
     // given
-    val catchUp = "~/AndroidStudioProjects/CatchUp/.git"
     val recentRepositories = listOf(counter, helloServices, catchUp).reversed().map(::RecentGitRepository)
     recentRepositories.onEach(recentRepositoriesStorage::update)
 
@@ -153,5 +153,28 @@ class PreferencesRecentGitRepositoriesStorageIntegrationTest {
     // then
     assertThat(recentRepositoriesStorage.getRecentRepositories())
       .isEmpty()
+  }
+
+  @Test
+  fun `it should limit the number of items in recent repository list`() {
+    // given
+    recentRepositoriesStorage.setMaxRecentRepositoriesCount(2).use {
+      with(recentRepositoriesStorage) {
+        update(RecentGitRepository(counter))
+        update(RecentGitRepository(helloServices))
+        update(RecentGitRepository(catchUp))
+      }
+
+      // when
+      val recentRepositories = recentRepositoriesStorage.getRecentRepositories()
+
+      // then
+      assertThat(recentRepositories)
+        .containsExactly(
+          RecentGitRepository(catchUp),
+          RecentGitRepository(helloServices)
+        )
+        .inOrder()
+    }
   }
 }
