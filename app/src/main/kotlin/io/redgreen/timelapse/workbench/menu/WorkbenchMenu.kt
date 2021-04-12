@@ -50,6 +50,6 @@ object WorkbenchMenu {
   private fun buildOpenRecentMenu(scene: Scene, currentGitRepositoryPath: String): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
       .invoke(currentGitRepositoryPath)
-      .toJavaFxMenu(scene, currentGitRepositoryPath)
+      .toJavaFxMenu(scene, currentGitRepositoryPath, object : OpenRecentMenuItemsClickListener {})
   }
 }
