@@ -7,7 +7,7 @@ import javafx.event.EventHandler
 import javafx.scene.Scene
 import javafx.stage.Stage
 
-class OpenRecentRepositoryActionEvent(
+class OpenRecentRepositoryEventHandler(
   private val scene: Scene,
   private val repositoryDirectoryPath: String
 ) : EventHandler<ActionEvent> {
