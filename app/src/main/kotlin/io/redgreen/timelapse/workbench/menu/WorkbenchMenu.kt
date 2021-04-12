@@ -18,15 +18,14 @@ object WorkbenchMenu {
     refreshMenu: Boolean = false,
     listener: FileMenuItemsClickListener
   ) {
-    val menuBar = MenuBar().apply {
+    val borderPane = scene.root as BorderPane
+    borderPane.top = MenuBar().apply {
       useSystemMenuBarProperty().set(true)
+      if (refreshMenu) {
+        menus.clear()
+      }
+      menus.add(buildFileMenu(currentRepositoryPath, listener))
     }
-
-    if (refreshMenu) {
-      menuBar.menus.clear()
-    }
-    menuBar.menus.add(buildFileMenu(currentRepositoryPath, listener))
-    (scene.root as BorderPane).top = menuBar
   }
 
   private fun buildFileMenu(
