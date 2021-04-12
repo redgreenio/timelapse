@@ -2,7 +2,6 @@ package io.redgreen.timelapse.workbench.menu
 
 import io.redgreen.timelapse.foo.IS_GIT_REPOSITORY_PREDICATE
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 
 class OpenRecentMenuViewModelUseCase(
   private val repositoriesStorage: RecentGitRepositoriesStorage,
