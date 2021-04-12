@@ -19,7 +19,7 @@ class OpenRecentMenuViewModelUseCase(
     return if (menuItemViewModels.isEmpty()) {
       Empty
     } else {
-      NonEmpty(menuItemViewModels + SeparatorMenuItemViewModel + ClearRecent)
+      NonEmpty(menuItemViewModels + SeparatorMenuItemViewModel + ClearRecentMenuItemViewModel)
     }
   }
 }
