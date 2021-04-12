@@ -15,8 +15,6 @@ object WorkbenchMenu {
   private const val MENU_FILE = "File"
   private const val MENU_FILE_MENU_ITEM_CLOSE_PROJECT = "Close Project"
 
-  private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = true
-
   fun install(scene: Scene, refreshMenu: Boolean = false) {
     val menuBar = MenuBar().apply {
       useSystemMenuBarProperty().set(true)
@@ -32,12 +30,7 @@ object WorkbenchMenu {
   private fun buildFileMenu(scene: Scene): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-
-      if (FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER) {
-        items.addAll(buildOpenRecentMenu(scene), buildProjectCloseMenuItem(scene))
-      } else {
-        items.add(buildProjectCloseMenuItem(scene))
-      }
+      items.addAll(buildOpenRecentMenu(scene), buildProjectCloseMenuItem(scene))
     }
   }
 
