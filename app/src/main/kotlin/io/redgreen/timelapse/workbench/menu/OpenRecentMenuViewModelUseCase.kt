@@ -13,7 +13,7 @@ class OpenRecentMenuViewModelUseCase(
       .map { RecentRepositoryMenuItemViewModel(it, isGitRepositoryPredicate(it.path)) }
 
     return if (menuItemViewModels.isEmpty()) {
-      Empty
+      EmptyMenuViewModel
     } else {
       NonEmpty(menuItemViewModels + SeparatorMenuItemViewModel + ClearRecentMenuItemViewModel)
     }
