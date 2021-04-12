@@ -15,7 +15,7 @@ class OpenRecentMenuViewModelUseCase(
     return if (menuItemViewModels.isEmpty()) {
       EmptyMenuViewModel
     } else {
-      NonEmpty(menuItemViewModels + SeparatorMenuItemViewModel + ClearRecentMenuItemViewModel)
+      NonEmptyMenuViewModel(menuItemViewModels + SeparatorMenuItemViewModel + ClearRecentMenuItemViewModel)
     }
   }
 }

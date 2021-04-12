@@ -38,9 +38,9 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     // then
     assertThat(openRecentMenuViewModel)
-      .isInstanceOf(NonEmpty::class.java)
+      .isInstanceOf(NonEmptyMenuViewModel::class.java)
 
-    assertThat((openRecentMenuViewModel as NonEmpty).menuItemViewModels)
+    assertThat((openRecentMenuViewModel as NonEmptyMenuViewModel).menuItemViewModels)
       .containsExactly(
         RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git"), true),
         RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/coffee/.git"), true),
@@ -66,9 +66,9 @@ class OpenRecentMenuViewModelUseCaseTest {
 
     // then
     assertThat(openRecentMenuViewModel)
-      .isInstanceOf(NonEmpty::class.java)
+      .isInstanceOf(NonEmptyMenuViewModel::class.java)
 
-    assertThat((openRecentMenuViewModel as NonEmpty).menuItemViewModels)
+    assertThat((openRecentMenuViewModel as NonEmptyMenuViewModel).menuItemViewModels)
       .containsExactly(
         RecentRepositoryMenuItemViewModel(RecentGitRepository("/Projects/shopping-app/.git"), true),
         RecentRepositoryMenuItemViewModel(RecentGitRepository(missingRepository), false),

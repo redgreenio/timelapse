@@ -4,6 +4,6 @@ sealed class OpenRecentMenuViewModel
 
 object EmptyMenuViewModel : OpenRecentMenuViewModel()
 
-data class NonEmpty(
+data class NonEmptyMenuViewModel(
   val menuItemViewModels: List<OpenRecentMenuItemViewModel>
 ) : OpenRecentMenuViewModel()
