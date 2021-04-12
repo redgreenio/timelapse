@@ -6,7 +6,7 @@ import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
 import io.redgreen.timelapse.workbench.menu.RecentRepository
-import io.redgreen.timelapse.workbench.menu.Separator
+import io.redgreen.timelapse.workbench.menu.SeparatorMenuItemViewModel
 import javafx.scene.Scene
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
@@ -45,5 +45,5 @@ private fun toMenuItem(
     isDisable = !menuItemViewModel.isPresent
     onAction = OpenRecentRepositoryEventHandler(scene, menuItemViewModel.repositoryDirectory)
   }
-  Separator -> SeparatorMenuItem()
+  SeparatorMenuItemViewModel -> SeparatorMenuItem()
 }

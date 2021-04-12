@@ -46,7 +46,7 @@ class OpenRecentMenuViewModelUseCaseTest {
       .containsExactly(
         RecentRepository("/Projects/shopping-app/.git"),
         RecentRepository("/Projects/coffee/.git"),
-        Separator,
+        SeparatorMenuItemViewModel,
         ClearRecent
       )
       .inOrder()
@@ -74,7 +74,7 @@ class OpenRecentMenuViewModelUseCaseTest {
       .containsExactly(
         RecentRepository("/Projects/shopping-app/.git"),
         RecentRepository(missingRepository, false),
-        Separator,
+        SeparatorMenuItemViewModel,
         ClearRecent
       )
       .inOrder()
