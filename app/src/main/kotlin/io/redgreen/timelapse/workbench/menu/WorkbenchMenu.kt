@@ -39,7 +39,7 @@ object WorkbenchMenu {
   ): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.addAll(buildOpenRecentMenu(scene, currentGitRepositoryPath, listener), buildProjectCloseMenuItem(scene))
+      items.addAll(buildOpenRecentMenu(currentGitRepositoryPath, listener), buildProjectCloseMenuItem(scene))
     }
   }
 
@@ -53,12 +53,11 @@ object WorkbenchMenu {
   }
 
   private fun buildOpenRecentMenu(
-    scene: Scene,
     currentGitRepositoryPath: String,
     listener: OpenRecentMenuItemsClickListener
   ): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
       .invoke(currentGitRepositoryPath)
-      .toJavaFxMenu(scene, currentGitRepositoryPath, listener)
+      .toJavaFxMenu(listener)
   }
 }
