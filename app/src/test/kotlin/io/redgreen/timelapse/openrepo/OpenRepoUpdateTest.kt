@@ -75,7 +75,7 @@ class OpenRepoUpdateTest {
   }
 
   @Test
-  fun `when the chosen path contains a repository, then update the recent repos list and open the repository`() {
+  fun `when the chosen path contains a repository, then open the repository`() {
     val repositoryPath = "~/Users/ajay/GitHubProjects/angular"
 
     withUpdateSpec
@@ -84,7 +84,7 @@ class OpenRepoUpdateTest {
       .then(
         assertThatNext(
           hasNoModel(),
-          hasEffects(UpdateRecentRepositories(repositoryPath), OpenGitRepository(repositoryPath))
+          hasEffects(OpenGitRepository(repositoryPath))
         )
       )
   }
@@ -150,7 +150,7 @@ class OpenRepoUpdateTest {
   }
 
   @Test
-  fun `when the user selects a recent repository, then update the recent repos list and open the repository`() {
+  fun `when the user selects a recent repository, then open the repository`() {
     val retrofit = "/Users/ajay/IdeaProjects/retrofit/.git"
     val angular = "~/GitHubProjects/angular/.git"
     val recentRepositories = listOf(retrofit, angular).map(::RecentGitRepository)
@@ -164,7 +164,7 @@ class OpenRepoUpdateTest {
       .then(
         assertThatNext(
           hasNoModel(),
-          hasEffects(UpdateRecentRepositories(angular), OpenGitRepository(angular))
+          hasEffects(OpenGitRepository(angular))
         )
       )
   }

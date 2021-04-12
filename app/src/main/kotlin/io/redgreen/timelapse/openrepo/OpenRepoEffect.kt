@@ -10,10 +10,6 @@ data class DetectGitRepository(
   val path: String
 ) : OpenRepoEffect()
 
-data class UpdateRecentRepositories(
-  val path: String
-) : OpenRepoEffect()
-
 data class OpenGitRepository(
   val path: String
 ) : OpenRepoEffect()

@@ -16,6 +16,7 @@ import io.redgreen.timelapse.foo.exitOnClose
 import io.redgreen.timelapse.foo.fastLazy
 import io.redgreen.timelapse.foo.launchScene
 import io.redgreen.timelapse.git.model.GitDirectory
+import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.people.view.PeoplePane
 import io.redgreen.timelapse.readingarea.CommitInformationPane
@@ -64,6 +65,7 @@ class TimelapseScene(private val project: String) :
   FileSelectionListener {
   companion object {
     fun launch(stage: Stage, gitRepositoryPath: String) {
+      PreferencesRecentGitRepositoriesStorage().update(RecentGitRepository(gitRepositoryPath))
       launchScene(stage, TimelapseScene(gitRepositoryPath), true)
       stage.exitOnClose {
         PreferencesRecentGitRepositoriesStorage().setSessionExitDestination(WORKBENCH)

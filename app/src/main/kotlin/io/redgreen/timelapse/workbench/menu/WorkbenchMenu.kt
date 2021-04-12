@@ -15,7 +15,7 @@ object WorkbenchMenu {
   private const val MENU_FILE = "File"
   private const val MENU_FILE_MENU_ITEM_CLOSE_PROJECT = "Close Project"
 
-  private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = false
+  private const val FEATURE_FLAG_SHOW_OPEN_RECENT_TO_USER = true
 
   fun install(scene: Scene, refreshMenu: Boolean = false) {
     val menuBar = MenuBar().apply {

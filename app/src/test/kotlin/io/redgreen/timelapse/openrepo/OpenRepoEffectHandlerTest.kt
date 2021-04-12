@@ -97,22 +97,6 @@ class OpenRepoEffectHandlerTest {
   }
 
   @Test
-  fun `it should update the list of recent projects`() {
-    // given
-    val repositoryPath = "~/IdeaProjects/timelapse/.git"
-
-    // when
-    testCase.dispatch(UpdateRecentRepositories(repositoryPath))
-
-    // then
-    verify(recentGitRepositoriesStorage).update(RecentGitRepository(repositoryPath))
-    verifyNoMoreInteractions(recentGitRepositoriesStorage)
-
-    testCase
-      .assertNoOutgoingEvents()
-  }
-
-  @Test
   fun `it should open a detected repository`() {
     // given
     val repositoryPath = "~/IdeaProjects/timelapse"
