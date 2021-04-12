@@ -181,7 +181,10 @@ class TimelapseScene(private val project: String) :
     }
 
     setupHotKeys(this)
+    setupMenu()
+  }
 
+  private fun setupMenu() {
     val menuItemsClickListener = DefaultOpenRecentMenuItemsClickListener(this, project)
     WorkbenchMenu.install(this, project, listener = menuItemsClickListener)
   }
