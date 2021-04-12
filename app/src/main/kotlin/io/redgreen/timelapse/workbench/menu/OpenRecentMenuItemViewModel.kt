@@ -9,4 +9,4 @@ data class RecentRepository(
 
 object ClearRecent : OpenRecentMenuItemViewModel()
 
-object Separator : OpenRecentMenuItemViewModel()
+object SeparatorMenuItemViewModel : OpenRecentMenuItemViewModel()
