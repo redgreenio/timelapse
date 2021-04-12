@@ -5,7 +5,6 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.ClearRecent
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.RecentRepository
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty

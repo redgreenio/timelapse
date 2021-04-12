@@ -5,8 +5,8 @@ sealed class OpenRecentMenuItemViewModel {
     val repositoryDirectory: String,
     val isPresent: Boolean = true
   ) : OpenRecentMenuItemViewModel()
-
-  object ClearRecent : OpenRecentMenuItemViewModel()
 }
+
+object ClearRecent : OpenRecentMenuItemViewModel()
 
 object Separator : OpenRecentMenuItemViewModel()
