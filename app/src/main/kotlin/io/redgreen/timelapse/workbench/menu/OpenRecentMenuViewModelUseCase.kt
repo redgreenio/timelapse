@@ -1,7 +1,6 @@
 package io.redgreen.timelapse.workbench.menu
 
 import io.redgreen.timelapse.foo.IS_GIT_REPOSITORY_PREDICATE
-import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.RecentGitRepositoriesStorage
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
@@ -13,8 +12,7 @@ class OpenRecentMenuViewModelUseCase(
   fun invoke(): OpenRecentMenuViewModel {
     val menuItemViewModels = repositoriesStorage
       .getRecentRepositories()
-      .map(RecentGitRepository::path)
-      .map { RecentRepositoryMenuItemViewModel(it, isGitRepositoryPredicate(it)) }
+      .map { RecentRepositoryMenuItemViewModel(it.path, isGitRepositoryPredicate(it.path), it) }
 
     return if (menuItemViewModels.isEmpty()) {
       Empty
