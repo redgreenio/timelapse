@@ -18,7 +18,8 @@ object WorkbenchMenu {
   fun install(
     scene: Scene,
     currentGitRepositoryPath: String,
-    refreshMenu: Boolean = false
+    refreshMenu: Boolean = false,
+    listener: OpenRecentMenuItemsClickListener
   ) {
     val menuBar = MenuBar().apply {
       useSystemMenuBarProperty().set(true)
@@ -27,7 +28,7 @@ object WorkbenchMenu {
     if (refreshMenu) {
       menuBar.menus.clear()
     }
-    menuBar.menus.add(buildFileMenu(scene, currentGitRepositoryPath, object : OpenRecentMenuItemsClickListener {}))
+    menuBar.menus.add(buildFileMenu(scene, currentGitRepositoryPath, listener))
     (scene.root as BorderPane).top = menuBar
   }
 
