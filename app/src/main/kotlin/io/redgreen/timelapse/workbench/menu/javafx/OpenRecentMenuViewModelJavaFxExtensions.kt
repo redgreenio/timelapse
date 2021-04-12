@@ -20,14 +20,11 @@ private const val MENU_OPEN_MENU_ITEM_CLEAR_RECENT = "Clear Recent"
 
 fun OpenRecentMenuViewModel.toJavaFxMenu(
   scene: Scene,
-  currentGitRepositoryPath: String
+  currentGitRepositoryPath: String,
+  listener: OpenRecentMenuItemsClickListener
 ): Menu = when (this) {
   EmptyMenuViewModel -> (this as EmptyMenuViewModel).toJavaFxMenu()
-  is NonEmptyMenuViewModel -> this.toJavaFxMenu(
-    scene,
-    currentGitRepositoryPath,
-    object : OpenRecentMenuItemsClickListener {}
-  )
+  is NonEmptyMenuViewModel -> this.toJavaFxMenu(scene, currentGitRepositoryPath, listener)
 }
 
 @Suppress("unused") // Because, the type `Empty` itself provides us enough information.
