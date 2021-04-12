@@ -47,7 +47,7 @@ class OpenRecentMenuViewModelUseCaseTest {
         RecentRepository("/Projects/shopping-app/.git"),
         RecentRepository("/Projects/coffee/.git"),
         SeparatorMenuItemViewModel,
-        ClearRecent
+        ClearRecentMenuItemViewModel
       )
       .inOrder()
   }
@@ -75,7 +75,7 @@ class OpenRecentMenuViewModelUseCaseTest {
         RecentRepository("/Projects/shopping-app/.git"),
         RecentRepository(missingRepository, false),
         SeparatorMenuItemViewModel,
-        ClearRecent
+        ClearRecentMenuItemViewModel
       )
       .inOrder()
   }

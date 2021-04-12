@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.workbench.menu.javafx
 
-import io.redgreen.timelapse.workbench.menu.ClearRecent
+import io.redgreen.timelapse.workbench.menu.ClearRecentMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
@@ -38,7 +38,7 @@ private fun toMenuItem(
   menuItemViewModel: OpenRecentMenuItemViewModel,
   scene: Scene
 ): MenuItem = when (menuItemViewModel) {
-  ClearRecent -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
+  ClearRecentMenuItemViewModel -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
     onAction = ClearRecentRepositoriesEventHandler(scene)
   }
   is RecentRepository -> MenuItem(menuItemViewModel.repositoryDirectory).apply {

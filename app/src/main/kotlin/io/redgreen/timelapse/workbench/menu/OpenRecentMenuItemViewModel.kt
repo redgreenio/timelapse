@@ -7,6 +7,6 @@ data class RecentRepository(
   val isPresent: Boolean = true
 ) : OpenRecentMenuItemViewModel()
 
-object ClearRecent : OpenRecentMenuItemViewModel()
+object ClearRecentMenuItemViewModel : OpenRecentMenuItemViewModel()
 
 object SeparatorMenuItemViewModel : OpenRecentMenuItemViewModel()
