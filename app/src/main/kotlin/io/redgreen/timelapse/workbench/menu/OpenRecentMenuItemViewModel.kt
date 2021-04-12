@@ -5,9 +5,8 @@ import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 sealed class OpenRecentMenuItemViewModel
 
 data class RecentRepositoryMenuItemViewModel(
-  val repositoryDirectory: String,
-  val isPresent: Boolean = true,
   val recentRepository: RecentGitRepository,
+  val isPresent: Boolean = true,
 ) : OpenRecentMenuItemViewModel()
 
 object ClearRecentMenuItemViewModel : OpenRecentMenuItemViewModel()
