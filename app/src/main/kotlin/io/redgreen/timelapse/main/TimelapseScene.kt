@@ -180,7 +180,7 @@ class TimelapseScene(private val project: String) :
     }
 
     setupHotKeys(this)
-    WorkbenchMenu.install(this)
+    WorkbenchMenu.install(this, project)
   }
 
   private fun moveFocusToReadingPane() {
