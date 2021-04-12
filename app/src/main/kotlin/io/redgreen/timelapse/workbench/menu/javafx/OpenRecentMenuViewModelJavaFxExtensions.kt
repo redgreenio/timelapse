@@ -2,10 +2,10 @@ package io.redgreen.timelapse.workbench.menu.javafx
 
 import io.redgreen.timelapse.workbench.menu.ClearRecent
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel
-import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel.RecentRepository
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.Empty
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel.NonEmpty
+import io.redgreen.timelapse.workbench.menu.RecentRepository
 import io.redgreen.timelapse.workbench.menu.Separator
 import javafx.scene.Scene
 import javafx.scene.control.Menu
