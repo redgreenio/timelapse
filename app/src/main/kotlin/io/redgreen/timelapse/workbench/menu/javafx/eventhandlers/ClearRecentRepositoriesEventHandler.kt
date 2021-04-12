@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.workbench.menu.javafx
+package io.redgreen.timelapse.workbench.menu.javafx.eventhandlers
 
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.workbench.menu.WorkbenchMenu

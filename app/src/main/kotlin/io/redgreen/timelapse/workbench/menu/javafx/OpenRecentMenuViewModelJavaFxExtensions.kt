@@ -7,6 +7,8 @@ import io.redgreen.timelapse.workbench.menu.OpenRecentMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.OpenRecentMenuViewModel
 import io.redgreen.timelapse.workbench.menu.RecentRepositoryMenuItemViewModel
 import io.redgreen.timelapse.workbench.menu.SeparatorMenuItemViewModel
+import io.redgreen.timelapse.workbench.menu.javafx.eventhandlers.ClearRecentRepositoriesEventHandler
+import io.redgreen.timelapse.workbench.menu.javafx.eventhandlers.OpenRecentRepositoryEventHandler
 import javafx.scene.Scene
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuItem
