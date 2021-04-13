@@ -42,7 +42,6 @@ private fun toMenuItem(
 ): MenuItem = when (menuItemViewModel) {
   ClearRecentMenuItemViewModel -> MenuItem(MENU_OPEN_MENU_ITEM_CLEAR_RECENT).apply {
     onAction = EventHandler { listener.onClearRecentClicked() }
-    println(listener)
   }
   is RecentRepositoryMenuItemViewModel -> MenuItem(menuItemViewModel.recentRepository.title()).apply {
     isDisable = !menuItemViewModel.isPresent
