@@ -10,8 +10,6 @@
     <ID>ForbiddenComment:GitRepositoryService.kt$GitRepositoryService$// TODO: 30-10-2020 Refactor this function, it's really large </ID>
     <ID>ForbiddenComment:OpenRepoScene.kt$OpenRepoScene$// FIXME: 12/12/20 This requires a proper fix. The list is duplicated whenever render is called.</ID>
     <ID>ForbiddenComment:SummaryBar.kt$SummaryBar.Companion$// TODO: 05-12-2020 Extract to a `Theme` class</ID>
-    <ID>ForbiddenComment:TimelapseApp.kt$// FIXME: 12/12/20 The version name should be via the build process.</ID>
-    <ID>ForbiddenComment:TimelapseApp.kt$TimelapseApp$// FIXME: 19-11-2020 The application does not exit due to running thread pool executors? Shut down Mobius loops?</ID>
     <ID>ImplicitDefaultLocale:CommitInformationPane.kt$CommitInformationPane$String.format("%.2f", ceil(progressPercent))</ID>
     <ID>ImplicitDefaultLocale:PeoplePane.kt$PeoplePane$String.format("%.02f", it.value.fraction * 100)</ID>
     <ID>LongMethod:DiffHtml.kt$private fun mapToTableRow(diffLine: DiffLine): String</ID>
@@ -51,10 +49,9 @@
     <ID>SpreadOperator:Launcher.kt$(TimelapseApp::class.java, *args)</ID>
     <ID>SpreadOperator:PeoplePane.kt$PeoplePane$(*contributions.toTypedArray())</ID>
     <ID>TooGenericExceptionCaught:GitRepositoryService.kt$GitRepositoryService$e: NullPointerException</ID>
-    <ID>TooGenericExceptionCaught:OpenRepoEffectHandler.kt$OpenRepoEffectHandler.Companion$e: RuntimeException</ID>
+    <ID>TooGenericExceptionCaught:OpenRepoEffectHandlerFactory.kt$OpenRepoEffectHandlerFactory$e: RuntimeException</ID>
     <ID>TooManyFunctions:ContentViewerPane.kt$ContentViewerPane : BorderPaneContentViewerView</ID>
     <ID>TooManyFunctions:ContentViewerView.kt$ContentViewerView</ID>
     <ID>TooManyFunctions:GitRepositoryService.kt$GitRepositoryService : VcsRepositoryService</ID>
-    <ID>UtilityClassWithPublicConstructor:OpenRepoEffectHandler.kt$OpenRepoEffectHandler</ID>
   </CurrentIssues>
 </SmellBaseline>
