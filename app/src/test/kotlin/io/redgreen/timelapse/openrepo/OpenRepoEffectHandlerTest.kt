@@ -18,8 +18,13 @@ class OpenRepoEffectHandlerTest {
   private val view = mock<OpenRepoView>()
   private val recentGitRepositoriesStorage = mock<RecentGitRepositoriesStorage>()
 
-  private val testCase = OpenRepoEffectHandler
-    .from(gitDetector, recentGitRepositoriesStorage, view, ImmediateSchedulersProvider)
+  private val testCase = OpenRepoEffectHandlerFactory(
+    gitDetector,
+    recentGitRepositoriesStorage,
+    view,
+    ImmediateSchedulersProvider
+  )
+    .instance()
     .testCase()
 
   @AfterEach

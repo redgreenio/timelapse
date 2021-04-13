@@ -14,7 +14,7 @@ import io.redgreen.timelapse.openrepo.ChooseGitRepository
 import io.redgreen.timelapse.openrepo.GitDetector
 import io.redgreen.timelapse.openrepo.LargeButton
 import io.redgreen.timelapse.openrepo.OpenRecentRepository
-import io.redgreen.timelapse.openrepo.OpenRepoEffectHandler
+import io.redgreen.timelapse.openrepo.OpenRepoEffectHandlerFactory
 import io.redgreen.timelapse.openrepo.OpenRepoInit
 import io.redgreen.timelapse.openrepo.OpenRepoModel
 import io.redgreen.timelapse.openrepo.OpenRepoUpdate
@@ -125,15 +125,18 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
     alignment = TOP_CENTER
   }
 
-  private val mobiusDelegate by fastLazy {
+  private val effectHandlerFactory by fastLazy {
     val gitDetector = GitDetector()
     val recentGitRepositoriesStorage = PreferencesRecentGitRepositoriesStorage()
+    OpenRepoEffectHandlerFactory(gitDetector, recentGitRepositoriesStorage, this, JavaFxSchedulersProvider)
+  }
 
+  private val mobiusDelegate by fastLazy {
     MobiusDelegate(
       OpenRepoModel.start(),
       OpenRepoInit,
       OpenRepoUpdate,
-      OpenRepoEffectHandler.from(gitDetector, recentGitRepositoriesStorage, this, JavaFxSchedulersProvider),
+      effectHandlerFactory.instance(),
       OpenRepoViewRenderer(this)
     )
   }
