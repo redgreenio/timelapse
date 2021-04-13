@@ -13,7 +13,7 @@ val productName = "Timelapse Studio"
 val vendorName = "Red Green, Inc."
 
 group = "io.redgreen"
-version = "2021.0.1"
+version = "2021.0.2"
 
 javafx {
   modules("javafx.controls", "javafx.web")
