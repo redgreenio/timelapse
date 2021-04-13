@@ -9,7 +9,7 @@ import javafx.application.Application
 import javafx.stage.Stage
 
 internal const val APP_NAME = "Timelapse Studio (Friends-only Edition)"
-private const val APP_VERSION = "2021.0.1"
+private const val APP_VERSION = "2021.0.2"
 
 internal const val DISPLAY_VERSION_NAME = "v$APP_VERSION (pre-alpha)"
 
