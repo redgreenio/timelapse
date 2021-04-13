@@ -93,7 +93,7 @@ dependencies {
 
 with(application) {
   applicationName = productName
-  mainClass.set("LauncherKt")
+  mainClassName = "LauncherKt" // because, shadowJar still relies on this deprecated build directive.
 }
 
 tasks {
