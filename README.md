@@ -63,11 +63,34 @@ mkdir proguard-lab
 
 ## Creating a release
 
+We use different formats of versioning for internal and public releases.
+
+### Public releases
+
+The application is versioned in the following format `[YYYY].[release-number]` for public releases. `[YYYY]` denotes the
+current year. `[release-number]` is the publicly released build number in that year.
+
+For example, the first public release for the year 2021 would be `2021.1`, the next release would be `2021.2` and so on.
+
+### Internal releases
+
+Internal releases are any releases that are not published to the masses. This includes but is not limited to alpha, beta,
+and nightly releases. Internal releases have the following format - `[YYYY].[previous-release-number].[build-number]`.
+
+For example, the first internal release for 2021 with no public releases would be `2021.0.1`. Each internal release will
+increment its `build-number` by `1`. After publishing the first public version, the next internal release for
+2021 will be `2021.1.1`.
+
+In general, public releases drop the `build-number` and increment the `release-number`, (i.e.) if `2021.3.45` is the internal
+release version, the public release will be `2021.4`.
+
+### Packaging
+
 ```shell
 gradlew jpackageImage jpackage
 ```
 
-This will created a distributable native installer (currently `.dmg`) for **macOS**. Windows and Linux distributions are
+This will create a distributable native installer (currently `.dmg`) for **macOS**. Windows and Linux distributions are
 yet to be tested.
 
 ## Distribution
