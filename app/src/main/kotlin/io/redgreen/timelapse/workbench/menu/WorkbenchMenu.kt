@@ -10,7 +10,10 @@ import javafx.scene.layout.BorderPane
 
 object WorkbenchMenu {
   private const val MENU_FILE = "File"
+  private const val MENU_FILE_MENU_ITEM_OPEN = "Open..."
   private const val MENU_FILE_MENU_ITEM_CLOSE_PROJECT = "Close Project"
+
+  private const val SHOW_OPEN_MENU_ITEM = false
 
   fun install(
     scene: Scene,
@@ -24,32 +27,46 @@ object WorkbenchMenu {
       if (refreshMenu) {
         menus.clear()
       }
-      menus.add(buildFileMenu(currentRepositoryPath, listener))
+      menus.add(fileMenu(currentRepositoryPath, listener))
     }
   }
 
-  private fun buildFileMenu(
+  private fun fileMenu(
     currentRepositoryPath: String,
     listener: FileMenuItemsClickListener
   ): Menu {
     return Menu(MENU_FILE).apply {
       mnemonicParsingProperty().set(true)
-      items.addAll(buildOpenRecentMenu(currentRepositoryPath, listener), buildProjectCloseMenuItem(listener))
+
+      val menuItems = mutableListOf(
+        openRecentMenu(currentRepositoryPath, listener),
+        projectCloseMenuItem(listener)
+      )
+
+      if (SHOW_OPEN_MENU_ITEM) {
+        menuItems.add(0, openMenuItem())
+      }
+
+      items.addAll(menuItems)
     }
   }
 
-  private fun buildProjectCloseMenuItem(listener: FileMenuItemsClickListener): MenuItem {
-    return MenuItem(MENU_FILE_MENU_ITEM_CLOSE_PROJECT).apply {
-      setOnAction { listener.onCloseProjectClicked() }
-    }
+  private fun openMenuItem(): MenuItem {
+    return MenuItem(MENU_FILE_MENU_ITEM_OPEN)
   }
 
-  private fun buildOpenRecentMenu(
+  private fun openRecentMenu(
     currentRepositoryPath: String,
     listener: FileMenuItemsClickListener
   ): Menu {
     return OpenRecentMenuViewModelUseCase(PreferencesRecentGitRepositoriesStorage())
       .invoke(currentRepositoryPath)
       .toJavaFxMenu(listener)
+  }
+
+  private fun projectCloseMenuItem(listener: FileMenuItemsClickListener): MenuItem {
+    return MenuItem(MENU_FILE_MENU_ITEM_CLOSE_PROJECT).apply {
+      setOnAction { listener.onCloseProjectClicked() }
+    }
   }
 }
