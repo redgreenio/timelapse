@@ -13,7 +13,7 @@ val productName = "Timelapse Studio"
 val vendorName = "Red Green, Inc."
 
 group = "io.redgreen"
-version = "1.0.0" /* Because, macOS apps can't have version numbers starting with '0'. */
+version = "2021.0.1"
 
 javafx {
   modules("javafx.controls", "javafx.web")

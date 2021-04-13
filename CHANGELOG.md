@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2021.0.1] - 2021-04-13
+
 ### Added
 
 - Show directories before files in the File Explorer.
