@@ -26,10 +26,7 @@ class OpenRepoEffectHandler {
         .subtypeEffectHandler<OpenRepoEffect, OpenRepoEvent>()
         .addTransformer(FindGitUsername::class.java, findGitUsernameTransformer(gitDetector, schedulersProvider.io()))
         .addAction(DisplayFileChooser::class.java, { view.displayFileChooser() }, schedulersProvider.ui())
-        .addTransformer(
-          DetectGitRepository::class.java,
-          detectGitRepositoryTransformer(schedulersProvider.io())
-        )
+        .addTransformer(DetectGitRepository::class.java, detectGitRepositoryTransformer(schedulersProvider.io()))
         .addConsumer(OpenGitRepository::class.java, { openWorkbench(view, it.path) }, schedulersProvider.ui())
         .addConsumer(
           ShowNotAGitRepositoryError::class.java,
@@ -87,20 +84,20 @@ class OpenRepoEffectHandler {
     }
 
     private fun toDetectGitRepositoryResult(event: DetectGitRepository): OpenRepoEvent {
-      val gitDirectoryOptional = getGitDirectory(event.path)
+      val gitDirectoryOptional = getGitDirectory(event.workingDirectoryPath)
       return if (gitDirectoryOptional.isPresent) {
         GitRepositoryDetected(gitDirectoryOptional.get().path)
       } else {
-        GitRepositoryNotDetected(event.path)
+        GitRepositoryNotDetected(event.workingDirectoryPath)
       }
     }
 
-    private fun getGitDirectory(path: String): Optional<GitDirectory> {
-      val maybeGitDirectory = GitDirectory.from(path.appendDotGit())
+    private fun getGitDirectory(workingDirectoryPath: String): Optional<GitDirectory> {
+      val maybeGitDirectory = GitDirectory.from(workingDirectoryPath.appendDotGit())
       return if (maybeGitDirectory.isPresent) {
         maybeGitDirectory
       } else {
-        GitDirectory.from(path)
+        GitDirectory.from(workingDirectoryPath)
       }
     }
 

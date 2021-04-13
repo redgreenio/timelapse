@@ -23,13 +23,13 @@ data class GitUsernameFound(
 ) : OpenRepoEvent()
 
 @EffectEvent(DisplayFileChooser::class)
-data class GitRepositoryChosen(
+data class WorkingDirectoryChosen(
   val maybeRepositoryPath: String
 ) : OpenRepoEvent()
 
 @EffectEvent(DetectGitRepository::class)
 data class GitRepositoryDetected(
-  val path: String
+  val repositoryPath: String
 ) : OpenRepoEvent()
 
 @EffectEvent(DetectGitRepository::class)

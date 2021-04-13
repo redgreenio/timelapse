@@ -7,7 +7,7 @@ object FindGitUsername : OpenRepoEffect()
 object DisplayFileChooser : OpenRepoEffect()
 
 data class DetectGitRepository(
-  val path: String
+  val workingDirectoryPath: String
 ) : OpenRepoEffect()
 
 data class OpenGitRepository(
