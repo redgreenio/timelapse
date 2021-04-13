@@ -84,7 +84,26 @@ increment its `build-number` by `1`. After publishing the first public version, 
 In general, public releases drop the `build-number` and increment the `release-number`, (i.e.) if `2021.3.45` is the internal
 release version, the public release will be `2021.4`.
 
-### Packaging
+### Step 1 of 3 - Update CHANGELOG
+
+Underneath the `## [Unreleased]` section, add the version and date in the following format.
+
+```md
+## [version] - YYYY-MM-DD
+```
+
+Example,
+```md
+## [2021.0.1] - 2021-04-13
+```
+
+### Step 2 of 3 - Update version in code and buildscript
+
+- `TimelapseApp.kt` - update `APP_VERSION` to reflect the current version.
+- `app/build.gradle.kts` - update `version` to reflect the current version.
+- Stage and commit all changes with the message `build: bump version for release`.
+
+### Step 3 of 3 - Build native package
 
 ```shell
 gradlew jpackageImage jpackage
