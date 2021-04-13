@@ -84,7 +84,26 @@ increment its `build-number` by `1`. After publishing the first public version, 
 In general, public releases drop the `build-number` and increment the `release-number`, (i.e.) if `2021.3.45` is the internal
 release version, the public release will be `2021.4`.
 
-### Packaging
+### Step 1 of 6 - Update CHANGELOG
+
+Underneath the `## [Unreleased]` section, add the version and date in the following format.
+
+```md
+## [version] - YYYY-MM-DD
+```
+
+Example,
+```md
+## [2021.0.1] - 2021-04-13
+```
+
+### Step 2 of 6 - Update version in code and buildscript
+
+- `TimelapseApp.kt` - update `APP_VERSION` to reflect the current version.
+- `app/build.gradle.kts` - update `version` to reflect the current version.
+- Stage and commit all changes with the message `build: bump version for release`.
+
+### Step 3 of 6 - Build native package
 
 ```shell
 gradlew jpackageImage jpackage
@@ -92,6 +111,36 @@ gradlew jpackageImage jpackage
 
 This will create a distributable native installer (currently `.dmg`) for **macOS**. Windows and Linux distributions are
 yet to be tested.
+
+### Step 4 of 6 - Verifying the build
+
+You should see the version number for the build in two places,
+1. **The native package** - file name of the binary should contain the version number.
+2. **The application (after installation)** - Welcome screen should display the new version number in the bottom right corner.
+
+### Step 5 of 6 - Tag the release
+
+Add a git tag to the release with the version number and push it to remote.
+
+```shell
+git tag <version>
+```
+
+```shell
+git push origin <version>
+```
+
+### Step 6 of 6 - Preparing for the next release
+
+**5.1 Determine the version number for the next release.**
+
+If the current release was public, then append `.1`
+to the version name. Example, if the current release was `2021.3`, the next would be `2021.3.1`.
+
+If the current release was internal, then increment the `build-number` by 1. For example, if the current release was
+`2021.4.10`, the next would be `2021.4.11`.
+
+**5.2 Go to step 2 and update the version accordingly.**
 
 ## Distribution
 
