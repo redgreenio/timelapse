@@ -44,15 +44,17 @@ object WorkbenchMenu {
       )
 
       if (SHOW_OPEN_MENU_ITEM) {
-        menuItems.add(0, openMenuItem())
+        menuItems.add(0, openMenuItem(listener))
       }
 
       items.addAll(menuItems)
     }
   }
 
-  private fun openMenuItem(): MenuItem {
-    return MenuItem(MENU_FILE_MENU_ITEM_OPEN)
+  private fun openMenuItem(listener: FileMenuItemsClickListener): MenuItem {
+    return MenuItem(MENU_FILE_MENU_ITEM_OPEN).apply {
+      setOnAction { listener.onOpenClicked() }
+    }
   }
 
   private fun openRecentMenu(

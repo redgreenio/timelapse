@@ -11,6 +11,10 @@ class DefaultFileMenuItemsClickListener(
   private val scene: Scene,
   private val openRepositoryPath: String
 ) : FileMenuItemsClickListener {
+  override fun onOpenClicked() {
+    println("You clicked on Open...")
+  }
+
   override fun onRecentClicked(repositoryPath: String) {
     scene.closeWindow()
     TimelapseScene.launch(Stage(), repositoryPath)
