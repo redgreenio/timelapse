@@ -12,7 +12,6 @@ import io.redgreen.timelapse.foo.launchScene
 import io.redgreen.timelapse.main.TimelapseScene
 import io.redgreen.timelapse.openrepo.ChooseGitRepository
 import io.redgreen.timelapse.openrepo.GitDetector
-import io.redgreen.timelapse.openrepo.GitRepositoryChosen
 import io.redgreen.timelapse.openrepo.LargeButton
 import io.redgreen.timelapse.openrepo.OpenRecentRepository
 import io.redgreen.timelapse.openrepo.OpenRepoEffectHandler
@@ -20,6 +19,7 @@ import io.redgreen.timelapse.openrepo.OpenRepoInit
 import io.redgreen.timelapse.openrepo.OpenRepoModel
 import io.redgreen.timelapse.openrepo.OpenRepoUpdate
 import io.redgreen.timelapse.openrepo.TitledSeparator
+import io.redgreen.timelapse.openrepo.WorkingDirectoryChosen
 import io.redgreen.timelapse.openrepo.data.RecentGitRepository
 import io.redgreen.timelapse.openrepo.storage.PreferencesRecentGitRepositoriesStorage
 import io.redgreen.timelapse.openrepo.view.OpenRepoScene.RecentProjectsLayer.NO_RECENT_PROJECTS
@@ -193,7 +193,7 @@ class OpenRepoScene : Scene(StackPane(), SCENE_WIDTH, SCENE_HEIGHT), OpenRepoVie
       .apply { initialDirectory = File(System.getProperty("user.home")) }
       .showDialog(window)
     selectedDirectory?.let {
-      mobiusDelegate.notify(GitRepositoryChosen(it.absolutePath))
+      mobiusDelegate.notify(WorkingDirectoryChosen(it.absolutePath))
     }
   }
 

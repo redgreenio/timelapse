@@ -65,7 +65,7 @@ class OpenRepoUpdateTest {
 
     withUpdateSpec
       .given(gitUsernameFound)
-      .whenEvent(GitRepositoryChosen(repositoryPath))
+      .whenEvent(WorkingDirectoryChosen(repositoryPath))
       .then(
         assertThatNext(
           hasNoModel(),
