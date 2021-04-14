@@ -16,6 +16,13 @@ class VersioningTest {
         1999 to "1999.1" // Y2K
       )
     }
+
+    @JvmStatic
+    fun predecessorsAndNextReleases(): List<Pair<String, String>> {
+      return listOf(
+        "2021.1" to "2021.2"
+      )
+    }
   }
 
   @ParameterizedTest
@@ -32,16 +39,17 @@ class VersioningTest {
       .isEqualTo(firstRelease)
   }
 
-  @Test
-  fun `it should get the next version for the predecessor version`() {
+  @ParameterizedTest
+  @MethodSource("predecessorsAndNextReleases")
+  fun `it should get the next version for the predecessor version`(predecessorAndNextRelease: Pair<String, String>) {
     // given
-    val predecessorVersion = "2021.1"
+    val (predecessor, nextRelease) = predecessorAndNextRelease
 
     // when
-    val nextVersion = Versioning.getNextVersion(2021, predecessorVersion)
+    val nextVersion = Versioning.getNextVersion(2021, predecessor)
 
     // then
     assertThat(nextVersion)
-      .isEqualTo("2021.2")
+      .isEqualTo(nextRelease)
   }
 }
