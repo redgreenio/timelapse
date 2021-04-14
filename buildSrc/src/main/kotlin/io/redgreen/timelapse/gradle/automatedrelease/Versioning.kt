@@ -24,7 +24,7 @@ object Versioning {
         if (isNextReleasePublic) {
           "$yyyy.1"
         } else {
-          "2021.0.1"
+          "$yyyy.0.1"
         }
       }
     }
