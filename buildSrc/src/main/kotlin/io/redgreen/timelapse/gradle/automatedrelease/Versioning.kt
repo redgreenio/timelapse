@@ -1,12 +1,18 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 object Versioning {
-  fun getNextVersion(yyyy: Int, predecessorVersion: String): String {
-    return if (predecessorVersion.isBlank()) {
+  fun getNextVersion(
+    yyyy: Int,
+    predecessorVersion: String,
+    nextReleaseIsPublic: Boolean = true
+  ): String {
+    return if (!nextReleaseIsPublic) {
+      "$predecessorVersion.1"
+    } else if (predecessorVersion.isBlank()) {
       "$yyyy.1"
     } else {
       val (year, publishedArtifactCount) = predecessorVersion.split(".")
-      return "$year.${publishedArtifactCount.toInt() + 1}"
+      "$year.${publishedArtifactCount.toInt() + 1}"
     }
   }
 }
