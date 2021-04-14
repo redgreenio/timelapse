@@ -33,6 +33,14 @@ class VersioningTest {
         "2020.1.3" to "2020.1.4"
       )
     }
+
+    @JvmStatic
+    fun predecessorInternalReleasesAndNextPublicReleases(): List<Pair<String, String>> {
+      return listOf(
+        "2021.5.12" to "2021.6",
+        "2020.1.3" to "2020.2"
+      )
+    }
   }
 
   @ParameterizedTest
@@ -96,16 +104,19 @@ class VersioningTest {
       .isEqualTo(expectedNextInternalVersion)
   }
 
-  @Test
-  fun `it should get the next public release for the given internal release`() {
+  @ParameterizedTest
+  @MethodSource("predecessorInternalReleasesAndNextPublicReleases")
+  fun `it should get the next public release for the given internal release`(
+    predecessorInternalReleaseAndNextPublicRelease: Pair<String, String>
+  ) {
     // given
-    val predecessorInternalRelease = "2021.5.12"
+    val (predecessorInternalRelease, expectedNextPublicRelease) = predecessorInternalReleaseAndNextPublicRelease
 
     // when
-    val expectedPublicReleaseVersion = Versioning.getNextVersion(2021, predecessorInternalRelease, true)
+    val publicReleaseVersion = Versioning.getNextVersion(2021, predecessorInternalRelease, true)
 
     // then
-    assertThat(expectedPublicReleaseVersion)
-      .isEqualTo("2021.6")
+    assertThat(publicReleaseVersion)
+      .isEqualTo(expectedNextPublicRelease)
   }
 }
