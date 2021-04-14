@@ -1,7 +1,11 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 object Versioning {
-  fun getReleaseVersion(yyyy: Int): String {
-    return "$yyyy.1"
+  fun getNextVersion(yyyy: Int, predecessorVersion: String): String {
+    return if (predecessorVersion.isBlank()) {
+      "$yyyy.1"
+    } else {
+      "2021.2"
+    }
   }
 }
