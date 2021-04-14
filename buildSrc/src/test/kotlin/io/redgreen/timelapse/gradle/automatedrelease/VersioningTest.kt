@@ -29,7 +29,8 @@ class VersioningTest {
     @JvmStatic
     fun predecessorInternalReleasesAndNextInternalReleases(): List<Pair<String, String>> {
       return listOf(
-        "2021.6.1" to "2021.6.2"
+        "2021.6.1" to "2021.6.2",
+        "2020.1.3" to "2020.1.4"
       )
     }
   }
