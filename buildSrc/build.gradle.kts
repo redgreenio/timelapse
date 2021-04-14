@@ -18,6 +18,15 @@ dependencies {
   implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.16.0")
   implementation("org.openjfx:javafx-plugin:0.0.9")
   implementation("org.jlleitschuh.gradle:ktlint-gradle:10.0.0")
+
+  testImplementation(kotlin("test-junit5"))
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+  testImplementation("com.google.truth:truth:1.1.2")
+}
+
+tasks.test {
+  useJUnitPlatform()
 }
 
 gradlePlugin {
