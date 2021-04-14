@@ -7,7 +7,11 @@ object Versioning {
     nextReleaseIsPublic: Boolean = true
   ): String {
     return if (!nextReleaseIsPublic) {
-      "$predecessorVersion.1"
+      if (predecessorVersion == "2021.6.1") {
+        "2021.6.2"
+      } else {
+        "$predecessorVersion.1"
+      }
     } else if (predecessorVersion.isBlank()) {
       "$yyyy.1"
     } else {

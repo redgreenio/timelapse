@@ -71,4 +71,17 @@ class VersioningTest {
     assertThat(nextInternalVersion)
       .isEqualTo("2021.5.1")
   }
+
+  @Test
+  fun `it should get the next internal release for the given internal release`() {
+    // given
+    val predecessorInternalVersion = "2021.6.1"
+
+    // when
+    val nextInternalVersion = Versioning.getNextVersion(2021, predecessorInternalVersion, false)
+
+    // then
+    assertThat(nextInternalVersion)
+      .isEqualTo("2021.6.2")
+  }
 }
