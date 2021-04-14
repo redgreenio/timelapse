@@ -13,7 +13,7 @@ object Versioning {
         val (year, publishedArtifactCount, buildNumber) = predecessorVersion.split(".")
         "$year.$publishedArtifactCount.${buildNumber.toInt() + 1}"
       }
-      isNextReleaseInternal -> {
+      isNextReleaseInternal && predecessorVersion.isNotBlank() -> {
         "$predecessorVersion.1"
       }
       isNextReleasePublic && predecessorVersion.isNotBlank() -> {
@@ -21,7 +21,11 @@ object Versioning {
         "$year.${publishedArtifactCount.toInt() + 1}"
       }
       else -> {
-        "$yyyy.1"
+        if (isNextReleasePublic) {
+          "$yyyy.1"
+        } else {
+          "2021.0.1"
+        }
       }
     }
   }
