@@ -43,9 +43,10 @@ class VersioningTest {
     }
 
     @JvmStatic
-    fun noPredecessorPublicReleasesAndNextInternalReleases(): List<Pair<String, String>> {
+    fun yearWithNoPublicReleasesAndNextInternalReleases(): List<Pair<Int, String>> {
       return listOf(
-        "" to "2021.0.1"
+        2021 to "2021.0.1",
+        2022 to "2022.0.1"
       )
     }
   }
@@ -128,15 +129,15 @@ class VersioningTest {
   }
 
   @ParameterizedTest
-  @MethodSource("noPredecessorPublicReleasesAndNextInternalReleases")
+  @MethodSource("yearWithNoPublicReleasesAndNextInternalReleases")
   fun `it should give the first internal release version for a year with no releases`(
-    noPredecessorPublicReleaseAndNextInternalRelease: Pair<String, String>
+    yearWithNoPublicReleaseAndNextInternalRelease: Pair<Int, String>
   ) {
     // given
-    val (noPredecessorPublicRelease, nextInternalRelease) = noPredecessorPublicReleaseAndNextInternalRelease
+    val (yyyy, nextInternalRelease) = yearWithNoPublicReleaseAndNextInternalRelease
 
     // when
-    val internalVersionWithNoPublicReleases = Versioning.getNextVersion(2021, noPredecessorPublicRelease, false)
+    val internalVersionWithNoPublicReleases = Versioning.getNextVersion(yyyy, "", false)
 
     // then
     assertThat(internalVersionWithNoPublicReleases)
