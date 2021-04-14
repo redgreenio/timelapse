@@ -119,4 +119,14 @@ class VersioningTest {
     assertThat(publicReleaseVersion)
       .isEqualTo(expectedNextPublicRelease)
   }
+
+  @Test
+  fun `it should give the first internal release version for a year with no releases`() {
+    // given & when
+    val internalVersionWithNoPublicReleases = Versioning.getNextVersion(2021, "", false)
+
+    // then
+    assertThat(internalVersionWithNoPublicReleases)
+      .isEqualTo("2021.0.1")
+  }
 }
