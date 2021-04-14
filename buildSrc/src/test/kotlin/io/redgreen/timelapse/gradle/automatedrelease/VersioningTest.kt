@@ -30,7 +30,8 @@ class VersioningTest {
     fun predecessorInternalReleasesAndNextInternalReleases(): List<Pair<String, String>> {
       return listOf(
         "2021.6.1" to "2021.6.2",
-        "2020.1.3" to "2020.1.4"
+        "2020.1.3" to "2020.1.4",
+        "2020.0.5" to "2020.0.6"
       )
     }
 
@@ -38,7 +39,8 @@ class VersioningTest {
     fun predecessorInternalReleasesAndNextPublicReleases(): List<Pair<String, String>> {
       return listOf(
         "2021.5.12" to "2021.6",
-        "2020.1.3" to "2020.2"
+        "2020.1.3" to "2020.2",
+        "2021.0.7" to "2021.1"
       )
     }
 
