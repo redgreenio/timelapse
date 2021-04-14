@@ -6,12 +6,12 @@ object Versioning {
     predecessorVersion: String,
     nextReleaseIsPublic: Boolean = true
   ): String {
-    return if (!nextReleaseIsPublic) {
-      if (predecessorVersion == "2021.6.1") {
-        "2021.6.2"
-      } else {
-        "$predecessorVersion.1"
-      }
+    val isPredecessorVersionInternal = predecessorVersion.split(".").size == 3
+    return if (!nextReleaseIsPublic && isPredecessorVersionInternal) {
+      val (year, publishedArtifactCount, buildNumber) = predecessorVersion.split(".")
+      "$year.$publishedArtifactCount.${buildNumber.toInt() + 1}"
+    } else if (!nextReleaseIsPublic) {
+      "$predecessorVersion.1"
     } else if (predecessorVersion.isBlank()) {
       "$yyyy.1"
     } else {
