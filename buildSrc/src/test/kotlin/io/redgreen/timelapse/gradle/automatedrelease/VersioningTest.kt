@@ -41,6 +41,13 @@ class VersioningTest {
         "2020.1.3" to "2020.2"
       )
     }
+
+    @JvmStatic
+    fun noPredecessorPublicReleasesAndNextInternalReleases(): List<Pair<String, String>> {
+      return listOf(
+        "" to "2021.0.1"
+      )
+    }
   }
 
   @ParameterizedTest
@@ -120,13 +127,19 @@ class VersioningTest {
       .isEqualTo(expectedNextPublicRelease)
   }
 
-  @Test
-  fun `it should give the first internal release version for a year with no releases`() {
-    // given & when
-    val internalVersionWithNoPublicReleases = Versioning.getNextVersion(2021, "", false)
+  @ParameterizedTest
+  @MethodSource("noPredecessorPublicReleasesAndNextInternalReleases")
+  fun `it should give the first internal release version for a year with no releases`(
+    noPredecessorPublicReleaseAndNextInternalRelease: Pair<String, String>
+  ) {
+    // given
+    val (noPredecessorPublicRelease, nextInternalRelease) = noPredecessorPublicReleaseAndNextInternalRelease
+
+    // when
+    val internalVersionWithNoPublicReleases = Versioning.getNextVersion(2021, noPredecessorPublicRelease, false)
 
     // then
     assertThat(internalVersionWithNoPublicReleases)
-      .isEqualTo("2021.0.1")
+      .isEqualTo(nextInternalRelease)
   }
 }
