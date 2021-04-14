@@ -63,26 +63,31 @@ mkdir proguard-lab
 
 ## Creating a release
 
-We use different formats of versioning for internal and public releases.
+We use different formats of versioning for public and internal releases.
 
 ### Public releases
 
-The application is versioned in the following format `[YYYY].[release-number]` for public releases. `[YYYY]` denotes the
-current year. `[release-number]` is the publicly released build number in that year.
+**Version public releases in the following format:** `[YYYY].[published-artifact-count + 1]`.
 
-For example, the first public release for the year 2021 would be `2021.1`, the next release would be `2021.2` and so on.
+Where `[YYYY]` denotes the current year, and `[published-artifact-count]` is the number of publicly released artifacts
+in that year so far.
+
+For example, the first public release for the year 2021 would be `2021.1`, and the subsequent release version would be
+`2021.2`, and so on.
 
 ### Internal releases
 
-Internal releases are any releases that are not published to the masses. This includes but is not limited to alpha, beta,
-and nightly releases. Internal releases have the following format - `[YYYY].[previous-release-number].[build-number]`.
+**Version internal releases in the following format:** `[YYYY].[published-artifact-count].[build-number]`
 
-For example, the first internal release for 2021 with no public releases would be `2021.0.1`. Each internal release will
-increment its `build-number` by `1`. After publishing the first public version, the next internal release for
-2021 will be `2021.1.1`.
+We don't distribute internal releases through our public channels. These releases include but are not limited to alpha,
+beta, and nightly releases.
 
-In general, public releases drop the `build-number` and increment the `release-number`, (i.e.) if `2021.3.45` is the internal
-release version, the public release will be `2021.4`.
+For example, the first internal release for 2021 without any public releases would be `2021.0.1`; the second internal release
+would be `2021.0.1` and so on. Each internal release will increment its `build-number` by `1`.
+
+### Releases summary
+In general, public releases drop the `build-number` from internal releases and increment the `published-artifact-count`
+(i.e.), if `2021.3.45` is the latest internal release version; the public release for the release will be `2021.4`.
 
 ### Step 1 of 6 - Update CHANGELOG
 
