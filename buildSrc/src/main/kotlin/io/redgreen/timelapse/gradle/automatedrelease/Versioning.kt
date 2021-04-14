@@ -5,7 +5,8 @@ object Versioning {
     return if (predecessorVersion.isBlank()) {
       "$yyyy.1"
     } else {
-      "2021.2"
+      val (year, publishedArtifactCount) = predecessorVersion.split(".")
+      return "$year.${publishedArtifactCount.toInt() + 1}"
     }
   }
 }

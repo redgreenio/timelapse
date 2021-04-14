@@ -20,7 +20,9 @@ class VersioningTest {
     @JvmStatic
     fun predecessorsAndNextReleases(): List<Pair<String, String>> {
       return listOf(
-        "2021.1" to "2021.2"
+        "2021.1" to "2021.2",
+        "2021.2" to "2021.3",
+        "2019.665" to "2019.666" // covid
       )
     }
   }
