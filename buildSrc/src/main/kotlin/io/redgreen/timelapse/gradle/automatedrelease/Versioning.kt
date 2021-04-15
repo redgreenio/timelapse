@@ -6,7 +6,7 @@ object Versioning {
     previousVersion: String,
     isNextReleasePublic: Boolean = true
   ): String {
-    val version = Version(previousVersion, yyyy)
+    val version = Version.from(previousVersion, yyyy)
     val nextVersion = version.next(isNextReleasePublic)
     return nextVersion.displayText
   }

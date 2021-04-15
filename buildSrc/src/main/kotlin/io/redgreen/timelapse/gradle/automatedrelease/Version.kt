@@ -4,6 +4,18 @@ open class Version(
   val displayText: String,
   private val yyyy: Int
 ) {
+  companion object {
+    fun from(version: String, yyyy: Int): Version {
+      val isPublicRelease = version.filter { it == '.' }.toList().count() == 2
+
+      return if (isPublicRelease) {
+        ReleaseVersion(version)
+      } else {
+        Version(version, yyyy)
+      }
+    }
+  }
+
   private val versionComponents = "${displayText}..".split(".")
   private val year = versionComponents[0]
   protected val publishedArtifactCount = versionComponents[1]
