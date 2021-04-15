@@ -19,15 +19,6 @@ class Version(
   private val publishedArtifactCount = versionComponents[1]
   private val buildNumber = versionComponents[2]
 
-  @Deprecated("", ReplaceWith("nextVersion(isNextReleasePublic).versionText"))
-  fun nextVersionText(isNextReleasePublic: Boolean): String {
-    val releaseYear = getYear()
-    val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic)
-    val nextBuildNumber = nextBuildNumber(isNextReleasePublic)
-
-    return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
-  }
-
   fun nextVersion(isNextReleasePublic: Boolean): Version {
     val releaseYear = getYear()
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic)
