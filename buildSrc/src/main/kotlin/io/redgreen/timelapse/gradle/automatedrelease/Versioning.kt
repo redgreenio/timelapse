@@ -15,7 +15,7 @@ object Versioning {
     val internalOrPublicToInternal = !isNextReleasePublic && predecessorVersion.isNotBlank()
 
     return if (internalToInternal || internalOrPublicToPublic) {
-      "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
+      "$year.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (internalOrPublicToInternal) {
       "$predecessorVersion.1${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (isNextReleasePublic) {
@@ -26,8 +26,8 @@ object Versioning {
   }
 
   private fun getPublishedArtifactCount(
-    publishedArtifactCount: String,
-    isNextReleasePublic: Boolean
+    isNextReleasePublic: Boolean,
+    publishedArtifactCount: String
   ): Int {
     return if (isNextReleasePublic) {
       publishedArtifactCount.toInt() + 1
