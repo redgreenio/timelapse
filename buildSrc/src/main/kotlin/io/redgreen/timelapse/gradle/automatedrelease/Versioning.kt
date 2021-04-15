@@ -3,19 +3,23 @@ package io.redgreen.timelapse.gradle.automatedrelease
 object Versioning {
   fun getNextVersion(
     yyyy: Int,
-    predecessorVersion: String,
+    previousVersion: String,
     isNextReleasePublic: Boolean = true
   ): String {
-    val (year, publishedArtifactCount, buildNumber) = "${predecessorVersion}..".split(".")
+    val (year, publishedArtifactCount, buildNumber) = "${previousVersion}..".split(".")
 
-    val nextReleaseYear = getYear(predecessorVersion, yyyy, year)
+    val releaseYear = getYear(previousVersion, yyyy, year)
     val nextPublishedArtifactCount = getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)
     val nextBuildNumber = getBuildNumber(isNextReleasePublic, buildNumber)
 
-    return "$nextReleaseYear.$nextPublishedArtifactCount$nextBuildNumber"
+    return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
   }
 
-  private fun getYear(predecessorVersion: String, yyyy: Int, year: String): String {
+  private fun getYear(
+    predecessorVersion: String,
+    yyyy: Int,
+    year: String
+  ): String {
     return if (predecessorVersion.isEmpty()) {
       "$yyyy"
     } else {
@@ -25,29 +29,29 @@ object Versioning {
 
   private fun getPublishedArtifactCount(
     isNextReleasePublic: Boolean,
-    publishedArtifactCount: String
+    previousPublishedArtifactCount: String
   ): Int {
-    return if (publishedArtifactCount.isEmpty() && isNextReleasePublic) {
+    return if (previousPublishedArtifactCount.isEmpty() && isNextReleasePublic) {
       1
     } else if (isNextReleasePublic) {
-      publishedArtifactCount.toInt() + 1
-    } else if (publishedArtifactCount.isEmpty()) {
+      previousPublishedArtifactCount.toInt() + 1
+    } else if (previousPublishedArtifactCount.isEmpty()) {
       0
     } else {
-      publishedArtifactCount.toInt()
+      previousPublishedArtifactCount.toInt()
     }
   }
 
   private fun getBuildNumber(
     isNextReleasePublic: Boolean,
-    buildNumber: String
+    previousBuildNumber: String
   ): String {
     return if (isNextReleasePublic) {
       ""
-    } else if (buildNumber.isEmpty()) {
+    } else if (previousBuildNumber.isEmpty()) {
       ".1"
     } else {
-      ".${buildNumber.toInt() + 1}"
+      ".${previousBuildNumber.toInt() + 1}"
     }
   }
 }
