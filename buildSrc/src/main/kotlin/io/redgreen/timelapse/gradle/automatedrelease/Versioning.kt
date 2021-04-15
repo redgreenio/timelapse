@@ -41,17 +41,17 @@ object Versioning {
       previousPublishedArtifactCount.toInt()
     }
   }
+}
 
-  private fun nextBuildNumber(
-    isNextReleasePublic: Boolean,
-    previousBuildNumber: String
-  ): String {
-    return if (isNextReleasePublic) {
-      ""
-    } else if (previousBuildNumber.isEmpty()) {
-      ".1"
-    } else {
-      ".${previousBuildNumber.toInt() + 1}"
-    }
+private fun nextBuildNumber(
+  isNextReleasePublic: Boolean,
+  previousBuildNumber: String
+): String {
+  return if (isNextReleasePublic) {
+    ""
+  } else if (previousBuildNumber.isEmpty()) {
+    ".1"
+  } else {
+    ".${previousBuildNumber.toInt() + 1}"
   }
 }
