@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 open class Version(
-  val displayText: String,
+  open val displayText: String,
   private val yyyy: Int
 ) {
   private val versionComponents = "${displayText}..".split(".")
