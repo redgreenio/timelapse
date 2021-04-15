@@ -10,6 +10,12 @@ object Versioning {
   }
 }
 
+class Version(
+  private val previousVersion: String,
+  private val yyyy: Int,
+  private val isNextReleasePublic: Boolean
+)
+
 private fun displayVersion(
   previousVersion: String,
   yyyy: Int,
