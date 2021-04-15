@@ -17,7 +17,7 @@ object Versioning {
     return if (internalToInternal || internalOrPublicToPublic) {
       "$year.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (internalOrPublicToInternal) {
-      "$predecessorVersion.1${getBuildNumber(isNextReleasePublic, buildNumber)}"
+      "$year.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (isNextReleasePublic) {
       "$yyyy.1"
     } else {
@@ -43,7 +43,7 @@ object Versioning {
     return if (isNextReleasePublic) {
       ""
     } else if (buildNumber.isEmpty()) {
-      ""
+      ".1"
     } else {
       ".${buildNumber.toInt() + 1}"
     }
