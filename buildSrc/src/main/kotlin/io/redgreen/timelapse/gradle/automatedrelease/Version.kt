@@ -30,10 +30,8 @@ open class Version(
 
     return if (isPublic) {
       ReleaseVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
-    } else if (!isPublic) {
-      InternalVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
     } else {
-      Version("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber", releaseYear.toInt())
+      InternalVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
     }
   }
 
