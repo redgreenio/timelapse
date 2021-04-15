@@ -3,11 +3,9 @@ package io.redgreen.timelapse.gradle.automatedrelease
 object Versioning {
   fun getNextVersion(
     yyyy: Int,
-    previousVersion: String,
+    version: String,
     isNextReleasePublic: Boolean = true
   ): String {
-    val version = Version.from(previousVersion, yyyy)
-    val nextVersion = version.next(isNextReleasePublic)
-    return nextVersion.displayText
+    return Version.from(version, yyyy).next(isNextReleasePublic).displayText
   }
 }
