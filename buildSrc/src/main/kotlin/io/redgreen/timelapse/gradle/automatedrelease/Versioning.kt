@@ -6,7 +6,7 @@ object Versioning {
     previousVersion: String,
     isNextReleasePublic: Boolean = true
   ): String {
-    return Version(previousVersion, yyyy).displayVersion(previousVersion, yyyy, isNextReleasePublic)
+    return Version(previousVersion, yyyy).nextVersionText(previousVersion, yyyy, isNextReleasePublic)
   }
 }
 
@@ -19,7 +19,7 @@ class Version(
   private val publishedArtifactCount = versionComponents[1]
   private val buildNumber = versionComponents[2]
 
-  fun displayVersion(
+  fun nextVersionText(
     previousVersion: String,
     yyyy: Int,
     isNextReleasePublic: Boolean
