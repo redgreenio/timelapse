@@ -15,6 +15,11 @@ class Version(
   private val yyyy: Int,
   private val isNextReleasePublic: Boolean
 ) {
+  private val versionComponents = "${previousVersion}..".split(".")
+  private val year = versionComponents[0]
+  private val publishedArtifactCount = versionComponents[1]
+  private val buildNumber = versionComponents[2]
+
   fun getYear(
     year: String
   ): String {
