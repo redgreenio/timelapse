@@ -21,12 +21,12 @@ open class Version(
   protected val publishedArtifactCount = versionComponents[1]
   protected val buildNumber = versionComponents[2]
 
-  fun next(isNextReleasePublic: Boolean): Version {
+  fun next(isPublic: Boolean): Version {
     val releaseYear = getYear()
-    val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic)
-    val nextBuildNumber = nextBuildNumber(isNextReleasePublic)
+    val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
+    val nextBuildNumber = nextBuildNumber(isPublic)
 
-    return if (isNextReleasePublic) {
+    return if (isPublic) {
       ReleaseVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
     } else {
       Version("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber", releaseYear.toInt())
@@ -41,10 +41,10 @@ open class Version(
     }
   }
 
-  protected open fun nextPublishedArtifactCount(isNextReleasePublic: Boolean): Int {
-    return if (publishedArtifactCount.isEmpty() && isNextReleasePublic) {
+  protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {
+    return if (publishedArtifactCount.isEmpty() && isPublic) {
       1
-    } else if (isNextReleasePublic) {
+    } else if (isPublic) {
       publishedArtifactCount.toInt() + 1
     } else if (publishedArtifactCount.isEmpty()) {
       0
@@ -53,8 +53,8 @@ open class Version(
     }
   }
 
-  protected open fun nextBuildNumber(isNextReleasePublic: Boolean): String {
-    return if (isNextReleasePublic) {
+  protected open fun nextBuildNumber(isPublic: Boolean): String {
+    return if (isPublic) {
       ""
     } else if (buildNumber.isEmpty()) {
       ".1"
