@@ -16,11 +16,15 @@ object Versioning {
     } else if (isNextReleaseInternal && predecessorVersion.isNotBlank()) {
       "$predecessorVersion.1"
     } else if (isNextReleasePublic && predecessorVersion.isNotBlank()) {
-      "$year.${publishedArtifactCount.toInt() + 1}"
+      "$year.${getPublishedArtifactCount(publishedArtifactCount)}"
     } else if (isNextReleasePublic) {
       "$yyyy.1"
     } else {
       "$yyyy.0.1"
     }
+  }
+
+  private fun getPublishedArtifactCount(publishedArtifactCount: String): Int {
+    return publishedArtifactCount.toInt() + 1
   }
 }
