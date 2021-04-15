@@ -17,22 +17,11 @@ object Versioning {
     return if (internalToInternal || internalOrPublicToPublic) {
       "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (internalOrPublicToInternal) {
-      "$predecessorVersion.1"
+      "$predecessorVersion.1${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (isNextReleasePublic) {
       "$yyyy.1"
     } else {
       "$yyyy.0.1"
-    }
-  }
-
-  private fun getBuildNumber(
-    isNextReleasePublic: Boolean,
-    buildNumber: String
-  ): String {
-    return if (isNextReleasePublic) {
-      ""
-    } else {
-      ".${buildNumber.toInt() + 1}"
     }
   }
 
@@ -44,6 +33,19 @@ object Versioning {
       publishedArtifactCount.toInt() + 1
     } else {
       publishedArtifactCount.toInt()
+    }
+  }
+
+  private fun getBuildNumber(
+    isNextReleasePublic: Boolean,
+    buildNumber: String
+  ): String {
+    return if (isNextReleasePublic) {
+      ""
+    } else if (buildNumber.isEmpty()) {
+      ""
+    } else {
+      ".${buildNumber.toInt() + 1}"
     }
   }
 }
