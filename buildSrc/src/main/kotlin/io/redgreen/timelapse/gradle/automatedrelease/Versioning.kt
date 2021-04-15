@@ -14,9 +14,7 @@ object Versioning {
     val internalOrPublicToPublic = predecessorVersion.isNotBlank() && isNextReleasePublic
     val internalOrPublicToInternal = !isNextReleasePublic && predecessorVersion.isNotBlank()
 
-    return if (internalToInternal || internalOrPublicToPublic) {
-      "$year.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
-    } else if (internalOrPublicToInternal) {
+    return if (internalToInternal || internalOrPublicToPublic || internalOrPublicToInternal) {
       "$year.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (isNextReleasePublic) {
       "$yyyy.1"
