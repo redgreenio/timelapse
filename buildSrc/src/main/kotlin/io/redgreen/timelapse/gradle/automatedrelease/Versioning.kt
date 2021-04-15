@@ -17,12 +17,10 @@ object Versioning {
     } else if (isNextReleasePublic && predecessorVersion.isNotBlank()) {
       val (year, publishedArtifactCount) = predecessorVersion.split(".")
       "$year.${publishedArtifactCount.toInt() + 1}"
+    } else if (isNextReleasePublic) {
+      "$yyyy.1"
     } else {
-      if (isNextReleasePublic) {
-        "$yyyy.1"
-      } else {
-        "$yyyy.0.1"
-      }
+      "$yyyy.0.1"
     }
   }
 }
