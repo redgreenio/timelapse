@@ -8,14 +8,4 @@ class ReleaseVersion(displayText: String) : Version(displayText, -1) {
       publishedArtifactCount.toInt()
     }
   }
-
-  override fun nextBuildNumber(isPublic: Boolean): String {
-    return if (isPublic) {
-      ""
-    } else if (buildNumber.isEmpty()) {
-      ".1"
-    } else {
-      ".${buildNumber.toInt() + 1}"
-    }
-  }
 }
