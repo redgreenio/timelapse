@@ -12,10 +12,8 @@ open class Version(
         ReleaseVersion(version)
       } else if (!isPublicRelease && version.isNotEmpty()) {
         InternalVersion(version)
-      } else if (version.isEmpty()) {
-        NoPreviousVersion(yyyy)
       } else {
-        Version(version, yyyy)
+        NoPreviousVersion(yyyy)
       }
     }
   }
