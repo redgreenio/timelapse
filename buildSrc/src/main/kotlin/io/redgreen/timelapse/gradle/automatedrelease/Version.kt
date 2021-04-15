@@ -41,11 +41,11 @@ open class Version(
 
   protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {
     return if (publishedArtifactCount.isEmpty() && isPublic) {
-      1
+      TODO()
     } else if (isPublic) {
       publishedArtifactCount.toInt() + 1
     } else if (publishedArtifactCount.isEmpty()) {
-      0
+      TODO()
     } else {
       publishedArtifactCount.toInt()
     }
