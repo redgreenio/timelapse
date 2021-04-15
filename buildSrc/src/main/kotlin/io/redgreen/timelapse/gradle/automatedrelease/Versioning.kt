@@ -11,16 +11,16 @@ object Versioning {
 }
 
 class Version(
-  private val previousVersion: String,
+  private val versionText: String,
   private val yyyy: Int
 ) {
-  private val versionComponents = "${previousVersion}..".split(".")
+  private val versionComponents = "${versionText}..".split(".")
   private val year = versionComponents[0]
   private val publishedArtifactCount = versionComponents[1]
   private val buildNumber = versionComponents[2]
 
   fun getYear(): String {
-    return if (previousVersion.isEmpty()) {
+    return if (versionText.isEmpty()) {
       "$yyyy"
     } else {
       year
