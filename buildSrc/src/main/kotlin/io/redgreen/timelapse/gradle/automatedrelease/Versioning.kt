@@ -27,6 +27,13 @@ class Version(
     return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
   }
 
+  fun nextVersion(isNextReleasePublic: Boolean): Version {
+    val releaseYear = getYear()
+    val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic)
+    val nextBuildNumber = nextBuildNumber(isNextReleasePublic)
+    return Version("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber", releaseYear.toInt())
+  }
+
   private fun getYear(): String {
     return if (versionText.isEmpty()) {
       "$yyyy"
