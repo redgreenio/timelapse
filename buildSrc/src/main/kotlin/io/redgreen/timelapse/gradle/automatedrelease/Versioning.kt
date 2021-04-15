@@ -10,9 +10,7 @@ object Versioning {
 
     val (year, publishedArtifactCount, buildNumber) = "${predecessorVersion}..".split(".")
 
-    return if (!isNextReleasePublic && isPredecessorVersionInternal) {
-      "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
-    } else if (isNextReleasePublic && predecessorVersion.isNotBlank()) {
+    return if ((!isNextReleasePublic && isPredecessorVersionInternal) || (isNextReleasePublic && predecessorVersion.isNotBlank())) {
       "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (!isNextReleasePublic && predecessorVersion.isNotBlank()) {
       "$predecessorVersion.1"
