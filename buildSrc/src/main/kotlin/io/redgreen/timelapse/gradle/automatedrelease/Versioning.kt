@@ -8,20 +8,20 @@ object Versioning {
   ): String {
     return displayVersion(previousVersion, yyyy, isNextReleasePublic)
   }
+}
 
-  private fun displayVersion(
-    previousVersion: String,
-    yyyy: Int,
-    isNextReleasePublic: Boolean
-  ): String {
-    val (year, publishedArtifactCount, buildNumber) = "${previousVersion}..".split(".")
+private fun displayVersion(
+  previousVersion: String,
+  yyyy: Int,
+  isNextReleasePublic: Boolean
+): String {
+  val (year, publishedArtifactCount, buildNumber) = "${previousVersion}..".split(".")
 
-    val releaseYear = getYear(previousVersion, yyyy, year)
-    val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)
-    val nextBuildNumber = nextBuildNumber(isNextReleasePublic, buildNumber)
+  val releaseYear = getYear(previousVersion, yyyy, year)
+  val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)
+  val nextBuildNumber = nextBuildNumber(isNextReleasePublic, buildNumber)
 
-    return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
-  }
+  return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
 }
 
 private fun getYear(
