@@ -1,9 +1,12 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.gradle.automatedrelease.versions.InternalVersion
+import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
+import io.redgreen.timelapse.gradle.automatedrelease.versions.PublicReleaseVersion
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.junit.jupiter.api.Test
 
 class VersioningTest {
   companion object {
@@ -49,6 +52,15 @@ class VersioningTest {
       return listOf(
         2021 to "2021.0.1",
         2022 to "2022.0.1"
+      )
+    }
+
+    @JvmStatic
+    fun displayTextsAndInstanceTypes(): List<Pair<String, Class<out Version>>> {
+      return listOf(
+        "2021" to NoPreviousVersion::class.java,
+        "2021.1" to PublicReleaseVersion::class.java,
+        "2021.1.1" to InternalVersion::class.java
       )
     }
   }
@@ -144,5 +156,47 @@ class VersioningTest {
     // then
     assertThat(internalVersionWithNoPublicReleases)
       .isEqualTo(nextInternalRelease)
+  }
+
+  @Test
+  internal fun `it should get the next public version from the current public version`() {
+    // given
+    val publicRelease = PublicReleaseVersion(2021, 1)
+
+    // when
+    val nextPublicRelease = publicRelease.publicRelease()
+
+    // then
+    assertThat(nextPublicRelease.displayText)
+      .isEqualTo("2021.2")
+  }
+
+  @Test
+  internal fun `it should get the next internal version from the current public version`() {
+    // given
+    val publicRelease = PublicReleaseVersion(2021, 1)
+
+    // when
+    val nextInternalRelease = publicRelease.internal()
+
+    // then
+    assertThat(nextInternalRelease.displayText)
+      .isEqualTo("2021.1.1")
+  }
+
+  @ParameterizedTest
+  @MethodSource("displayTextsAndInstanceTypes")
+  fun `it should return the correct instance based on the display text`(
+    displayTextAndInstanceType: Pair<String, Class<out Version>>
+  ) {
+    // given
+    val (displayText, instanceType) = displayTextAndInstanceType
+
+    // when
+    val version = Version.from(displayText)
+
+    // then
+    assertThat(version::class.java)
+      .isEqualTo(instanceType)
   }
 }

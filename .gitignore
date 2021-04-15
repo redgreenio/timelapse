@@ -14,3 +14,6 @@ out/
 
 # Working area to de-obfuscate crash traces
 proguard-lab/
+
+# HProf files
+*.hprof
