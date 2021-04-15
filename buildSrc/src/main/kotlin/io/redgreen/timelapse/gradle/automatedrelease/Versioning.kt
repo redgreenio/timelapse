@@ -16,11 +16,9 @@ class Version(
   private val isNextReleasePublic: Boolean
 ) {
   fun getYear(
-    predecessorVersion: String,
-    yyyy: Int,
     year: String
   ): String {
-    return if (predecessorVersion.isEmpty()) {
+    return if (previousVersion.isEmpty()) {
       "$yyyy"
     } else {
       year
@@ -65,7 +63,7 @@ private fun displayVersion(
 
   val (year, publishedArtifactCount, buildNumber) = "${previousVersion}..".split(".")
 
-  val releaseYear = version.getYear(previousVersion, yyyy, year)
+  val releaseYear = version.getYear(year)
   val nextPublishedArtifactCount = version.nextPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)
   val nextBuildNumber = version.nextBuildNumber(isNextReleasePublic, buildNumber)
 
