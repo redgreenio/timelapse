@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
-class Version(
+open class Version(
   val displayText: String,
   private val yyyy: Int
 ) {
