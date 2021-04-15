@@ -7,13 +7,12 @@ object Versioning {
     isNextReleasePublic: Boolean = true
   ): String {
     val isPredecessorVersionInternal = predecessorVersion.split(".").size == 3
-    val isNextReleaseInternal = !isNextReleasePublic
 
     val (year, publishedArtifactCount, buildNumber) = "${predecessorVersion}..".split(".")
 
-    return if (isNextReleaseInternal && isPredecessorVersionInternal) {
+    return if (!isNextReleasePublic && isPredecessorVersionInternal) {
       "$year.$publishedArtifactCount.${buildNumber.toInt() + 1}"
-    } else if (isNextReleaseInternal && predecessorVersion.isNotBlank()) {
+    } else if (!isNextReleasePublic && predecessorVersion.isNotBlank()) {
       "$predecessorVersion.1"
     } else if (isNextReleasePublic && predecessorVersion.isNotBlank()) {
       "$year.${getPublishedArtifactCount(publishedArtifactCount)}"
