@@ -7,13 +7,20 @@ object Versioning {
     isNextReleasePublic: Boolean = true
   ): String {
     val (year, publishedArtifactCount, buildNumber) = "${predecessorVersion}..".split(".")
-    val yearToUse = if (predecessorVersion.isEmpty()) {
+
+    val nextReleaseYear = getYear(predecessorVersion, yyyy, year)
+    val nextPublishedArtifactCount = getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)
+    val nextBuildNumber = getBuildNumber(isNextReleasePublic, buildNumber)
+
+    return "$nextReleaseYear.$nextPublishedArtifactCount$nextBuildNumber"
+  }
+
+  private fun getYear(predecessorVersion: String, yyyy: Int, year: String): String {
+    return if (predecessorVersion.isEmpty()) {
       "$yyyy"
     } else {
       year
     }
-
-    return "$yearToUse.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
   }
 
   private fun getPublishedArtifactCount(
