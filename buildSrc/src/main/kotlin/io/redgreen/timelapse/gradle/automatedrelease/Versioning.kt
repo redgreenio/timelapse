@@ -12,8 +12,7 @@ object Versioning {
 
 class Version(
   private val previousVersion: String,
-  private val yyyy: Int,
-  private val isNextReleasePublic: Boolean
+  private val yyyy: Int
 ) {
   private val versionComponents = "${previousVersion}..".split(".")
   private val year = versionComponents[0]
@@ -56,7 +55,7 @@ private fun displayVersion(
   yyyy: Int,
   isNextReleasePublic: Boolean
 ): String {
-  val version = Version(previousVersion, yyyy, isNextReleasePublic)
+  val version = Version(previousVersion, yyyy)
 
   val releaseYear = version.getYear()
   val nextPublishedArtifactCount = version.nextPublishedArtifactCount(isNextReleasePublic)
