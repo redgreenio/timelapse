@@ -14,17 +14,17 @@ object Versioning {
 
     return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
   }
+}
 
-  private fun getYear(
-    predecessorVersion: String,
-    yyyy: Int,
-    year: String
-  ): String {
-    return if (predecessorVersion.isEmpty()) {
-      "$yyyy"
-    } else {
-      year
-    }
+private fun getYear(
+  predecessorVersion: String,
+  yyyy: Int,
+  year: String
+): String {
+  return if (predecessorVersion.isEmpty()) {
+    "$yyyy"
+  } else {
+    year
   }
 }
 
