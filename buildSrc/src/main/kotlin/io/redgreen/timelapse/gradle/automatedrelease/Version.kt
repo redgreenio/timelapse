@@ -10,6 +10,8 @@ open class Version(
 
       return if (isPublicRelease) {
         ReleaseVersion(version)
+      } else if (version.isEmpty()) {
+        NoPreviousVersion(yyyy)
       } else {
         Version(version, yyyy)
       }
