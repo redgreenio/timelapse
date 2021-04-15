@@ -19,36 +19,6 @@ class Version(
   private val publishedArtifactCount = versionComponents[1]
   private val buildNumber = versionComponents[2]
 
-  fun getYear(): String {
-    return if (versionText.isEmpty()) {
-      "$yyyy"
-    } else {
-      year
-    }
-  }
-
-  fun nextPublishedArtifactCount(isNextReleasePublic: Boolean): Int {
-    return if (publishedArtifactCount.isEmpty() && isNextReleasePublic) {
-      1
-    } else if (isNextReleasePublic) {
-      publishedArtifactCount.toInt() + 1
-    } else if (publishedArtifactCount.isEmpty()) {
-      0
-    } else {
-      publishedArtifactCount.toInt()
-    }
-  }
-
-  fun nextBuildNumber(isNextReleasePublic: Boolean): String {
-    return if (isNextReleasePublic) {
-      ""
-    } else if (buildNumber.isEmpty()) {
-      ".1"
-    } else {
-      ".${buildNumber.toInt() + 1}"
-    }
-  }
-
   fun displayVersion(
     previousVersion: String,
     yyyy: Int,
@@ -61,5 +31,35 @@ class Version(
     val nextBuildNumber = version.nextBuildNumber(isNextReleasePublic)
 
     return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
+  }
+
+  private fun getYear(): String {
+    return if (versionText.isEmpty()) {
+      "$yyyy"
+    } else {
+      year
+    }
+  }
+
+  private fun nextPublishedArtifactCount(isNextReleasePublic: Boolean): Int {
+    return if (publishedArtifactCount.isEmpty() && isNextReleasePublic) {
+      1
+    } else if (isNextReleasePublic) {
+      publishedArtifactCount.toInt() + 1
+    } else if (publishedArtifactCount.isEmpty()) {
+      0
+    } else {
+      publishedArtifactCount.toInt()
+    }
+  }
+
+  private fun nextBuildNumber(isNextReleasePublic: Boolean): String {
+    return if (isNextReleasePublic) {
+      ""
+    } else if (buildNumber.isEmpty()) {
+      ".1"
+    } else {
+      ".${buildNumber.toInt() + 1}"
+    }
   }
 }
