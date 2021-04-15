@@ -9,7 +9,7 @@ open class Version(
   protected val publishedArtifactCount = versionComponents[1]
   protected val buildNumber = versionComponents[2]
 
-  fun nextVersion(isNextReleasePublic: Boolean): Version {
+  fun next(isNextReleasePublic: Boolean): Version {
     val releaseYear = getYear()
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic)
     val nextBuildNumber = nextBuildNumber(isNextReleasePublic)
