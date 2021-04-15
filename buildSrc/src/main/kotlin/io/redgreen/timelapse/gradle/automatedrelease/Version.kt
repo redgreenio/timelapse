@@ -44,8 +44,6 @@ open class Version(
       TODO()
     } else if (isPublic) {
       publishedArtifactCount.toInt() + 1
-    } else if (publishedArtifactCount.isEmpty()) {
-      TODO()
     } else {
       publishedArtifactCount.toInt()
     }
