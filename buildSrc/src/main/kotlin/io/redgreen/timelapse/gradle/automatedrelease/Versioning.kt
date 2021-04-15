@@ -12,10 +12,10 @@ object Versioning {
 
     return if (!isNextReleasePublic && isPredecessorVersionInternal) {
       "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
-    } else if (!isNextReleasePublic && predecessorVersion.isNotBlank()) {
-      "$predecessorVersion.1"
     } else if (isNextReleasePublic && predecessorVersion.isNotBlank()) {
       "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
+    } else if (!isNextReleasePublic && predecessorVersion.isNotBlank()) {
+      "$predecessorVersion.1"
     } else if (isNextReleasePublic) {
       "$yyyy.1"
     } else {
