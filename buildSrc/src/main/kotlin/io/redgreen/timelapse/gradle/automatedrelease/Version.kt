@@ -1,12 +1,10 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
-import kotlin.LazyThreadSafetyMode.NONE
-
 open class Version(
-  open val displayText: String,
+  val displayText: String,
   private val yyyy: Int
 ) {
-  private val versionComponents by lazy(NONE) { "${displayText}..".split(".") }
+  private val versionComponents = "${displayText}..".split(".")
   private val year = versionComponents[0]
   protected val publishedArtifactCount = versionComponents[1]
   protected val buildNumber = versionComponents[2]
@@ -15,6 +13,7 @@ open class Version(
     val releaseYear = getYear()
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic)
     val nextBuildNumber = nextBuildNumber(isNextReleasePublic)
+
     return if (isNextReleasePublic) {
       ReleaseVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
     } else {

@@ -1,9 +1,10 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 import com.google.common.truth.Truth.assertThat
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import org.junit.jupiter.api.Test
 
 class VersioningTest {
   companion object {
@@ -144,5 +145,31 @@ class VersioningTest {
     // then
     assertThat(internalVersionWithNoPublicReleases)
       .isEqualTo(nextInternalRelease)
+  }
+
+  @Test
+  internal fun `it should get the next public version from the current public version`() {
+    // given
+    val publicRelease = ReleaseVersion("2021.1")
+
+    // when
+    val nextPublicRelease = publicRelease.next(true)
+
+    // then
+    assertThat(nextPublicRelease.displayText)
+      .isEqualTo("2021.2")
+  }
+
+  @Test
+  internal fun `it should get the next internal version from the current public version`() {
+    // given
+    val publicRelease = ReleaseVersion("2021.1")
+
+    // when
+    val nextPublicRelease = publicRelease.next(false)
+
+    // then
+    assertThat(nextPublicRelease.displayText)
+      .isEqualTo("2021.1.1")
   }
 }
