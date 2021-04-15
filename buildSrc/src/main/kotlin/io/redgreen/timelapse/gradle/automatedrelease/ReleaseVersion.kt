@@ -2,14 +2,10 @@ package io.redgreen.timelapse.gradle.automatedrelease
 
 class ReleaseVersion(override val displayText: String) : Version(displayText, -1) {
   override fun nextPublishedArtifactCount(isNextReleasePublic: Boolean): Int {
-    return if (publishedArtifactCount.isEmpty() && isNextReleasePublic) {
+    return if (publishedArtifactCount.isEmpty()) {
       1
-    } else if (isNextReleasePublic) {
-      publishedArtifactCount.toInt() + 1
-    } else if (publishedArtifactCount.isEmpty()) {
-      0
     } else {
-      publishedArtifactCount.toInt()
+      publishedArtifactCount.toInt() + 1
     }
   }
 
