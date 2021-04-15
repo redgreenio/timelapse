@@ -29,15 +29,11 @@ open class Version(
   }
 
   protected open fun nextPublishedArtifactCount(isNextReleasePublic: Boolean): Int {
-    val noPreviousPublicReleasesAndNextReleaseIsPublic = publishedArtifactCount.isEmpty() && isNextReleasePublic
-    val previousPublicOrInternalAndNextReleaseIsPublic = isNextReleasePublic
-    val noPreviousPublicReleasesNextReleaseIsInternal = publishedArtifactCount.isEmpty()
-
-    return if (noPreviousPublicReleasesAndNextReleaseIsPublic) {
+    return if (publishedArtifactCount.isEmpty() && isNextReleasePublic) {
       1
-    } else if (previousPublicOrInternalAndNextReleaseIsPublic) {
+    } else if (isNextReleasePublic) {
       publishedArtifactCount.toInt() + 1
-    } else if (noPreviousPublicReleasesNextReleaseIsInternal) {
+    } else if (publishedArtifactCount.isEmpty()) {
       0
     } else {
       publishedArtifactCount.toInt()
