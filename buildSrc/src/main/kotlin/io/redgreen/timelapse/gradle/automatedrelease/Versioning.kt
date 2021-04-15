@@ -26,20 +26,20 @@ object Versioning {
       year
     }
   }
+}
 
-  private fun nextPublishedArtifactCount(
-    isNextReleasePublic: Boolean,
-    previousPublishedArtifactCount: String
-  ): Int {
-    return if (previousPublishedArtifactCount.isEmpty() && isNextReleasePublic) {
-      1
-    } else if (isNextReleasePublic) {
-      previousPublishedArtifactCount.toInt() + 1
-    } else if (previousPublishedArtifactCount.isEmpty()) {
-      0
-    } else {
-      previousPublishedArtifactCount.toInt()
-    }
+private fun nextPublishedArtifactCount(
+  isNextReleasePublic: Boolean,
+  previousPublishedArtifactCount: String
+): Int {
+  return if (previousPublishedArtifactCount.isEmpty() && isNextReleasePublic) {
+    1
+  } else if (isNextReleasePublic) {
+    previousPublishedArtifactCount.toInt() + 1
+  } else if (previousPublishedArtifactCount.isEmpty()) {
+    0
+  } else {
+    previousPublishedArtifactCount.toInt()
   }
 }
 
