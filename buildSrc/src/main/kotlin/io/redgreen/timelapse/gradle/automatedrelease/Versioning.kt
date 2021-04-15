@@ -17,7 +17,7 @@ object Versioning {
     return if (internalToInternal || internalOrPublicToPublic || internalOrPublicToInternal) {
       "$year.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (isNextReleasePublic) {
-      "$yyyy.1${getBuildNumber(isNextReleasePublic, buildNumber)}"
+      "$yyyy.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else {
       "$yyyy.0.1"
     }
@@ -27,7 +27,9 @@ object Versioning {
     isNextReleasePublic: Boolean,
     publishedArtifactCount: String
   ): Int {
-    return if (isNextReleasePublic) {
+    return if (publishedArtifactCount.isEmpty() && isNextReleasePublic) {
+      1
+    } else if (isNextReleasePublic) {
       publishedArtifactCount.toInt() + 1
     } else {
       publishedArtifactCount.toInt()
