@@ -11,11 +11,11 @@ object Versioning {
     val (year, publishedArtifactCount, buildNumber) = "${predecessorVersion}..".split(".")
 
     return if (!isNextReleasePublic && isPredecessorVersionInternal) {
-      "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(buildNumber)}"
+      "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (!isNextReleasePublic && predecessorVersion.isNotBlank()) {
       "$predecessorVersion.1"
     } else if (isNextReleasePublic && predecessorVersion.isNotBlank()) {
-      "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}"
+      "$year.${getPublishedArtifactCount(publishedArtifactCount, isNextReleasePublic)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (isNextReleasePublic) {
       "$yyyy.1"
     } else {
@@ -23,8 +23,15 @@ object Versioning {
     }
   }
 
-  private fun getBuildNumber(buildNumber: String): String {
-    return ".${buildNumber.toInt() + 1}"
+  private fun getBuildNumber(
+    isNextReleasePublic: Boolean,
+    buildNumber: String
+  ): String {
+    return if (isNextReleasePublic) {
+      ""
+    } else {
+      ".${buildNumber.toInt() + 1}"
+    }
   }
 
   private fun getPublishedArtifactCount(
