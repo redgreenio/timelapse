@@ -23,7 +23,7 @@ object Versioning {
     return if (internalToInternal || internalOrPublicToPublic || internalOrPublicToInternal) {
       "$yearToUse.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else if (isNextReleasePublic) {
-      "$yyyy.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
+      "$yearToUse.${getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)}${getBuildNumber(isNextReleasePublic, buildNumber)}"
     } else {
       "$yyyy.0.1"
     }
