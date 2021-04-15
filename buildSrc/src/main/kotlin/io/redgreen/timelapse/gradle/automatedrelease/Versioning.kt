@@ -6,19 +6,20 @@ object Versioning {
     previousVersion: String,
     isNextReleasePublic: Boolean = true
   ): String {
-    return Version(previousVersion, yyyy).nextVersionText(isNextReleasePublic)
+    return Version(previousVersion, yyyy).nextVersion(isNextReleasePublic).displayText
   }
 }
 
 class Version(
-  private val versionText: String,
+  val displayText: String,
   private val yyyy: Int
 ) {
-  private val versionComponents = "${versionText}..".split(".")
+  private val versionComponents = "${displayText}..".split(".")
   private val year = versionComponents[0]
   private val publishedArtifactCount = versionComponents[1]
   private val buildNumber = versionComponents[2]
 
+  @Deprecated("", ReplaceWith("nextVersion(isNextReleasePublic).versionText"))
   fun nextVersionText(isNextReleasePublic: Boolean): String {
     val releaseYear = getYear()
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic)
@@ -35,7 +36,7 @@ class Version(
   }
 
   private fun getYear(): String {
-    return if (versionText.isEmpty()) {
+    return if (displayText.isEmpty()) {
       "$yyyy"
     } else {
       year
