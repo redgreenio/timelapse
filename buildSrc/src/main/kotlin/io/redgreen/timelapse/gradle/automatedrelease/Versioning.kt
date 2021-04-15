@@ -9,8 +9,8 @@ object Versioning {
     val (year, publishedArtifactCount, buildNumber) = "${previousVersion}..".split(".")
 
     val releaseYear = getYear(previousVersion, yyyy, year)
-    val nextPublishedArtifactCount = getPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)
-    val nextBuildNumber = getBuildNumber(isNextReleasePublic, buildNumber)
+    val nextPublishedArtifactCount = nextPublishedArtifactCount(isNextReleasePublic, publishedArtifactCount)
+    val nextBuildNumber = nextBuildNumber(isNextReleasePublic, buildNumber)
 
     return "$releaseYear.$nextPublishedArtifactCount$nextBuildNumber"
   }
@@ -27,7 +27,7 @@ object Versioning {
     }
   }
 
-  private fun getPublishedArtifactCount(
+  private fun nextPublishedArtifactCount(
     isNextReleasePublic: Boolean,
     previousPublishedArtifactCount: String
   ): Int {
@@ -42,7 +42,7 @@ object Versioning {
     }
   }
 
-  private fun getBuildNumber(
+  private fun nextBuildNumber(
     isNextReleasePublic: Boolean,
     previousBuildNumber: String
   ): String {
