@@ -10,6 +10,8 @@ open class Version(
 
       return if (isPublicRelease) {
         ReleaseVersion(version)
+      } else if (!isPublicRelease && version.isNotEmpty()) {
+        InternalVersion(version)
       } else if (version.isEmpty()) {
         NoPreviousVersion(yyyy)
       } else {
@@ -21,7 +23,7 @@ open class Version(
   private val versionComponents = "${displayText}..".split(".")
   private val year = versionComponents[0]
   protected val publishedArtifactCount = versionComponents[1]
-  protected val buildNumber = versionComponents[2]
+  private val buildNumber = versionComponents[2]
 
   fun next(isPublic: Boolean): Version {
     val releaseYear = getYear()
@@ -30,6 +32,8 @@ open class Version(
 
     return if (isPublic) {
       ReleaseVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
+    } else if (!isPublic) {
+      InternalVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
     } else {
       Version("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber", releaseYear.toInt())
     }
