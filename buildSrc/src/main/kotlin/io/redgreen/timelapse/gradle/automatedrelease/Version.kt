@@ -36,6 +36,14 @@ abstract class Version(
       }
     }
 
+    if (this is ReleaseVersion) {
+      return if (isPublic) {
+        ReleaseVersion(yyyy, publishedArtifactCount + 1)
+      } else {
+        InternalVersion(yyyy, publishedArtifactCount, 1)
+      }
+    }
+
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
     val nextBuildNumber = nextBuildNumber(isPublic)
 
