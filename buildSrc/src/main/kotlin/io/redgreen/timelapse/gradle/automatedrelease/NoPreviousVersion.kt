@@ -4,7 +4,7 @@ class NoPreviousVersion(
   yyyy: Int,
   publishedArtifactCount: Int,
   buildNumber: Int
-) : Version("", yyyy, publishedArtifactCount, buildNumber) {
+) : Version("$yyyy", yyyy, publishedArtifactCount, buildNumber) {
   override fun nextPublishedArtifactCount(isPublic: Boolean): Int {
     return if (isPublic) {
       1
