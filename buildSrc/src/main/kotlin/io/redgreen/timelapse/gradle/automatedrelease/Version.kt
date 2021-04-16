@@ -12,14 +12,15 @@ abstract class Version(
 
       // TODO Get rid of this duplication
       val versionComponents = "${displayText}..".split(".")
-      val publishedArtifactCount: Int = if (versionComponents[1].isEmpty()) 0 else versionComponents[1].toInt()
+      val publishedArtifactCount = if (versionComponents[1].isEmpty()) 0 else versionComponents[1].toInt()
+      val buildNumber = if (versionComponents[2].isEmpty()) 0 else versionComponents[2].toInt()
 
       return if (displayText.isEmpty()) {
-        NoPreviousVersion(yyyy, publishedArtifactCount)
+        NoPreviousVersion(yyyy, publishedArtifactCount, buildNumber)
       } else if (isPublicRelease) {
-        ReleaseVersion(displayText, yyyy, publishedArtifactCount)
+        ReleaseVersion(displayText, yyyy, publishedArtifactCount, buildNumber)
       } else {
-        InternalVersion(displayText, yyyy, publishedArtifactCount)
+        InternalVersion(displayText, yyyy, publishedArtifactCount, buildNumber)
       }
     }
   }
