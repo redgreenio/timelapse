@@ -1,7 +1,5 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
-import kotlin.LazyThreadSafetyMode.NONE
-
 abstract class Version(
   val displayText: String,
   protected val yyyy: Int,
@@ -27,12 +25,7 @@ abstract class Version(
     }
   }
 
-  open val neoDisplayText: String by lazy(NONE) {
-    when (this) {
-      is ReleaseVersion -> "$yyyy.$publishedArtifactCount"
-      else -> TODO("Should never happen!")
-    }
-  }
+  abstract val neoDisplayText: String
 
   fun next(isPublic: Boolean): Version {
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
