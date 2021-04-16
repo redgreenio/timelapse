@@ -1,7 +1,6 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 abstract class Version(
-  val displayText: String,
   protected val yyyy: Int,
   protected val publishedArtifactCount: Int,
   protected val buildNumber: Int

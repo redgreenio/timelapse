@@ -5,7 +5,7 @@ class ReleaseVersion(
   yyyy: Int,
   publishedArtifactCount: Int,
   buildNumber: Int = 0
-) : Version(displayText, yyyy, publishedArtifactCount, buildNumber) {
+) : Version(yyyy, publishedArtifactCount, buildNumber) {
   override val neoDisplayText: String
     get() = "$yyyy.$publishedArtifactCount"
 }
