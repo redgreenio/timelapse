@@ -10,7 +10,7 @@ class InternalVersion(
 
   override fun next(isPublic: Boolean): Version {
     return if (isPublic) {
-      ReleaseVersion(yyyy, publishedArtifactCount + 1)
+      public()
     } else {
       internal()
     }
@@ -21,6 +21,6 @@ class InternalVersion(
   }
 
   override fun public(): ReleaseVersion {
-    TODO()
+    return ReleaseVersion(yyyy, publishedArtifactCount + 1)
   }
 }

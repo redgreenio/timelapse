@@ -29,6 +29,7 @@ abstract class Version(
 
   abstract val displayText: String
 
+  @Deprecated("Use the `NextVersion` interface instead.")
   abstract fun next(isPublic: Boolean): Version
 
   override fun internal(): InternalVersion {
