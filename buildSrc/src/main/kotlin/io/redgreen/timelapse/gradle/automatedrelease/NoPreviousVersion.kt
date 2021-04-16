@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
-class NoPreviousVersion(yyyy: Int) : Version("", yyyy) {
+class NoPreviousVersion(yyyy: Int, publishedArtifactCount: Int = 0) : Version("", yyyy) {
   override fun nextPublishedArtifactCount(isPublic: Boolean): Int {
     return if (isPublic) {
       1
