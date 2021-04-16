@@ -1,7 +1,6 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource

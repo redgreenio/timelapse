@@ -8,12 +8,12 @@ open class Version(
     fun from(version: String, yyyy: Int): Version {
       val isPublicRelease = version.filter { it == '.' }.toList().count() == 2
 
-      return if (isPublicRelease) {
-        ReleaseVersion(version)
-      } else if (!isPublicRelease && version.isNotEmpty()) {
-        InternalVersion(version)
-      } else {
+      return if (version.isEmpty()) {
         NoPreviousVersion(yyyy)
+      } else if (isPublicRelease) {
+        ReleaseVersion(version)
+      } else {
+        InternalVersion(version)
       }
     }
   }
@@ -28,11 +28,7 @@ open class Version(
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
     val nextBuildNumber = nextBuildNumber(isPublic)
 
-    return if (isPublic) {
-      ReleaseVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
-    } else {
-      InternalVersion("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber")
-    }
+    return from("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber", -1)
   }
 
   protected open fun getYear(): String {
