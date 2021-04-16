@@ -29,7 +29,7 @@ abstract class Version(
 
   open val neoDisplayText: String by lazy(NONE) {
     when (this) {
-      is NoPreviousVersion -> displayText
+      is NoPreviousVersion -> "$yyyy"
       is InternalVersion -> displayText
       is ReleaseVersion -> displayText
       else -> TODO("Should never happen!")
