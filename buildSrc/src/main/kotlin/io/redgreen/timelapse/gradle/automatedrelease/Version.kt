@@ -24,11 +24,10 @@ open class Version(
   private val buildNumber = versionComponents[2]
 
   fun next(isPublic: Boolean): Version {
-    val releaseYear = getYear()
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
     val nextBuildNumber = nextBuildNumber(isPublic)
 
-    return from("$releaseYear.$nextPublishedArtifactCount$nextBuildNumber", -1)
+    return from("${getYear()}.$nextPublishedArtifactCount$nextBuildNumber", -1)
   }
 
   protected open fun getYear(): String {
