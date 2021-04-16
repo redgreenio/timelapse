@@ -12,7 +12,15 @@ class InternalVersion(
     return if (isPublic) {
       ReleaseVersion(yyyy, publishedArtifactCount + 1)
     } else {
-      InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
+      internal()
     }
+  }
+
+  override fun internal(): InternalVersion {
+    return InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
+  }
+
+  override fun public(): ReleaseVersion {
+    TODO()
   }
 }
