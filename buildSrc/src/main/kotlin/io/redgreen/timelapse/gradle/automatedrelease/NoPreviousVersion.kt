@@ -12,6 +12,6 @@ class NoPreviousVersion(
     }
   }
 
-  override fun getYear(): String =
-    yyyy.toString()
+  override fun getYear(): Int =
+    yyyy
 }

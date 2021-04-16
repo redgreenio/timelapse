@@ -34,8 +34,8 @@ abstract class Version(
     return from("${getYear()}.$nextPublishedArtifactCount$nextBuildNumber", -1)
   }
 
-  protected open fun getYear(): String {
-    return year
+  protected open fun getYear(): Int {
+    return year.toInt()
   }
 
   protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {
