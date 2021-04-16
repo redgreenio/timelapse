@@ -14,6 +14,13 @@ object Versioning {
       yearFromDisplayTextString.toInt()
     }
 
-    return Version.from(version, yearToUse).next(isPublic).neoDisplayText
+    // Temporary fix for tests that are sending empty strings for no previous releases
+    val versionToUse = if (version.isEmpty()) {
+      "$yyyy"
+    } else {
+      version
+    }
+
+    return Version.from(versionToUse, yearToUse).next(isPublic).neoDisplayText
   }
 }
