@@ -7,7 +7,7 @@ plugins {
 }
 
 buildscript {
-  apply(from = ".buildscripts/install-git-hooks.gradle")
+  apply(from = ".buildscripts/git-hooks.gradle")
   repositories {
     jcenter()
   }
