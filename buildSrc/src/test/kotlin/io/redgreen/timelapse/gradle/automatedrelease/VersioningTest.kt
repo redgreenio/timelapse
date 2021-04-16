@@ -158,7 +158,7 @@ class VersioningTest {
   @Test
   internal fun `it should get the next public version from the current public version`() {
     // given
-    val publicRelease = ReleaseVersion("2021.1", 2021, 1)
+    val publicRelease = ReleaseVersion(2021, 1)
 
     // when
     val nextPublicRelease = publicRelease.next(true)
@@ -171,7 +171,7 @@ class VersioningTest {
   @Test
   internal fun `it should get the next internal version from the current public version`() {
     // given
-    val publicRelease = ReleaseVersion("2021.1", 2021, 1)
+    val publicRelease = ReleaseVersion(2021, 1)
 
     // when
     val nextPublicRelease = publicRelease.next(false)
