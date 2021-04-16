@@ -20,7 +20,7 @@ open class Version(
 
   private val versionComponents = "${displayText}..".split(".")
   private val year = versionComponents[0]
-  private val publishedArtifactCount = versionComponents[1]
+  private val publishedArtifactCountString = versionComponents[1]
   private val buildNumber = versionComponents[2]
 
   fun next(isPublic: Boolean): Version {
@@ -36,9 +36,9 @@ open class Version(
 
   protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {
     return if (isPublic) {
-      publishedArtifactCount.toInt() + 1
+      publishedArtifactCountString.toInt() + 1
     } else {
-      publishedArtifactCount.toInt()
+      publishedArtifactCountString.toInt()
     }
   }
 
