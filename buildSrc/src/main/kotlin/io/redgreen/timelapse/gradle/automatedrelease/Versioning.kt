@@ -3,16 +3,21 @@ package io.redgreen.timelapse.gradle.automatedrelease
 object Versioning {
   fun getNextVersion(
     yyyy: Int,
-    version: String,
+    displayText: String,
     isPublic: Boolean = true
   ): String {
     // Temporary fix for tests that are sending empty strings for no previous releases
-    val versionToUse = if (version.isEmpty()) {
+    val versionToUse = if (displayText.isEmpty()) {
       "$yyyy"
     } else {
-      version
+      displayText
     }
 
-    return Version.from(versionToUse).next(isPublic).displayText
+    val version = Version.from(versionToUse)
+    return if (isPublic) {
+      version.public()
+    } else {
+      version.internal()
+    }.displayText
   }
 }
