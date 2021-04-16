@@ -4,4 +4,7 @@ class NoPreviousVersion(
   yyyy: Int,
   publishedArtifactCount: Int,
   buildNumber: Int
-) : Version("$yyyy", yyyy, publishedArtifactCount, buildNumber)
+) : Version("$yyyy", yyyy, publishedArtifactCount, buildNumber) {
+  override val neoDisplayText: String
+    get() = "$yyyy"
+}
