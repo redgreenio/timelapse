@@ -20,7 +20,7 @@ abstract class Version(
       return if (publishedArtifactCountString.isEmpty() && buildNumberString.isEmpty()) {
         NoPreviousVersion(yyyy)
       } else if (buildNumberString.isEmpty()) {
-        ReleaseVersion(yyyy, publishedArtifactCount, buildNumber)
+        ReleaseVersion(yyyy, publishedArtifactCount)
       } else {
         InternalVersion(yyyy, publishedArtifactCount, buildNumber)
       }
