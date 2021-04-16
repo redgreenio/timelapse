@@ -27,7 +27,7 @@ abstract class Version(
 
   abstract val displayText: String
 
-  fun next(isPublic: Boolean): Version {
+  open fun next(isPublic: Boolean): Version {
     if (this is NoPreviousVersion) {
       return if (isPublic) {
         ReleaseVersion(yyyy, 1, -1)
