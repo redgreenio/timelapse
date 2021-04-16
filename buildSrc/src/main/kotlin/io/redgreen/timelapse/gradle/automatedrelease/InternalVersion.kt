@@ -8,14 +8,6 @@ class InternalVersion(
   override val displayText: String
     get() = "$yyyy.$publishedArtifactCount.$buildNumber"
 
-  override fun next(isPublic: Boolean): Version {
-    return if (isPublic) {
-      public()
-    } else {
-      internal()
-    }
-  }
-
   override fun internal(): InternalVersion {
     return InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
   }
