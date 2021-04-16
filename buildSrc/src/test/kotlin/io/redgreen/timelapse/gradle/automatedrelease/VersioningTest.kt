@@ -161,7 +161,7 @@ class VersioningTest {
     val publicRelease = ReleaseVersion(2021, 1)
 
     // when
-    val nextPublicRelease = publicRelease.next(true)
+    val nextPublicRelease = publicRelease.public()
 
     // then
     assertThat(nextPublicRelease.displayText)
@@ -174,10 +174,10 @@ class VersioningTest {
     val publicRelease = ReleaseVersion(2021, 1)
 
     // when
-    val nextPublicRelease = publicRelease.next(false)
+    val nextInternalRelease = publicRelease.internal()
 
     // then
-    assertThat(nextPublicRelease.displayText)
+    assertThat(nextInternalRelease.displayText)
       .isEqualTo("2021.1.1")
   }
 
