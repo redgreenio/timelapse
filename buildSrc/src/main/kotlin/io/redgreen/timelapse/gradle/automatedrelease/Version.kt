@@ -8,12 +8,16 @@ abstract class Version(
     fun from(displayText: String, yyyy: Int): Version {
       val isPublicRelease = displayText.filter { it == '.' }.toList().count() == 2
 
+      // TODO Get rid of this duplication
+      val versionComponents = "${displayText}..".split(".")
+      val publishedArtifactCount: Int = if (versionComponents[1].isEmpty()) 0 else versionComponents[1].toInt()
+
       return if (displayText.isEmpty()) {
-        NoPreviousVersion(yyyy)
+        NoPreviousVersion(yyyy, publishedArtifactCount)
       } else if (isPublicRelease) {
-        ReleaseVersion(displayText)
+        ReleaseVersion(displayText, publishedArtifactCount)
       } else {
-        InternalVersion(displayText)
+        InternalVersion(displayText, publishedArtifactCount)
       }
     }
   }
