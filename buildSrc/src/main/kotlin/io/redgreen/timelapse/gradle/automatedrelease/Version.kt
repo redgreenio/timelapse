@@ -28,6 +28,14 @@ abstract class Version(
   abstract val displayText: String
 
   fun next(isPublic: Boolean): Version {
+    if (this is NoPreviousVersion) {
+      return if (isPublic) {
+        ReleaseVersion(yyyy, 1, -1)
+      } else {
+        InternalVersion(yyyy, 0, 1)
+      }
+    }
+
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
     val nextBuildNumber = nextBuildNumber(isPublic)
 
