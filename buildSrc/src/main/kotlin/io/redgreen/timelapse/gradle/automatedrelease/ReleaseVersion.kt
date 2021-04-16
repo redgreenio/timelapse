@@ -1,5 +1,7 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
+import io.redgreen.timelapse.gradle.automatedrelease.versions.InternalVersion
+
 class ReleaseVersion(
   private val yyyy: Int,
   private val publishedArtifactCount: Int
