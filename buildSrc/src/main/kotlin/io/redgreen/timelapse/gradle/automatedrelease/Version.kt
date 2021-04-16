@@ -24,7 +24,7 @@ abstract class Version(
   }
 
   private val versionComponents = "${displayText}..".split(".")
-  private val buildNumber = versionComponents[2]
+  private val buildNumberString = versionComponents[2]
 
   fun next(isPublic: Boolean): Version {
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
@@ -44,10 +44,10 @@ abstract class Version(
   protected open fun nextBuildNumber(isPublic: Boolean): String {
     return if (isPublic) {
       ""
-    } else if (buildNumber.isEmpty()) {
+    } else if (buildNumberString.isEmpty()) {
       ".1"
     } else {
-      ".${buildNumber.toInt() + 1}"
+      ".${buildNumberString.toInt() + 1}"
     }
   }
 }
