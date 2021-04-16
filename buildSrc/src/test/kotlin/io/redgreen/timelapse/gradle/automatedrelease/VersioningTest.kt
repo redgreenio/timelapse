@@ -51,6 +51,13 @@ class VersioningTest {
         2022 to "2022.0.1"
       )
     }
+
+    @JvmStatic
+    fun displayTextsAndInstanceTypes(): List<Pair<String, Class<out Version>>> {
+      return listOf(
+        "" to NoPreviousVersion::class.java
+      )
+    }
   }
 
   @ParameterizedTest
@@ -170,5 +177,21 @@ class VersioningTest {
     // then
     assertThat(nextPublicRelease.displayText)
       .isEqualTo("2021.1.1")
+  }
+
+  @ParameterizedTest
+  @MethodSource("displayTextsAndInstanceTypes")
+  fun `it should return the correct instance based on the display text`(
+    displayTextAndInstanceType: Pair<String, Class<out Version>>
+  ) {
+    // given
+    val (displayText, instanceType) = displayTextAndInstanceType
+
+    // when
+    val version = Version.from(displayText, 2021)
+
+    // then
+    assertThat(version::class.java)
+      .isEqualTo(instanceType)
   }
 }
