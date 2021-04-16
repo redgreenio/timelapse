@@ -31,7 +31,7 @@ abstract class Version(
     when (this) {
       is NoPreviousVersion -> "$yyyy"
       is InternalVersion -> "$yyyy.$publishedArtifactCount.$buildNumber"
-      is ReleaseVersion -> displayText
+      is ReleaseVersion -> "$yyyy.$publishedArtifactCount"
       else -> TODO("Should never happen!")
     }
   }
