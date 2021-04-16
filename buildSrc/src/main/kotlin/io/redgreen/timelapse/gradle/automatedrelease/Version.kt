@@ -28,12 +28,4 @@ abstract class Version(
   }
 
   abstract val displayText: String
-
-  override fun internal(): InternalVersion {
-    TODO("Not yet implemented")
-  }
-
-  override fun public(): ReleaseVersion {
-    TODO("Not yet implemented")
-  }
 }
