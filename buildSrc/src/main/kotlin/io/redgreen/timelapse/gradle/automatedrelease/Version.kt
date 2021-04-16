@@ -1,13 +1,7 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
-abstract class Version(
-  protected val yyyy: Int,
-  protected val publishedArtifactCount: Int,
-  protected val buildNumber: Int
-) : NextVersion {
+abstract class Version : NextVersion {
   companion object {
-    internal const val UNSPECIFIED = -1
-
     // Parsing logic -> Git tags to version objects
     fun from(displayText: String): Version {
       val versionComponents = "${displayText}..".split(".")

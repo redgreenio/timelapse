@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 class ReleaseVersion(
-  yyyy: Int,
-  publishedArtifactCount: Int
-) : Version(yyyy, publishedArtifactCount, UNSPECIFIED) {
+  private val yyyy: Int,
+  private val publishedArtifactCount: Int
+) : Version() {
   override val displayText: String
     get() = "$yyyy.$publishedArtifactCount"
 

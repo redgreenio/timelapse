@@ -1,10 +1,10 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 class InternalVersion(
-  yyyy: Int,
-  publishedArtifactCount: Int,
-  buildNumber: Int
-) : Version(yyyy, publishedArtifactCount, buildNumber) {
+  private val yyyy: Int,
+  private val publishedArtifactCount: Int,
+  private val buildNumber: Int
+) : Version() {
   override val displayText: String
     get() = "$yyyy.$publishedArtifactCount.$buildNumber"
 
