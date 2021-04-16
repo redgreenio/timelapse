@@ -6,6 +6,7 @@ abstract class Version(
   protected val buildNumber: Int
 ) {
   companion object {
+    // Parsing logic -> Git tags to version objects
     fun from(displayText: String): Version {
       val versionComponents = "${displayText}..".split(".")
       val yyyy = versionComponents[0].toInt()
