@@ -4,7 +4,7 @@ abstract class Version(
   protected val yyyy: Int,
   protected val publishedArtifactCount: Int,
   protected val buildNumber: Int
-) {
+) : NextVersion {
   companion object {
     internal const val UNSPECIFIED = -1
 
@@ -28,5 +28,14 @@ abstract class Version(
   }
 
   abstract val displayText: String
+
   abstract fun next(isPublic: Boolean): Version
+
+  override fun internal(): InternalVersion {
+    TODO("Not yet implemented")
+  }
+
+  override fun public(): ReleaseVersion {
+    TODO("Not yet implemented")
+  }
 }
