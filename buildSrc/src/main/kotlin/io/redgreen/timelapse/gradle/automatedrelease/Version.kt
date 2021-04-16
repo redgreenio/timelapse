@@ -1,5 +1,7 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
+import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
+
 interface Version : NextVersion {
   companion object {
     // Parsing logic -> Git tags to version objects

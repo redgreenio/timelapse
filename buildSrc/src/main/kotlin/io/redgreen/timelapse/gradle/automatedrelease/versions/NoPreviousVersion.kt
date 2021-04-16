@@ -1,4 +1,8 @@
-package io.redgreen.timelapse.gradle.automatedrelease
+package io.redgreen.timelapse.gradle.automatedrelease.versions
+
+import io.redgreen.timelapse.gradle.automatedrelease.InternalVersion
+import io.redgreen.timelapse.gradle.automatedrelease.ReleaseVersion
+import io.redgreen.timelapse.gradle.automatedrelease.Version
 
 class NoPreviousVersion(private val yyyy: Int) : Version {
   override val displayText: String
