@@ -50,22 +50,4 @@ abstract class Version(
       InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
     }
   }
-
-  protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {
-    return if (isPublic) {
-      publishedArtifactCount + 1
-    } else {
-      publishedArtifactCount
-    }
-  }
-
-  protected open fun nextBuildNumber(isPublic: Boolean): String {
-    return if (isPublic) {
-      ""
-    } else if (buildNumber == 0) {
-      ".1"
-    } else {
-      ".${buildNumber + 1}"
-    }
-  }
 }
