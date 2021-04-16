@@ -2,7 +2,7 @@ package io.redgreen.timelapse.gradle.automatedrelease
 
 abstract class Version(
   val displayText: String,
-  protected val yyyy: Int,
+  private val yyyy: Int,
   private val publishedArtifactCount: Int
 ) {
   companion object {
@@ -16,26 +16,21 @@ abstract class Version(
       return if (displayText.isEmpty()) {
         NoPreviousVersion(yyyy, publishedArtifactCount)
       } else if (isPublicRelease) {
-        ReleaseVersion(displayText, publishedArtifactCount)
+        ReleaseVersion(displayText, yyyy, publishedArtifactCount)
       } else {
-        InternalVersion(displayText, publishedArtifactCount)
+        InternalVersion(displayText, yyyy, publishedArtifactCount)
       }
     }
   }
 
   private val versionComponents = "${displayText}..".split(".")
-  private val year = versionComponents[0]
   private val buildNumber = versionComponents[2]
 
   fun next(isPublic: Boolean): Version {
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
     val nextBuildNumber = nextBuildNumber(isPublic)
 
-    return from("${getYear()}.$nextPublishedArtifactCount$nextBuildNumber", -1)
-  }
-
-  protected open fun getYear(): Int {
-    return year.toInt()
+    return from("${yyyy}.$nextPublishedArtifactCount$nextBuildNumber", -1)
   }
 
   protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {

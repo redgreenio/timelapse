@@ -6,6 +6,14 @@ object Versioning {
     version: String,
     isPublic: Boolean = true
   ): String {
-    return Version.from(version, yyyy).next(isPublic).displayText
+    val yearFromDisplayTextString = "${version}..".split(".").first()
+
+    val yearToUse = if (yearFromDisplayTextString.isEmpty() || yyyy == yearFromDisplayTextString.toInt()) {
+      yyyy
+    } else {
+      yearFromDisplayTextString.toInt()
+    }
+
+    return Version.from(version, yearToUse).next(isPublic).displayText
   }
 }

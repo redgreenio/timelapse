@@ -11,7 +11,4 @@ class NoPreviousVersion(
       0
     }
   }
-
-  override fun getYear(): Int =
-    yyyy
 }

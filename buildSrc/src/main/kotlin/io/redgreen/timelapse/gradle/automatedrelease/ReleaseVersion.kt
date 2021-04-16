@@ -2,5 +2,6 @@ package io.redgreen.timelapse.gradle.automatedrelease
 
 class ReleaseVersion(
   displayText: String,
+  yyyy: Int,
   publishedArtifactCount: Int
-) : Version(displayText, -1, publishedArtifactCount)
+) : Version(displayText, yyyy, publishedArtifactCount)
