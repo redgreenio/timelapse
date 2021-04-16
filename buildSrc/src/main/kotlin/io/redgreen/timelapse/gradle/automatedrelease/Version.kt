@@ -4,7 +4,7 @@ abstract class Version(
   val displayText: String,
   private val yyyy: Int,
   private val publishedArtifactCount: Int,
-  private val buildNumber: Int = 0
+  private val buildNumber: Int
 ) {
   companion object {
     fun from(displayText: String, yyyy: Int): Version {
