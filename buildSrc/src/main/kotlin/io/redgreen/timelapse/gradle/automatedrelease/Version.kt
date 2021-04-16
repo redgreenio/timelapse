@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
-abstract class Version : NextVersion {
+interface Version : NextVersion {
   companion object {
     // Parsing logic -> Git tags to version objects
     fun from(displayText: String): Version {
@@ -21,5 +21,5 @@ abstract class Version : NextVersion {
     }
   }
 
-  abstract val displayText: String
+  val displayText: String
 }

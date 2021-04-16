@@ -1,6 +1,6 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
-class NoPreviousVersion(private val yyyy: Int) : Version() {
+class NoPreviousVersion(private val yyyy: Int) : Version {
   override val displayText: String
     get() = "$yyyy"
 

@@ -4,7 +4,7 @@ class InternalVersion(
   private val yyyy: Int,
   private val publishedArtifactCount: Int,
   private val buildNumber: Int
-) : Version() {
+) : Version {
   override val displayText: String
     get() = "$yyyy.$publishedArtifactCount.$buildNumber"
 
