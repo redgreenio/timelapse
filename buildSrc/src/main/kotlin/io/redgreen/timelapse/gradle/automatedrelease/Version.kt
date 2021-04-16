@@ -44,10 +44,11 @@ abstract class Version(
       }
     }
 
-    val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
-    val nextBuildNumber = nextBuildNumber(isPublic)
-
-    return from("${yyyy}.$nextPublishedArtifactCount$nextBuildNumber")
+    return if (this is InternalVersion && isPublic) {
+      ReleaseVersion(yyyy, publishedArtifactCount + 1)
+    } else {
+      InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
+    }
   }
 
   protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {
