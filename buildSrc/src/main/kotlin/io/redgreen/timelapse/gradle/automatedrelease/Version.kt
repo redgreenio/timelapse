@@ -26,16 +26,5 @@ abstract class Version(
   }
 
   abstract val displayText: String
-
-  open fun next(isPublic: Boolean): Version {
-    if (this is InternalVersion) {
-      return if (isPublic) {
-        ReleaseVersion(yyyy, publishedArtifactCount + 1)
-      } else {
-        InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
-      }
-    }
-
-    TODO("Should never happen!")
-  }
+  abstract fun next(isPublic: Boolean): Version
 }
