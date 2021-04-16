@@ -6,6 +6,8 @@ abstract class Version(
   protected val buildNumber: Int
 ) {
   companion object {
+    internal const val UNSPECIFIED = -1
+
     // Parsing logic -> Git tags to version objects
     fun from(displayText: String): Version {
       val versionComponents = "${displayText}..".split(".")
@@ -16,7 +18,7 @@ abstract class Version(
       val buildNumber = if (buildNumberString.isEmpty()) 0 else buildNumberString.toInt()
 
       return if (publishedArtifactCountString.isEmpty() && buildNumberString.isEmpty()) {
-        NoPreviousVersion(yyyy, publishedArtifactCount, buildNumber)
+        NoPreviousVersion(yyyy)
       } else if (buildNumberString.isEmpty()) {
         ReleaseVersion(yyyy, publishedArtifactCount, buildNumber)
       } else {
