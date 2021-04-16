@@ -13,6 +13,6 @@ object Versioning {
       version
     }
 
-    return Version.from(versionToUse).next(isPublic).neoDisplayText
+    return Version.from(versionToUse).next(isPublic).displayText
   }
 }

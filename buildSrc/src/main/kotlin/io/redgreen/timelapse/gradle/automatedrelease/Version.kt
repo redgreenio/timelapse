@@ -24,7 +24,7 @@ abstract class Version(
     }
   }
 
-  abstract val neoDisplayText: String
+  abstract val displayText: String
 
   fun next(isPublic: Boolean): Version {
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
