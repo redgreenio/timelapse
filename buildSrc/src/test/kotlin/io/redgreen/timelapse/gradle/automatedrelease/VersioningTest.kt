@@ -188,7 +188,7 @@ class VersioningTest {
     val (displayText, instanceType) = displayTextAndInstanceType
 
     // when
-    val version = Version.from(displayText, 2021)
+    val version = Version.from(displayText)
 
     // then
     assertThat(version::class.java)
