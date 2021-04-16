@@ -3,7 +3,8 @@ package io.redgreen.timelapse.gradle.automatedrelease
 abstract class Version(
   val displayText: String,
   private val yyyy: Int,
-  private val publishedArtifactCount: Int
+  private val publishedArtifactCount: Int,
+  private val buildNumber: Int = 0
 ) {
   companion object {
     fun from(displayText: String, yyyy: Int): Version {
