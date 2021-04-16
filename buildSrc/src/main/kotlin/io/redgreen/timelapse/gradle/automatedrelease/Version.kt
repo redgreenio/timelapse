@@ -44,10 +44,14 @@ abstract class Version(
       }
     }
 
-    return if (this is InternalVersion && isPublic) {
-      ReleaseVersion(yyyy, publishedArtifactCount + 1)
-    } else {
-      InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
+    if (this is InternalVersion) {
+      return if (isPublic) {
+        ReleaseVersion(yyyy, publishedArtifactCount + 1)
+      } else {
+        InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
+      }
     }
+
+    TODO("Should never happen!")
   }
 }
