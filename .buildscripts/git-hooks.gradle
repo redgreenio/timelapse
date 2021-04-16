@@ -9,6 +9,15 @@ tasks.create(name: 'installGitHooks') {
     }
 }
 
+// TODO: Check on Windows
+// TODO: .editorconfig for .gradle should use 2 spaces instead of 4
+// TODO: Explore if pre-commit can skip files in `buildSrc`
+task uninstallPreCommitHook(type: Delete) {
+    description = "Use only when making changes to the `buildSrc` directory. Once done run the 'installGitHooks' task."
+
+    delete files("${rootProject.rootDir}/.git/hooks/pre-commit")
+}
+
 task copyPreCommitHook(type: Copy) {
     from new File(hooksDirectoryPath, 'pre-commit')
     into { new File(rootProject.rootDir, '.git/hooks') }
