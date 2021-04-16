@@ -5,8 +5,8 @@ import kotlin.LazyThreadSafetyMode.NONE
 abstract class Version(
   val displayText: String,
   protected val yyyy: Int,
-  private val publishedArtifactCount: Int,
-  private val buildNumber: Int
+  protected val publishedArtifactCount: Int,
+  protected val buildNumber: Int
 ) {
   companion object {
     fun from(displayText: String): Version {
@@ -29,7 +29,6 @@ abstract class Version(
 
   open val neoDisplayText: String by lazy(NONE) {
     when (this) {
-      is InternalVersion -> "$yyyy.$publishedArtifactCount.$buildNumber"
       is ReleaseVersion -> "$yyyy.$publishedArtifactCount"
       else -> TODO("Should never happen!")
     }

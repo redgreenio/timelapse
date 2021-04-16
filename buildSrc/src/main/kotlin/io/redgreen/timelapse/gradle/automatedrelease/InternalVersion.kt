@@ -5,4 +5,7 @@ class InternalVersion(
   yyyy: Int,
   publishedArtifactCount: Int,
   buildNumber: Int
-) : Version(displayText, yyyy, publishedArtifactCount, buildNumber)
+) : Version(displayText, yyyy, publishedArtifactCount, buildNumber) {
+  override val neoDisplayText: String
+    get() = "$yyyy.$publishedArtifactCount.$buildNumber"
+}
