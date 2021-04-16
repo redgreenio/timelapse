@@ -13,7 +13,7 @@ class PublicReleaseVersion(
     return InternalVersion(yyyy, publishedArtifactCount, 1)
   }
 
-  override fun public(): PublicReleaseVersion {
+  override fun publicRelease(): PublicReleaseVersion {
     return PublicReleaseVersion(yyyy, publishedArtifactCount + 1)
   }
 }

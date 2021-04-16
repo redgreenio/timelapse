@@ -164,7 +164,7 @@ class VersioningTest {
     val publicRelease = PublicReleaseVersion(2021, 1)
 
     // when
-    val nextPublicRelease = publicRelease.public()
+    val nextPublicRelease = publicRelease.publicRelease()
 
     // then
     assertThat(nextPublicRelease.displayText)

@@ -10,7 +10,7 @@ class NoPreviousVersion(private val yyyy: Int) : Version {
     return InternalVersion(yyyy, 0, 1)
   }
 
-  override fun public(): PublicReleaseVersion {
+  override fun publicRelease(): PublicReleaseVersion {
     return PublicReleaseVersion(yyyy, 1)
   }
 }

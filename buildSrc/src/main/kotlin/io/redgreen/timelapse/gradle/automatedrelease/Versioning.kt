@@ -15,7 +15,7 @@ object Versioning {
 
     val version = Version.from(versionToUse)
     return if (isPublic) {
-      version.public()
+      version.publicRelease()
     } else {
       version.internal()
     }.displayText

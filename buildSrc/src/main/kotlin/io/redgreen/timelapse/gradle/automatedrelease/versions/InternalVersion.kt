@@ -14,7 +14,7 @@ class InternalVersion(
     return InternalVersion(yyyy, publishedArtifactCount, buildNumber + 1)
   }
 
-  override fun public(): PublicReleaseVersion {
+  override fun publicRelease(): PublicReleaseVersion {
     return PublicReleaseVersion(yyyy, publishedArtifactCount + 1)
   }
 }
