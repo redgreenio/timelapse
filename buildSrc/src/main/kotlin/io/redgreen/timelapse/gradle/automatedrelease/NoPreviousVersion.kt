@@ -6,9 +6,17 @@ class NoPreviousVersion(yyyy: Int) : Version(yyyy, UNSPECIFIED, UNSPECIFIED) {
 
   override fun next(isPublic: Boolean): Version {
     return if (isPublic) {
-      ReleaseVersion(yyyy, 1)
+      public()
     } else {
-      InternalVersion(yyyy, 0, 1)
+      internal()
     }
+  }
+
+  override fun internal(): InternalVersion {
+    return InternalVersion(yyyy, 0, 1)
+  }
+
+  override fun public(): ReleaseVersion {
+    return ReleaseVersion(yyyy, 1)
   }
 }
