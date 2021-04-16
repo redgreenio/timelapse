@@ -14,6 +14,6 @@ object Versioning {
       yearFromDisplayTextString.toInt()
     }
 
-    return Version.from(version, yearToUse).next(isPublic).displayText
+    return Version.from(version, yearToUse).next(isPublic).neoDisplayText
   }
 }
