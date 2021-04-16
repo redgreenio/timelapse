@@ -20,7 +20,7 @@ open class Version(
 
   private val versionComponents = "${displayText}..".split(".")
   private val year = versionComponents[0]
-  protected val publishedArtifactCount = versionComponents[1]
+  private val publishedArtifactCount = versionComponents[1]
   private val buildNumber = versionComponents[2]
 
   fun next(isPublic: Boolean): Version {
