@@ -33,7 +33,7 @@ abstract class Version(
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)
     val nextBuildNumber = nextBuildNumber(isPublic)
 
-    return from("${yyyy}.$nextPublishedArtifactCount$nextBuildNumber", -1)
+    return from("${yyyy}.$nextPublishedArtifactCount$nextBuildNumber", yyyy)
   }
 
   protected open fun nextPublishedArtifactCount(isPublic: Boolean): Int {
