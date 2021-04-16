@@ -2,6 +2,7 @@ package io.redgreen.timelapse.gradle.automatedrelease
 
 import io.redgreen.timelapse.gradle.automatedrelease.versions.InternalVersion
 import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
+import io.redgreen.timelapse.gradle.automatedrelease.versions.ReleaseVersion
 
 interface Version : NextVersion {
   companion object {

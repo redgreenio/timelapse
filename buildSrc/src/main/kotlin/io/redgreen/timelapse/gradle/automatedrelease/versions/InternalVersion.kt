@@ -1,6 +1,5 @@
 package io.redgreen.timelapse.gradle.automatedrelease.versions
 
-import io.redgreen.timelapse.gradle.automatedrelease.ReleaseVersion
 import io.redgreen.timelapse.gradle.automatedrelease.Version
 
 class InternalVersion(

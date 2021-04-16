@@ -1,6 +1,6 @@
-package io.redgreen.timelapse.gradle.automatedrelease
+package io.redgreen.timelapse.gradle.automatedrelease.versions
 
-import io.redgreen.timelapse.gradle.automatedrelease.versions.InternalVersion
+import io.redgreen.timelapse.gradle.automatedrelease.Version
 
 class ReleaseVersion(
   private val yyyy: Int,
