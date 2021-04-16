@@ -5,15 +5,15 @@ open class Version(
   protected val yyyy: Int
 ) {
   companion object {
-    fun from(version: String, yyyy: Int): Version {
-      val isPublicRelease = version.filter { it == '.' }.toList().count() == 2
+    fun from(displayText: String, yyyy: Int): Version {
+      val isPublicRelease = displayText.filter { it == '.' }.toList().count() == 2
 
-      return if (version.isEmpty()) {
+      return if (displayText.isEmpty()) {
         NoPreviousVersion(yyyy)
       } else if (isPublicRelease) {
-        ReleaseVersion(version)
+        ReleaseVersion(displayText)
       } else {
-        InternalVersion(version)
+        InternalVersion(displayText)
       }
     }
   }
