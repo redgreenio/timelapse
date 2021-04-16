@@ -10,9 +10,6 @@ abstract class Version(
 ) {
   companion object {
     fun from(displayText: String): Version {
-      val isPublicRelease = displayText.filter { it == '.' }.toList().count() == 2
-
-      // TODO Get rid of this duplication
       val versionComponents = "${displayText}..".split(".")
       val yyyy = versionComponents[0].toInt()
       val publishedArtifactCountString = versionComponents[1]
@@ -22,7 +19,7 @@ abstract class Version(
 
       return if (publishedArtifactCountString.isEmpty() && buildNumberString.isEmpty()) {
         NoPreviousVersion(yyyy, publishedArtifactCount, buildNumber)
-      } else if (isPublicRelease) {
+      } else if (buildNumberString.isEmpty()) {
         ReleaseVersion(displayText, yyyy, publishedArtifactCount, buildNumber)
       } else {
         InternalVersion(displayText, yyyy, publishedArtifactCount, buildNumber)
@@ -30,7 +27,14 @@ abstract class Version(
     }
   }
 
-  open val neoDisplayText: String by lazy(NONE) { displayText }
+  open val neoDisplayText: String by lazy(NONE) {
+    when (this) {
+      is NoPreviousVersion -> displayText
+      is InternalVersion -> displayText
+      is ReleaseVersion -> displayText
+      else -> TODO("Should never happen!")
+    }
+  }
 
   fun next(isPublic: Boolean): Version {
     val nextPublishedArtifactCount = nextPublishedArtifactCount(isPublic)

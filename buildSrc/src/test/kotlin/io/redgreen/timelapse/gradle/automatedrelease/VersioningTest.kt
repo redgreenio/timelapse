@@ -55,7 +55,9 @@ class VersioningTest {
     @JvmStatic
     fun displayTextsAndInstanceTypes(): List<Pair<String, Class<out Version>>> {
       return listOf(
-        "2021" to NoPreviousVersion::class.java
+        "2021" to NoPreviousVersion::class.java,
+        "2021.1" to ReleaseVersion::class.java,
+        "2021.1.1" to InternalVersion::class.java
       )
     }
   }
