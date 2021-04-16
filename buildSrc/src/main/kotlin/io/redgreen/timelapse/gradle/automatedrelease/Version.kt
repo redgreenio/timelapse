@@ -2,7 +2,7 @@ package io.redgreen.timelapse.gradle.automatedrelease
 
 import io.redgreen.timelapse.gradle.automatedrelease.versions.InternalVersion
 import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
-import io.redgreen.timelapse.gradle.automatedrelease.versions.ReleaseVersion
+import io.redgreen.timelapse.gradle.automatedrelease.versions.PublicReleaseVersion
 
 interface Version : NextVersion {
   companion object {
@@ -18,7 +18,7 @@ interface Version : NextVersion {
       return if (publishedArtifactCountString.isEmpty() && buildNumberString.isEmpty()) {
         NoPreviousVersion(yyyy)
       } else if (buildNumberString.isEmpty()) {
-        ReleaseVersion(yyyy, publishedArtifactCount)
+        PublicReleaseVersion(yyyy, publishedArtifactCount)
       } else {
         InternalVersion(yyyy, publishedArtifactCount, buildNumber)
       }

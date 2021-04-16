@@ -1,9 +1,9 @@
 package io.redgreen.timelapse.gradle.automatedrelease
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
 import io.redgreen.timelapse.gradle.automatedrelease.versions.InternalVersion
-import io.redgreen.timelapse.gradle.automatedrelease.versions.ReleaseVersion
+import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
+import io.redgreen.timelapse.gradle.automatedrelease.versions.PublicReleaseVersion
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
@@ -59,7 +59,7 @@ class VersioningTest {
     fun displayTextsAndInstanceTypes(): List<Pair<String, Class<out Version>>> {
       return listOf(
         "2021" to NoPreviousVersion::class.java,
-        "2021.1" to ReleaseVersion::class.java,
+        "2021.1" to PublicReleaseVersion::class.java,
         "2021.1.1" to InternalVersion::class.java
       )
     }
@@ -161,7 +161,7 @@ class VersioningTest {
   @Test
   internal fun `it should get the next public version from the current public version`() {
     // given
-    val publicRelease = ReleaseVersion(2021, 1)
+    val publicRelease = PublicReleaseVersion(2021, 1)
 
     // when
     val nextPublicRelease = publicRelease.public()
@@ -174,7 +174,7 @@ class VersioningTest {
   @Test
   internal fun `it should get the next internal version from the current public version`() {
     // given
-    val publicRelease = ReleaseVersion(2021, 1)
+    val publicRelease = PublicReleaseVersion(2021, 1)
 
     // when
     val nextInternalRelease = publicRelease.internal()
