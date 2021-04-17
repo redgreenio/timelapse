@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.gradle.automatedrelease.tasks
 
 import io.redgreen.timelapse.gradle.automatedrelease.Versioning
+import java.time.LocalDate
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.logging.text.StyledTextOutput
@@ -27,8 +28,7 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
   }
 
   private fun getLatestVersion(): String {
-    // TODO Get the latest version from Git
-    return "2021.0.1"
+    return Versioning.getLatestTag(tags(), LocalDate.now().year)
   }
 
   private fun printVersion(
@@ -42,5 +42,21 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
       .style(StyledTextOutput.Style.SuccessHeader)
       .text(nextVersion)
       .println()
+  }
+
+  private fun tags(): List<String> {
+    return getRawTagOutput()
+      .split("\n")
+      .filter { it.isNotEmpty() }
+      .map { it.trim() }
+  }
+
+  private fun getRawTagOutput(): String {
+    return Runtime
+      .getRuntime()
+      .exec("git tag")
+      .inputStream
+      .reader()
+      .use { it.readText() }
   }
 }
