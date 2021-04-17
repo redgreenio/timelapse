@@ -7,7 +7,7 @@ javafx {
 }
 
 dependencies {
-  implementation(project(":design"))
+  implementation(projects.design)
 
   testImplementation(deps.arrow.coreData)
   testImplementation(deps.test.junit.api)
