@@ -193,7 +193,7 @@ class VersioningTest {
     val (displayText, instanceType) = displayTextAndInstanceType
 
     // when
-    val version = Version.from(displayText)
+    val version = VersionDeserializer.deserialize(displayText)
 
     // then
     assertThat(version::class.java)
