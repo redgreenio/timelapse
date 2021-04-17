@@ -5,7 +5,7 @@ object Versioning {
     displayText: String,
     isPublic: Boolean = true
   ): String {
-    val version = Version.from(displayText)
+    val version = VersionDeserializer.deserialize(displayText)
     return if (isPublic) {
       version.publicRelease()
     } else {
