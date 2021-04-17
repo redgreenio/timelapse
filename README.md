@@ -61,35 +61,25 @@ Create a new directory inside the project directory for de-obfuscating ProGuard 
 mkdir proguard-lab
 ```
 
-## Creating a release
+## 🚀 Creating a release
 
-We use different formats of versioning for public and internal releases.
+### Step 1 of 7 - Get the version for the release
 
-### Public releases
+Run the following command to get the version.
 
-**Version public releases in the following format:** `[YYYY].[published-artifact-count + 1]`.
+```shell
+gradlew nextInternalVersion
+```
 
-Where `[YYYY]` denotes the current year, and `[published-artifact-count]` is the number of publicly released artifacts
-in that year so far.
+The task will print an output similar to the one shown below.
 
-For example, the first public release for the year 2021 would be `2021.1`, and the subsequent release version would be
-`2021.2`, and so on.
+<pre>
+Next INTERNAL version should be: <b>2021.0.2</b>
+</pre>
 
-### Internal releases
+Use the printed version for the release.
 
-**Version internal releases in the following format:** `[YYYY].[published-artifact-count].[build-number]`
-
-We don't distribute internal releases through our public channels. These releases include but are not limited to alpha,
-beta, and nightly releases.
-
-For example, the first internal release for 2021 without any public releases would be `2021.0.1`; the second internal release
-would be `2021.0.1` and so on. Each internal release will increment its `build-number` by `1`.
-
-### Releases summary
-In general, public releases drop the `build-number` from internal releases and increment the `published-artifact-count`
-(i.e.), if `2021.3.45` is the latest internal release version; the public release for the release will be `2021.4`.
-
-### Step 1 of 6 - Update CHANGELOG
+### Step 2 of 7 - Update CHANGELOG
 
 Underneath the `## [Unreleased]` section, add the version and date in the following format.
 
@@ -102,13 +92,13 @@ Example,
 ## [2021.0.1] - 2021-04-13
 ```
 
-### Step 2 of 6 - Update version in code and buildscript
+### Step 3 of 7 - Update version in code and buildscript
 
 - `TimelapseApp.kt` - update `APP_VERSION` to reflect the current version.
 - `app/build.gradle.kts` - update `version` to reflect the current version.
 - Stage and commit all changes with the message `build: bump version for release`.
 
-### Step 3 of 6 - Build native package
+### Step 4 of 7 - Build native package
 
 ```shell
 gradlew jpackageImage jpackage
@@ -117,13 +107,13 @@ gradlew jpackageImage jpackage
 This will create a distributable native installer (currently `.dmg`) for **macOS**. Windows and Linux distributions are
 yet to be tested.
 
-### Step 4 of 6 - Verifying the build
+### Step 5 of 7 - Verifying the build
 
 You should see the version number for the build in two places,
 1. **The native package** - file name of the binary should contain the version number.
 2. **The application (after installation)** - Welcome screen should display the new version number in the bottom right corner.
 
-### Step 5 of 6 - Tag the release
+### Step 6 of 7 - Tag the release
 
 Add a git tag to the release with the version number and push it to remote.
 
@@ -135,7 +125,7 @@ git tag <version>
 git push origin <version>
 ```
 
-### Step 6 of 6 - Preparing for the next release
+### Step 7 of 7 - Preparing for the next release
 
 **5.1 Determine the version number for the next release.**
 
