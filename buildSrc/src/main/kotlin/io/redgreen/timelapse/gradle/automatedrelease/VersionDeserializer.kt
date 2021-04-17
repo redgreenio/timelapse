@@ -5,8 +5,8 @@ import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
 import io.redgreen.timelapse.gradle.automatedrelease.versions.PublicReleaseVersion
 
 object VersionDeserializer {
-  fun deserialize(versionText: String): Version {
-    val versionComponents = "${versionText}..".split(".")
+  fun deserialize(displayText: String): Version {
+    val versionComponents = "${displayText}..".split(".")
     val yyyy = versionComponents[0].toInt()
     val publishedArtifactCountString = versionComponents[1]
     val publishedArtifactCount = if (publishedArtifactCountString.isEmpty()) 0 else publishedArtifactCountString.toInt()
