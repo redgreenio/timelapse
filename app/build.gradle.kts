@@ -4,6 +4,7 @@ import proguard.gradle.ProGuardTask
 plugins {
   application
   id("timelapse-javafx")
+  id("timelapse-automated-release")
   kotlin("kapt")
   id("com.github.johnrengelman.shadow") version "6.1.0"
   id("org.beryx.runtime") version "1.12.2"

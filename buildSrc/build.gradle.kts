@@ -41,5 +41,10 @@ gradlePlugin {
       id = "timelapse-javafx"
       implementationClass = "io.redgreen.timelapse.gradle.TimelapseJavaFxPlugin"
     }
+
+    create("AutomatedReleasePlugin") {
+      id = "timelapse-automated-release"
+      implementationClass = "io.redgreen.timelapse.gradle.AutomatedReleasePlugin"
+    }
   }
 }
