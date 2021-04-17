@@ -4,7 +4,7 @@ import io.redgreen.timelapse.gradle.automatedrelease.versions.InternalVersion
 import io.redgreen.timelapse.gradle.automatedrelease.versions.NoPreviousVersion
 import io.redgreen.timelapse.gradle.automatedrelease.versions.PublicReleaseVersion
 
-interface Version : VersionTransition {
+interface Version : Next {
   companion object {
     // Parsing logic -> Git tags to version objects
     fun from(displayText: String): Version {
