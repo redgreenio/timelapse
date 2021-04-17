@@ -74,7 +74,7 @@ class VersioningTest {
     val (year, firstRelease) = yearAndFirstRelease
 
     // when
-    val nextVersion = Versioning.getNextVersion(year, "")
+    val nextVersion = Versioning.getNextVersion("$year")
 
     // then
     assertThat(nextVersion)
@@ -90,7 +90,7 @@ class VersioningTest {
     val (predecessor, nextRelease) = predecessorAndNextRelease
 
     // when
-    val nextVersion = Versioning.getNextVersion(2021, predecessor)
+    val nextVersion = Versioning.getNextVersion(predecessor)
 
     // then
     assertThat(nextVersion)
@@ -103,7 +103,7 @@ class VersioningTest {
     val publicReleaseVersion = "2021.5"
 
     // when
-    val nextInternalVersion = Versioning.getNextVersion(2021, publicReleaseVersion, false)
+    val nextInternalVersion = Versioning.getNextVersion(publicReleaseVersion, false)
 
     // then
     assertThat(nextInternalVersion)
@@ -119,7 +119,7 @@ class VersioningTest {
     val (predecessorInternalVersion, expectedNextInternalVersion) = predecessorInternalReleaseAndNextInternalRelease
 
     // when
-    val nextInternalVersion = Versioning.getNextVersion(2021, predecessorInternalVersion, false)
+    val nextInternalVersion = Versioning.getNextVersion(predecessorInternalVersion, false)
 
     // then
     assertThat(nextInternalVersion)
@@ -135,7 +135,7 @@ class VersioningTest {
     val (predecessorInternalRelease, expectedNextPublicRelease) = predecessorInternalReleaseAndNextPublicRelease
 
     // when
-    val publicReleaseVersion = Versioning.getNextVersion(2021, predecessorInternalRelease, true)
+    val publicReleaseVersion = Versioning.getNextVersion(predecessorInternalRelease, true)
 
     // then
     assertThat(publicReleaseVersion)
@@ -151,7 +151,7 @@ class VersioningTest {
     val (yyyy, nextInternalRelease) = yearWithNoPublicReleaseAndNextInternalRelease
 
     // when
-    val internalVersionWithNoPublicReleases = Versioning.getNextVersion(yyyy, "", false)
+    val internalVersionWithNoPublicReleases = Versioning.getNextVersion("$yyyy", false)
 
     // then
     assertThat(internalVersionWithNoPublicReleases)
