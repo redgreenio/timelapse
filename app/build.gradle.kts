@@ -32,10 +32,10 @@ internal val quickFeedbackImplementation by configurations.getting {
 }
 
 dependencies {
-  implementation(project(":visuals"))
-  implementation(project(":design"))
-  implementation(project(":architecture"))
-  implementation(project(":git"))
+  implementation(projects.visuals)
+  implementation(projects.design)
+  implementation(projects.architecture)
+  implementation(projects.git)
 
   implementation(kotlin("stdlib-jdk8"))
   implementation(deps.jgit)
@@ -89,7 +89,7 @@ dependencies {
 
   testImplementation(deps.mobius.test)
 
-  quickFeedbackImplementation(project(":liftoff"))
+  quickFeedbackImplementation(projects.liftoff)
 }
 
 with(application) {

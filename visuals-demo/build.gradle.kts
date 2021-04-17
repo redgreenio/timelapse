@@ -7,6 +7,6 @@ javafx {
 }
 
 dependencies {
-  implementation(project(":visuals"))
-  implementation(project(":design"))
+  implementation(projects.visuals)
+  implementation(projects.design)
 }

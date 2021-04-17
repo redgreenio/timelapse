@@ -7,9 +7,9 @@ javafx {
 }
 
 dependencies {
-  implementation(project(":design"))
-  implementation(project(":architecture"))
-  implementation(project(":git"))
+  implementation(projects.design)
+  implementation(projects.architecture)
+  implementation(projects.git)
 
   api(deps.controlsFx)
   implementation(deps.jgit)
