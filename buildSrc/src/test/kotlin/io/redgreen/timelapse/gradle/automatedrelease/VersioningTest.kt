@@ -7,6 +7,7 @@ import io.redgreen.timelapse.gradle.automatedrelease.versions.PublicReleaseVersi
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.ValueSource
 
 class VersioningTest {
   companion object {
@@ -198,5 +199,75 @@ class VersioningTest {
     // then
     assertThat(version::class.java)
       .isEqualTo(instanceType)
+  }
+
+  @ParameterizedTest
+  @ValueSource(ints = [2021, 2022])
+  fun `it should return the current year for an empty list of tags`(yyyy: Int) {
+    // given
+    val tags = listOf<String>()
+
+    // when
+    val tag = Versioning.getLatestTag(tags, yyyy)
+
+    // then
+    assertThat(tag)
+      .isEqualTo("$yyyy")
+  }
+
+  @Test
+  fun `it should return the current year when the tag list does not contain any releases this year`() {
+    // given
+    val tagsFromPreviousYear = listOf("2020.0.1", "2020.0.2", "2020.1", "2020.2")
+
+    // when
+    val latestTag = Versioning.getLatestTag(tagsFromPreviousYear, 2021)
+
+    // then
+    assertThat(latestTag)
+      .isEqualTo("2021")
+  }
+
+  @Test
+  fun `it should return the current year when the tag list contains non-conforming tags`() {
+    // given
+    val nonConformingTags = listOf("0.0.1", "0.0.2", "0.1.0", "0.1.1", "0.1.2")
+
+    // when
+    val latestTag = Versioning.getLatestTag(nonConformingTags, 2021)
+
+    // then
+    assertThat(latestTag)
+      .isEqualTo("2021")
+  }
+
+  @Test
+  fun `it should return the latest tag (public) for the current year`() {
+    // given
+    val tagsFromPreviousYear = listOf(
+      "2020.0.1", "2020.0.2", "2021.1", "2021.2", "0.0.1", "0.0.2", "0.1.0", "0.1.1", "0.1.2"
+    )
+
+    // when
+    val latestTag = Versioning.getLatestTag(tagsFromPreviousYear, 2021)
+
+    // then
+    assertThat(latestTag)
+      .isEqualTo("2021.2")
+  }
+
+  @Test
+  fun `it should return the latest tag (internal) for the current year`() {
+    // given
+    val tagsFromPreviousYear = listOf(
+      "2020.0.1", "2020.0.2", "2021.1", "2021.2", "2021.2.1", "2021.2.2", "0.0.1", "0.0.2", "0.1.0", "0.1.1", "0.1.2"
+    )
+
+    // when
+    val latestTag = Versioning.getLatestTag(tagsFromPreviousYear, 2021)
+
+    // then
+    assertThat(latestTag)
+      .isEqualTo("2021.2.2")
   }
 }

@@ -12,4 +12,19 @@ object Versioning {
       version.internal()
     }.displayText
   }
+
+  fun getLatestTag(
+    tags: List<String>,
+    yyyy: Int
+  ): String {
+    val shortlistedTags = tags
+      .filter { it.startsWith("$yyyy") }
+      .sortedDescending()
+
+    if (shortlistedTags.isNotEmpty()) {
+      return shortlistedTags.first()
+    }
+
+    return "$yyyy"
+  }
 }
