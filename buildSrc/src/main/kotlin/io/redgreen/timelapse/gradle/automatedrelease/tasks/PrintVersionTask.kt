@@ -61,6 +61,12 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
     if (DO_REAL_WORLD_THINGS) {
       Runtime.getRuntime().exec(arrayOf("gradlew", "jpackageImage", "jpackage"))
     }
+
+    // Step 7 - Tag the release
+    if (DO_REAL_WORLD_THINGS) {
+      Runtime.getRuntime().exec(arrayOf("git", "tag", nextVersion))
+      Runtime.getRuntime().exec(arrayOf("git", "push", "origin", nextVersion))
+    }
   }
 
   private fun getVersionQualifier(isPublic: Boolean): String {
