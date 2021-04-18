@@ -114,8 +114,7 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
   }
 
   private fun getUpdatedChangelogText(version: String): String {
-    return File(CHANGELOG)
-      .readText()
+    return readFile(CHANGELOG)
       .replace(
         """
             |## [Unreleased]
@@ -131,8 +130,7 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
   }
 
   private fun getUpdatedTimelapseApp(version: String): String {
-    return File(TIMELAPSE_APP)
-      .readText()
+    return readFile(TIMELAPSE_APP)
       .replace(
         """
             |private const val APP_VERSION = .*
@@ -146,8 +144,7 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
   }
 
   private fun getUpdatedBuildGradleKts(version: String): String {
-    return File(APP_BUILD_GRADLE_KTS)
-      .readText()
+    return readFile(APP_BUILD_GRADLE_KTS)
       .replace(
         """
             |group = "io.redgreen"
@@ -160,6 +157,11 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
             |
             """.trimIndent()
       )
+  }
+
+  private fun readFile(filePath: String): String {
+    return File(filePath)
+      .readText()
   }
 
   private fun writeToFile(filePath: String, content: String) {
