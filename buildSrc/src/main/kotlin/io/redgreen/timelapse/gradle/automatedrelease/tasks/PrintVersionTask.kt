@@ -36,18 +36,21 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
     // Step 2 - Update CHANGELOG.md
     val updatedChangeLog = getUpdatedChangelogText(nextVersion)
     if (DO_REAL_WORLD_THINGS) {
+      writeToFile(CHANGELOG, updatedChangeLog)
       output.println(updatedChangeLog)
     }
 
     // Step 3 - Update version in buildscript
     val buildGradleKts = getUpdatedBuildGradleKts(nextVersion)
     if (DO_REAL_WORLD_THINGS) {
+      writeToFile(APP_BUILD_GRADLE_KTS, buildGradleKts)
       output.println(buildGradleKts)
     }
 
     // Step 4 - Update version in TimelapseApp.kt
     val timelapseAppKt = getUpdatedTimelapseApp(nextVersion)
     if (DO_REAL_WORLD_THINGS) {
+      writeToFile(TIMELAPSE_APP, timelapseAppKt)
       output.println(timelapseAppKt)
     }
 
@@ -157,5 +160,9 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
             |
             """.trimIndent()
       )
+  }
+
+  private fun writeToFile(filePath: String, content: String) {
+    File(filePath).writeText(content)
   }
 }
