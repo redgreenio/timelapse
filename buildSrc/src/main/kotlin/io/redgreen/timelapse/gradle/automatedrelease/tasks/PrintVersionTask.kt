@@ -56,6 +56,11 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
       Runtime.getRuntime().exec(arrayOf("git", "add", "."))
       Runtime.getRuntime().exec(arrayOf("git", "commit", "-m", "'build(incubation): bump version for release'"))
     }
+
+    // Step 6 - Create a native distribution
+    if (DO_REAL_WORLD_THINGS) {
+      Runtime.getRuntime().exec(arrayOf("gradlew", "jpackageImage", "jpackage"))
+    }
   }
 
   private fun getVersionQualifier(isPublic: Boolean): String {
