@@ -13,7 +13,12 @@ import org.gradle.kotlin.dsl.support.serviceOf
 abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
   companion object {
     private const val CHANGELOG = "CHANGELOG.md"
-    private val APP_BUILD_GRADLE_KTS = "app${File.separator}build.gradle.kts"
+
+    private val APP_BUILD_GRADLE_KTS = "app/build.gradle.kts"
+      .replace("/", File.separator)
+
+    private val TIMELAPSE_APP = "app/src/main/kotlin/io/redgreen/timelapse/TimelapseApp.kt"
+      .replace("/", File.separator)
 
     private const val PRINT_DEBUG_INFO = false
   }
@@ -38,6 +43,12 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
     val buildGradleKts = getUpdatedBuildGradleKts(nextVersion)
     if (PRINT_DEBUG_INFO) {
       output.println(buildGradleKts)
+    }
+
+    // Step 4 - Update version in TimelapseApp.kt
+    val timelapseAppKt = getUpdatedTimelapseApp(nextVersion)
+    if (PRINT_DEBUG_INFO) {
+      output.println(timelapseAppKt)
     }
   }
 
@@ -96,6 +107,21 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
             |## [$version] - ${LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)}
             |
             """.trimMargin("|")
+      )
+  }
+
+  private fun getUpdatedTimelapseApp(version: String): String {
+    return File(TIMELAPSE_APP)
+      .readText()
+      .replace(
+        """
+            |private const val APP_VERSION = .*
+            |
+            """.trimIndent(),
+        """
+            |private const val APP_VERSION = "$version" 
+            |
+            """.trimIndent()
       )
   }
 
