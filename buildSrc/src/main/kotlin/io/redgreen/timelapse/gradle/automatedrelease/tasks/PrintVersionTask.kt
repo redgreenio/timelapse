@@ -13,12 +13,14 @@ import org.gradle.kotlin.dsl.support.serviceOf
 abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
   companion object {
     private const val CHANGELOG = "CHANGELOG.md"
+    private val APP_BUILD_GRADLE_KTS = "app${File.separator}build.gradle.kts"
 
     private const val PRINT_DEBUG_INFO = false
   }
 
   @TaskAction
   fun perform() {
+    // Step 1 - Get the next version
     val versionQualifier = getVersionQualifier(isPublic)
     val nextVersion = Versioning.getNextVersion(getLatestVersion(), isPublic)
     val message = "Next $versionQualifier version should be: "
@@ -30,6 +32,12 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
     val updatedChangeLog = getUpdatedChangelogText(nextVersion)
     if (PRINT_DEBUG_INFO) {
       output.println(updatedChangeLog)
+    }
+
+    // Step 3 - Update version in buildscript
+    val buildGradleKts = getUpdatedBuildGradleKts(nextVersion)
+    if (PRINT_DEBUG_INFO) {
+      output.println(buildGradleKts)
     }
   }
 
@@ -88,6 +96,23 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
             |## [$version] - ${LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)}
             |
             """.trimMargin("|")
+      )
+  }
+
+  private fun getUpdatedBuildGradleKts(version: String): String {
+    return File(APP_BUILD_GRADLE_KTS)
+      .readText()
+      .replace(
+        """
+            |group = "io.redgreen"
+            |version = .*
+            |
+            """.trimIndent(),
+        """
+            |group = "io.redgreen"
+            |version = "$version"
+            |
+            """.trimIndent()
       )
   }
 }
