@@ -20,7 +20,7 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
     private val TIMELAPSE_APP = "app/src/main/kotlin/io/redgreen/timelapse/TimelapseApp.kt"
       .replace("/", File.separator)
 
-    private const val PRINT_DEBUG_INFO = false
+    private const val DO_REAL_WORLD_THINGS = false
   }
 
   @TaskAction
@@ -35,20 +35,26 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
 
     // Step 2 - Update CHANGELOG.md
     val updatedChangeLog = getUpdatedChangelogText(nextVersion)
-    if (PRINT_DEBUG_INFO) {
+    if (DO_REAL_WORLD_THINGS) {
       output.println(updatedChangeLog)
     }
 
     // Step 3 - Update version in buildscript
     val buildGradleKts = getUpdatedBuildGradleKts(nextVersion)
-    if (PRINT_DEBUG_INFO) {
+    if (DO_REAL_WORLD_THINGS) {
       output.println(buildGradleKts)
     }
 
     // Step 4 - Update version in TimelapseApp.kt
     val timelapseAppKt = getUpdatedTimelapseApp(nextVersion)
-    if (PRINT_DEBUG_INFO) {
+    if (DO_REAL_WORLD_THINGS) {
       output.println(timelapseAppKt)
+    }
+
+    // Step 5 - Stage and commit
+    if (DO_REAL_WORLD_THINGS) {
+      Runtime.getRuntime().exec(arrayOf("git", "add", "."))
+      Runtime.getRuntime().exec(arrayOf("git", "commit", "-m", "'build(incubation): bump version for release'"))
     }
   }
 
