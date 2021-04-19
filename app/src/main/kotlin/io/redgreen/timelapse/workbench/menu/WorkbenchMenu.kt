@@ -13,8 +13,6 @@ object WorkbenchMenu {
   private const val MENU_FILE_MENU_ITEM_OPEN = "Open..."
   private const val MENU_FILE_MENU_ITEM_CLOSE_PROJECT = "Close Project"
 
-  private const val SHOW_OPEN_MENU_ITEM = false
-
   fun install(
     scene: Scene,
     currentRepositoryPath: String,
@@ -39,13 +37,10 @@ object WorkbenchMenu {
       mnemonicParsingProperty().set(true)
 
       val menuItems = mutableListOf(
+        openMenuItem(listener),
         openRecentMenu(currentRepositoryPath, listener),
-        projectCloseMenuItem(listener)
+        projectCloseMenuItem(listener),
       )
-
-      if (SHOW_OPEN_MENU_ITEM) {
-        menuItems.add(0, openMenuItem(listener))
-      }
 
       items.addAll(menuItems)
     }

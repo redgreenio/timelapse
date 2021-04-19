@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Open repository menu item to File menu.
+
 ## [2021.0.1] - 2021-04-13
 
 ### Added

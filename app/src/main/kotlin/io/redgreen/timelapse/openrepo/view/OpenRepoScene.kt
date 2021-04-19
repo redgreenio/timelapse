@@ -52,7 +52,7 @@ private const val SCENE_WIDTH = 720.0
 private const val SCENE_HEIGHT = 552.0
 private const val NO_PADDING = 0.0
 
-private const val OPEN_REPOSITORY_TITLE = "Open repository..."
+internal const val OPEN_REPOSITORY_TITLE = "Open repository..."
 private const val OPEN_REPOSITORY_SUBTITLE = "Choose an existing repository from your local hard drive"
 
 private const val MESSAGE_GET_STARTED = "Let's get started!"
