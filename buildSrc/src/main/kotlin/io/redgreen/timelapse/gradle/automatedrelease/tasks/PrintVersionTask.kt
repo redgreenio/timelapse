@@ -25,51 +25,63 @@ abstract class PrintVersionTask(private val isPublic: Boolean) : DefaultTask() {
 
   @TaskAction
   fun perform() {
-    // Step 1 - Get the next version
+    // Step 1 - Get the version
     val versionQualifier = getVersionQualifier(isPublic)
-    val nextVersion = Versioning.getNextVersion(getLatestVersion(), isPublic)
+    val version = Versioning.getNextVersion(getLatestVersion(), isPublic)
     val message = "Next $versionQualifier version should be: "
 
     val output = project.serviceOf<StyledTextOutputFactory>().create("version-output")
-    printVersion(output, message, nextVersion)
+    printVersion(output, message, version)
 
     // Step 2 - Update CHANGELOG.md
-    val updatedChangeLog = getUpdatedChangelogText(nextVersion)
+    val updatedChangeLog = getUpdatedChangelogText(version)
     if (DO_REAL_WORLD_THINGS) {
       writeToFile(CHANGELOG, updatedChangeLog)
-      output.println(updatedChangeLog)
     }
 
+    // Step 3 - Stage and commit
+    val projectDirectory = project.rootDir.canonicalPath
+    val gitDirectoryPath = "$projectDirectory${File.separatorChar}.git"
+    output.println("Git dir: $gitDirectoryPath")
+    if (DO_REAL_WORLD_THINGS) {
+      Runtime
+        .getRuntime()
+        .exec(arrayOf("git", "--git-dir", gitDirectoryPath, "add", "."))
+
+      Thread.sleep(100) /* avoids race condition between the first (above) and second (below) git commands */
+
+      Runtime
+        .getRuntime()
+        .exec(arrayOf("git", "--git-dir", gitDirectoryPath, "commit", "-m", "docs(incubation-bot): update CHANGELOG"))
+    }
+
+    // Step 4 - Create a native distribution
+    if (DO_REAL_WORLD_THINGS) {
+      Runtime.getRuntime().exec(arrayOf("$projectDirectory${File.separator}gradlew", "jpackageImage", "jpackage"))
+      output.println("Package created!")
+    }
+
+    // Step 5 - Tag the release
+    if (DO_REAL_WORLD_THINGS) {
+      Runtime.getRuntime().exec(arrayOf("git", "tag", version))
+      Runtime.getRuntime().exec(arrayOf("git", "push", "origin", version))
+    }
+
+    /*
     // Step 3 - Update version in buildscript
-    val buildGradleKts = getUpdatedBuildGradleKts(nextVersion)
+    val buildGradleKts = getUpdatedBuildGradleKts(version)
     if (DO_REAL_WORLD_THINGS) {
       writeToFile(APP_BUILD_GRADLE_KTS, buildGradleKts)
       output.println(buildGradleKts)
     }
 
     // Step 4 - Update version in TimelapseApp.kt
-    val timelapseAppKt = getUpdatedTimelapseApp(nextVersion)
+    val timelapseAppKt = getUpdatedTimelapseApp(version)
     if (DO_REAL_WORLD_THINGS) {
       writeToFile(TIMELAPSE_APP, timelapseAppKt)
       output.println(timelapseAppKt)
     }
-
-    // Step 5 - Stage and commit
-    if (DO_REAL_WORLD_THINGS) {
-      Runtime.getRuntime().exec(arrayOf("git", "add", "."))
-      Runtime.getRuntime().exec(arrayOf("git", "commit", "-m", "'build(incubation): bump version for release'"))
-    }
-
-    // Step 6 - Create a native distribution
-    if (DO_REAL_WORLD_THINGS) {
-      Runtime.getRuntime().exec(arrayOf("gradlew", "jpackageImage", "jpackage"))
-    }
-
-    // Step 7 - Tag the release
-    if (DO_REAL_WORLD_THINGS) {
-      Runtime.getRuntime().exec(arrayOf("git", "tag", nextVersion))
-      Runtime.getRuntime().exec(arrayOf("git", "push", "origin", nextVersion))
-    }
+    */
   }
 
   private fun getVersionQualifier(isPublic: Boolean): String {
