@@ -12,7 +12,6 @@ import io.redgreen.scout.languages.swift.SwiftFunctionScanner.ScanMode.SKIP_SING
 object SwiftFunctionScanner : FunctionScanner {
   private val KEYWORD_FUNC = "func ".toCharArray()
   private val KEYWORD_INIT = "init".toCharArray()
-  private val TOKEN_SINGLE_LINE_COMMENT = "//".toCharArray()
 
   private enum class ScanMode {
     SEEK_FUNCTION,
@@ -34,7 +33,7 @@ object SwiftFunctionScanner : FunctionScanner {
     for (char in snippetChars) {
       buffer.push(char)
 
-      if (buffer.endsWith(TOKEN_SINGLE_LINE_COMMENT)) {
+      if (buffer[buffer.size - 2] == '/' && buffer[buffer.size - 1] == '/') {
         previousMode = mode
         mode = SKIP_SINGLE_LINE_COMMENT
       }
@@ -52,7 +51,7 @@ object SwiftFunctionScanner : FunctionScanner {
 
       if (mode == SEEK_FUNCTION_NAME && char != ' ' && char != '(') {
         functionNameChars.add(char)
-      } else if (char == '(' && mode != SEEK_FUNCTION) {
+      } else if (char == '(') {
         mode = SEEK_OPEN_PARENTHESIS
       }
 
