@@ -160,6 +160,14 @@ git commit -m "build: prepare for next development version"
 | Windows          | ❌            | ❌           | `-`       |
 | Linux            | ❌            | ❌           | `-`       |
 
+# Other tools
+
+To generate unified diffs for reproducing bugs or handling new use cases, make use of the `diff` utility.
+
+```shell
+diff -u a.txt b.txt
+```
+
 ## License
 
 ```
