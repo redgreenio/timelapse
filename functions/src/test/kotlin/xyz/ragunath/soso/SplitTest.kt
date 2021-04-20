@@ -1,8 +1,7 @@
 package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.Test
 
 class SplitTest {
   @Test
@@ -29,14 +28,10 @@ class SplitTest {
       .inOrder()
   }
 
-  @Test
-  fun `it throws an exception when the split line number is greater than the number of lines`() {
+  @Test(expected = IllegalArgumentException::class)
+  fun `it throws an exception when the split line number is greater than the actual number of lines`() {
     val oneLineText = "One line text again"
-    val exception = assertThrows<IllegalArgumentException> {
-      split(oneLineText, 2)
-    }
-    assertThat(exception.message)
-      .isEqualTo("`splitLineNumber`: 2 cannot be greater than the number of lines: 1")
+    split(oneLineText, 2)
   }
 
   @Test
