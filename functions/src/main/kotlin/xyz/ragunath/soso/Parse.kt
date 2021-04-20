@@ -1,6 +1,5 @@
 package xyz.ragunath.soso
 
-import xyz.ragunath.soso.ParseResult.MalformedFunction
 import xyz.ragunath.soso.ParseResult.Nothing
 import xyz.ragunath.soso.ParseResult.WellFormedFunction
 import xyz.ragunath.soso.ScanMode.FIND_BLOCKS
@@ -81,10 +80,6 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
         }
 
         TOKEN_CLOSE_CURLY -> {
-          if (depthStack.isEmpty()) {
-            return MalformedFunction
-          }
-
           depthStack.pop()
 
           if (depthStack.isEmpty()) {
