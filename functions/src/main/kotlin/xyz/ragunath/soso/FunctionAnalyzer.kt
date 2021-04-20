@@ -4,6 +4,7 @@ import java.util.Stack
 import java.lang.Character.MIN_VALUE as NULL_CHAR
 
 typealias Depth = Int
+typealias Length = Int
 
 private const val TOKEN_OPEN_CURLY = '{'
 private const val TOKEN_CLOSE_CURLY = '}'
@@ -18,7 +19,7 @@ private const val SKIP_MULTILINE_COMMENT = 3
 fun analyze(snippet: String): List<Result> {
   val results = mutableListOf<Result>()
   val snippetChars = snippet.toCharArray()
-  var lastChar = NULL_CHAR
+  var lastKnownChar = NULL_CHAR
 
   var mode = SCAN_DEPTH
   var maximumDepth = 0
@@ -32,8 +33,8 @@ fun analyze(snippet: String): List<Result> {
     }
 
     when {
-      isSingleLineComment(lastChar, char) -> mode = SKIP_SINGLE_LINE_COMMENT
-      isMultilineComment(mode, lastChar, char) -> mode = SKIP_MULTILINE_COMMENT
+      isSingleLineComment(lastKnownChar, char) -> mode = SKIP_SINGLE_LINE_COMMENT
+      isMultilineComment(mode, lastKnownChar, char) -> mode = SKIP_MULTILINE_COMMENT
     }
 
     when (mode) {
@@ -41,7 +42,7 @@ fun analyze(snippet: String): List<Result> {
         mode = SCAN_DEPTH
       }
 
-      SKIP_MULTILINE_COMMENT -> if (lastChar == TOKEN_ASTERISK && char == TOKEN_FORWARD_SLASH) {
+      SKIP_MULTILINE_COMMENT -> if (lastKnownChar == TOKEN_ASTERISK && char == TOKEN_FORWARD_SLASH) {
         mode = SCAN_DEPTH
       }
 
@@ -66,9 +67,10 @@ fun analyze(snippet: String): List<Result> {
           if (depthStack.isEmpty()) {
             endLineNumber = lineNumber
             val result = Result.with(
+              maximumDepth,
+              calculateFunctionLength(startLineNumber, endLineNumber, maximumDepth),
               startLineNumber,
-              endLineNumber,
-              maximumDepth
+              endLineNumber
             )
             results.add(result)
           }
@@ -76,24 +78,31 @@ fun analyze(snippet: String): List<Result> {
       }
     }
 
-    lastChar = char
+    lastKnownChar = char
   }
 
   return results.toList()
 }
 
 private fun isSingleLineComment(
-  lastChar: Char,
+  previousChar: Char,
   char: Char
-): Boolean {
-  return lastChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH
-}
+): Boolean =
+  previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH
 
 private fun isMultilineComment(
   currentMode: Int,
-  lastChar: Char,
+  previousChar: Char,
   char: Char
-): Boolean {
-  return lastChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK &&
-      currentMode != SKIP_SINGLE_LINE_COMMENT
+): Boolean =
+  previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK && currentMode != SKIP_SINGLE_LINE_COMMENT
+
+private fun calculateFunctionLength(
+  startLine: Int,
+  endLine: Int,
+  depth: Int
+): Int = if (startLine == endLine && depth == 0) {
+  0
+} else {
+  endLine - startLine + 1
 }

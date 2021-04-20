@@ -27,21 +27,17 @@ class FunctionAnalyzerTest {
   @Test
   fun `it can analyze matching brackets in the same line`() {
     val onePairOfBracketsSingleLine = "{}"
-    val expectedResult = Result.with(1, 1, 1)
+    val expectedResult = Result.with(1, 1, 1, 1)
 
-    val actualResults = analyze(onePairOfBracketsSingleLine)
-    assertThat(actualResults)
+    assertThat(analyze(onePairOfBracketsSingleLine))
       .containsExactly(expectedResult)
       .inOrder()
-
-    assertThat(actualResults.first().length)
-      .isEqualTo(1)
   }
 
   @Test
   fun `it can analyze two pairs of matching brackets in the same line`() {
     val twoPairsOfBracketsSingleLine = "{{}}"
-    val expectedResult = Result.with(1, 1, 2)
+    val expectedResult = Result.with(2, 1, 1, 1)
 
     assertThat(analyze(twoPairsOfBracketsSingleLine))
       .containsExactly(expectedResult)
@@ -54,7 +50,7 @@ class FunctionAnalyzerTest {
         {
         }
       """.trimIndent()
-    val expectedResult = Result.with(1, 2, 1)
+    val expectedResult = Result.with(1, 2, 1, 2)
 
     assertThat(analyze(onePairOfBracketDifferentLines))
       .containsExactly(expectedResult)
@@ -67,7 +63,7 @@ class FunctionAnalyzerTest {
       fun main() {
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 2, 1)
+    val expectedResult = Result.with(1, 2, 1, 2)
 
     assertThat(analyze(mainFunction))
       .containsExactly(expectedResult)
@@ -83,7 +79,7 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 5, 2)
+    val expectedResult = Result.with(2, 5, 1, 5)
 
     assertThat(analyze(functionWithConditional))
       .containsExactly(expectedResult)
@@ -103,7 +99,7 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 9, 2)
+    val expectedResult = Result.with(2, 9, 1, 9)
 
     assertThat(analyze(functionWithIfElseLadder))
       .containsExactly(expectedResult)
@@ -132,14 +128,11 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 18, 5)
+    val expectedResult = Result.with(5, 18, 1, 18)
 
-    val actualResults = analyze(functionWith4LevelsOfNesting)
-    assertThat(actualResults)
+    assertThat(analyze(functionWith4LevelsOfNesting))
       .containsExactly(expectedResult)
       .inOrder()
-    assertThat(actualResults.first().length)
-      .isEqualTo(18)
   }
 
   @Test
@@ -150,7 +143,7 @@ class FunctionAnalyzerTest {
         //{}
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 4, 1)
+    val expectedResult = Result.with(1, 4, 1, 4)
 
     assertThat(analyze(functionWithCommentedMatchingBraces))
       .containsExactly(expectedResult)
@@ -168,7 +161,7 @@ class FunctionAnalyzerTest {
         // }
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 7, 1)
+    val expectedResult = Result.with(1, 7, 1, 7)
 
     assertThat(analyze(functionWithCommentedCode))
       .containsExactly(expectedResult)
@@ -183,7 +176,7 @@ class FunctionAnalyzerTest {
         /*{ anything can go here }*/
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 4, 1)
+    val expectedResult = Result.with(1, 4, 1, 4)
 
     assertThat(analyze(functionWithCommentedMatchingBraces))
       .containsExactly(expectedResult)
@@ -201,7 +194,7 @@ class FunctionAnalyzerTest {
         */
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 7, 1)
+    val expectedResult = Result.with(1, 7, 1, 7)
 
     assertThat(analyze(functionWithMultilineCommentedCode))
       .containsExactly(expectedResult)
@@ -215,7 +208,7 @@ class FunctionAnalyzerTest {
         // {} //
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 3, 1)
+    val expectedResult = Result.with(1, 3, 1, 3)
 
     assertThat(analyze(functionWithNestedSingleLineComments))
       .containsExactly(expectedResult)
@@ -237,7 +230,7 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 11, 2)
+    val expectedResult = Result.with(2, 11, 1, 11)
 
     assertThat(analyze(functionWithNestedMultilineComments))
       .containsExactly(expectedResult)
@@ -253,7 +246,7 @@ class FunctionAnalyzerTest {
         // Do nothing...
       }
     """.trimIndent()
-    val expectedResult = Result.with(3, 5, 1)
+    val expectedResult = Result.with(1, 3, 3, 5)
 
     assertThat(analyze(functionDeclarationWithPackageName))
       .containsExactly(expectedResult)
@@ -285,9 +278,9 @@ class FunctionAnalyzerTest {
 
     assertThat(results)
       .containsExactly(
-        Result.with(3, 5, 1),
-        Result.with(7, 9, 1),
-        Result.with(11, 17, 2)
+        Result.with(1, 3, 3, 5),
+        Result.with(1, 3, 7, 9),
+        Result.with(2, 7, 11, 17)
       )
       .inOrder()
   }
