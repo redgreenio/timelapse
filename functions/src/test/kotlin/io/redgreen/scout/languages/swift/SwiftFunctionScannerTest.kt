@@ -102,32 +102,24 @@ class SwiftFunctionScannerTest {
     val noFunctionDefinitions = """
       protocol CombineLatestProtocol : class {
           func next(_ index: Int)
-          func previous(_ index: Int)
       }
 
       class CombineLatestSink<O: ObserverType>
           : Sink<O>
           , CombineLatestProtocol {
           typealias Element = O.E
+         
+          init(arity: Int, observer: O, cancel: Cancelable) {
+              _arity = arity
+              _hasValue = [Bool](repeating: false, count: arity)
+              _isDone = [Bool](repeating: false, count: arity)
+              
+              super.init(observer: observer, cancel: cancel)
+          }
       }
     """.trimIndent()
 
     assertThat(SwiftFunctionScanner.scan(noFunctionDefinitions))
       .isEmpty()
-  }
-
-  @Test
-  fun `it can detect init functions`() {
-    val initFunction = """
-      init(buffers: MediaPlaybackBuffers, extraDecodedVideoFrames: [MediaTrackFrame], timestamp: CMTime) {
-        self.buffers = buffers
-        self.extraDecodedVideoFrames = extraDecodedVideoFrames
-        self.timestamp = timestamp
-      }
-    """.trimIndent()
-
-    assertThat(SwiftFunctionScanner.scan(initFunction))
-      .containsExactly(PossibleFunction("init", 1))
-      .inOrder()
   }
 }
