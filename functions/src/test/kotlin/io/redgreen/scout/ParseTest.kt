@@ -55,8 +55,7 @@ class ParseTest {
 
   @Test
   fun `it can analyze matching brackets on two lines`() {
-    val onePairOfBracketDifferentLines =
-      """
+    val onePairOfBracketDifferentLines = """
         {
         }
       """.trimIndent()
@@ -286,7 +285,7 @@ class ParseTest {
   @Test
   fun `it can ignore contents of multiline string literals`() {
     val functionWithMultilineStringLiteral =
-      "func multilineStrings() {\n" +
+        "func multilineStrings() {\n" +
         "  println(\"\"\" { Inside a multiline string literal } \"\"\")\n" +
         "}"
 
