@@ -53,28 +53,4 @@ class SplitTest {
       )
       .inOrder()
   }
-
-  @Test
-  fun `it can split a block of text based on any line number`() {
-    val fourLines = """
-      Line one
-      Line two
-      Line three
-      Line four
-    """.trimIndent()
-
-    assertThat(split(fourLines, 3))
-      .containsExactly(
-        """
-          Line one
-          Line two
-        """.trimIndent(),
-
-        """
-          Line three
-          Line four
-        """.trimIndent()
-      )
-      .inOrder()
-  }
 }
