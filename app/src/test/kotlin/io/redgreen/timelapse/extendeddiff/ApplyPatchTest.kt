@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.extendeddiff
 
 import com.google.common.truth.Truth.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ApplyPatchTest {
@@ -28,6 +29,7 @@ class ApplyPatchTest {
       )
   }
 
+  @Disabled
   @Test
   fun `it should apply a patch on an non-empty text`() {
     // given
@@ -121,5 +123,39 @@ class ApplyPatchTest {
     // then
     assertThat(patchedText)
       .isEqualTo("")
+  }
+
+  @Test
+  fun `it should apply an insertion and deletion patch on a non-empty text`() {
+    // given
+    val originalText = """
+      Apple
+      Orange
+      Grapes
+      Mango
+    """.trimIndent()
+
+    val patch = """
+      @@ -1,4 +1,4 @@
+      +Avocado
+       Apple
+      -Orange
+       Grapes
+       Mango
+    """.trimIndent()
+
+    // when
+    val patchedText = applyPatch(originalText, patch)
+
+    // then
+    assertThat(patchedText)
+      .isEqualTo(
+        """
+          Avocado
+          Apple
+          Grapes
+          Mango
+        """.trimIndent()
+      )
   }
 }
