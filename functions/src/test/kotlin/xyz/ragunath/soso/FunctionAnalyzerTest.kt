@@ -2,6 +2,7 @@ package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import xyz.ragunath.soso.Result.Companion
 
 class FunctionAnalyzerTest {
   @Test
@@ -15,7 +16,7 @@ class FunctionAnalyzerTest {
     val noBrackets = "    "
 
     assertThat(analyze(noBrackets))
-      .isEqualTo(Result.with(0, 1, 0))
+      .isEqualTo(Result.with(0, 1))
   }
 
   @Test
@@ -27,13 +28,13 @@ class FunctionAnalyzerTest {
     """.trimIndent()
 
     assertThat(analyze(justComments))
-      .isEqualTo(Result.with(0, 3, 0))
+      .isEqualTo(Result.with(0, 3))
   }
 
   @Test
   fun `it can analyze matching brackets in the same line`() {
     val onePairOfBracketsSingleLine = "{}"
-    val expectedResult = Result.with(1, 1, 1)
+    val expectedResult = Result.with(1, 1)
 
     assertThat(analyze(onePairOfBracketsSingleLine))
       .isEqualTo(expectedResult)
@@ -42,7 +43,7 @@ class FunctionAnalyzerTest {
   @Test
   fun `it can analyze two pairs of matching brackets in the same line`() {
     val twoPairsOfBracketsSingleLine = "{{}}"
-    val expectedResult = Result.with(2, 1, 1)
+    val expectedResult = Result.with(2, 1)
 
     assertThat(analyze(twoPairsOfBracketsSingleLine))
       .isEqualTo(expectedResult)
@@ -54,7 +55,7 @@ class FunctionAnalyzerTest {
         {
         }
       """.trimIndent()
-    val expectedResult = Result.with(1, 2, 1)
+    val expectedResult = Result.with(1, 2)
 
     assertThat(analyze(onePairOfBracketDifferentLines))
       .isEqualTo(expectedResult)
@@ -66,7 +67,7 @@ class FunctionAnalyzerTest {
       fun main() {
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 2, 1)
+    val expectedResult = Result.with(1, 2)
 
     assertThat(analyze(mainFunction))
       .isEqualTo(expectedResult)
@@ -81,7 +82,7 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(2, 5, 1)
+    val expectedResult = Result.with(2, 5)
 
     assertThat(analyze(functionWithConditional))
       .isEqualTo(expectedResult)
@@ -100,7 +101,7 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(2, 9, 1)
+    val expectedResult = Result.with(2, 9)
 
     assertThat(analyze(functionWithIfElseLadder))
       .isEqualTo(expectedResult)
@@ -128,7 +129,7 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(5, 18, 1)
+    val expectedResult = Result.with(5, 18)
 
     assertThat(analyze(functionWith4LevelsOfNesting))
       .isEqualTo(expectedResult)
@@ -142,7 +143,7 @@ class FunctionAnalyzerTest {
         //{}
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 4, 1)
+    val expectedResult = Result.with(1, 4)
 
     assertThat(analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
@@ -159,7 +160,7 @@ class FunctionAnalyzerTest {
         // }
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 7, 1)
+    val expectedResult = Result.with(1, 7)
 
     assertThat(analyze(functionWithCommentedCode))
       .isEqualTo(expectedResult)
@@ -173,7 +174,7 @@ class FunctionAnalyzerTest {
         /*{ anything can go here }*/
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 4, 1)
+    val expectedResult = Result.with(1, 4)
 
     assertThat(analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
@@ -190,7 +191,7 @@ class FunctionAnalyzerTest {
         */
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 7, 1)
+    val expectedResult = Result.with(1, 7)
 
     assertThat(analyze(functionWithMultilineCommentedCode))
       .isEqualTo(expectedResult)
@@ -203,7 +204,7 @@ class FunctionAnalyzerTest {
         // {} //
       }
     """.trimIndent()
-    val expectedResult = Result.with(1, 3, 1)
+    val expectedResult = Result.with(1, 3)
 
     assertThat(analyze(functionWithNestedSingleLineComments))
       .isEqualTo(expectedResult)
@@ -224,28 +225,12 @@ class FunctionAnalyzerTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result.with(2, 11, 1)
+    val expectedResult = Result.with(2, 11)
 
     assertThat(analyze(functionWithNestedMultilineComments))
       .isEqualTo(expectedResult)
   }
 
-  @Test
-  fun `it can find the function's start row`() {
-    val functionDeclarationWithPackageName = """
-      package a.b.c
-
-      fun main() {
-        // Do nothing...
-      }
-    """.trimIndent()
-    val expectedResult = Result.with(1, 5, 3)
-
-    assertThat(analyze(functionDeclarationWithPackageName))
-      .isEqualTo(expectedResult)
-  }
-
-  // TODO Derive length of the function from start row and end row
   // TODO Ignore new lines after the function
   // TODO What is a depth/nesting of a function?
   // TODO Find the system newline character in a given file

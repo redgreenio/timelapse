@@ -23,7 +23,6 @@ fun analyze(snippet: String): Result {
   var mode = SCAN_DEPTH
   var maximumDepthCount = 0
   var lineCount = 1
-  var startLine = 0
   val depthStack = Stack<Depth>()
   for (char in chars) {
     if (char == TOKEN_NEW_LINE) {
@@ -48,7 +47,6 @@ fun analyze(snippet: String): Result {
         TOKEN_OPEN_CURLY -> {
           if (depthStack.isEmpty()) {
             maximumDepthCount = 1
-            startLine = lineCount
             depthStack.push(maximumDepthCount)
           } else {
             val depthCount = depthStack.peek() + 1
@@ -62,7 +60,7 @@ fun analyze(snippet: String): Result {
         TOKEN_CLOSE_CURLY -> {
           depthStack.pop()
           if (depthStack.isEmpty()) {
-            return Result.with(maximumDepthCount, lineCount, startLine)
+            return Result.with(maximumDepthCount, lineCount)
           }
         }
       }
@@ -71,7 +69,7 @@ fun analyze(snippet: String): Result {
     previousChar = char
   }
 
-  return Result.with(maximumDepthCount, lineCount, startLine)
+  return Result.with(maximumDepthCount, lineCount)
 }
 
 private fun isSingleLineComment(previousChar: Char, char: Char): Boolean =
