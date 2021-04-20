@@ -135,7 +135,7 @@ class SoSoTest {
   }
 
   @Test
-  fun `it can ignore brackets in single-line comments`() {
+  fun `it can ignore brackets in a single-line comment`() {
     val functionWithCommentedMatchingBraces = """
       fun main() {
         // { /* nothing here */ }
@@ -166,22 +166,22 @@ class SoSoTest {
   }
 
   @Test
-  fun `it can ignore brackets inside multi-line comments`() {
+  fun `it can ignore brackets inside a multi-line comment`() {
     val functionWithCommentedMatchingBraces = """
       fun main() {
         /* { nothing here } */
-        /*{ anything can go here }*/
       }
     """.trimIndent()
-    val expectedResult = Result(1, 4)
+    val expectedResult = Result(1, 3)
 
     assertThat(SoSo.analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
   }
 
+  // TODO Single-line and multiline comments without spaces
   // TODO Ignore Multi-line comments
   // TODO Ignore new lines after the function
   // TODO What is a depth/nesting of a function?
-  // TODO Find the system newline character in a given file
-  // TODO Find character encoding in a given file
+  // TODO Find the newline character in a given file
+  // TODO Find character encoding in a give file
 }
