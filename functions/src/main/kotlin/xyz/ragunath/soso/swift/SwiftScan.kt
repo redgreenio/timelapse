@@ -10,17 +10,17 @@ private const val MODE_SEEK_FUNCTION_NAME = 1
 private const val MODE_SEEK_OPEN_PARENTHESIS = 2
 private const val MODE_SKIP_SINGLE_LINE_COMMENT = 3
 
-fun swiftScan(snippet: String): List<PossibleFunction> {
+fun swiftScan(code: String): List<PossibleFunction> {
   val possibleFunctions = mutableListOf<PossibleFunction>()
   val buffer = CharArray(KEYWORD_FUNC.size)
-  val snippetChars = snippet.toCharArray()
+  val codeChars = code.toCharArray()
   var lineNumber = 1
-  var possibleLineNumber = lineNumber
+  var possibleFunctionLineNumber = lineNumber
   var mode = MODE_SEEK_FUNCTION
   var previousMode = MODE_SEEK_FUNCTION
-  val functionNameChars = mutableListOf<Char>()
+  val functionName = mutableListOf<Char>()
 
-  for (char in snippetChars) {
+  for (char in codeChars) {
     buffer.push(char)
 
     if (buffer[buffer.size - 2] == '/' && buffer[buffer.size - 1] == '/') {
@@ -30,27 +30,28 @@ fun swiftScan(snippet: String): List<PossibleFunction> {
 
     if (mode == MODE_SEEK_FUNCTION) {
       if (buffer.contentEquals(KEYWORD_FUNC)) {
-        possibleLineNumber = lineNumber
+        possibleFunctionLineNumber = lineNumber
         mode = MODE_SEEK_FUNCTION_NAME
       }
     }
 
     if (mode == MODE_SEEK_FUNCTION_NAME && char != ' ' && char != '(') {
-      functionNameChars.add(char)
+      functionName.add(char)
     } else if (char == '(') {
       mode = MODE_SEEK_OPEN_PARENTHESIS
     }
 
     if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '}') {
       mode = MODE_SEEK_FUNCTION
-      functionNameChars.clear()
+      functionName.clear()
     }
 
-    if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '{' && functionNameChars.isNotEmpty()) {
-      val possibleFunctionName = functionNameChars.joinToString("")
-      possibleFunctions.add(PossibleFunction(possibleFunctionName, possibleLineNumber))
+    if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '{' && functionName.isNotEmpty()) {
+      possibleFunctions.add(
+        PossibleFunction(functionName.joinToString(""), possibleFunctionLineNumber)
+      )
       mode = MODE_SEEK_FUNCTION
-      functionNameChars.clear()
+      functionName.clear()
     }
 
     if (char == '\n') {
