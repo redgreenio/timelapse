@@ -169,4 +169,42 @@ class CompareTest {
         Modified(ParseResult.wellFormedFunction("a", 4, 5, 1))
       )
   }
+
+  @Test
+  fun `it should detect added, modified, and deleted functions`() {
+    // given
+    val before = """
+      fun a() {
+      }
+
+      fun b() {
+      }
+
+      fun c() {
+      }
+    """.trimIndent()
+
+    val after = """
+      fun a() {
+      }
+
+      fun x() {
+      }
+
+      fun c() {
+        println("Hello, world!")
+      }
+    """.trimIndent()
+
+    // when
+    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    assertThat(affectedFunctions)
+      .containsExactly(
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1)),
+        Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
+        Modified(ParseResult.wellFormedFunction("c", 7, 9, 1))
+      )
+  }
 }
