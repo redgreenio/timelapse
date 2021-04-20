@@ -8,10 +8,6 @@ sealed class ParseResult(
     get() = endLine - startLine + 1
 
   companion object {
-    fun nothing(startLine: Int, endLine: Int): Nothing {
-      return Nothing(startLine, endLine)
-    }
-
     fun wellFormedFunction(startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
       check(startLine >= 0) { "`startLine`: $startLine should be a positive integer" }
       check(endLine >= 0) { "`endLine`: $endLine should be a positive integer" }

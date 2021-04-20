@@ -1,6 +1,7 @@
 package xyz.ragunath.soso
 
 import xyz.ragunath.soso.ParseResult.MalformedFunction
+import xyz.ragunath.soso.ParseResult.Nothing
 import xyz.ragunath.soso.ScanMode.FIND_BLOCKS
 import xyz.ragunath.soso.ScanMode.SKIP_MULTILINE_COMMENT
 import xyz.ragunath.soso.ScanMode.SKIP_SINGLE_LINE_COMMENT
@@ -98,7 +99,7 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
     previousChar = char
   }
 
-  return ParseResult.nothing(startLineNumber, lineNumber)
+  return Nothing(startLineNumber, lineNumber)
 }
 
 private fun isSingleLineComment(currentScanMode: ScanMode, previousChar: Char, char: Char): Boolean =
