@@ -1,5 +1,7 @@
 package io.redgreen.scout
 
+import io.redgreen.scout.ParseResult.WellFormedFunction
+
 fun getParseResults(
   scanner: (String) -> List<PossibleFunction>,
   snippet: String
@@ -15,5 +17,11 @@ fun getParseResults(
     .zip(lineNumbers)
     .map { (functionSnippet, lineNumber) -> parse(functionSnippet, lineNumber) }
 
-  return possibleFunctions.zip(parseResults) { _, result -> result }
+  return possibleFunctions.zip(parseResults) { possibleFunction, result ->
+    if (result is WellFormedFunction) {
+      result.addName(possibleFunction.name)
+    } else {
+      result
+    }
+  }
 }
