@@ -41,11 +41,6 @@ fun swiftScan(code: String): List<PossibleFunction> {
       mode = MODE_SEEK_OPEN_PARENTHESIS
     }
 
-    if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '}') {
-      mode = MODE_SEEK_FUNCTION
-      functionName.clear()
-    }
-
     if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '{' && functionName.isNotEmpty()) {
       possibleFunctions.add(
         PossibleFunction(functionName.joinToString(""), possibleFunctionLineNumber)

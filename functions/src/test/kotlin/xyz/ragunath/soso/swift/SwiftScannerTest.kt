@@ -96,30 +96,4 @@ class SwiftScannerTest {
       .containsExactly(PossibleFunction("add", 1))
       .inOrder()
   }
-
-  @Test
-  fun `it can ignore function declarations`() {
-    val noFunctionDefinitions = """
-      protocol CombineLatestProtocol : class {
-          func next(_ index: Int)
-      }
-
-      class CombineLatestSink<O: ObserverType>
-          : Sink<O>
-          , CombineLatestProtocol {
-          typealias Element = O.E
-         
-          init(arity: Int, observer: O, cancel: Cancelable) {
-              _arity = arity
-              _hasValue = [Bool](repeating: false, count: arity)
-              _isDone = [Bool](repeating: false, count: arity)
-              
-              super.init(observer: observer, cancel: cancel)
-          }
-      }
-    """.trimIndent()
-
-    assertThat(swiftScan(noFunctionDefinitions))
-      .isEmpty()
-  }
 }
