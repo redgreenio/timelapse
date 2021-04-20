@@ -33,10 +33,14 @@ sealed class ParseResult(
     }
 
     fun wellFormedFunction(startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
+      return wellFormedFunction(startLine, endLine, depth, Optional.empty())
+    }
+
+    private fun wellFormedFunction(startLine: Int, endLine: Int, depth: Int, name: Optional<Name>): WellFormedFunction {
       check(startLine, endLine)
       check(depth >= 0) { "`depth`: $depth should be a positive integer" }
       check(!(startLine == 0 && endLine == 0 && depth != 0)) { "`depth` must be zero for a non-existent function, but was `$depth`" }
-      return WellFormedFunction(startLine, endLine, depth)
+      return WellFormedFunction(startLine, endLine, depth, name)
     }
 
     fun malformedFunction(startLine: Int, endLine: Int): MalformedFunction {
