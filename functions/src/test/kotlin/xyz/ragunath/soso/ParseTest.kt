@@ -1,8 +1,8 @@
-package io.redgreen.scout
+package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.scout.ParseResult.WellFormedFunction
 import org.junit.jupiter.api.Test
+import xyz.ragunath.soso.ParseResult.WellFormedFunction
 
 class ParseTest {
   @Test

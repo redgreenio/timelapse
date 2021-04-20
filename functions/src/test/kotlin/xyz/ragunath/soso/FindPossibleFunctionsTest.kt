@@ -1,8 +1,8 @@
-package io.redgreen.scout
+package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import org.junit.jupiter.api.Test
+import xyz.ragunath.soso.languages.kotlin.KotlinFunctionScanner
 
 class FindPossibleFunctionsTest {
   @Test

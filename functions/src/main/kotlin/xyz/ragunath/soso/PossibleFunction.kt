@@ -1,4 +1,4 @@
-package io.redgreen.scout
+package xyz.ragunath.soso
 
 data class PossibleFunction(
   val name: String,

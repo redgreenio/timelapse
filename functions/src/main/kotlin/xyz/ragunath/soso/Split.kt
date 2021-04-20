@@ -1,4 +1,4 @@
-package io.redgreen.scout
+package xyz.ragunath.soso
 
 // TODO(rj) 13/Oct/19 - Assertions for incoming parameters - line numbers, sorting, no dupes, etc.,
 fun split(

@@ -1,12 +1,12 @@
-package io.redgreen.scout.languages.swift
+package xyz.ragunath.soso.languages.swift
 
-import io.redgreen.scout.FunctionScanner
-import io.redgreen.scout.PossibleFunction
-import io.redgreen.scout.extensions.push
-import io.redgreen.scout.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION
-import io.redgreen.scout.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION_NAME
-import io.redgreen.scout.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_OPEN_PARENTHESIS
-import io.redgreen.scout.languages.swift.SwiftFunctionScanner.ScanMode.SKIP_SINGLE_LINE_COMMENT
+import xyz.ragunath.soso.FunctionScanner
+import xyz.ragunath.soso.PossibleFunction
+import xyz.ragunath.soso.extensions.push
+import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION
+import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION_NAME
+import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_OPEN_PARENTHESIS
+import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SKIP_SINGLE_LINE_COMMENT
 
 object SwiftFunctionScanner : FunctionScanner {
   private val KEYWORD = "func ".toCharArray()

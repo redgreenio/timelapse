@@ -1,4 +1,4 @@
-package io.redgreen.scout
+package xyz.ragunath.soso
 
 sealed class ParseResult(
   open val startLine: Int,
