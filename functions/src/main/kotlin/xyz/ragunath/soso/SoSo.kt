@@ -4,22 +4,18 @@ import java.util.Stack
 
 typealias Depth = Int
 
-data class Result(
-  val depth: Depth
-)
-
 object SoSo {
-  fun analyze(function: String): Result {
+  fun depthOf(code: String): Depth {
     val depthStack = Stack<Depth>()
-    var maximumDepth = 0
+    var maxDepth = 0
 
-    function
+    code
       .fold(0) { depth, char ->
         when (char) {
           '{' -> {
             depthStack.push(depth + 1)
-            if (depthStack.peek() > maximumDepth) {
-              maximumDepth = depthStack.size
+            if (depthStack.size > maxDepth) {
+              maxDepth = depthStack.size
             }
             depthStack.peek()
           }
@@ -30,6 +26,6 @@ object SoSo {
         }
       }
 
-    return Result(maximumDepth)
+    return maxDepth
   }
 }
