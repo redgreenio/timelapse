@@ -3,7 +3,6 @@ package io.redgreen.scout
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import org.junit.jupiter.api.Test
-import java.util.Optional
 
 class DetectFunctionsTest {
   @Test
@@ -27,9 +26,9 @@ class DetectFunctionsTest {
 
     assertThat(getParseResults(KotlinFunctionScanner::scan, functionWithTopLevelFunctions))
       .containsExactly(
-        ParseResult.wellFormedFunction(1, 3, 1, Optional.of(Name("add"))),
-        ParseResult.wellFormedFunction(5, 7, 1, Optional.of(Name("subtract"))),
-        ParseResult.wellFormedFunction(9, 11, 1, Optional.of(Name("multiply")))
+        ParseResult.wellFormedFunction("add", 1, 3, 1),
+        ParseResult.wellFormedFunction("subtract", 5, 7, 1),
+        ParseResult.wellFormedFunction("multiply", 9, 11, 1)
       )
       .inOrder()
   }
@@ -63,10 +62,10 @@ class DetectFunctionsTest {
 
     assertThat(getParseResults(KotlinFunctionScanner::scan, fileWithClassFunctionsAndOneTopLevelFunction))
       .containsExactly(
-        ParseResult.wellFormedFunction(4, 6, 1, Optional.of(Name("add"))),
-        ParseResult.wellFormedFunction(8, 10, 1, Optional.of(Name("subtract"))),
-        ParseResult.wellFormedFunction(12, 14, 1, Optional.of(Name("multiply"))),
-        ParseResult.wellFormedFunction(17, 19, 1, Optional.of(Name("justOneTopLevelFunctionForKicks")))
+        ParseResult.wellFormedFunction("add", 4, 6, 1),
+        ParseResult.wellFormedFunction("subtract", 8, 10, 1),
+        ParseResult.wellFormedFunction("multiply", 12, 14, 1),
+        ParseResult.wellFormedFunction("justOneTopLevelFunctionForKicks", 17, 19, 1)
       )
       .inOrder()
   }
