@@ -5,7 +5,7 @@ import org.junit.Test
 
 class FunctionFinderTest {
   @Test
-  fun `it returns an empty list when there are no possible functions`() {
+  fun `when there are no possible functions, then return an empty list`() {
     val thereIsNothingInHere = "  "
 
     assertThat(findPossibleFunctions(thereIsNothingInHere))
@@ -13,7 +13,7 @@ class FunctionFinderTest {
   }
 
   @Test
-  fun `it can return the line number and name when there is one possible function`() {
+  fun `when there is one possible function, then return its line number`() {
     val oneFunction = """
       fun main() { println("Hello World!") }
     """.trimIndent()
@@ -24,7 +24,7 @@ class FunctionFinderTest {
   }
 
   @Test
-  fun `it can return the line numbers and names for two possible functions`() {
+  fun `when there are more than one top-level functions, then return their line numbers`() {
     val twoTopLevelFunctions = """
       fun main() {
       }
@@ -42,7 +42,7 @@ class FunctionFinderTest {
   }
 
   @Test
-  fun `it can return the line number and name of one possible function declared inside a class`() {
+  fun `when there is one function nested inside a class, then return it's line number`() {
     val classWithOneFunction = """
       class MrNobody {
         fun main() {
@@ -57,7 +57,7 @@ class FunctionFinderTest {
   }
 
   @Test
-  fun `it can return line numbers and names of multiple functions declared inside a class`() {
+  fun `when there are 3 functions nested inside a class, then return their line numbers`() {
     val classWithThreeFunctions = """
       package xyz.ragunath.naive.calculator
 
