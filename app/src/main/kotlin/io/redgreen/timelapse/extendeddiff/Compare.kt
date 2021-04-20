@@ -5,6 +5,7 @@ import io.redgreen.scout.ParseResult.WellFormedFunction
 import io.redgreen.scout.getParseResults
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 
 fun compare(
   beforeSource: String,
@@ -19,7 +20,9 @@ fun compare(
 
   return if (addedFunctions.isEmpty()) {
     deletedFunctions.map(::Deleted)
-  } else {
+  } else if (addedFunctions.size != deletedFunctions.size) {
     addedFunctions.map(::Added)
+  } else {
+    afterFunctions.map(::Modified)
   }
 }

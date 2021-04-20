@@ -5,6 +5,7 @@ import io.redgreen.scout.ParseResult
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 import org.junit.jupiter.api.Test
 
 class CompareTest {
@@ -88,6 +89,30 @@ class CompareTest {
     assertThat(affectedFunctions)
       .containsExactly(
         Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1))
+      )
+  }
+
+  @Test
+  fun `it should detect a modified function`() {
+    // given
+    val before = """
+      fun a() {
+      }
+    """.trimIndent()
+
+    val after = """
+      fun a() {
+        println("Hello, world!")
+      }
+    """.trimIndent()
+
+    // when
+    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    assertThat(affectedFunctions)
+      .containsExactly(
+        Modified(ParseResult.wellFormedFunction("a", 1, 3, 1))
       )
   }
 }
