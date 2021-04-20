@@ -27,24 +27,4 @@ class SwiftScannerTest {
       .containsExactly(PossibleFunction("oneFunction", 1))
       .inOrder()
   }
-
-  @Test
-  fun `it can detect more than one function from a snippet`() {
-    val addSubtractFunctions = """
-      func add(a: Int, b: Int) -> Int {
-        return a + b
-      }
-
-      func subtract(a: Int, b: Int) -> Int {
-        return a - b
-      }
-    """.trimIndent()
-
-    assertThat(swiftScan(addSubtractFunctions))
-      .containsExactly(
-        PossibleFunction("add", 1),
-        PossibleFunction("subtract", 5)
-      )
-      .inOrder()
-  }
 }
