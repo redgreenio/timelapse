@@ -19,50 +19,20 @@ fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
   return possibleFunctions.toList()
 }
 
-// TODO(rj) 13/Oct/19 - Assertions for incoming parameters - line numbers, sorting, no dupes, etc.,
-fun split(
-  text: String,
-  splitLineNumber: Int,
-  vararg moreSplitLineNumbers: Int
-): List<String> {
+fun split(text: String, splitLineNumber: Int): List<String> {
   val lines = text.split('\n')
   require(splitLineNumber <= lines.size) { "`splitLineNumber`: $splitLineNumber cannot be greater than the number of lines: ${lines.size}" }
 
-  if (lines.size == 1) {
-    return listOf(text)
+  if (lines.size > 1) {
+    val splitLines = mutableListOf<String>()
+    // splitLines.add(lines.first())
+    val firstSplit = lines.filterIndexed { index, _ -> index < splitLineNumber - 1 }.joinToString("\n")
+    splitLines.add(firstSplit)
+    val secondSplit = lines.filterIndexed { index, _ -> index >= splitLineNumber - 1 }.joinToString("\n")
+    splitLines.add(secondSplit)
+    lines.first()
+    return splitLines.toList()
   }
 
-  val splitLineNumbers = listOf(splitLineNumber, *moreSplitLineNumbers.toTypedArray())
-  return getSplitRanges(splitLineNumbers, lines.size)
-    .map { (startLine, endLine) -> splitRange(lines, startLine, endLine) }
-    .toList()
-}
-
-private fun getSplitRanges(
-  numbers: List<Int>,
-  numberOfLines: Int
-): List<Pair<Int, Int>> {
-  var splitRanges = numbers
-    .mapIndexed { index, number ->
-      if (index == numbers.size - 1) {
-        number to (numberOfLines + 1)
-      } else {
-        number to numbers[index + 1]
-      }
-    }
-  val startingLine = splitRanges.first().first
-  if (startingLine != 1) {
-    splitRanges = listOf(1 to startingLine, *splitRanges.toTypedArray())
-  }
-  return splitRanges
-}
-
-private fun splitRange(
-  lines: List<String>,
-  startLineNumber: Int,
-  endLineNumber: Int
-): String {
-  return lines
-    .filterIndexed { index, _ -> (index + 1) >= startLineNumber && (index + 1) < endLineNumber }
-    .joinToString("\n")
+  return listOf(text)
 }
