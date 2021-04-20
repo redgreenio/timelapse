@@ -7,6 +7,7 @@ import java.util.LinkedList
 private const val ESCAPED_NEWLINE = "%0A"
 
 private const val NEWLINE_CHAR = '\n'
+private const val PATCH_HEADER_CHAR = '@'
 private const val NO_NEW_LINE_INDICATOR_CHAR = '\\'
 
 fun applyPatch(text: String, patch: String): String {
@@ -30,7 +31,10 @@ private fun escapeNewlines(
   line: String,
   lines: List<String>
 ): String {
-  return if (index == 0 || index == lines.lastIndex || lines[index + 1].startsWith(NO_NEW_LINE_INDICATOR_CHAR)) {
+  val noNewlineRequired = line.startsWith(PATCH_HEADER_CHAR) ||
+    index == lines.lastIndex ||
+    lines[index + 1].startsWith(NO_NEW_LINE_INDICATOR_CHAR)
+  return if (noNewlineRequired) {
     line
   } else {
     "$line$ESCAPED_NEWLINE"
