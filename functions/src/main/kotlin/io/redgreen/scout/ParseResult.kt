@@ -15,10 +15,10 @@ sealed class ParseResult(
   ) : ParseResult(startLine, endLine)
 
   data class WellFormedFunction(
+    val name: Optional<Name> = Optional.empty(),
     override val startLine: Int,
     override val endLine: Int,
-    val depth: Depth,
-    val name: Optional<Name> = Optional.empty()
+    val depth: Depth
   ) : ParseResult(startLine, endLine) {
     fun addName(name: String): ParseResult {
       return copy(name = Optional.of(Name(name)))
@@ -37,14 +37,18 @@ sealed class ParseResult(
     }
 
     fun wellFormedFunction(startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
-      return wellFormedFunction(startLine, endLine, depth, Optional.empty())
+      return wellFormedFunction(Optional.empty(), startLine, endLine, depth)
     }
 
-    fun wellFormedFunction(startLine: Int, endLine: Int, depth: Int, name: Optional<Name>): WellFormedFunction {
+    fun wellFormedFunction(name: String, startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
+      return wellFormedFunction(Optional.of(Name(name)), startLine, endLine, depth)
+    }
+
+    private fun wellFormedFunction(name: Optional<Name>, startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
       check(startLine, endLine)
       check(depth >= 0) { "`depth`: $depth should be a positive integer" }
       check(!(startLine == 0 && endLine == 0 && depth != 0)) { "`depth` must be zero for a non-existent function, but was `$depth`" }
-      return WellFormedFunction(startLine, endLine, depth, name)
+      return WellFormedFunction(name, startLine, endLine, depth)
     }
 
     fun malformedFunction(startLine: Int, endLine: Int): MalformedFunction {
