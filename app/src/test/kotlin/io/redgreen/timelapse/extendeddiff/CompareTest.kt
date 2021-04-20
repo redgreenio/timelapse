@@ -26,10 +26,10 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
-    assertThat(affectedFunctions)
+    assertThat(comparisonResults)
       .containsExactly(
         Added(ParseResult.wellFormedFunction("b", 4, 5, 1))
       )
@@ -55,10 +55,10 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
-    assertThat(affectedFunctions)
+    assertThat(comparisonResults)
       .containsExactly(
         Added(ParseResult.wellFormedFunction("b", 4, 5, 1)),
         Added(ParseResult.wellFormedFunction("c", 7, 8, 1))
@@ -83,10 +83,10 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
-    assertThat(affectedFunctions)
+    assertThat(comparisonResults)
       .containsExactly(
         Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1))
       )
@@ -106,10 +106,10 @@ class CompareTest {
     val after = "".trimIndent()
 
     // when
-    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
-    assertThat(affectedFunctions)
+    assertThat(comparisonResults)
       .containsExactly(
         Deleted(ParseResult.wellFormedFunction("a", 1, 2, 1)),
         Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1))
@@ -131,10 +131,10 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
-    assertThat(affectedFunctions)
+    assertThat(comparisonResults)
       .containsExactly(
         Modified(ParseResult.wellFormedFunction("a", 1, 3, 1))
       )
@@ -160,10 +160,10 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
-    assertThat(affectedFunctions)
+    assertThat(comparisonResults)
       .containsExactly(
         Modified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
         Modified(ParseResult.wellFormedFunction("a", 4, 5, 1))
@@ -197,10 +197,51 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
-    assertThat(affectedFunctions)
+    assertThat(comparisonResults)
+      .containsExactly(
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1)),
+        Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
+        Modified(ParseResult.wellFormedFunction("c", 7, 9, 1))
+      )
+  }
+
+  @Test
+  fun `patch and compare integration`() {
+    // given
+    val source = """
+      fun a() {
+      }
+
+      fun b() {
+      }
+
+      fun c() {
+      }
+    """.trimIndent()
+
+    val patch = """
+      @@ -1,8 +1,9 @@
+       fun a() {
+       }
+       
+      -fun b() {
+      +fun x() {
+       }
+       
+       fun c() {
+      +  println("Hello, world!")
+       }
+      \ No newline at end of file
+    """.trimIndent()
+
+    // when
+    val comparisonResults = patchAndCompare(source, patch, KotlinFunctionScanner)
+
+    // then
+    assertThat(comparisonResults)
       .containsExactly(
         Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1)),
         Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
