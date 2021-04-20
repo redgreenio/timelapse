@@ -315,10 +315,7 @@ class ParseTest {
     SubClass<String, Int>(u: "two").printAllThree(t: 1, v: [3])
     """.trimIndent()
 
-    val actualParseResult = MalformedFunction(1, 5)
     assertThat(parse(malformedSnippet))
-      .isEqualTo(actualParseResult)
-    assertThat(actualParseResult.length)
-      .isEqualTo(5)
+      .isEqualTo(MalformedFunction)
   }
 }
