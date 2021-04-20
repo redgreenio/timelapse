@@ -54,4 +54,18 @@ class ApplyPatchTest {
         """.trimIndent()
       )
   }
+
+  @Test
+  fun `it should apply an empty patch on an empty text`() {
+    // given
+    val emptyText = ""
+    val patch = ""
+
+    // when
+    val patchedText = applyPatch(emptyText, patch)
+
+    // then
+    assertThat(patchedText)
+      .isEqualTo(emptyText)
+  }
 }
