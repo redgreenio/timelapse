@@ -17,7 +17,6 @@ private const val SKIP_SINGLE_LINE_COMMENT = 2
 private const val SKIP_MULTILINE_COMMENT = 3
 
 fun analyze(snippet: String): List<Result> {
-  val results = mutableListOf<Result>()
   val chars = snippet.toCharArray()
   var previousChar = NULL_CHAR
 
@@ -25,7 +24,7 @@ fun analyze(snippet: String): List<Result> {
   var maximumDepthCount = 0
   var lineCount = 1
   var startLine = 0
-  var endLine: Int
+  var endLine = 0
   val depthStack = Stack<Depth>()
   for (char in chars) {
     if (char == TOKEN_NEW_LINE) {
@@ -34,7 +33,7 @@ fun analyze(snippet: String): List<Result> {
 
     when {
       isSingleLineComment(previousChar, char) -> mode = SKIP_SINGLE_LINE_COMMENT
-      isMultilineComment(mode, previousChar, char) -> mode = SKIP_MULTILINE_COMMENT
+      isMultilineComment(previousChar, char, mode) -> mode = SKIP_MULTILINE_COMMENT
     }
 
     when (mode) {
@@ -65,9 +64,7 @@ fun analyze(snippet: String): List<Result> {
           depthStack.pop()
           if (depthStack.isEmpty()) {
             endLine = lineCount
-            results.add(
-              Result.with(maximumDepthCount, calculateFunctionLength(startLine, endLine, maximumDepthCount), startLine, endLine)
-            )
+            return listOf(Result.with(maximumDepthCount, lineCount, startLine, endLine))
           }
         }
       }
@@ -76,28 +73,11 @@ fun analyze(snippet: String): List<Result> {
     previousChar = char
   }
 
-  return results.toList()
+  return listOf(Result.with(maximumDepthCount, lineCount, startLine, endLine))
 }
 
-private fun isSingleLineComment(
-  previousChar: Char,
-  char: Char
-): Boolean =
+private fun isSingleLineComment(previousChar: Char, char: Char): Boolean =
   previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH
 
-private fun isMultilineComment(
-  currentMode: Int,
-  previousChar: Char,
-  char: Char
-): Boolean =
-  previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK && currentMode != SKIP_SINGLE_LINE_COMMENT
-
-private fun calculateFunctionLength(
-  startLine: Int,
-  endLine: Int,
-  depth: Int
-): Int = if (endLine == startLine && depth == 0) {
-  0
-} else {
-  endLine - startLine + 1
-}
+private fun isMultilineComment(previousChar: Char, char: Char, currentMode: Int): Boolean =
+  (previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK) && currentMode != SKIP_SINGLE_LINE_COMMENT
