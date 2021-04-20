@@ -4,6 +4,7 @@ import io.redgreen.scout.FunctionScanner
 import io.redgreen.scout.ParseResult.WellFormedFunction
 import io.redgreen.scout.getParseResults
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 
 fun compare(
   beforeSource: String,
@@ -13,5 +14,12 @@ fun compare(
   val beforeFunctions = getParseResults(scanner::scan, beforeSource).filterIsInstance<WellFormedFunction>()
   val afterFunctions = getParseResults(scanner::scan, afterSource).filterIsInstance<WellFormedFunction>()
 
-  return (afterFunctions - beforeFunctions).map(::Added)
+  val addedFunctions = afterFunctions - beforeFunctions
+  val deletedFunctions = beforeFunctions - afterFunctions
+
+  return if (addedFunctions.isEmpty()) {
+    deletedFunctions.map(::Deleted)
+  } else {
+    addedFunctions.map(::Added)
+  }
 }
