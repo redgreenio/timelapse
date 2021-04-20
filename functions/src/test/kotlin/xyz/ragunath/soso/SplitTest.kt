@@ -49,6 +49,8 @@ class SplitTest {
 
     assertThat(split(threeLines, 2))
       .containsExactly(
+        "Line one",
+
         """
         Line two
         Line three
@@ -68,6 +70,11 @@ class SplitTest {
 
     assertThat(split(fourLines, 3))
       .containsExactly(
+        """
+          Line one
+          Line two
+        """.trimIndent(),
+
         """
           Line three
           Line four
@@ -101,6 +108,10 @@ class SplitTest {
 
     assertThat(split(fiveLines, 3, 4))
       .containsExactly(
+        """
+          Line one
+          Line two
+        """.trimIndent(),
         "Line three",
         """
           Line four
