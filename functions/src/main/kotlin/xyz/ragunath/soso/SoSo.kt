@@ -58,12 +58,7 @@ object SoSo {
             }
           }
 
-          TOKEN_CLOSE_CURLY -> {
-            depthStack.pop()
-            if (depthStack.isEmpty()) {
-              return Result(maximumDepthCount, lineCount)
-            }
-          }
+          TOKEN_CLOSE_CURLY -> depthStack.pop()
         }
       }
 
