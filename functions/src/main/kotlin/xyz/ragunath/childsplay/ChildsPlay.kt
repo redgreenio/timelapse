@@ -2,7 +2,7 @@ package xyz.ragunath.childsplay
 
 import xyz.ragunath.soso.ParseResult.WellFormedFunction
 import xyz.ragunath.soso.getParseResults
-import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner
+import xyz.ragunath.soso.swift.SwiftFunctionScanner
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.function.BiPredicate

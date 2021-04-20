@@ -1,12 +1,12 @@
-package xyz.ragunath.soso.languages.swift
+package xyz.ragunath.soso.swift
 
 import xyz.ragunath.soso.FunctionScanner
 import xyz.ragunath.soso.PossibleFunction
 import xyz.ragunath.soso.extensions.push
-import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION
-import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION_NAME
-import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_OPEN_PARENTHESIS
-import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SKIP_SINGLE_LINE_COMMENT
+import xyz.ragunath.soso.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION
+import xyz.ragunath.soso.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNCTION_NAME
+import xyz.ragunath.soso.swift.SwiftFunctionScanner.ScanMode.SEEK_OPEN_PARENTHESIS
+import xyz.ragunath.soso.swift.SwiftFunctionScanner.ScanMode.SKIP_SINGLE_LINE_COMMENT
 
 class SwiftFunctionScanner : FunctionScanner {
   private val keyword = "func ".toCharArray()
