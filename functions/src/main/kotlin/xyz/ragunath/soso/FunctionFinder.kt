@@ -18,9 +18,3 @@ fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
 
   return possibleFunctions.toList()
 }
-
-fun split(text: String, splitLineNumber: Int): String {
-  val lines = text.split('\n')
-  require(splitLineNumber <= lines.size) { "`splitLineNumber`: $splitLineNumber cannot be greater than the number of lines: ${lines.size}" }
-  return text
-}
