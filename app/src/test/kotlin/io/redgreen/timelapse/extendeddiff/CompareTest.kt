@@ -9,12 +9,12 @@ class CompareTest {
   @Test
   fun `it should detect an added function`() {
     // given
-    val a = """
+    val before = """
       fun a() {
       }
     """.trimIndent()
 
-    val aDash = """
+    val after = """
       fun a() {
       }
 
@@ -23,7 +23,7 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(a, aDash, KotlinFunctionScanner)
+    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
 
     // then
     assertThat(affectedFunctions)
@@ -35,12 +35,12 @@ class CompareTest {
   @Test
   fun `it should detect several added functions`() {
     // given
-    val a = """
+    val before = """
       fun a() {
       }
     """.trimIndent()
 
-    val aDash = """
+    val after = """
       fun a() {
       }
 
@@ -52,7 +52,7 @@ class CompareTest {
     """.trimIndent()
 
     // when
-    val affectedFunctions = compare(a, aDash, KotlinFunctionScanner)
+    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
 
     // then
     assertThat(affectedFunctions)
