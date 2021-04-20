@@ -196,19 +196,6 @@ class SoSoTest {
       .isEqualTo(expectedResult)
   }
 
-  @Test
-  fun `it can ignore nested single-line comments`() {
-    val functionWithNestedSingleLineComments = """
-      fun main() {
-        // {} //
-      }
-    """.trimIndent()
-    val expectedResult = Result(1, 3)
-
-    assertThat(SoSo.analyze(functionWithNestedSingleLineComments))
-      .isEqualTo(expectedResult)
-  }
-
   // TODO Ignore new lines after the function
   // TODO What is a depth/nesting of a function?
   // TODO Find the system newline character in a given file
