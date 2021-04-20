@@ -10,7 +10,7 @@ private const val NEWLINE_CHAR = '\n'
 private const val PATCH_HEADER_CHAR = '@'
 private const val NO_NEW_LINE_INDICATOR_CHAR = '\\'
 
-fun applyPatch(text: String, patch: String): String {
+internal fun applyPatch(text: String, patch: String): String {
   val diffMatchPatch = diff_match_patch()
   val patchFromText = diffMatchPatch.patch_fromText(formatPatchForDiffMatchPatch(patch))
 
