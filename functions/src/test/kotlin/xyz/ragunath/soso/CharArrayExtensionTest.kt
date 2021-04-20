@@ -2,7 +2,6 @@ package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import xyz.ragunath.soso.extensions.push
 
 private const val NULL_CHAR = '\u0000'
@@ -39,15 +38,5 @@ class CharArrayExtensionTest {
 
     assertThat(String(charArray))
       .isEqualTo("3456")
-  }
-
-  @Test
-  fun `it throws an exception when chars are pushed into an array with length 0`() {
-    val exception = assertThrows<IllegalStateException> {
-      val zeroLengthArray = CharArray(0)
-      zeroLengthArray.push('a')
-    }
-    assertThat(exception.message)
-      .isEqualTo("Cannot push into a zero-length array")
   }
 }
