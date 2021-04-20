@@ -82,4 +82,26 @@ class ApplyPatchTest {
     assertThat(patchedText)
       .isEqualTo(helloWorld)
   }
+
+  @Test
+  fun `it should apply a deletion patch on a non-empty text to a non-empty text`() {
+    // given
+    val helloWorld = """
+      Hello, world!
+      Nice to meet you!
+    """.trimIndent()
+
+    val patch = """
+      @@ -1,2 +1 @@
+      -Hello, world!
+       Nice to meet you!
+    """.trimIndent()
+
+    // when
+    val patchedText = applyPatch(helloWorld, patch)
+
+    // then
+    assertThat(patchedText)
+      .isEqualTo("Nice to meet you!")
+  }
 }
