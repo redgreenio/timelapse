@@ -17,7 +17,7 @@ data class Result(
 object SoSo {
   private const val COMMENT_REPLACEMENT_STRING = "//"
 
-  private val SINGLE_LINE_COMMENT_REGEX = Regex("//.*")
+  private val SINGLE_LINE_COMMENT_REGEX = Regex("//+\\s[^.!?]*")
   private val MULTILINE_COMMENT_IN_ONE_LINE_REGEX = Regex("/\\*+\\s[^.!?]*\\*/")
 
   fun analyze(snippet: String): Result {
