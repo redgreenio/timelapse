@@ -12,17 +12,25 @@ fun compare(
   afterSource: String,
   scanner: FunctionScanner
 ): List<ComparisonResult> {
-  val beforeFunctions = getParseResults(scanner::scan, beforeSource).filterIsInstance<WellFormedFunction>()
-  val afterFunctions = getParseResults(scanner::scan, afterSource).filterIsInstance<WellFormedFunction>()
+  val functionsInBefore = getWellFormedFunctions(beforeSource, scanner)
+  val functionsInAfter = getWellFormedFunctions(afterSource, scanner)
 
-  val addedFunctions = afterFunctions - beforeFunctions
-  val deletedFunctions = beforeFunctions - afterFunctions
+  val addedFunctions = functionsInAfter - functionsInBefore
+  val deletedFunctions = functionsInBefore - functionsInAfter
 
-  return if (addedFunctions.isEmpty()) {
-    deletedFunctions.map(::Deleted)
-  } else if (addedFunctions.size != deletedFunctions.size) {
-    addedFunctions.map(::Added)
-  } else {
-    afterFunctions.map(::Modified)
-  }
+  val addedFunctionNames = addedFunctions.map(WellFormedFunction::name)
+  val deletedFunctionName = deletedFunctions.map(WellFormedFunction::name)
+  val modifiedFunctionNames = deletedFunctionName.intersect(addedFunctionNames)
+  val modifiedFunctions = functionsInAfter.filter { modifiedFunctionNames.contains(it.name) }
+
+  return addedFunctions.filter { it.name !in modifiedFunctionNames }.map(::Added) +
+    deletedFunctions.filter { it.name !in modifiedFunctionNames }.map(::Deleted) +
+    modifiedFunctions.map(::Modified)
+}
+
+private fun getWellFormedFunctions(
+  source: String,
+  scanner: FunctionScanner
+): List<WellFormedFunction> {
+  return getParseResults(scanner::scan, source).filterIsInstance<WellFormedFunction>()
 }
