@@ -17,8 +17,7 @@ class FunctionAnalyzerTest {
     val noBrackets = "    "
 
     assertThat(analyze(noBrackets))
-      .containsExactly(Result.with(0, 1, 0, 0))
-      .inOrder()
+      .isEqualTo(Result.with(0, 1, 0, 0))
   }
 
   @Test
@@ -30,8 +29,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
 
     assertThat(analyze(justComments))
-      .containsExactly(Result.with(0, 3, 0, 0))
-      .inOrder()
+      .isEqualTo(Result.with(0, 3, 0, 0))
   }
 
   @Test
@@ -40,8 +38,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 1, 1, 1)
 
     assertThat(analyze(onePairOfBracketsSingleLine))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -50,8 +47,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(2, 1, 1, 1)
 
     assertThat(analyze(twoPairsOfBracketsSingleLine))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -63,8 +59,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 2, 1, 2)
 
     assertThat(analyze(onePairOfBracketDifferentLines))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -76,8 +71,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 2, 1, 2)
 
     assertThat(analyze(mainFunction))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -92,8 +86,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(2, 5, 1, 5)
 
     assertThat(analyze(functionWithConditional))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -112,8 +105,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(2, 9, 1, 9)
 
     assertThat(analyze(functionWithIfElseLadder))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -141,8 +133,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(5, 18, 1, 18)
 
     assertThat(analyze(functionWith4LevelsOfNesting))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -156,8 +147,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 4, 1, 4)
 
     assertThat(analyze(functionWithCommentedMatchingBraces))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -174,8 +164,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 7, 1, 7)
 
     assertThat(analyze(functionWithCommentedCode))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -189,8 +178,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 4, 1, 4)
 
     assertThat(analyze(functionWithCommentedMatchingBraces))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -207,8 +195,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 7, 1, 7)
 
     assertThat(analyze(functionWithMultilineCommentedCode))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -221,8 +208,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 3, 1, 3)
 
     assertThat(analyze(functionWithNestedSingleLineComments))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -243,8 +229,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(2, 11, 1, 11)
 
     assertThat(analyze(functionWithNestedMultilineComments))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   @Test
@@ -259,8 +244,7 @@ class FunctionAnalyzerTest {
     val expectedResult = Result.with(1, 5, 3, 5)
 
     assertThat(analyze(functionDeclarationWithPackageName))
-      .containsExactly(expectedResult)
-      .inOrder()
+      .isEqualTo(expectedResult)
   }
 
   // TODO Derive length of the function from start row and end row
