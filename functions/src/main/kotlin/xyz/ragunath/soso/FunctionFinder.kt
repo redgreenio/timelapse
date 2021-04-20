@@ -2,7 +2,7 @@ package xyz.ragunath.soso
 
 private const val FUNCTION_KEYWORD = "fun"
 
-fun kotlinFunctionScanner(snippet: String): List<PossibleFunction> {
+fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
   if (snippet.isBlank()) return emptyList()
 
   val possibleFunctions = mutableListOf<PossibleFunction>()
@@ -40,11 +40,8 @@ fun split(
     .toList()
 }
 
-fun getFunctionResults(
-  scanner: (String) -> List<PossibleFunction>,
-  snippet: String
-): List<Result> {
-  val possibleFunctions = scanner(snippet)
+fun detectFunctions(snippet: String): List<Result> {
+  val possibleFunctions = findPossibleFunctions(snippet)
   val lineNumbers = possibleFunctions.map { it.startLineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
   val results = functionSnippets

@@ -8,7 +8,7 @@ class FindPossibleFunctionsTest {
   fun `it returns an empty list when there are no possible functions`() {
     val thereIsNothingInHere = "  "
 
-    assertThat(kotlinFunctionScanner(thereIsNothingInHere))
+    assertThat(findPossibleFunctions(thereIsNothingInHere))
       .isEmpty()
   }
 
@@ -18,7 +18,7 @@ class FindPossibleFunctionsTest {
       fun main() { println("Hello World!") }
     """.trimIndent()
 
-    assertThat(kotlinFunctionScanner(oneFunction))
+    assertThat(findPossibleFunctions(oneFunction))
       .containsExactly(PossibleFunction("main", 1))
       .inOrder()
   }
@@ -33,7 +33,7 @@ class FindPossibleFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(kotlinFunctionScanner(twoTopLevelFunctions))
+    assertThat(findPossibleFunctions(twoTopLevelFunctions))
       .containsExactly(
         PossibleFunction("main", 1),
         PossibleFunction("printNothing", 4)
@@ -51,7 +51,7 @@ class FindPossibleFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(kotlinFunctionScanner(classWithOneFunction))
+    assertThat(findPossibleFunctions(classWithOneFunction))
       .containsExactly(PossibleFunction("main", 2))
       .inOrder()
   }
@@ -76,7 +76,7 @@ class FindPossibleFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(kotlinFunctionScanner(classWithThreeFunctions))
+    assertThat(findPossibleFunctions(classWithThreeFunctions))
       .containsExactly(
         PossibleFunction("add", 4),
         PossibleFunction("subtract", 8),
