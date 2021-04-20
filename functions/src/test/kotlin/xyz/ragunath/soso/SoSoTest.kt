@@ -209,27 +209,6 @@ class SoSoTest {
       .isEqualTo(expectedResult)
   }
 
-  @Test
-  fun `it can ignore nested multiline comments`() {
-    val functionWithNestedMultilineComments = """
-      fun main() {
-        /*
-          /* {} */
-          if (!false) {
-            // Do nothing.
-          } /* */
-        */
-        if (true) {
-          println("Ahoy!")
-        }
-      }
-    """.trimIndent()
-    val expectedResult = Result(2, 11)
-
-    assertThat(SoSo.analyze(functionWithNestedMultilineComments))
-      .isEqualTo(expectedResult)
-  }
-
   // TODO Ignore new lines after the function
   // TODO What is a depth/nesting of a function?
   // TODO Find the system newline character in a given file
