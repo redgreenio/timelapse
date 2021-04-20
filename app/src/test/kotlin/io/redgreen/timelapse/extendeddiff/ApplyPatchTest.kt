@@ -68,4 +68,18 @@ class ApplyPatchTest {
     assertThat(patchedText)
       .isEqualTo(emptyText)
   }
+
+  @Test
+  fun `it should apply an empty patch on a non-empty text`() {
+    // given
+    val helloWorld = "Hello, world!"
+    val patch = ""
+
+    // when
+    val patchedText = applyPatch(helloWorld, patch)
+
+    // then
+    assertThat(patchedText)
+      .isEqualTo(helloWorld)
+  }
 }
