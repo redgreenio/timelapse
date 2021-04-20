@@ -6,7 +6,6 @@ import java.util.LinkedList
 /* Please refer: https://github.com/google/diff-match-patch/wiki/Unidiff */
 private const val ESCAPED_NEWLINE = "%0A"
 
-private const val INSERTION_CHAR = '+'
 private const val NEWLINE_CHAR = '\n'
 
 fun applyPatch(text: String, patch: String): String {
@@ -20,13 +19,14 @@ fun applyPatch(text: String, patch: String): String {
 private fun formatPatchForDiffMatchPatch(patch: String): String {
   val lines = patch.split(NEWLINE_CHAR)
 
-  return lines
+  val escapedLines = lines
     .mapIndexed { index, line ->
-      if (line.startsWith(INSERTION_CHAR) && index != lines.lastIndex) {
+      if (index != 0 && index != lines.lastIndex) {
         "$line$ESCAPED_NEWLINE"
       } else {
         line
       }
     }
+  return escapedLines
     .joinToString(NEWLINE_CHAR.toString())
 }
