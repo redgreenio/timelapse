@@ -21,6 +21,9 @@ sealed class ParseResult() {
 
     val length: Int
       get() = endLine - startLine + 1
+
+    fun withOffset(offset: Int): WellFormedFunction = // TODO Get rid of this function
+      copy(startLine = offset + startLine, endLine = offset + endLine)
   }
 
   // TODO MalformedFunction

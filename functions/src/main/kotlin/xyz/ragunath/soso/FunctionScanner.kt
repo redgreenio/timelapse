@@ -1,5 +1,7 @@
 package xyz.ragunath.soso
 
+import xyz.ragunath.soso.ParseResult.WellFormedFunction
+
 // TODO(rj) 13/Oct/19 - Assertions for incoming parameters - line numbers, sorting, no dupes, etc.,
 fun split(
   text: String,
@@ -31,10 +33,15 @@ fun getParseResults(
   val lineNumbers = possibleFunctions.map { it.startLineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
   val parseResults = functionSnippets
-    .zip(lineNumbers)
-    .map { (functionSnippet, lineNumber) -> parse(functionSnippet, lineNumber) }
+    .map { functionSnippet -> parse(functionSnippet) }
 
-  return possibleFunctions.zip(parseResults) { _, result -> result }
+  return possibleFunctions.zip(parseResults) { possibleFunction, result ->
+    if (result is WellFormedFunction) {
+      result.withOffset(possibleFunction.startLineNumber - 1) // FIXME, supply the offset to the finder function. This should just be a `zip` call
+    } else {
+      result
+    }
+  }
 }
 
 private fun getSplitRanges(
