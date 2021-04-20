@@ -1,5 +1,7 @@
 package io.redgreen.scout
 
+import java.util.Optional
+
 sealed class ParseResult(
   open val startLine: Int,
   open val endLine: Int
@@ -15,7 +17,8 @@ sealed class ParseResult(
   data class WellFormedFunction(
     override val startLine: Int,
     override val endLine: Int,
-    val depth: Depth
+    val depth: Depth,
+    val name: Optional<Name> = Optional.empty()
   ) : ParseResult(startLine, endLine)
 
   data class MalformedFunction(
