@@ -63,6 +63,8 @@ mkdir proguard-lab
 
 ## 🚀 Creating a release
 
+Ensure the working directory is clean before creating a release. Stash or commit changes to a different branch if the working directory is dirty.
+
 ### Step 1 of 7 - Get the version for the release
 
 Run the following command to get the version.
@@ -89,14 +91,18 @@ Underneath the `## [Unreleased]` section, add the version and date in the follow
 
 Example,
 ```md
-## [2021.0.1] - 2021-04-13
+## [2021.0.2] - 2021-04-13
 ```
 
-### Step 3 of 7 - Update version in code and buildscript
+### Step 3 of 7 - Commit changes
 
-- `TimelapseApp.kt` - update `APP_VERSION` to reflect the current version.
-- `app/build.gradle.kts` - update `version` to reflect the current version.
-- Stage and commit all changes with the message `build: bump version for release`.
+Stage and commit changes.
+
+```shell
+git add .
+
+git commit -m "docs: update CHANGELOG"
+```
 
 ### Step 4 of 7 - Build native package
 
@@ -118,24 +124,33 @@ You should see the version number for the build in two places,
 Add a git tag to the release with the version number and push it to remote.
 
 ```shell
-git tag <version>
+git tag 2021.0.2
 ```
 
 ```shell
-git push origin <version>
+git push origin 2021.0.2
 ```
 
 ### Step 7 of 7 - Preparing for the next release
 
-**5.1 Determine the version number for the next release.**
+Determine the version number for the next release.
 
-If the current release was public, then append `.1`
-to the version name. Example, if the current release was `2021.3`, the next would be `2021.3.1`.
+```shell
+gradlew nextInternalVersion
+```
 
-If the current release was internal, then increment the `build-number` by 1. For example, if the current release was
-`2021.4.10`, the next would be `2021.4.11`.
+Use the version number to update the following files.
 
-**5.2 Go to step 2 and update the version accordingly.**
+- `TimelapseApp.kt` - update `APP_VERSION` to reflect the current version.
+- `app/build.gradle.kts` - update `version` to reflect the current version.
+
+Stage and commit changes.
+
+```shell
+git add .
+
+git commit -m "build: prepare for next development version"
+```
 
 ## Distribution
 
