@@ -19,18 +19,8 @@ fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
   return possibleFunctions.toList()
 }
 
-fun split(text: String, splitLineNumber: Int): List<String> {
+fun split(text: String, splitLineNumber: Int): String {
   val lines = text.split('\n')
   require(splitLineNumber <= lines.size) { "`splitLineNumber`: $splitLineNumber cannot be greater than the number of lines: ${lines.size}" }
-
-  if (lines.size > 1) {
-    val splitLines = mutableListOf<String>()
-    splitLines.add(lines.first())
-    val remainingLines = lines.filterIndexed { index, _ -> index >= splitLineNumber - 1 }.joinToString("\n")
-    splitLines.add(remainingLines)
-    lines.first()
-    return splitLines.toList()
-  }
-
-  return listOf(text)
+  return text
 }
