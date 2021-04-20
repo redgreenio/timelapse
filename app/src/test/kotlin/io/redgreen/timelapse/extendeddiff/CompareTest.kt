@@ -139,4 +139,34 @@ class CompareTest {
         Modified(ParseResult.wellFormedFunction("a", 1, 3, 1))
       )
   }
+
+  @Test
+  fun `it should detect multiple modified functions`() {
+    // given
+    val before = """
+      fun a() {
+      }
+
+      fun b() {
+      }
+    """.trimIndent()
+
+    val after = """
+      fun b() {
+      }
+
+      fun a() {
+      }
+    """.trimIndent()
+
+    // when
+    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    assertThat(affectedFunctions)
+      .containsExactly(
+        Modified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
+        Modified(ParseResult.wellFormedFunction("a", 4, 5, 1))
+      )
+  }
 }
