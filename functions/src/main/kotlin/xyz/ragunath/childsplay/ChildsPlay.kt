@@ -29,7 +29,7 @@ fun main() {
       Files.readAllBytes(it)
     }
     .map { String(it) }
-    .map { snippet -> getParseResults(SwiftFunctionScanner::scan, snippet) }
+    .map { snippet -> getParseResults(SwiftFunctionScanner()::scan, snippet) }
     .filter { it.isNotEmpty() }
     .asSequence()
     .toList()

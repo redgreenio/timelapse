@@ -8,8 +8,8 @@ import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_FUNC
 import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SEEK_OPEN_PARENTHESIS
 import xyz.ragunath.soso.languages.swift.SwiftFunctionScanner.ScanMode.SKIP_SINGLE_LINE_COMMENT
 
-object SwiftFunctionScanner : FunctionScanner {
-  private val KEYWORD = "func ".toCharArray()
+class SwiftFunctionScanner : FunctionScanner {
+  private val keyword = "func ".toCharArray()
 
   private enum class ScanMode {
     SEEK_FUNCTION,
@@ -20,7 +20,7 @@ object SwiftFunctionScanner : FunctionScanner {
 
   override fun scan(snippet: String): List<PossibleFunction> {
     val possibleFunctions = mutableListOf<PossibleFunction>()
-    val buffer = CharArray(KEYWORD.size)
+    val buffer = CharArray(keyword.size)
     val snippetChars = snippet.toCharArray()
     var lineNumber = 1
     var possibleLineNumber = lineNumber
@@ -37,7 +37,7 @@ object SwiftFunctionScanner : FunctionScanner {
       }
 
       if (mode == SEEK_FUNCTION) {
-        if (buffer.contentEquals(KEYWORD)) {
+        if (buffer.contentEquals(keyword)) {
           possibleLineNumber = lineNumber
           mode = SEEK_FUNCTION_NAME
         }
