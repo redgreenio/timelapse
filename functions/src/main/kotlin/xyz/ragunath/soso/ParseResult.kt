@@ -1,13 +1,7 @@
 package xyz.ragunath.soso
 
-sealed class ParseResult {
-  data class Nothing(
-    val startLine: Int = 0,
-    val endLine: Int = 0
-  ) : ParseResult() {
-    val length: Int
-      get() = endLine - startLine + 1
-  }
+sealed class ParseResult() {
+  object Nothing : ParseResult()
 
   data class WellFormedFunction(
     val startLine: Int,

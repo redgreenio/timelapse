@@ -33,7 +33,7 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
   var mode = FIND_BLOCKS
   var maximumDepth = 0
   var lineNumber = if (lineNumberOffset == 0) 1 else lineNumberOffset
-  var startLineNumber = lineNumber
+  var startLineNumber = 0
   val endLineNumber: Int
   val depthStack = Stack<Depth>()
   for (char in snippetChars) {
@@ -102,7 +102,7 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
     previousChar = char
   }
 
-  return Nothing(startLineNumber, lineNumber)
+  return Nothing
 }
 
 private fun isSingleLineComment(currentScanMode: ScanMode, previousChar: Char, char: Char): Boolean =
