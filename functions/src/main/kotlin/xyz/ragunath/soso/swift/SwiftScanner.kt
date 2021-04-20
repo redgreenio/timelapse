@@ -8,7 +8,6 @@ private const val KEYWORD_FUNC = "func "
 private const val MODE_SEEK_FUNCTION = 0
 private const val MODE_SEEK_FUNCTION_NAME = 1
 private const val MODE_SEEK_OPEN_PARENTHESIS = 2
-private const val MODE_SKIP_SINGLE_LINE_COMMENT = 3
 
 fun swiftScan(code: String): List<PossibleFunction> {
   val possibleFunctions = mutableListOf<PossibleFunction>()
@@ -17,16 +16,10 @@ fun swiftScan(code: String): List<PossibleFunction> {
   var lineNumber = 1
   var possibleFunctionLineNumber = lineNumber
   var mode = MODE_SEEK_FUNCTION
-  var previousMode = MODE_SEEK_FUNCTION
   val functionName = mutableListOf<Char>()
 
   for (char in codeChars) {
     buffer.push(char)
-
-    if (buffer[buffer.size - 2] == '/' && buffer[buffer.size - 1] == '/') {
-      previousMode = mode
-      mode = MODE_SKIP_SINGLE_LINE_COMMENT
-    }
 
     if (mode == MODE_SEEK_FUNCTION) {
       if (String(buffer) == KEYWORD_FUNC) { // FIXME, this will cause too many allocations and GC
@@ -35,13 +28,13 @@ fun swiftScan(code: String): List<PossibleFunction> {
       }
     }
 
-    if (mode == MODE_SEEK_FUNCTION_NAME && char != ' ' && char != '(') {
+    if (char != ' ' && char != '(' && mode == MODE_SEEK_FUNCTION_NAME) {
       functionName.add(char)
     } else if (char == '(') {
       mode = MODE_SEEK_OPEN_PARENTHESIS
     }
 
-    if (mode == MODE_SEEK_OPEN_PARENTHESIS && char == '{' && functionName.isNotEmpty()) {
+    if (char == '{' && mode == MODE_SEEK_OPEN_PARENTHESIS) {
       possibleFunctions.add(
         PossibleFunction(functionName.joinToString(""), possibleFunctionLineNumber)
       )
@@ -51,9 +44,6 @@ fun swiftScan(code: String): List<PossibleFunction> {
 
     if (char == '\n') {
       lineNumber++
-      if (mode == MODE_SKIP_SINGLE_LINE_COMMENT) {
-        mode = previousMode
-      }
     }
   }
 
