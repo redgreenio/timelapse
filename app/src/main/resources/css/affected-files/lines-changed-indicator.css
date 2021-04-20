@@ -1,0 +1,15 @@
+.deletions {
+  -fx-font-family: "Roboto Bold";
+  -fx-background-color: #F05545;
+  -fx-background-radius: 1.5;
+  -fx-font-size: 12;
+  -fx-padding: 1.4 5.0 1.5 5.0;
+}
+
+.insertions {
+  -fx-font-family: "Roboto Bold";
+  -fx-background-color: #629749;
+  -fx-background-radius: 1.5;
+  -fx-font-size: 12;
+  -fx-padding: 1.4 5.0 1.5 5.0;
+}

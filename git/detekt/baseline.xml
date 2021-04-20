@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongParameterList:CommitInfoUseCase.kt$CommitInfoUseCase$( commitHash: CommitHash, a: Property&lt;A&gt;, b: Property&lt;B&gt;, c: Property&lt;C&gt;, d: Property&lt;D&gt;, e: Property&lt;E&gt;, f: Property&lt;F&gt;, zip: (A, B, C, D, E, F) -&gt; T )</ID>
+    <ID>LongParameterList:CommitInfoUseCase.kt$CommitInfoUseCase$( commitHash: CommitHash, a: Property&lt;A&gt;, b: Property&lt;B&gt;, c: Property&lt;C&gt;, d: Property&lt;D&gt;, e: Property&lt;E&gt;, zip: (A, B, C, D, E) -&gt; T )</ID>
+    <ID>LongParameterList:CommitInfoUseCase.kt$CommitInfoUseCase$( commitHash: CommitHash, a: Property&lt;A&gt;, b: Property&lt;B&gt;, c: Property&lt;C&gt;, d: Property&lt;D&gt;, zip: (A, B, C, D) -&gt; T )</ID>
+    <ID>TooGenericExceptionCaught:GitDirectory.kt$GitDirectory.Companion$e: Throwable</ID>
+    <ID>TooManyFunctions:GetAffectedFilesUseCase.kt$GetAffectedFilesUseCase</ID>
+  </CurrentIssues>
+</SmellBaseline>

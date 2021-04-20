@@ -1,0 +1,32 @@
+def hooksDirectoryPath = rootProject.rootDir.canonicalPath + "${File.separatorChar}.git-hooks"
+
+tasks.create(name: 'installGitHooks') {
+    doLast {
+        def runningOnWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+        if (!runningOnWindows) {
+            Runtime.getRuntime().exec("chmod -R +x .git/hooks/");
+        }
+    }
+}
+
+// TODO: Check on Windows
+// TODO: .editorconfig for .gradle should use 2 spaces instead of 4
+// TODO: Explore if pre-commit can skip files in `buildSrc`
+task uninstallPreCommitHook(type: Delete) {
+    description = "Use only when making changes to the `buildSrc` directory. Once done run the 'installGitHooks' task."
+
+    delete files("${rootProject.rootDir}/.git/hooks/pre-commit")
+}
+
+task copyPreCommitHook(type: Copy) {
+    from new File(hooksDirectoryPath, 'pre-commit')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+}
+
+task copyPrePushHook(type: Copy) {
+    from new File(hooksDirectoryPath, 'pre-push')
+    into { new File(rootProject.rootDir, '.git/hooks') }
+}
+
+installGitHooks.dependsOn copyPreCommitHook
+installGitHooks.dependsOn copyPrePushHook

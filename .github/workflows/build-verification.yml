@@ -1,0 +1,43 @@
+name: Build Verification
+
+# Run this workflow every time a new commit is pushed to your repository
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  basics:
+    name: Basics
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 15
+
+      - name: Run Ktlint
+        run: ./gradlew ktlintCheck
+
+      - name: Run Detekt
+        run: ./gradlew detekt
+
+      - name: Run Unit Tests with Coverage
+        run: ./gradlew test jacocoTestReport
+
+      - name: Publish Test Report (only during failures)
+        uses: mikepenz/action-junit-report@v2
+        if: ${{ failure() }}
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          github_token: ${{ secrets.GITHUB_TOKEN }}

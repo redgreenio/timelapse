@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ForbiddenComment:DiscoverGitDirectoriesComboBox.kt$DiscoverGitDirectoriesComboBox$// FIXME: 06/03/21 Maybe replace with a regular ComboBox?</ID>
+    <ID>MagicNumber:GraphicsContext.kt$10</ID>
+    <ID>MagicNumber:GraphicsContext.kt$178</ID>
+    <ID>MagicNumber:GraphicsContext.kt$202</ID>
+    <ID>MagicNumber:GraphicsContext.kt$255</ID>
+    <ID>MagicNumber:Liftoff.kt$Liftoff$8.0</ID>
+  </CurrentIssues>
+</SmellBaseline>

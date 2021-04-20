@@ -1,0 +1,7 @@
+* {
+    -fx-theme-base: #ffffff;
+    -fx-text-fill: #000000;
+    -fx-mark-color: #808080;
+    -fx-color-primary: #efefef;
+    -fx-color-hover: #dfdfdf;
+}

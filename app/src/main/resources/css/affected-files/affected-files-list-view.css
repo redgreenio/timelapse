@@ -1,0 +1,86 @@
+/* Courtesy: https://dlsc.com/2017/09/07/javafx-tip-28-pretty-list-view/ */
+.affected-files-list-view > .virtual-flow > .scroll-bar,
+.affected-files-list-view > .virtual-flow > .scroll-bar .decrement-arrow,
+.affected-files-list-view > .virtual-flow > .scroll-bar .increment-arrow,
+.affected-files-list-view > .virtual-flow > .scroll-bar .decrement-button,
+.affected-files-list-view > .virtual-flow > .scroll-bar .increment-button {
+  -fx-pref-width: 0;
+  -fx-pref-height: 0;
+}
+
+.affected-files-list-view .affected-files-scroll-bar .decrement-arrow,
+.affected-files-list-view .affected-files-scroll-bar .increment-arrow {
+  -fx-pref-width: 0;
+  -fx-pref-height: 0;
+}
+
+.affected-files-list-view .scroll-bar:vertical .increment-button,
+.affected-files-list-view .scroll-bar:vertical .decrement-button {
+  -fx-background-color: transparent;
+  -fx-background-radius: 0em;
+  -fx-padding: 0 8 0 0;
+}
+
+.affected-files-list-view .scroll-bar:horizontal .increment-button,
+.affected-files-list-view .scroll-bar:horizontal .decrement-button {
+  -fx-background-color: transparent;
+  -fx-background-radius: 0em;
+  -fx-padding: 0 0 8 0;
+}
+
+.affected-files-list-view .affected-files-scroll-bar:vertical .thumb {
+  -fx-background-insets: 0 2 0 0;
+}
+
+.affected-files-list-view .affected-files-scroll-bar:horizontal .thumb {
+  -fx-background-insets: 0 0 2 0;
+}
+
+.affected-files-list-view .affected-files-scroll-bar:vertical {
+  -fx-background-color: transparent;
+  -fx-pref-width: 6;
+  -fx-pref-height: 6;
+  -fx-padding: 4 0 4 0;
+}
+
+.affected-files-list-view .affected-files-scroll-bar:horizontal {
+  -fx-background-color: transparent;
+  -fx-pref-width: 6;
+  -fx-pref-height: 6;
+  -fx-padding: 0 4 0 4;
+}
+
+.affected-files-list-view .affected-files-scroll-bar .thumb {
+  -fx-background-color: rgba(0, 0, 0, .2);
+  -fx-background-radius: 1000;
+  -fx-pref-width: 8;
+  -fx-pref-height: 8;
+}
+
+.affected-files-list-view .list-cell {
+  -fx-padding: 0.0em;
+  -fx-background-color: #FAFAFA;
+}
+
+.affected-files-list-view .list-cell:focused, .list-cell:selected {
+  -fx-background-color: #FFE07D;
+}
+
+.affected-files-list-view .list-cell:selected .label {
+  -fx-text-fill: black;
+}
+
+.affected-files-list-view {
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
+
+.affected-files-list-view .list-cell .indicators,
+.affected-files-list-view .list-cell:selected .indicators {
+  -fx-text-fill: white;
+}
+
+.affected-files-list-view .list-cell .mnemonic-tile,
+.affected-files-list-view .list-cell:selected .mnemonic-tile {
+  -fx-text-fill: white;
+}

@@ -1,0 +1,14 @@
+.file-row {
+  /* If this value is updated, then it should also be changed in `AffectedFileRow.kt` (used for row constraints) */
+  -fx-pref-height: 28;
+  -fx-padding: 0 8 0 4;
+}
+
+.file-row .filename {
+  -fx-font-family: "Roboto";
+  -fx-font-size: 12;
+}
+
+.file-row .spacer {
+  -fx-pref-width: 4.0;
+}
