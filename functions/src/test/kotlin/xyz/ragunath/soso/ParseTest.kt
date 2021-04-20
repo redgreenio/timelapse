@@ -2,6 +2,7 @@ package xyz.ragunath.soso
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
+import xyz.ragunath.soso.ParseResult.MalformedFunction
 import xyz.ragunath.soso.ParseResult.WellFormedFunction
 
 class ParseTest {
@@ -313,7 +314,7 @@ class ParseTest {
     SubClass<String, Int>(u: "two").printAllThree(t: 1, v: [3])
     """.trimIndent()
 
-    val actualParseResult = ParseResult.malformedFunction(1, 5)
+    val actualParseResult = MalformedFunction(1, 5)
     assertThat(parse(malformedSnippet))
       .isEqualTo(actualParseResult)
     assertThat(actualParseResult.length)
