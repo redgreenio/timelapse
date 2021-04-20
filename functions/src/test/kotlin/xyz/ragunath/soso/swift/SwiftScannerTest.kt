@@ -4,16 +4,14 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 import xyz.ragunath.soso.PossibleFunction
 
-class SwiftFunctionScannerTest {
-  private val swiftFunctionScanner = SwiftFunctionScanner()
-
+class SwiftScannerTest {
   @Test
   fun `it returns an empty list when there are no swift functions`() {
     val noSwiftHere = """
       There is no swift code here!
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(noSwiftHere))
+    assertThat(swiftScan(noSwiftHere))
       .isEmpty()
   }
 
@@ -25,7 +23,7 @@ class SwiftFunctionScannerTest {
       }
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(oneFunction))
+    assertThat(swiftScan(oneFunction))
       .containsExactly(PossibleFunction("oneFunction", 1))
       .inOrder()
   }
@@ -42,7 +40,7 @@ class SwiftFunctionScannerTest {
       }
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(addSubtractFunctions))
+    assertThat(swiftScan(addSubtractFunctions))
       .containsExactly(
         PossibleFunction("add", 1),
         PossibleFunction("subtract", 5)
@@ -58,7 +56,7 @@ class SwiftFunctionScannerTest {
       }
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(functionWithoutBody))
+    assertThat(swiftScan(functionWithoutBody))
       .isEmpty()
   }
 
@@ -70,7 +68,7 @@ class SwiftFunctionScannerTest {
       // func printItAgain(message: String) {}
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(comments))
+    assertThat(swiftScan(comments))
       .isEmpty()
   }
 
@@ -80,7 +78,7 @@ class SwiftFunctionScannerTest {
       func singleLineFunction() {}
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(singleLineFunction))
+    assertThat(swiftScan(singleLineFunction))
       .containsExactly(PossibleFunction("singleLineFunction", 1))
       .inOrder()
   }
@@ -94,7 +92,7 @@ class SwiftFunctionScannerTest {
       }
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(functionDefinitionAcrossMultipleLines))
+    assertThat(swiftScan(functionDefinitionAcrossMultipleLines))
       .containsExactly(PossibleFunction("add", 1))
       .inOrder()
   }
@@ -121,7 +119,7 @@ class SwiftFunctionScannerTest {
       }
     """.trimIndent()
 
-    assertThat(swiftFunctionScanner.scan(noFunctionDefinitions))
+    assertThat(swiftScan(noFunctionDefinitions))
       .isEmpty()
   }
 }
