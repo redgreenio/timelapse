@@ -5,13 +5,7 @@ import org.junit.Test
 
 // TODO Run an accuracy test for detection for each language
 class FunctionFinderTest {
-  @Test
-  fun `it can detect if there are no functions`() {
-    val blankText = "          "
-
-    assertThat(findFunction(blankText))
-      .isEqualTo(Location.NONE)
-  }
+  // TODO Test for no function
 
   @Test
   fun `it can return the start and end row of a function declaration`() {
