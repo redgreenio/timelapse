@@ -1,7 +1,5 @@
 package xyz.ragunath.soso
 
-private const val FUNCTION_KEYWORD = "fun"
-
 fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
   if (snippet.isBlank()) return emptyList()
 
@@ -9,8 +7,8 @@ fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
   var lineNumber = 1
   val lines = snippet.split('\n')
   for (line in lines) {
-    if (line.contains(FUNCTION_KEYWORD)) {
-      val endOfFunctionKeyword = line.indexOf(FUNCTION_KEYWORD) + FUNCTION_KEYWORD.length
+    if (line.contains("fun")) {
+      val endOfFunctionKeyword = line.indexOf("fun") + "fun".length
       val indexOfParentheses = line.indexOf('(')
       val name = line.substring(endOfFunctionKeyword, indexOfParentheses).trim()
       possibleFunctions.add(PossibleFunction(lineNumber, name))
@@ -44,9 +42,9 @@ fun detectFunctions(snippet: String): List<Result> {
   val possibleFunctions = findPossibleFunctions(snippet)
   val lineNumbers = possibleFunctions.map { it.lineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
-    .filter { it.contains(FUNCTION_KEYWORD) } // FIXME This is a hack-job, we are parsing the segment before the first function. Hence this.
   val results = functionSnippets
-    .map { functionSnippet -> analyze(functionSnippet) }
+    .map { functionSnippet -> analyze(functionSnippet) } // TODO Change signature to return Result instead of List<Result>
+    .flatten()
 
   return possibleFunctions.zip(results) { possibleFunction, result ->
     val offset = possibleFunction.lineNumber - 1

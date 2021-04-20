@@ -7,8 +7,6 @@ data class Result(
   val depth: Depth
 ) {
   companion object {
-    val EMPTY = with(0, 0, 0)
-
     fun with(startLine: Int, endLine: Int, depth: Int): Result {
       check(startLine.isPositive) { "`startLine`: $startLine should be a positive integer" }
       check(endLine.isPositive) { "`endLine`: $endLine should be a positive integer" }
