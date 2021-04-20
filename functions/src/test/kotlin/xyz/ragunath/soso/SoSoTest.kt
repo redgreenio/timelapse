@@ -60,22 +60,4 @@ class SoSoTest {
     assertThat(SoSo.depthOf(functionWithConditional))
       .isEqualTo(2)
   }
-
-  @Test
-  fun `when there is a Kotlin function with an if else ladder, then report a depth of 2`() {
-    val functionWithIfElseLadder = """
-      fun main() {
-        if (true) {
-          // Doesn't matter
-        } else if (!false) {
-          // Neither here... ¯\_(ツ)_/¯
-        } else {
-          // Nor here...
-        }
-      }
-    """.trimIndent()
-
-    assertThat(SoSo.depthOf(functionWithIfElseLadder))
-      .isEqualTo(2)
-  }
 }
