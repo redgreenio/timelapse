@@ -93,6 +93,30 @@ class CompareTest {
   }
 
   @Test
+  fun `it should detect several deleted functions`() {
+    // given
+    val before = """
+      fun a() {
+      }
+
+      fun b() {
+      }
+    """.trimIndent()
+
+    val after = "".trimIndent()
+
+    // when
+    val affectedFunctions = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    assertThat(affectedFunctions)
+      .containsExactly(
+        Deleted(ParseResult.wellFormedFunction("a", 1, 2, 1)),
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1))
+      )
+  }
+
+  @Test
   fun `it should detect a modified function`() {
     // given
     val before = """
