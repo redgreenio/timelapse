@@ -36,6 +36,7 @@ dependencies {
   implementation(projects.design)
   implementation(projects.architecture)
   implementation(projects.git)
+  implementation(projects.functions)
 
   implementation(kotlin("stdlib-jdk8"))
   implementation(deps.jgit)
