@@ -3,7 +3,7 @@ package xyz.ragunath.soso
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-class FunctionAnalyzerTest {
+class SoSoTest {
   @Test
   fun `empty result has 0 depth and 0 length`() {
     assertThat(Result.EMPTY.depth).isEqualTo(0)
@@ -14,7 +14,7 @@ class FunctionAnalyzerTest {
   fun `it returns just the line count for blank snippets`() {
     val noBrackets = "    "
 
-    assertThat(analyze(noBrackets))
+    assertThat(SoSo.analyze(noBrackets))
       .isEqualTo(Result(0, 1))
   }
 
@@ -26,7 +26,7 @@ class FunctionAnalyzerTest {
       // and yet another line of comment!
     """.trimIndent()
 
-    assertThat(analyze(justComments))
+    assertThat(SoSo.analyze(justComments))
       .isEqualTo(Result(0, 3))
   }
 
@@ -35,7 +35,7 @@ class FunctionAnalyzerTest {
     val onePairOfBracketsSingleLine = "{}"
     val expectedResult = Result(1, 1)
 
-    assertThat(analyze(onePairOfBracketsSingleLine))
+    assertThat(SoSo.analyze(onePairOfBracketsSingleLine))
       .isEqualTo(expectedResult)
   }
 
@@ -44,7 +44,7 @@ class FunctionAnalyzerTest {
     val twoPairsOfBracketsSingleLine = "{{}}"
     val expectedResult = Result(2, 1)
 
-    assertThat(analyze(twoPairsOfBracketsSingleLine))
+    assertThat(SoSo.analyze(twoPairsOfBracketsSingleLine))
       .isEqualTo(expectedResult)
   }
 
@@ -56,7 +56,7 @@ class FunctionAnalyzerTest {
       """.trimIndent()
     val expectedResult = Result(1, 2)
 
-    assertThat(analyze(onePairOfBracketDifferentLines))
+    assertThat(SoSo.analyze(onePairOfBracketDifferentLines))
       .isEqualTo(expectedResult)
   }
 
@@ -68,7 +68,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(1, 2)
 
-    assertThat(analyze(mainFunction))
+    assertThat(SoSo.analyze(mainFunction))
       .isEqualTo(expectedResult)
   }
 
@@ -83,7 +83,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(2, 5)
 
-    assertThat(analyze(functionWithConditional))
+    assertThat(SoSo.analyze(functionWithConditional))
       .isEqualTo(expectedResult)
   }
 
@@ -102,7 +102,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(2, 9)
 
-    assertThat(analyze(functionWithIfElseLadder))
+    assertThat(SoSo.analyze(functionWithIfElseLadder))
       .isEqualTo(expectedResult)
   }
 
@@ -130,7 +130,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(5, 18)
 
-    assertThat(analyze(functionWith4LevelsOfNesting))
+    assertThat(SoSo.analyze(functionWith4LevelsOfNesting))
       .isEqualTo(expectedResult)
   }
 
@@ -144,7 +144,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(1, 4)
 
-    assertThat(analyze(functionWithCommentedMatchingBraces))
+    assertThat(SoSo.analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
   }
 
@@ -161,7 +161,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(1, 7)
 
-    assertThat(analyze(functionWithCommentedCode))
+    assertThat(SoSo.analyze(functionWithCommentedCode))
       .isEqualTo(expectedResult)
   }
 
@@ -175,7 +175,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(1, 4)
 
-    assertThat(analyze(functionWithCommentedMatchingBraces))
+    assertThat(SoSo.analyze(functionWithCommentedMatchingBraces))
       .isEqualTo(expectedResult)
   }
 
@@ -192,7 +192,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(1, 7)
 
-    assertThat(analyze(functionWithMultilineCommentedCode))
+    assertThat(SoSo.analyze(functionWithMultilineCommentedCode))
       .isEqualTo(expectedResult)
   }
 
@@ -205,7 +205,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(1, 3)
 
-    assertThat(analyze(functionWithNestedSingleLineComments))
+    assertThat(SoSo.analyze(functionWithNestedSingleLineComments))
       .isEqualTo(expectedResult)
   }
 
@@ -226,7 +226,7 @@ class FunctionAnalyzerTest {
     """.trimIndent()
     val expectedResult = Result(2, 11)
 
-    assertThat(analyze(functionWithNestedMultilineComments))
+    assertThat(SoSo.analyze(functionWithNestedMultilineComments))
       .isEqualTo(expectedResult)
   }
 
