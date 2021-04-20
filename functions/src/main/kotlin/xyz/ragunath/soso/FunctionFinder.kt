@@ -42,26 +42,26 @@ fun split(
 
 fun detectFunctions(snippet: String): List<Result> {
   val possibleFunctions = findPossibleFunctions(snippet)
-  val lineNumbers = possibleFunctions.map { it.startLineNumber }
+  val lineNumbers = possibleFunctions.map { it.lineNumber }
   val functionSnippets = split(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())
   val results = functionSnippets
     .map { functionSnippet -> analyze(functionSnippet) }
 
   return possibleFunctions.zip(results) { possibleFunction, result ->
-    result.withOffset(possibleFunction.startLineNumber - 1)
+    result.withOffset(possibleFunction.lineNumber - 1)
   }
 }
 
 private fun getSplitRanges(
-  splitLineNumbers: List<Int>,
-  totalLines: Int
+  numbers: List<Int>,
+  numberOfLines: Int
 ): List<Pair<Int, Int>> {
-  return splitLineNumbers
+  return numbers
     .mapIndexed { index, number ->
-      if (index == splitLineNumbers.size - 1) {
-        number to (totalLines + 1)
+      if (index == numbers.size - 1) {
+        number to (numberOfLines + 1)
       } else {
-        number to splitLineNumbers[index + 1]
+        number to numbers[index + 1]
       }
     }
 }

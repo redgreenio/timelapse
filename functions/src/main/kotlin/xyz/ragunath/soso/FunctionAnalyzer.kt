@@ -64,11 +64,12 @@ fun analyze(snippet: String): Result {
 
           if (depthStack.isEmpty()) {
             endLineNumber = lineNumber
-            return Result.with(
+            val result = Result.with(
               startLineNumber,
               endLineNumber,
               maximumDepth
             )
+            return result
           }
         }
       }
