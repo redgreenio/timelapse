@@ -71,7 +71,6 @@ fun analyze(snippet: String): List<Result> {
               maximumDepth
             )
             results.add(result)
-            return results
           }
         }
       }

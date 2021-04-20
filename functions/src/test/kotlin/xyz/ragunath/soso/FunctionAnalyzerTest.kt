@@ -261,16 +261,34 @@ class FunctionAnalyzerTest {
   }
 
   @Test
-  fun `it can return as soon as it finds a matching top-level bracket`() {
-    val functionWithNonMatchingBracket = """
-        fun multiply(a: Int, b: Int) {
-          return a * b
+  fun `it can find multiple top-level functions in a given file`() {
+    val multipleTopLevelFunctions = """
+      package a.b.c
+
+      fun main() {
+        // Do nothing...
+      }
+
+      fun add(a: Int, b: Int): Int {
+        return a + b
+      }
+
+      fun subtract(a: Int, b: Int): Int {
+        return if (a > b) {
+          a - b
+        } else {
+          b - a
         }
       }
     """.trimIndent()
+    val results = analyze(multipleTopLevelFunctions)
 
-    assertThat(analyze(functionWithNonMatchingBracket))
-      .containsExactly(Result.with(1, 3, 1))
+    assertThat(results)
+      .containsExactly(
+        Result.with(3, 5, 1),
+        Result.with(7, 9, 1),
+        Result.with(11, 17, 2)
+      )
       .inOrder()
   }
 
