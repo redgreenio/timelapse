@@ -1,6 +1,6 @@
 package xyz.ragunath.soso
 
 data class PossibleFunction(
-  val lineNumber: Int,
+  val row: Int,
   val name: String
 )
