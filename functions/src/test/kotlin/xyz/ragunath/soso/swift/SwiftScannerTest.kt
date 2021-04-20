@@ -59,15 +59,4 @@ class SwiftScannerTest {
     assertThat(swiftScan(functionWithoutBody))
       .isEmpty()
   }
-
-  @Test
-  fun `it can skip lines that have commented out func keywords`() {
-    val comments = """
-      // this has a func keyword
-      // func printIt(message: String)
-    """.trimIndent()
-
-    assertThat(swiftScan(comments))
-      .isEmpty()
-  }
 }

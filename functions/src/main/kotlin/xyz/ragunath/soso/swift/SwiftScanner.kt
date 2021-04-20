@@ -12,18 +12,11 @@ fun swiftScan(code: String): List<PossibleFunction> {
   for (line in lines) {
     if (line.contains(KEYWORD_FUNC)) {
       val startIndex = line.indexOf(KEYWORD_FUNC)
-      when {
-        line.trim().startsWith("//") -> println("Found commented line `$line` on line $lineNumber. PTAL?")
-
-        line.trim().endsWith('{') -> {
-          val functionName = line.substring(startIndex + KEYWORD_FUNC.length, line.indexOf("(", startIndex))
-          possibleFunctions.add(PossibleFunction(functionName, lineNumber))
-        }
-
-        else -> {
-          val functionName = line.substring(startIndex + KEYWORD_FUNC.length, line.indexOf("(", startIndex))
-          println("Found `$functionName` on line $lineNumber. Excluding from result, PTAL?")
-        }
+      val functionName = line.substring(startIndex + KEYWORD_FUNC.length, line.indexOf("(", startIndex))
+      if (line.trim().endsWith('{')) {
+        possibleFunctions.add(PossibleFunction(functionName, lineNumber))
+      } else {
+        println("Found `$functionName` on line $lineNumber. Excluding from result, PTAL?")
       }
     }
     lineNumber++
