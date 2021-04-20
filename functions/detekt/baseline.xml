@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ComplexMethod:Parse.kt$fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult</ID>
+    <ID>ComplexMethod:SwiftFunctionScanner.kt$SwiftFunctionScanner$override fun scan(snippet: String): List&lt;PossibleFunction&gt;</ID>
+    <ID>LongMethod:Parse.kt$fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult</ID>
+    <ID>MaxLineLength:ParseResult.kt$ParseResult.Companion$check(!(startLine == 0 &amp;&amp; endLine == 0 &amp;&amp; depth != 0)) { "`depth` must be zero for a non-existent function, but was `$depth`" }</ID>
+    <ID>MaxLineLength:Split.kt$require(splitLineNumber &lt;= lines.size) { "`splitLineNumber`: $splitLineNumber cannot be greater than the number of lines: ${lines.size}" }</ID>
+    <ID>NestedBlockDepth:Parse.kt$fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult</ID>
+    <ID>ReturnCount:Parse.kt$fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult</ID>
+    <ID>SpreadOperator:ParseResults.kt$(snippet, lineNumbers.first(), *lineNumbers.drop(1).toIntArray())</ID>
+    <ID>SpreadOperator:Split.kt$(splitLineNumber, *moreSplitLineNumbers.toTypedArray())</ID>
+  </CurrentIssues>
+</SmellBaseline>
