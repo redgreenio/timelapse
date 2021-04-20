@@ -7,6 +7,7 @@ import java.util.LinkedList
 private const val ESCAPED_NEWLINE = "%0A"
 
 private const val NEWLINE_CHAR = '\n'
+private const val NO_NEW_LINE_INDICATOR_CHAR = '\\'
 
 fun applyPatch(text: String, patch: String): String {
   val diffMatchPatch = diff_match_patch()
@@ -18,15 +19,20 @@ fun applyPatch(text: String, patch: String): String {
 
 private fun formatPatchForDiffMatchPatch(patch: String): String {
   val lines = patch.split(NEWLINE_CHAR)
-
-  val escapedLines = lines
-    .mapIndexed { index, line ->
-      if (index != 0 && index != lines.lastIndex) {
-        "$line$ESCAPED_NEWLINE"
-      } else {
-        line
-      }
-    }
-  return escapedLines
+  return lines
+    .mapIndexed { index, line -> escapeNewlines(index, line, lines) }
+    .filter { !it.startsWith(NO_NEW_LINE_INDICATOR_CHAR) }
     .joinToString(NEWLINE_CHAR.toString())
+}
+
+private fun escapeNewlines(
+  index: Int,
+  line: String,
+  lines: List<String>
+): String {
+  return if (index == 0 || index == lines.lastIndex || lines[index + 1].startsWith(NO_NEW_LINE_INDICATOR_CHAR)) {
+    line
+  } else {
+    "$line$ESCAPED_NEWLINE"
+  }
 }

@@ -1,7 +1,6 @@
 package io.redgreen.timelapse.extendeddiff
 
 import com.google.common.truth.Truth.assertThat
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ApplyPatchTest {
@@ -29,7 +28,6 @@ class ApplyPatchTest {
       )
   }
 
-  @Disabled
   @Test
   fun `it should apply a patch on an non-empty text`() {
     // given
@@ -40,8 +38,10 @@ class ApplyPatchTest {
     val patch = """
       @@ -1 +1,2 @@
       -Hello, world!
+      \ No newline at end of file
       +Hello, world!
       +Nice to meet you!
+      \ No newline at end of file
     """.trimIndent()
 
     // when
