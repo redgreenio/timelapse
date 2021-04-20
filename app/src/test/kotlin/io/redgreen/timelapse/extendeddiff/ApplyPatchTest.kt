@@ -158,4 +158,65 @@ class ApplyPatchTest {
         """.trimIndent()
       )
   }
+
+  @Test
+  fun `it should apply multiple patches on a single text`() {
+    // given
+    val originalText = """
+      Apple
+      Orange
+      Grapes
+      Mango
+      Cucumber
+      Onion
+      Carrots
+      Shallot
+      Strawberry
+      Banana
+      Leek
+      Cheese
+      Shrimp
+    """.trimIndent()
+
+    val patch = """
+      @@ -1,5 +1,5 @@
+      +Avocado
+       Apple
+      -Orange
+       Grapes
+       Mango
+       Cucumber
+      @@ -9,5 +9,4 @@
+       Strawberry
+       Banana
+       Leek
+      -Cheese
+      -Shrimp
+      \ No newline at end of file
+      +Cheese
+      \ No newline at end of file
+    """.trimIndent()
+
+    // when
+    val patchedText = applyPatch(originalText, patch)
+
+    // then
+    assertThat(patchedText)
+      .isEqualTo(
+        """
+          Avocado
+          Apple
+          Grapes
+          Mango
+          Cucumber
+          Onion
+          Carrots
+          Shallot
+          Strawberry
+          Banana
+          Leek
+          Cheese
+        """.trimIndent()
+      )
+  }
 }
