@@ -8,10 +8,7 @@ fun findPossibleFunctions(snippet: String): List<PossibleFunction> {
   val lines = snippet.split('\n')
   for (line in lines) {
     if (line.contains("fun")) {
-      val endOfFunctionKeyword = line.indexOf("fun") + "fun".length
-      val indexOfParentheses = line.indexOf('(')
-      val name = line.substring(endOfFunctionKeyword, indexOfParentheses).trim()
-      possibleFunctions.add(PossibleFunction(lineNumber, name))
+      possibleFunctions.add(PossibleFunction(lineNumber))
     }
     lineNumber++
   }

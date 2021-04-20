@@ -19,7 +19,7 @@ class FunctionFinderTest {
     """.trimIndent()
 
     assertThat(findPossibleFunctions(oneFunction))
-      .containsExactly(PossibleFunction(1, "main"))
+      .containsExactly(PossibleFunction(1))
       .inOrder()
   }
 
@@ -34,10 +34,7 @@ class FunctionFinderTest {
     """.trimIndent()
 
     assertThat(findPossibleFunctions(twoTopLevelFunctions))
-      .containsExactly(
-        PossibleFunction(1, "main"),
-        PossibleFunction(4, "printNothing")
-      )
+      .containsExactly(PossibleFunction(1), PossibleFunction(4))
       .inOrder()
   }
 
@@ -52,7 +49,7 @@ class FunctionFinderTest {
     """.trimIndent()
 
     assertThat(findPossibleFunctions(classWithOneFunction))
-      .containsExactly(PossibleFunction(2, "main"))
+      .containsExactly(PossibleFunction(2))
       .inOrder()
   }
 
@@ -78,9 +75,9 @@ class FunctionFinderTest {
 
     assertThat(findPossibleFunctions(classWithThreeFunctions))
       .containsExactly(
-        PossibleFunction(4, "add"),
-        PossibleFunction(8, "subtract"),
-        PossibleFunction(12, "multiply")
+        PossibleFunction(4),
+        PossibleFunction(8),
+        PossibleFunction(12)
       )
       .inOrder()
   }
