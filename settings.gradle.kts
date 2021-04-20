@@ -8,6 +8,5 @@ include(
   "design",
   "liftoff",
   "architecture",
-  "git",
-  "functions"
+  "git"
 )

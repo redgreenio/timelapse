@@ -48,11 +48,6 @@ object deps {
     const val apt = "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
   }
 
-  object log4j {
-    const val api = "org.apache.logging.log4j:log4j-api:2.12.1"
-    const val core = "org.apache.logging.log4j:log4j-core:2.12.1"
-  }
-
   object test {
     object junit {
       const val api = "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
