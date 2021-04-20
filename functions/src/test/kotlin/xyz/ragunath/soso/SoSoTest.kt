@@ -5,75 +5,50 @@ import org.junit.Test
 
 class SoSoTest {
   @Test
-  fun `empty result has 0 depth and 0 length`() {
-    assertThat(Result.EMPTY.depth).isEqualTo(0)
-    assertThat(Result.EMPTY.length).isEqualTo(0)
+  fun `when there are no brackets, then return a depth of 0`() {
+    val noBrackets = ""
+    assertThat(SoSo.analyze(noBrackets).depth)
+      .isEqualTo(0)
   }
 
   @Test
-  fun `it returns an empty result for blank snippets`() {
-    val noBrackets = "    "
-
-    assertThat(SoSo.analyze(noBrackets))
-      .isEqualTo(Result.EMPTY)
-  }
-
-  @Test
-  fun `it returns an empty result for non-code snippets`() {
-    val justComments = """
-      // This is just some comment,
-      // followed by another line of comment,
-      // and yet another line of comment!
-    """.trimIndent()
-
-    assertThat(SoSo.analyze(justComments))
-      .isEqualTo(Result.EMPTY)
-  }
-
-  @Test
-  fun `it can analyze matching brackets in the same line`() {
+  fun `when there are a pair of brackets, then return a depth of 1 (single line)`() {
     val onePairOfBracketsSingleLine = "{}"
-    val expectedResult = Result(1, 1)
-
-    assertThat(SoSo.analyze(onePairOfBracketsSingleLine))
-      .isEqualTo(expectedResult)
+    assertThat(SoSo.analyze(onePairOfBracketsSingleLine).depth)
+      .isEqualTo(1)
   }
 
   @Test
-  fun `it can analyze two pairs of matching brackets in the same line`() {
+  fun `when there are two pairs of brackets, then return a depth of 2 (single line)`() {
     val twoPairsOfBracketsSingleLine = "{{}}"
-    val expectedResult = Result(2, 1)
-
-    assertThat(SoSo.analyze(twoPairsOfBracketsSingleLine))
-      .isEqualTo(expectedResult)
+    assertThat(SoSo.analyze(twoPairsOfBracketsSingleLine).depth)
+      .isEqualTo(2)
   }
 
   @Test
-  fun `it can analyze matching brackets on two lines`() {
+  fun `when there are a pair of brackets on different lines, then return a depth of 1`() {
     val onePairOfBracketDifferentLines = """
         {
         }
       """.trimIndent()
-    val expectedResult = Result(1, 2)
 
-    assertThat(SoSo.analyze(onePairOfBracketDifferentLines))
-      .isEqualTo(expectedResult)
+    assertThat(SoSo.analyze(onePairOfBracketDifferentLines).depth)
+      .isEqualTo(1)
   }
 
   @Test
-  fun `it can analyze a Kotlin top-level function with a depth of 1 and length of 2`() {
+  fun `when there is a Kotlin top-level function, then report a depth of 1`() {
     val mainFunction = """
       fun main() {
       }
     """.trimIndent()
-    val expectedResult = Result(1, 2)
 
-    assertThat(SoSo.analyze(mainFunction))
-      .isEqualTo(expectedResult)
+    assertThat(SoSo.analyze(mainFunction).depth)
+      .isEqualTo(1)
   }
 
   @Test
-  fun `it can analyze a Kotlin top-level function with a depth of 2 and a length of 5`() {
+  fun `when there is a Kotlin top-level function with a conditional, then report a depth of 2`() {
     val functionWithConditional = """
       fun main() {
         if (true) {
@@ -81,14 +56,13 @@ class SoSoTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result(2, 5)
 
-    assertThat(SoSo.analyze(functionWithConditional))
-      .isEqualTo(expectedResult)
+    assertThat(SoSo.analyze(functionWithConditional).depth)
+      .isEqualTo(2)
   }
 
   @Test
-  fun `it can analyze a Kotlin function with a depth of 2 and length of 9`() {
+  fun `when there is a Kotlin function with an if else ladder, then report a depth of 2`() {
     val functionWithIfElseLadder = """
       fun main() {
         if (true) {
@@ -100,14 +74,13 @@ class SoSoTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result(2, 9)
 
-    assertThat(SoSo.analyze(functionWithIfElseLadder))
-      .isEqualTo(expectedResult)
+    assertThat(SoSo.analyze(functionWithIfElseLadder).depth)
+      .isEqualTo(2)
   }
 
   @Test
-  fun `it can analyze a Kotlin function with a depth of 5 and a length of 18`() {
+  fun `when a kotlin function body has 4 nested if statements, then report a depth of 4 + 1`() {
     val functionWith4LevelsOfNesting = """
       fun notFun() {
         // Level 1
@@ -128,14 +101,8 @@ class SoSoTest {
         }
       }
     """.trimIndent()
-    val expectedResult = Result(5, 18)
 
-    assertThat(SoSo.analyze(functionWith4LevelsOfNesting))
-      .isEqualTo(expectedResult)
+    assertThat(SoSo.analyze(functionWith4LevelsOfNesting).depth)
+      .isEqualTo(4 + 1)
   }
-
-  // TODO Ignore Single line comments
-  // TODO Ignore Multi-line comments
-  // TODO Ignore new lines after the function
-  // TODO What is a depth/nesting of a function?
 }
