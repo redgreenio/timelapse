@@ -28,7 +28,7 @@ class CompareTest {
     // then
     assertThat(affectedFunctions)
       .containsExactly(
-        ParseResult.wellFormedFunction("b", 4, 5, 1)
+        ComparisonResult.Added(ParseResult.wellFormedFunction("b", 4, 5, 1))
       )
   }
 
@@ -57,8 +57,8 @@ class CompareTest {
     // then
     assertThat(affectedFunctions)
       .containsExactly(
-        ParseResult.wellFormedFunction("b", 4, 5, 1),
-        ParseResult.wellFormedFunction("c", 7, 8, 1)
+        ComparisonResult.Added(ParseResult.wellFormedFunction("b", 4, 5, 1)),
+        ComparisonResult.Added(ParseResult.wellFormedFunction("c", 7, 8, 1))
       )
   }
 }
