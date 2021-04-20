@@ -38,7 +38,7 @@ class ApplyPatchTest {
     val patch = """
       @@ -1 +1,2 @@
       -Hello, world!
-      +Hello, world!%0A
+      +Hello, world!
       +Nice to meet you!
     """.trimIndent()
 
