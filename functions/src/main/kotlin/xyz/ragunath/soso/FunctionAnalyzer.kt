@@ -4,8 +4,6 @@ import xyz.ragunath.soso.Mode.SCAN_DEPTH
 import xyz.ragunath.soso.Mode.SKIP_MULTILINE_COMMENT
 import xyz.ragunath.soso.Mode.SKIP_SINGLE_LINE_COMMENT
 import xyz.ragunath.soso.Mode.SKIP_STRING_LITERAL
-import xyz.ragunath.soso.Result.WellFormedFunction
-import xyz.ragunath.soso.Result.Nothing
 import java.util.Stack
 import java.lang.Character.MIN_VALUE as NULL_CHAR
 
@@ -77,7 +75,7 @@ fun analyze(snippet: String): Result {
 
           if (depthStack.isEmpty()) {
             endLineNumber = lineNumber
-            return WellFormedFunction.with(
+            return Result.with(
               startLineNumber,
               endLineNumber,
               maximumDepth
@@ -90,7 +88,7 @@ fun analyze(snippet: String): Result {
     lastChar = char
   }
 
-  return Nothing
+  return Result.EMPTY // TODO(rj) 17/Oct/19 - Model this as a sealed class
 }
 
 private fun isSingleLineComment(

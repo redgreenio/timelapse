@@ -1,30 +1,30 @@
 package xyz.ragunath.soso
 
-sealed class Result() {
-  object Nothing : Result()
+data class Result(
+  val startLine: Int,
+  val endLine: Int,
+  val depth: Depth
+) {
+  companion object {
+    val EMPTY = with(0, 0, 0)
 
-  data class WellFormedFunction(
-    val startLine: Int,
-    val endLine: Int,
-    val depth: Depth
-  ) : Result() {
-    companion object {
-      fun with(startLine: Int, endLine: Int, depth: Int): WellFormedFunction {
-        check(startLine >= 0) { "`startLine`: $startLine should be a positive integer" }
-        check(endLine >= 0) { "`endLine`: $endLine should be a positive integer" }
-        check(depth >= 0) { "`depth`: $depth should be a positive integer" }
-        check(!(startLine == 0 && endLine == 0 && depth != 0)) { "`depth` must be zero for a non-existent function, but was `$depth`" }
-        check(startLine <= endLine) { "`startLine`: $startLine cannot be greater than `endLine`: $endLine" }
-        return WellFormedFunction(startLine, endLine, depth)
-      }
+    fun with(startLine: Int, endLine: Int, depth: Int): Result {
+      check(startLine >= 0) { "`startLine`: $startLine should be a positive integer" }
+      check(endLine >= 0) { "`endLine`: $endLine should be a positive integer" }
+      check(depth >= 0) { "`depth`: $depth should be a positive integer" }
+      check(!(startLine == 0 && endLine == 0 && depth != 0)) { "`depth` must be zero for a non-existent function, but was `$depth`" }
+      check(startLine <= endLine) { "`startLine`: $startLine cannot be greater than `endLine`: $endLine" }
+      return Result(startLine, endLine, depth)
     }
-
-    val length: Int
-      get() = endLine - startLine + 1
-
-    fun withOffset(offset: Int): WellFormedFunction = // TODO Get rid of this function
-      copy(startLine = offset + startLine, endLine = offset + endLine)
   }
 
-  // TODO MalformedFunction
+  val length: Int
+    get() = if (startLine == endLine && depth == 0) {
+      0
+    } else {
+      endLine - startLine + 1
+    }
+
+  fun withOffset(offset: Int): Result =
+    copy(startLine = offset + startLine, endLine = offset + endLine)
 }

@@ -1,7 +1,5 @@
 package xyz.ragunath.soso
 
-import xyz.ragunath.soso.Result.WellFormedFunction
-
 // TODO(rj) 13/Oct/19 - Assertions for incoming parameters - line numbers, sorting, no dupes, etc.,
 fun split(
   text: String,
@@ -36,11 +34,7 @@ fun getFunctionResults(
     .map { functionSnippet -> analyze(functionSnippet) }
 
   return possibleFunctions.zip(results) { possibleFunction, result ->
-    if (result is WellFormedFunction) {
-      result.withOffset(possibleFunction.startLineNumber - 1) // FIXME, supply the offset to the finder function. This should just be a `zip` call
-    } else {
-      result
-    }
+    result.withOffset(possibleFunction.startLineNumber - 1)
   }
 }
 

@@ -1,6 +1,5 @@
 package xyz.ragunath.childsplay
 
-import xyz.ragunath.soso.Result.WellFormedFunction
 import xyz.ragunath.soso.getFunctionResults
 import xyz.ragunath.soso.swift.swiftScan
 import java.nio.file.Files
@@ -35,7 +34,6 @@ fun main() {
     .asSequence()
     .toList()
     .flatten()
-    .filterIsInstance<WellFormedFunction>()
     .groupBy { it.length }
 
   val functionLengths = functionsGroupedByLength
