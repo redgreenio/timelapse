@@ -134,38 +134,8 @@ class SoSoTest {
       .isEqualTo(expectedResult)
   }
 
-  @Test
-  fun `it can ignore brackets in a single-line comment`() {
-    val functionWithCommentedMatchingBraces = """
-      fun main() {
-        // { /* nothing here */ }
-      }
-    """.trimIndent()
-    val expectedResult = Result(1, 3)
-
-    assertThat(SoSo.analyze(functionWithCommentedMatchingBraces))
-      .isEqualTo(expectedResult)
-  }
-
-  @Test
-  fun `it can ignore code commented out using a single-line comment`() {
-    val functionWithCommentedCode = """
-      fun main() {
-        // if (true) {
-        //   print("TRUE")
-        // } else {
-        //   print("NOT TRUE")
-        // }
-      }
-    """.trimIndent()
-    val expectedResult = Result(1, 7)
-
-    assertThat(SoSo.analyze(functionWithCommentedCode))
-      .isEqualTo(expectedResult)
-  }
-
+  // TODO Ignore Single line comments
   // TODO Ignore Multi-line comments
   // TODO Ignore new lines after the function
   // TODO What is a depth/nesting of a function?
-  // TODO Find the newline character in a given file
 }
