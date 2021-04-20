@@ -3,8 +3,8 @@ package xyz.ragunath.soso
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-import xyz.ragunath.soso.ParseResult.Nothing
-import xyz.ragunath.soso.ParseResult.WellFormedFunction
+import xyz.ragunath.soso.Result.Nothing
+import xyz.ragunath.soso.Result.WellFormedFunction
 
 class ParseTest {
   @Test
