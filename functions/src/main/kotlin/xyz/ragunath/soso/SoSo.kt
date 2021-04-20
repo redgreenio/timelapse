@@ -3,8 +3,17 @@ package xyz.ragunath.soso
 import java.util.Stack
 import java.lang.Character.MIN_VALUE as NULL_CHAR
 
-typealias Depth = Int
-typealias Length = Int
+typealias Depth = Int // TODO Should we call this nesting?
+typealias Length = Int // TODO Should we call this size?
+
+data class Result(
+  val depth: Depth,
+  val length: Length
+) {
+  companion object {
+    val EMPTY = Result(0, 0)
+  }
+}
 
 object SoSo {
   private const val TOKEN_OPEN_CURLY = '{'
@@ -13,52 +22,59 @@ object SoSo {
   private const val TOKEN_NEW_LINE = '\n' // TODO, this should be passed from outside
   private const val TOKEN_ASTERISK = '*'
 
-  private const val SCAN_DEPTH = 1
+  private const val FIND_DEPTH = 1
   private const val SKIP_SINGLE_LINE_COMMENT = 2
-  private const val SKIP_MULTILINE_COMMENT = 3
+  private const val SKIP_MULTI_LINE_COMMENT = 3
 
   fun analyze(snippet: String): Result {
     val chars = snippet.toCharArray()
+    val depthStack = Stack<Depth>()
     var previousChar = NULL_CHAR
-
-    var mode = SCAN_DEPTH
     var maximumDepthCount = 0
     var lineCount = 1
-    val depthStack = Stack<Depth>()
+    var mode = FIND_DEPTH
+
     for (char in chars) {
-      if (char == TOKEN_NEW_LINE) {
-        lineCount++
+      val singleLineCommentFound = previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH
+      if (singleLineCommentFound) {
+        mode = SKIP_SINGLE_LINE_COMMENT
       }
 
-      when {
-        isSingleLineComment(previousChar, char) -> mode = SKIP_SINGLE_LINE_COMMENT
-        isMultilineComment(previousChar, char, mode) -> mode = SKIP_MULTILINE_COMMENT
+      val notSkippingSingleLineComment = !singleLineCommentFound && mode != SKIP_SINGLE_LINE_COMMENT
+      val multilineCommentFound = previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK
+      if (notSkippingSingleLineComment && multilineCommentFound) {
+        mode = SKIP_MULTI_LINE_COMMENT
       }
 
-      when (mode) {
-        SKIP_SINGLE_LINE_COMMENT -> if (char == TOKEN_NEW_LINE) {
-          mode = SCAN_DEPTH
+      if (mode == SKIP_SINGLE_LINE_COMMENT) {
+        if (char == TOKEN_NEW_LINE) {
+          lineCount++
+          mode = FIND_DEPTH
         }
-
-        SKIP_MULTILINE_COMMENT -> if (previousChar == TOKEN_ASTERISK && char == TOKEN_FORWARD_SLASH) {
-          mode = SCAN_DEPTH
+      } else if (mode == SKIP_MULTI_LINE_COMMENT) {
+        if (char == TOKEN_NEW_LINE) {
+          lineCount++
         }
-
-        SCAN_DEPTH -> when (char) {
-          TOKEN_OPEN_CURLY -> {
-            if (depthStack.isEmpty()) {
+        if (char == TOKEN_FORWARD_SLASH && previousChar == TOKEN_ASTERISK) {
+          mode = FIND_DEPTH
+        }
+      } else if (mode == FIND_DEPTH) {
+        when (char) {
+          TOKEN_OPEN_CURLY -> with(depthStack) {
+            if (isEmpty()) {
               maximumDepthCount = 1
-              depthStack.push(maximumDepthCount)
+              push(maximumDepthCount)
             } else {
               val depthCount = depthStack.peek() + 1
               if (depthCount > maximumDepthCount) {
                 maximumDepthCount = depthCount
               }
-              depthStack.push(depthCount)
+              push(depthCount)
             }
           }
 
           TOKEN_CLOSE_CURLY -> depthStack.pop()
+          TOKEN_NEW_LINE -> lineCount++
         }
       }
 
@@ -67,10 +83,4 @@ object SoSo {
 
     return Result(maximumDepthCount, lineCount)
   }
-
-  private fun isSingleLineComment(previousChar: Char, char: Char): Boolean =
-    previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH
-
-  private fun isMultilineComment(previousChar: Char, char: Char, currentMode: Int): Boolean =
-    (previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK) && currentMode != SKIP_SINGLE_LINE_COMMENT
 }
