@@ -70,15 +70,4 @@ class SwiftScannerTest {
     assertThat(swiftScan(comments))
       .isEmpty()
   }
-
-  @Test
-  fun `it can detect single line functions`() {
-    val singleLineFunction = """
-      func singleLineFunction() {}
-    """.trimIndent()
-
-    assertThat(swiftScan(singleLineFunction))
-      .containsExactly(PossibleFunction("singleLineFunction", 1))
-      .inOrder()
-  }
 }

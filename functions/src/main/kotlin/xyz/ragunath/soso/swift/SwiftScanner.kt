@@ -15,7 +15,7 @@ fun swiftScan(code: String): List<PossibleFunction> {
       when {
         line.trim().startsWith("//") -> println("Found commented line `$line` on line $lineNumber. PTAL?")
 
-        line.trim().contains('{') -> {
+        line.trim().endsWith('{') -> {
           val functionName = line.substring(startIndex + KEYWORD_FUNC.length, line.indexOf("(", startIndex))
           possibleFunctions.add(PossibleFunction(functionName, lineNumber))
         }
