@@ -1,6 +1,9 @@
 package io.redgreen.timelapse.extendeddiff
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.scout.ParseResult
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
+import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
 import org.junit.jupiter.api.Test
 
@@ -26,5 +29,38 @@ class ExtendedDiffEngineTest {
     // then
     assertThat(extendedDiff)
       .isEqualTo(NoChanges("Hello, world!"))
+  }
+
+  @Test
+  fun `it should apply a patch and return an extended diff`() {
+    // given
+    val seedText = "fun a() {}"
+    val patch = """
+      --- a.txt	2021-04-21 12:49:53.000000000 +0530
+      +++ b.txt	2021-04-21 12:50:04.000000000 +0530
+      @@ -1 +1,2 @@
+      -fun a() {}
+      \ No newline at end of file
+      +fun a() {}
+      +fun b() {}
+      \ No newline at end of file
+    """.trimIndent()
+
+    val diffEngine = ExtendedDiffEngine.newInstance(seedText)
+
+    // when
+    val extendedDiff = diffEngine.extendedDiff(patch)
+
+    // then
+    val patchedText = """
+      fun a() {}
+      fun b() {}
+    """.trimIndent()
+    val comparisonResults = listOf(
+      Added(ParseResult.wellFormedFunction("b", 2, 2, 1))
+    )
+
+    assertThat(extendedDiff)
+      .isEqualTo(HasChanges(patchedText, comparisonResults))
   }
 }
