@@ -95,6 +95,9 @@ fun ExtendedDiff.toHtml(): String {
               .modified {
                 background-color: #dbedff80;
               }
+              .deleted {
+                background-color: #ffdce0;
+              }
             </style>
         </head>
         <body>
