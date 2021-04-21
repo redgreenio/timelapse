@@ -86,9 +86,13 @@ class CompareTest {
     val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
+    val deletedFunctionSnippet = """
+      fun b() {
+      }
+    """.trimIndent()
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1))
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), deletedFunctionSnippet)
       )
   }
 
@@ -109,10 +113,19 @@ class CompareTest {
     val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
+    val snippetA = """
+      fun a() {
+      }
+    """.trimIndent()
+
+    val snippetB = """
+      fun b() {
+      }
+    """.trimIndent()
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("a", 1, 2, 1)),
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1))
+        Deleted(ParseResult.wellFormedFunction("a", 1, 2, 1), snippetA),
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), snippetB)
       )
   }
 
@@ -200,9 +213,14 @@ class CompareTest {
     val comparisonResults = compare(before, after, KotlinFunctionScanner)
 
     // then
+    val snippetB = """
+      fun b() {
+      }
+    """.trimIndent()
+
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1)),
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), snippetB),
         Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
         Modified(ParseResult.wellFormedFunction("c", 7, 9, 1))
       )
@@ -241,9 +259,14 @@ class CompareTest {
     val comparisonResults = patchAndCompare(source, patch, KotlinFunctionScanner)
 
     // then
+    val snippetB = """
+      fun b() {
+      }
+    """.trimIndent()
+
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1)),
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), snippetB),
         Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
         Modified(ParseResult.wellFormedFunction("c", 7, 9, 1))
       )
