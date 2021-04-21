@@ -2,6 +2,7 @@ package io.redgreen.timelapse.extendeddiff
 
 import io.redgreen.scout.ParseResult
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import org.approvaltests.Approvals
@@ -42,6 +43,29 @@ class ExtendedDiffHtmlTest {
     )
 
     val hasChanges = HasChanges(swiftSource, comparisonResults)
+
+    // when & then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
+
+  @Test
+  fun `it should handle deleted function`() {
+    // given
+    val kotlinSource = """
+      fun b() {
+      }
+    """.trimIndent()
+
+    val snippetA = """
+      fun a() {
+      }
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Deleted(ParseResult.wellFormedFunction("a", 1, 2, 1), snippetA)
+    )
+
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
 
     // when & then
     Approvals.verifyHtml(hasChanges.toHtml())
