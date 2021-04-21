@@ -1,18 +1,16 @@
 package io.redgreen.timelapse.extendeddiff
 
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 
 @SuppressWarnings("LongMethod")
 fun ExtendedDiff.toHtml(): String {
-  val isFirstTest = this is HasChanges && this.text == """
-    fun a() {}
-    fun b() {}
-  """.trimIndent()
+  val isAdded = this is HasChanges && this.comparisonResults.first() is Added
   val isDeletion = this is HasChanges && this.comparisonResults.first() is Deleted
 
   return when {
-    isFirstTest -> {
+    isAdded -> {
       """
         <html lang="en-US">
         <head>
@@ -22,6 +20,9 @@ fun ExtendedDiff.toHtml(): String {
               }
               .modified {
                 background-color: #dbedff80;
+              }
+              .deleted {
+                background-color: #ffdce0;
               }
             </style>
         </head>
