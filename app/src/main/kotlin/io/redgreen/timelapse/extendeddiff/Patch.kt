@@ -19,10 +19,26 @@ internal fun applyPatch(text: String, patch: String): String {
 }
 
 private fun formatPatchForDiffMatchPatch(patch: String): String {
-  val lines = patch.split(NEWLINE_CHAR)
+  val lines = sanitize(patch).split(NEWLINE_CHAR)
   return lines
     .mapIndexed { index, line -> escapeNewlines(index, line, lines) }
     .filter { !it.startsWith(NO_NEW_LINE_INDICATOR_CHAR) }
+    .joinToString(NEWLINE_CHAR.toString())
+}
+
+private fun sanitize(patch: String): String {
+  if (patch.isEmpty()) {
+    return patch
+  }
+
+  val lines = patch
+    .split(NEWLINE_CHAR)
+
+  val fileHeaderLinesLength = lines
+    .indexOfFirst { it.startsWith(PATCH_HEADER_CHAR) }
+
+  return lines
+    .drop(fileHeaderLinesLength)
     .joinToString(NEWLINE_CHAR.toString())
 }
 
