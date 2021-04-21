@@ -27,7 +27,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(singleSelectionDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -46,7 +46,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(newEmptyFileDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -71,7 +71,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(rawXmlDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -94,7 +94,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(insertionRawDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -125,7 +125,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(deletedFileRawDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -158,7 +158,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(multipleSectionsDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -178,7 +178,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(binaryFileDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -195,7 +195,7 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(fileModeChangedDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 
   @Test
@@ -222,6 +222,6 @@ class DiffHtmlTest {
     val diffHtml = FormattedDiff.from(tabsDiff).toHtml()
 
     // then
-    Approvals.verify(diffHtml)
+    Approvals.verifyHtml(diffHtml)
   }
 }
