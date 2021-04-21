@@ -11,12 +11,15 @@ class ExtendedDiffEngine private constructor(private val seedText: String) {
     }
   }
 
+  private var currentSnapshot: String = seedText
+
   fun extendedDiff(patch: String): ExtendedDiff {
-    val patchedText = applyPatch(seedText, patch)
-    if (patchedText == seedText) {
-      return NoChanges(seedText)
+    val patchedText = applyPatch(currentSnapshot, patch)
+    if (patchedText == currentSnapshot) {
+      return NoChanges(currentSnapshot)
     }
-    val comparisonResults = compare(seedText, patchedText, KotlinFunctionScanner)
+    val comparisonResults = compare(currentSnapshot, patchedText, KotlinFunctionScanner)
+    currentSnapshot = patchedText
     return HasChanges(patchedText, comparisonResults)
   }
 }
