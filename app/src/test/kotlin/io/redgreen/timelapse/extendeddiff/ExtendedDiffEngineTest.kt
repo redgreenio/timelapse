@@ -100,11 +100,13 @@ class ExtendedDiffEngineTest {
     val extendedDiff = diffEngine.extendedDiff(patch2)
 
     // then
+    val snippetA = "fun a() {}"
     val patchedText = """
       fun b() {}
     """.trimIndent()
+
     val comparisonResults = listOf(
-      Deleted(ParseResult.wellFormedFunction("a", 1, 1, 1)),
+      Deleted(ParseResult.wellFormedFunction("a", 1, 1, 1), snippetA),
       Modified(ParseResult.wellFormedFunction("b", 1, 1, 1))
     )
 
