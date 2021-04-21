@@ -1,13 +1,16 @@
 package io.redgreen.timelapse.extendeddiff
 
-import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
+import io.redgreen.scout.FunctionScanner
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
 
-class ExtendedDiffEngine private constructor(private val seedText: String) {
+class ExtendedDiffEngine private constructor(
+  seedText: String,
+  private val scanner: FunctionScanner
+) {
   companion object {
-    fun newInstance(seedText: String): ExtendedDiffEngine {
-      return ExtendedDiffEngine(seedText)
+    fun newInstance(seedText: String, scanner: FunctionScanner): ExtendedDiffEngine {
+      return ExtendedDiffEngine(seedText, scanner)
     }
   }
 
@@ -18,7 +21,7 @@ class ExtendedDiffEngine private constructor(private val seedText: String) {
     if (patchedText == currentSnapshot) {
       return NoChanges(currentSnapshot)
     }
-    val comparisonResults = compare(currentSnapshot, patchedText, KotlinFunctionScanner)
+    val comparisonResults = compare(currentSnapshot, patchedText, scanner)
     currentSnapshot = patchedText
     return HasChanges(patchedText, comparisonResults)
   }
