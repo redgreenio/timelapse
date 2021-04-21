@@ -15,7 +15,7 @@ class ExtendedDiffEngineTest {
   @Test
   internal fun `it should create a new instance of the engine for every new text`() {
     // given & when
-    val diffEngine = ExtendedDiffEngine.newInstance("Hello, world!", KotlinFunctionScanner)
+    val diffEngine = ExtendedDiffEngine.newInstance("/* Hello, world! */", KotlinFunctionScanner)
 
     // then
     assertThat(diffEngine)
@@ -25,20 +25,20 @@ class ExtendedDiffEngineTest {
   @Test
   fun `it should return the seed text as the extended diff`() {
     // given
-    val diffEngine = ExtendedDiffEngine.newInstance("Hello, world!", KotlinFunctionScanner)
+    val diffEngine = ExtendedDiffEngine.newInstance("/* Hello, world! */", KotlinFunctionScanner)
 
     // when
     val extendedDiff = diffEngine.extendedDiff("")
 
     // then
     assertThat(extendedDiff)
-      .isEqualTo(NoChanges("Hello, world!"))
+      .isEqualTo(NoChanges("/* Hello, world! */"))
   }
 
   @Test
   fun `it should apply a patch and return an extended diff`() {
     // given
-    val seedText = "fun a() {}"
+    val kotlinSourceCode = "fun a() {}"
     val patch = """
       --- a.txt	2021-04-21 12:49:53.000000000 +0530
       +++ b.txt	2021-04-21 12:50:04.000000000 +0530
@@ -50,7 +50,7 @@ class ExtendedDiffEngineTest {
       \ No newline at end of file
     """.trimIndent()
 
-    val diffEngine = ExtendedDiffEngine.newInstance(seedText, KotlinFunctionScanner)
+    val diffEngine = ExtendedDiffEngine.newInstance(kotlinSourceCode, KotlinFunctionScanner)
 
     // when
     val extendedDiff = diffEngine.extendedDiff(patch)
@@ -71,7 +71,7 @@ class ExtendedDiffEngineTest {
   @Test
   fun `it should apply successive patches and return an extended diff`() {
     // given
-    val seedText = "fun a() {}"
+    val kotlinSourceCode = "fun a() {}"
 
     val patch1 = """
       --- a.txt	2021-04-21 12:49:53.000000000 +0530
@@ -93,7 +93,7 @@ class ExtendedDiffEngineTest {
       \ No newline at end of file
     """.trimIndent()
 
-    val diffEngine = ExtendedDiffEngine.newInstance(seedText, KotlinFunctionScanner)
+    val diffEngine = ExtendedDiffEngine.newInstance(kotlinSourceCode, KotlinFunctionScanner)
 
     // when
     diffEngine.extendedDiff(patch1)
@@ -115,7 +115,7 @@ class ExtendedDiffEngineTest {
   @Test
   fun `it should get an extended diff for the Swift programming language`() {
     // given
-    val seedText = """
+    val swiftSourceCode = """
       class SomeClass {
         func a() {
         }
@@ -133,7 +133,7 @@ class ExtendedDiffEngineTest {
       \ No newline at end of file
     """.trimIndent()
 
-    val diffEngine = ExtendedDiffEngine.newInstance(seedText, SwiftFunctionScanner)
+    val diffEngine = ExtendedDiffEngine.newInstance(swiftSourceCode, SwiftFunctionScanner)
 
     // when
     val extendedDiff = diffEngine.extendedDiff(patch)

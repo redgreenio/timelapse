@@ -5,24 +5,24 @@ import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
 
 class ExtendedDiffEngine private constructor(
-  seedText: String,
+  seedSourceCode: String,
   private val scanner: FunctionScanner
 ) {
   companion object {
-    fun newInstance(seedText: String, scanner: FunctionScanner): ExtendedDiffEngine {
-      return ExtendedDiffEngine(seedText, scanner)
+    fun newInstance(seedSourceCode: String, scanner: FunctionScanner): ExtendedDiffEngine {
+      return ExtendedDiffEngine(seedSourceCode, scanner)
     }
   }
 
-  private var currentSnapshot: String = seedText
+  private var currentSourceSnapshot: String = seedSourceCode
 
   fun extendedDiff(patch: String): ExtendedDiff {
-    val patchedText = applyPatch(currentSnapshot, patch)
-    if (patchedText == currentSnapshot) {
-      return NoChanges(currentSnapshot)
+    val patchedText = applyPatch(currentSourceSnapshot, patch)
+    if (patchedText == currentSourceSnapshot) {
+      return NoChanges(currentSourceSnapshot)
     }
-    val comparisonResults = compare(currentSnapshot, patchedText, scanner)
-    currentSnapshot = patchedText
+    val comparisonResults = compare(currentSourceSnapshot, patchedText, scanner)
+    currentSourceSnapshot = patchedText
     return HasChanges(patchedText, comparisonResults)
   }
 }
