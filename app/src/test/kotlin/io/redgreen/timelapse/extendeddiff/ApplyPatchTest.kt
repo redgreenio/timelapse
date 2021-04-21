@@ -219,4 +219,27 @@ class ApplyPatchTest {
         """.trimIndent()
       )
   }
+
+  @Test
+  fun `it should apply git-style unified patches with file information`() {
+    // given
+    val text = "Hello, world!"
+
+    val patch = """
+      --- a.txt	2021-04-21 12:19:34.000000000 +0530
+      +++ b.txt	2021-04-21 12:19:47.000000000 +0530
+      @@ -1 +1 @@
+      -Hello, world!
+      \ No newline at end of file
+      +Hello, stranger!
+      \ No newline at end of file
+    """.trimIndent()
+
+    // when
+    val patchedText = applyPatch(text, patch)
+
+    // then
+    assertThat(patchedText)
+      .isEqualTo("Hello, stranger!")
+  }
 }
