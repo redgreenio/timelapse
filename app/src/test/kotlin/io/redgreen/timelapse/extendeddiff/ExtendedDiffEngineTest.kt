@@ -3,6 +3,7 @@ package io.redgreen.timelapse.extendeddiff
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.scout.ParseResult
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
+import io.redgreen.scout.languages.swift.SwiftFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
@@ -105,6 +106,48 @@ class ExtendedDiffEngineTest {
     val comparisonResults = listOf(
       Deleted(ParseResult.wellFormedFunction("a", 1, 1, 1)),
       Modified(ParseResult.wellFormedFunction("b", 1, 1, 1))
+    )
+
+    assertThat(extendedDiff)
+      .isEqualTo(HasChanges(patchedText, comparisonResults))
+  }
+
+  @Test
+  fun `it should get an extended diff for the Swift programming language`() {
+    // given
+    val seedText = """
+      class SomeClass {
+        func a() {
+        }
+      }
+    """.trimIndent()
+    val patch = """
+      --- a.txt	2021-04-21 14:55:44.000000000 +0530
+      +++ b.txt	2021-04-21 14:55:54.000000000 +0530
+      @@ -1,4 +1,5 @@
+       class SomeClass {
+         func a() {
+      +    // Hello, world!
+         }
+       }
+      \ No newline at end of file
+    """.trimIndent()
+
+    val diffEngine = ExtendedDiffEngine.newInstance(seedText, SwiftFunctionScanner)
+
+    // when
+    val extendedDiff = diffEngine.extendedDiff(patch)
+
+    // then
+    val patchedText = """
+      class SomeClass {
+        func a() {
+          // Hello, world!
+        }
+      }
+    """.trimIndent()
+    val comparisonResults = listOf(
+      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1))
     )
 
     assertThat(extendedDiff)
