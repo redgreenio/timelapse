@@ -2,6 +2,7 @@ package io.redgreen.timelapse.extendeddiff
 
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.scout.ParseResult
+import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
@@ -13,7 +14,7 @@ class ExtendedDiffEngineTest {
   @Test
   internal fun `it should create a new instance of the engine for every new text`() {
     // given & when
-    val diffEngine = ExtendedDiffEngine.newInstance("Hello, world!")
+    val diffEngine = ExtendedDiffEngine.newInstance("Hello, world!", KotlinFunctionScanner)
 
     // then
     assertThat(diffEngine)
@@ -23,7 +24,7 @@ class ExtendedDiffEngineTest {
   @Test
   fun `it should return the seed text as the extended diff`() {
     // given
-    val diffEngine = ExtendedDiffEngine.newInstance("Hello, world!")
+    val diffEngine = ExtendedDiffEngine.newInstance("Hello, world!", KotlinFunctionScanner)
 
     // when
     val extendedDiff = diffEngine.extendedDiff("")
@@ -48,7 +49,7 @@ class ExtendedDiffEngineTest {
       \ No newline at end of file
     """.trimIndent()
 
-    val diffEngine = ExtendedDiffEngine.newInstance(seedText)
+    val diffEngine = ExtendedDiffEngine.newInstance(seedText, KotlinFunctionScanner)
 
     // when
     val extendedDiff = diffEngine.extendedDiff(patch)
@@ -91,8 +92,7 @@ class ExtendedDiffEngineTest {
       \ No newline at end of file
     """.trimIndent()
 
-    val patches = listOf(patch1, patch2)
-    val diffEngine = ExtendedDiffEngine.newInstance(seedText)
+    val diffEngine = ExtendedDiffEngine.newInstance(seedText, KotlinFunctionScanner)
 
     // when
     diffEngine.extendedDiff(patch1)
