@@ -8,13 +8,6 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 
-fun patchAndCompare(
-  source: String,
-  patch: String,
-  scanner: FunctionScanner
-): List<ComparisonResult> =
-  compare(source, applyPatch(source, patch), scanner)
-
 internal fun compare(
   beforeSource: String,
   afterSource: String,
