@@ -4,7 +4,7 @@ sealed class ExtendedDiff {
   data class NoChanges(val text: String) : ExtendedDiff()
 
   data class HasChanges(
-    val text: String,
+    val sourceCode: String,
     val comparisonResults: List<ComparisonResult>
   ) : ExtendedDiff()
 }
