@@ -43,6 +43,8 @@ fun ExtendedDiff.toHtml(): String {
       """.trimIndent()
     }
     isDeletion -> {
+      val sourceCode = (this as HasChanges).sourceCode
+
       """
         <html lang="en-US">
         <head>
@@ -60,7 +62,9 @@ fun ExtendedDiff.toHtml(): String {
         </head>
         <body>
         <table>
-            ${toDeletedRows()}
+            <tbody>
+            ${toDeletedRows(sourceCode)}
+            </tbody>
         </table>
         </body>
         </html>
@@ -78,9 +82,22 @@ private fun toRows(sourceCode: String, result: ComparisonResult): String {
   }
 }
 
-private fun toDeletedRows(): String {
-  return """<tbody>
-            <tr class="deleted">
+private fun toDeletedRows(sourceCode: String): String {
+  val unmodifiedRowsNew = sourceCode
+    .split(NEWLINE_CHAR)
+    .mapIndexed { index, line ->
+      val lineNumber = index + 1
+      """
+        <tr>
+            <td>$lineNumber</td>
+            <td>${padStartWithNbsp(line)}</td>
+        </tr>
+      """.trimIndent()
+    }
+
+  val unmodifiedRows = offsetWithPadding(unmodifiedRowsNew)
+
+  return """<tr class="deleted">
                 <td></td>
                 <td>fun a() {</td>
             </tr>
@@ -88,15 +105,7 @@ private fun toDeletedRows(): String {
                 <td></td>
                 <td>}</td>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>fun b() {</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>}</td>
-            </tr>
-            </tbody>"""
+            $unmodifiedRows"""
 }
 
 private fun toModifiedRows(sourceCode: String, modified: Modified): String {
@@ -109,7 +118,7 @@ private fun toModifiedRows(sourceCode: String, modified: Modified): String {
     """
        <tr${classAttribute(cssClassName)}>
            <td>$lineNumber</td>
-           <td>${padLeftWithNbsp(line)}</td>
+           <td>${padStartWithNbsp(line)}</td>
        </tr>
     """.trimIndent()
   }
@@ -131,7 +140,7 @@ private fun toAddedRows(
       """
         <tr${classAttribute(cssClassName)}>
             <td>$lineNumber</td>
-            <td>${padLeftWithNbsp(line)}</td>
+            <td>${padStartWithNbsp(line)}</td>
         </tr>
       """.trimIndent()
     }
@@ -160,7 +169,7 @@ private fun offsetWithPadding(tableRowSection: List<String>): String {
     .joinToString("$NEWLINE_CHAR")
 }
 
-private fun padLeftWithNbsp(line: String): String {
+private fun padStartWithNbsp(line: String): String {
   val prefix = line.takeWhile { it.isWhitespace() }
     .map { "&nbsp;" }
     .joinToString("")
