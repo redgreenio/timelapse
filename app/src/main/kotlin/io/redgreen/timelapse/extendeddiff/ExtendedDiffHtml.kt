@@ -50,7 +50,7 @@ private fun toRows(sourceCode: String, result: ComparisonResult): String {
 }
 
 private fun toDeletedRows(sourceCode: String, deleted: Deleted): String {
-  val unmodifiedRowsNew = sourceCode
+  val unchangedRows = sourceCode
     .split(NEWLINE_CHAR)
     .mapIndexed { index, line ->
       val lineNumber = index + 1
@@ -62,9 +62,7 @@ private fun toDeletedRows(sourceCode: String, deleted: Deleted): String {
       """.trimIndent()
     }
 
-  val unmodifiedRows = offsetWithPadding(unmodifiedRowsNew)
-
-  val newDeletedRowsWithoutOffset = deleted.snippet.split(NEWLINE_CHAR).map { line ->
+  val deletedRows = deleted.snippet.split(NEWLINE_CHAR).map { line ->
     """
       <tr class="deleted">
           <td></td>
@@ -73,10 +71,8 @@ private fun toDeletedRows(sourceCode: String, deleted: Deleted): String {
     """.trimIndent()
   }
 
-  val deletedRows = offsetWithPadding(newDeletedRowsWithoutOffset)
-
-  return """$deletedRows
-            $unmodifiedRows"""
+  return """${offsetWithPadding(deletedRows)}
+            ${offsetWithPadding(unchangedRows)}"""
 }
 
 private fun toModifiedRows(sourceCode: String, modified: Modified): String {
