@@ -15,7 +15,7 @@ fun ExtendedDiff.toHtml(): String {
 
   return when {
     isAdded || isModified -> {
-      val added = (this as HasChanges).comparisonResults.first()
+      val result = (this as HasChanges).comparisonResults.first()
 
       """
         <html lang="en-US">
@@ -35,7 +35,7 @@ fun ExtendedDiff.toHtml(): String {
         <body>
         <table>
             <tbody>
-            ${toRows(sourceCode, added)}
+            ${toRows(sourceCode, result)}
             </tbody>
         </table>
         </body>
@@ -44,6 +44,7 @@ fun ExtendedDiff.toHtml(): String {
     }
     isDeletion -> {
       val sourceCode = (this as HasChanges).sourceCode
+      val deleted = this.comparisonResults.first() as Deleted
 
       """
         <html lang="en-US">
@@ -63,7 +64,7 @@ fun ExtendedDiff.toHtml(): String {
         <body>
         <table>
             <tbody>
-            ${toDeletedRows(sourceCode)}
+            ${toRows(sourceCode, deleted)}
             </tbody>
         </table>
         </body>
@@ -77,12 +78,12 @@ fun ExtendedDiff.toHtml(): String {
 private fun toRows(sourceCode: String, result: ComparisonResult): String {
   return when (result) {
     is Added -> toAddedRows(sourceCode, result)
-    is Deleted -> TODO()
+    is Deleted -> toDeletedRows(sourceCode, result)
     is Modified -> toModifiedRows(sourceCode, result)
   }
 }
 
-private fun toDeletedRows(sourceCode: String): String {
+private fun toDeletedRows(sourceCode: String, deleted: Deleted): String {
   val unmodifiedRowsNew = sourceCode
     .split(NEWLINE_CHAR)
     .mapIndexed { index, line ->
@@ -97,14 +98,18 @@ private fun toDeletedRows(sourceCode: String): String {
 
   val unmodifiedRows = offsetWithPadding(unmodifiedRowsNew)
 
-  return """<tr class="deleted">
-                <td></td>
-                <td>fun a() {</td>
-            </tr>
-            <tr class="deleted">
-                <td></td>
-                <td>}</td>
-            </tr>
+  val newDeletedRowsWithoutOffset = deleted.snippet.split(NEWLINE_CHAR).map { line ->
+    """
+      <tr class="deleted">
+          <td></td>
+          <td>$line</td>
+      </tr>
+    """.trimIndent()
+  }
+
+  val deletedRows = offsetWithPadding(newDeletedRowsWithoutOffset)
+
+  return """$deletedRows
             $unmodifiedRows"""
 }
 
