@@ -76,12 +76,7 @@ private fun toUnchangedRows(sourceCode: String): List<String> {
     .split(NEWLINE_CHAR)
     .mapIndexed { index, line ->
       val lineNumber = index + 1
-      """
-        <tr>
-            <td>$lineNumber</td>
-            <td>${padStartWithNbsp(line)}</td>
-        </tr>
-      """.trimIndent()
+      unchangedRowHtml(lineNumber, line)
     }
 }
 
@@ -114,14 +109,26 @@ private fun toAddedRows(
   return lines
     .mapIndexed { index, line ->
       val lineNumber = index + 1
-      val cssClassName = if (lineNumber in addedRange) CSS_CLASS_ADDED else EMPTY_STRING
-      """
-        <tr${classAttribute(cssClassName)}>
+      if (lineNumber in addedRange) addedRowHtml(lineNumber, line) else unchangedRowHtml(lineNumber, line)
+    }
+}
+
+private fun addedRowHtml(lineNumber: Int, line: String): String {
+  return """
+        <tr${classAttribute(CSS_CLASS_ADDED)}>
             <td>$lineNumber</td>
             <td>${padStartWithNbsp(line)}</td>
         </tr>
       """.trimIndent()
-    }
+}
+
+private fun unchangedRowHtml(lineNumber: Int, line: String): String {
+  return """
+        <tr>
+            <td>$lineNumber</td>
+            <td>${padStartWithNbsp(line)}</td>
+        </tr>
+      """.trimIndent()
 }
 
 private fun classAttribute(cssClassName: String): String {
