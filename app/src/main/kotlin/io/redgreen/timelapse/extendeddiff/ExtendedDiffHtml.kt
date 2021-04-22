@@ -19,9 +19,10 @@ private const val CSS_CLASS_DELETED = "deleted"
 private const val HTML_NBSP = "&nbsp;"
 
 fun ExtendedDiff.toHtml(): String {
-  val result = (this as HasChanges).comparisonResults.first()
+  val comparisonResults = (this as HasChanges).comparisonResults
+  val result = comparisonResults.first()
 
-  return htmlTemplate(toRows(sourceCode, result))
+  return htmlTemplate(toRows(sourceCode, result, comparisonResults))
 }
 
 private fun htmlTemplate(tableRows: List<String>): String {
@@ -51,12 +52,45 @@ private fun htmlTemplate(tableRows: List<String>): String {
   """.trimIndent()
 }
 
-private fun toRows(sourceCode: String, result: ComparisonResult): List<String> {
+private fun toRows(
+  sourceCode: String,
+  result: ComparisonResult,
+  comparisonResults: List<ComparisonResult>
+): List<String> {
+  if (comparisonResults.size > 1) {
+    val addedFunctionRanges = addedFunctionRanges(comparisonResults)
+    val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
+
+    return sourceCode.split(NEWLINE_CHAR).mapIndexed { index, line ->
+      val lineNumber = index + 1
+
+      if (addedFunctionRanges.any { range -> lineNumber in range }) {
+        addedRowHtml(lineNumber, line)
+      } else if (modifiedFunctionRanges.any { range -> lineNumber in range }) {
+        modifiedRowHtml(lineNumber, line)
+      } else {
+        unchangedRowHtml(lineNumber, line)
+      }
+    }
+  }
+
   return when (result) {
     is Added -> toAddedRows(sourceCode, result)
     is Deleted -> toDeletedRows(result) + toUnchangedRows(sourceCode)
     is Modified -> toModifiedRows(sourceCode, result)
   }
+}
+
+private fun addedFunctionRanges(comparisonResults: List<ComparisonResult>): List<IntRange> {
+  return comparisonResults
+    .filterIsInstance<Added>()
+    .map { it.function.startLine..it.function.endLine }
+}
+
+private fun modifiedFunctionRanges(comparisonResults: List<ComparisonResult>): List<IntRange> {
+  return comparisonResults
+    .filterIsInstance<Modified>()
+    .map { it.function.startLine..it.function.endLine }
 }
 
 private fun toDeletedRows(deleted: Deleted): List<String> {
