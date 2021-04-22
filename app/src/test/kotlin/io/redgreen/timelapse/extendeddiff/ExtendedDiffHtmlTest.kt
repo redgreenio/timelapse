@@ -70,4 +70,30 @@ class ExtendedDiffHtmlTest {
     // when & then
     Approvals.verifyHtml(hasChanges.toHtml())
   }
+
+  @Test
+  fun `it should handle modified and added functions`() {
+    // given
+    val swiftSource = """
+      class SomeClass {
+        func a() {
+          // Hello, world!
+        }
+        
+        fun b() {
+          println("I am new!")
+        }
+      }
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1)),
+      Added(ParseResult.wellFormedFunction("b", 6, 8, 1)),
+    )
+
+    val hasChanges = HasChanges(swiftSource, comparisonResults)
+
+    // when & then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
 }
