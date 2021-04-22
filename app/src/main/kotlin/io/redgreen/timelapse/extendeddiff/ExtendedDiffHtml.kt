@@ -34,7 +34,7 @@ fun ExtendedDiff.toHtml(): String {
         <body>
         <table>
             <tbody>
-            ${toRows(sourceCode, added)}
+            ${toAddedRows(sourceCode, added)}
             </tbody>
         </table>
         </body>
@@ -130,7 +130,7 @@ private fun toModifiedRows(sourceCode: String, modified: Modified): String {
   return offsetWithPadding(tableRows)
 }
 
-private fun toRows(
+private fun toAddedRows(
   sourceCode: String,
   added: Added
 ): String {
