@@ -60,7 +60,26 @@ fun ExtendedDiff.toHtml(): String {
         </head>
         <body>
         <table>
-            <tbody>
+            ${toDeletedRows()}
+        </table>
+        </body>
+        </html>
+      """.trimIndent()
+    }
+    else -> TODO()
+  }
+}
+
+private fun toRows(sourceCode: String, result: ComparisonResult): String {
+  return when (result) {
+    is Added -> toAddedRows(sourceCode, result)
+    is Deleted -> TODO()
+    is Modified -> toModifiedRows(sourceCode, result)
+  }
+}
+
+private fun toDeletedRows(): String {
+  return """<tbody>
             <tr class="deleted">
                 <td></td>
                 <td>fun a() {</td>
@@ -77,22 +96,7 @@ fun ExtendedDiff.toHtml(): String {
                 <td>2</td>
                 <td>}</td>
             </tr>
-            </tbody>
-        </table>
-        </body>
-        </html>
-      """.trimIndent()
-    }
-    else -> TODO()
-  }
-}
-
-private fun toRows(sourceCode: String, result: ComparisonResult): String {
-  return when (result) {
-    is Added -> toAddedRows(sourceCode, result)
-    is Deleted -> TODO()
-    is Modified -> toModifiedRows(sourceCode, result)
-  }
+            </tbody>"""
 }
 
 private fun toModifiedRows(sourceCode: String, modified: Modified): String {
