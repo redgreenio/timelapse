@@ -11,7 +11,7 @@ private const val NEWLINE_CHAR = '\n'
 fun ExtendedDiff.toHtml(): String {
   val result = (this as HasChanges).comparisonResults.first()
 
-  return htmlTemplate(toRows(sourceCode, result))
+  return htmlTemplate(offsetWithPadding(toRows(sourceCode, result)))
 }
 
 private fun htmlTemplate(tableRows: String): String {
@@ -41,11 +41,11 @@ private fun htmlTemplate(tableRows: String): String {
   """.trimIndent()
 }
 
-private fun toRows(sourceCode: String, result: ComparisonResult): String {
+private fun toRows(sourceCode: String, result: ComparisonResult): List<String> {
   return when (result) {
-    is Added -> offsetWithPadding(toAddedRows(sourceCode, result))
-    is Deleted -> offsetWithPadding(toDeletedRows(result) + toUnchangedRows(sourceCode))
-    is Modified -> offsetWithPadding(toModifiedRows(sourceCode, result))
+    is Added -> toAddedRows(sourceCode, result)
+    is Deleted -> toDeletedRows(result) + toUnchangedRows(sourceCode)
+    is Modified -> toModifiedRows(sourceCode, result)
   }
 }
 
