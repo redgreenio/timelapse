@@ -20,9 +20,12 @@ private const val HTML_NBSP = "&nbsp;"
 
 fun ExtendedDiff.toHtml(): String {
   val comparisonResults = (this as HasChanges).comparisonResults
-  val result = comparisonResults.first()
+  val addedModifiedUnmodifiedRows = toRows(sourceCode, comparisonResults)
+  val deletedRows = comparisonResults.filterIsInstance<Deleted>()
+    .map { it.snippet.split(NEWLINE_CHAR).map { line -> deletedRowHtml(line) } }
+    .flatten()
 
-  return htmlTemplate(toRows(sourceCode, result, comparisonResults))
+  return htmlTemplate(deletedRows + addedModifiedUnmodifiedRows)
 }
 
 private fun htmlTemplate(tableRows: List<String>): String {
@@ -54,30 +57,21 @@ private fun htmlTemplate(tableRows: List<String>): String {
 
 private fun toRows(
   sourceCode: String,
-  result: ComparisonResult,
   comparisonResults: List<ComparisonResult>
 ): List<String> {
-  if (comparisonResults.size > 1) {
-    val addedFunctionRanges = addedFunctionRanges(comparisonResults)
-    val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
+  val addedFunctionRanges = addedFunctionRanges(comparisonResults)
+  val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
 
-    return sourceCode.split(NEWLINE_CHAR).mapIndexed { index, line ->
-      val lineNumber = index + 1
+  return sourceCode.split(NEWLINE_CHAR).mapIndexed { index, line ->
+    val lineNumber = index + 1
 
-      if (addedFunctionRanges.any { range -> lineNumber in range }) {
-        addedRowHtml(lineNumber, line)
-      } else if (modifiedFunctionRanges.any { range -> lineNumber in range }) {
-        modifiedRowHtml(lineNumber, line)
-      } else {
-        unchangedRowHtml(lineNumber, line)
-      }
+    if (addedFunctionRanges.any { range -> lineNumber in range }) {
+      addedRowHtml(lineNumber, line)
+    } else if (modifiedFunctionRanges.any { range -> lineNumber in range }) {
+      modifiedRowHtml(lineNumber, line)
+    } else {
+      unchangedRowHtml(lineNumber, line)
     }
-  }
-
-  return when (result) {
-    is Added -> toAddedRows(sourceCode, result)
-    is Deleted -> toDeletedRows(result) + toUnchangedRows(sourceCode)
-    is Modified -> toModifiedRows(sourceCode, result)
   }
 }
 
@@ -91,57 +85,6 @@ private fun modifiedFunctionRanges(comparisonResults: List<ComparisonResult>): L
   return comparisonResults
     .filterIsInstance<Modified>()
     .map { it.function.startLine..it.function.endLine }
-}
-
-private fun toDeletedRows(deleted: Deleted): List<String> {
-  return deleted
-    .snippet
-    .split(NEWLINE_CHAR)
-    .map { line -> deletedRowHtml(line) }
-}
-
-private fun toUnchangedRows(sourceCode: String): List<String> {
-  return sourceCode
-    .split(NEWLINE_CHAR)
-    .mapIndexed { index, line ->
-      val lineNumber = index + 1
-      unchangedRowHtml(lineNumber, line)
-    }
-}
-
-private fun toModifiedRows(
-  sourceCode: String,
-  modified: Modified
-): List<String> {
-  val lines = sourceCode.split(NEWLINE_CHAR)
-  val modifiedRange = modified.function.startLine..modified.function.endLine
-
-  return lines.mapIndexed { index, line ->
-    val lineNumber = index + 1
-    if (lineNumber in modifiedRange) {
-      modifiedRowHtml(lineNumber, line)
-    } else {
-      unchangedRowHtml(lineNumber, line)
-    }
-  }
-}
-
-private fun toAddedRows(
-  sourceCode: String,
-  added: Added
-): List<String> {
-  val lines = sourceCode.split(NEWLINE_CHAR)
-  val addedRange = added.function.startLine..added.function.endLine
-
-  return lines
-    .mapIndexed { index, line ->
-      val lineNumber = index + 1
-      if (lineNumber in addedRange) {
-        addedRowHtml(lineNumber, line)
-      } else {
-        unchangedRowHtml(lineNumber, line)
-      }
-    }
 }
 
 private fun addedRowHtml(lineNumber: Int, line: String): String {

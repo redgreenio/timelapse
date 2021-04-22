@@ -6,6 +6,8 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import org.approvaltests.Approvals
+import org.approvaltests.reporters.QuietReporter
+import org.approvaltests.reporters.UseReporter
 import org.junit.jupiter.api.Test
 
 class ExtendedDiffHtmlTest {
@@ -49,6 +51,7 @@ class ExtendedDiffHtmlTest {
   }
 
   @Test
+  @UseReporter(QuietReporter::class)
   fun `it should handle deleted function`() {
     // given
     val kotlinSource = """
