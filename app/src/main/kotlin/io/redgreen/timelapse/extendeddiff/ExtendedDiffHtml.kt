@@ -60,14 +60,10 @@ private fun toRows(sourceCode: String, result: ComparisonResult): List<String> {
 }
 
 private fun toDeletedRows(deleted: Deleted): List<String> {
-  return deleted.snippet.split(NEWLINE_CHAR).map { line ->
-    """
-      <tr class="$CSS_CLASS_DELETED">
-          <td></td>
-          <td>$line</td>
-      </tr>
-    """.trimIndent()
-  }
+  return deleted
+    .snippet
+    .split(NEWLINE_CHAR)
+    .map { line -> deletedRowHtml(line) }
 }
 
 private fun toUnchangedRows(sourceCode: String): List<String> {
@@ -129,6 +125,15 @@ private fun modifiedRowHtml(lineNumber: Int, line: String): String {
            <td>$lineNumber</td>
            <td>${padStartWithNbsp(line)}</td>
        </tr>
+  """.trimIndent()
+}
+
+private fun deletedRowHtml(line: String): String {
+  return """
+      <tr${classAttribute(CSS_CLASS_DELETED)}>
+          <td></td>
+          <td>$line</td>
+      </tr>
   """.trimIndent()
 }
 
