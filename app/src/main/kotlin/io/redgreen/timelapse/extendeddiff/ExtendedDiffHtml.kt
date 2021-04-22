@@ -11,10 +11,10 @@ private const val NEWLINE_CHAR = '\n'
 fun ExtendedDiff.toHtml(): String {
   val result = (this as HasChanges).comparisonResults.first()
 
-  return htmlTemplate(offsetWithPadding(toRows(sourceCode, result)))
+  return htmlTemplate(toRows(sourceCode, result))
 }
 
-private fun htmlTemplate(tableRows: String): String {
+private fun htmlTemplate(tableRows: List<String>): String {
   return """
         <html lang="en-US">
         <head>
@@ -33,7 +33,7 @@ private fun htmlTemplate(tableRows: String): String {
         <body>
         <table>
             <tbody>
-            $tableRows
+            ${offsetWithPadding(tableRows)}
             </tbody>
         </table>
         </body>
