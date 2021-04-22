@@ -5,7 +5,18 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 
-private const val NEWLINE_CHAR = '\n'
+private const val NEWLINE_CHAR = "\n"
+private const val EMPTY_STRING = ""
+
+private const val CSS_COLOR_ADDED = "#e6ffed"
+private const val CSS_COLOR_MODIFIED = "#dbedff80"
+private const val CSS_COLOR_DELETED = "#ffdce0"
+
+private const val CSS_CLASS_ADDED = "added"
+private const val CSS_CLASS_MODIFIED = "modified"
+private const val CSS_CLASS_DELETED = "deleted"
+
+private const val HTML_NBSP = "&nbsp;"
 
 @SuppressWarnings("LongMethod")
 fun ExtendedDiff.toHtml(): String {
@@ -20,13 +31,13 @@ private fun htmlTemplate(tableRows: List<String>): String {
         <head>
             <style>
               .added {
-                background-color: #e6ffed;
+                background-color: $CSS_COLOR_ADDED;
               }
               .modified {
-                background-color: #dbedff80;
+                background-color: $CSS_COLOR_MODIFIED;
               }
               .deleted {
-                background-color: #ffdce0;
+                background-color: $CSS_COLOR_DELETED;
               }
             </style>
         </head>
@@ -52,7 +63,7 @@ private fun toRows(sourceCode: String, result: ComparisonResult): List<String> {
 private fun toDeletedRows(deleted: Deleted): List<String> {
   return deleted.snippet.split(NEWLINE_CHAR).map { line ->
     """
-      <tr class="deleted">
+      <tr class="$CSS_CLASS_DELETED">
           <td></td>
           <td>$line</td>
       </tr>
@@ -83,7 +94,7 @@ private fun toModifiedRows(
 
   return lines.mapIndexed { index, line ->
     val lineNumber = index + 1
-    val cssClassName = if (lineNumber in modifiedFunctionRange) "modified" else ""
+    val cssClassName = if (lineNumber in modifiedFunctionRange) CSS_CLASS_MODIFIED else EMPTY_STRING
     """
        <tr${classAttribute(cssClassName)}>
            <td>$lineNumber</td>
@@ -103,7 +114,7 @@ private fun toAddedRows(
   return lines
     .mapIndexed { index, line ->
       val lineNumber = index + 1
-      val cssClassName = if (lineNumber in addedRange) "added" else ""
+      val cssClassName = if (lineNumber in addedRange) CSS_CLASS_ADDED else EMPTY_STRING
       """
         <tr${classAttribute(cssClassName)}>
             <td>$lineNumber</td>
@@ -113,30 +124,33 @@ private fun toAddedRows(
     }
 }
 
-private fun classAttribute(cssClassName: String = ""): String {
+private fun classAttribute(cssClassName: String): String {
   if (cssClassName.isEmpty()) {
-    return ""
+    return EMPTY_STRING
   }
   return " class=\"$cssClassName\""
 }
 
-private fun offsetWithPadding(tableRowSection: List<String>): String {
-  return tableRowSection
-    .joinToString("$NEWLINE_CHAR")
+private fun offsetWithPadding(tableRowBlocks: List<String>): String {
+  val tableRowsSection = tableRowBlocks
+    .joinToString(NEWLINE_CHAR)
+
+  return tableRowsSection
     .split(NEWLINE_CHAR)
     .mapIndexed { index, line ->
-      if (index == 0) {
+      val firstLine = index == 0
+      if (firstLine) {
         line
       } else {
         "            $line"
       }
     }
-    .joinToString("$NEWLINE_CHAR")
+    .joinToString(NEWLINE_CHAR)
 }
 
 private fun padStartWithNbsp(line: String): String {
   val prefix = line.takeWhile { it.isWhitespace() }
-    .map { "&nbsp;" }
-    .joinToString("")
+    .map { HTML_NBSP }
+    .joinToString(EMPTY_STRING)
   return prefix + line.trimStart()
 }
