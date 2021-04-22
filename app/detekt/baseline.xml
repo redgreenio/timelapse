@@ -52,6 +52,7 @@
     <ID>TooGenericExceptionCaught:OpenRepoEffectHandlerFactory.kt$OpenRepoEffectHandlerFactory$e: RuntimeException</ID>
     <ID>TooManyFunctions:ContentViewerPane.kt$ContentViewerPane : BorderPaneContentViewerView</ID>
     <ID>TooManyFunctions:ContentViewerView.kt$ContentViewerView</ID>
+    <ID>TooManyFunctions:ExtendedDiffHtml.kt$io.redgreen.timelapse.extendeddiff.ExtendedDiffHtml.kt</ID>
     <ID>TooManyFunctions:GitRepositoryService.kt$GitRepositoryService : VcsRepositoryService</ID>
   </CurrentIssues>
 </SmellBaseline>

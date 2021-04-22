@@ -18,7 +18,6 @@ private const val CSS_CLASS_DELETED = "deleted"
 
 private const val HTML_NBSP = "&nbsp;"
 
-@SuppressWarnings("LongMethod")
 fun ExtendedDiff.toHtml(): String {
   val result = (this as HasChanges).comparisonResults.first()
 
@@ -119,7 +118,7 @@ private fun addedRowHtml(lineNumber: Int, line: String): String {
             <td>$lineNumber</td>
             <td>${padStartWithNbsp(line)}</td>
         </tr>
-      """.trimIndent()
+  """.trimIndent()
 }
 
 private fun unchangedRowHtml(lineNumber: Int, line: String): String {
@@ -128,7 +127,7 @@ private fun unchangedRowHtml(lineNumber: Int, line: String): String {
             <td>$lineNumber</td>
             <td>${padStartWithNbsp(line)}</td>
         </tr>
-      """.trimIndent()
+  """.trimIndent()
 }
 
 private fun classAttribute(cssClassName: String): String {
