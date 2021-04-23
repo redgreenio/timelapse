@@ -109,7 +109,7 @@ class ExtendedDiffHtmlTest {
       }
       
       
-      function e() {
+      function d() {
         println("Knock, knock!")
       }
       
@@ -125,8 +125,8 @@ class ExtendedDiffHtmlTest {
         return a + b
       }
     """.trimIndent()
-    val functionD = """
-      fun d(a: Double, b: Double): Double {
+    val functionE = """
+      fun e(a: Double, b: Double): Double {
         return a * b
       }
     """.trimIndent()
@@ -134,9 +134,9 @@ class ExtendedDiffHtmlTest {
     val comparisonResults = listOf(
       Deleted(ParseResult.wellFormedFunction("a", 1, 3, 1), functionA),
       Modified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
-      Deleted(ParseResult.wellFormedFunction("c", 3, 5, 1), functionC),
-      Deleted(ParseResult.wellFormedFunction("d", 5, 8, 1), functionD),
-      Added(ParseResult.wellFormedFunction("e", 5, 7, 1))
+      Deleted(ParseResult.wellFormedFunction("c", 4, 6, 1), functionC),
+      Added(ParseResult.wellFormedFunction("d", 5, 7, 1)),
+      Deleted(ParseResult.wellFormedFunction("e", 8, 10, 1), functionE)
     )
 
     // when
