@@ -99,4 +99,50 @@ class ExtendedDiffHtmlTest {
     // when & then
     Approvals.verifyHtml(hasChanges.toHtml())
   }
+
+  @Test
+  @UseReporter(QuietReporter::class)
+  fun `it should handle added, modified and deleted functions`() {
+    // given
+    val kotlinSource = """
+      function b() {
+      }
+      
+      
+      function e() {
+        println("Knock, knock!")
+      }
+      
+    """.trimIndent()
+
+    val functionA = """
+      fun a() {
+        // Nothing here...
+      }
+    """.trimIndent()
+    val functionC = """
+      fun c(a: Int, b: Int): Int {
+        return a + b
+      }
+    """.trimIndent()
+    val functionD = """
+      fun d(a: Double, b: Double): Double {
+        return a * b
+      }
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Deleted(ParseResult.wellFormedFunction("a", 1, 3, 1), functionA),
+      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
+      Deleted(ParseResult.wellFormedFunction("c", 3, 5, 1), functionC),
+      Deleted(ParseResult.wellFormedFunction("d", 5, 8, 1), functionD),
+      Added(ParseResult.wellFormedFunction("e", 5, 7, 1))
+    )
+
+    // when
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
 }
