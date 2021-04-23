@@ -21,8 +21,6 @@ private const val CSS_CLASS_DELETED = "deleted"
 
 private const val HTML_NBSP = "&nbsp;"
 
-private const val APPLESAUCE = 5
-
 private sealed class LineNumber {
   abstract val value: Int
 
@@ -32,31 +30,24 @@ private sealed class LineNumber {
 
 fun ExtendedDiff.toHtml(): String {
   val comparisonResults = (this as HasChanges).comparisonResults
-  if (comparisonResults.size == APPLESAUCE) {
-    val sourceCodeLines = toLines(sourceCode)
-    val linesNumbersAndLines = mutableLineNumbersAndLines(comparisonResults, sourceCodeLines)
+  val sourceCodeLines = toLines(sourceCode)
+  val linesNumbersAndLines = mutableLineNumbersAndLines(comparisonResults, sourceCodeLines)
 
-    mergeUnchangedLines(sourceCodeLines, comparisonResults, linesNumbersAndLines)
+  mergeUnchangedLines(sourceCodeLines, comparisonResults, linesNumbersAndLines)
 
-    val addedFunctionRanges = addedFunctionRanges(comparisonResults)
-    val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
+  val addedFunctionRanges = addedFunctionRanges(comparisonResults)
+  val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
 
-    val htmlRows = linesNumbersAndLines.map { (lineNumber, line) ->
-      when {
-        isDeleted(lineNumber) -> deletedRowHtml(line)
-        isInRangeOf(addedFunctionRanges, lineNumber) -> addedRowHtml(lineNumber.value, line)
-        isInRangeOf(modifiedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
-        else -> unchangedRowHtml(lineNumber.value, line)
-      }
+  val htmlRows = linesNumbersAndLines.map { (lineNumber, line) ->
+    when {
+      isDeleted(lineNumber) -> deletedRowHtml(line)
+      isInRangeOf(addedFunctionRanges, lineNumber) -> addedRowHtml(lineNumber.value, line)
+      isInRangeOf(modifiedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
+      else -> unchangedRowHtml(lineNumber.value, line)
     }
-
-    return htmlTemplate(htmlRows)
   }
 
-  val currentSnapshotRows = toTableRows(sourceCode, comparisonResults)
-  val deletedResults = comparisonResults.filterIsInstance<Deleted>()
-
-  return htmlTemplate(mergeDeletedContentWithCurrentSnapshot(currentSnapshotRows, deletedResults))
+  return htmlTemplate(htmlRows)
 }
 
 private fun mergeUnchangedLines(
@@ -92,6 +83,8 @@ private fun mergeUnchangedLines(
         val indexToInsert = indexToInsert(linesNumbersAndLines, previousLineNumber)
         val lineNumberLineRow = unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1]
         linesNumbersAndLines.add(indexToInsert, lineNumberLineRow)
+      } else {
+        linesNumbersAndLines.add(0, unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1])
       }
     }
   }
@@ -202,24 +195,6 @@ private fun htmlTemplate(tableRows: List<String>): String {
   """.trimIndent()
 }
 
-private fun toTableRows(
-  sourceCode: String,
-  comparisonResults: List<ComparisonResult>
-): List<String> {
-  val addedFunctionRanges = addedFunctionRanges(comparisonResults)
-  val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
-
-  return sourceCode.split(NEWLINE_CHAR).mapIndexed { index, line ->
-    val lineNumber = index + 1
-
-    when {
-      addedFunctionRanges.any { range -> lineNumber in range } -> addedRowHtml(lineNumber, line)
-      modifiedFunctionRanges.any { range -> lineNumber in range } -> modifiedRowHtml(lineNumber, line)
-      else -> unchangedRowHtml(lineNumber, line)
-    }
-  }
-}
-
 private fun lineNumbersRange(function: WellFormedFunction): IntRange =
   function.startLine..function.endLine
 
@@ -297,19 +272,4 @@ private fun padStartWithNbsp(line: String): String {
     .map { HTML_NBSP }
     .joinToString(EMPTY_STRING)
   return prefix + line.trimStart()
-}
-
-private fun mergeDeletedContentWithCurrentSnapshot(
-  currentSnapshotRows: List<String>,
-  deletedResults: List<Deleted>
-): List<String> {
-  val mutableCurrentSnapshotRows = currentSnapshotRows.toMutableList()
-
-  deletedResults.reversed().onEach { deleted ->
-    val deletedLineNumber = deleted.function.startLine
-    val deletedHtmlRows = deleted.snippet.split(NEWLINE_CHAR).map { line -> deletedRowHtml(line) }
-    mutableCurrentSnapshotRows.addAll(deletedLineNumber - 1, deletedHtmlRows)
-  }
-
-  return mutableCurrentSnapshotRows.toList()
 }
