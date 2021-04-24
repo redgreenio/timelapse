@@ -1,3 +1,4 @@
+@file:Suppress("SameParameterValue")
 package extendeddiff.samplecreator
 
 import java.io.File
@@ -16,20 +17,29 @@ fun main() {
 
   val commitsAffectingFile = commitsAffectingFile(fileToInspect)
 
-  commitsAffectingFile.onEach { println(it) }
+  val seedCommitId = commitsAffectingFile.first()
+  val seedText = getSeedText(seedCommitId, fileToInspect)
+  println(seedText)
 }
 
-private fun commitsAffectingFile(
-  @Suppress("SameParameterValue") filePath: String
-): List<String> {
+private fun commitsAffectingFile(filePath: String): List<String> {
   val commitsAffectingFileCommand = """git log --pretty=format:"%h" --follow -- $filePath"""
-  return Runtime
-    .getRuntime()
-    .exec(commitsAffectingFileCommand)
-    .inputStream
-    .bufferedReader()
-    .readText()
+  return getCommandOutput(commitsAffectingFileCommand)
     .split(NEWLINE)
     .map { it.replace(QUOTE, EMPTY_STRING) }
     .reversed()
+}
+
+private fun getSeedText(seedCommitId: String, fileToInspect: String): String {
+  val showFileContentsCommand = """git show $seedCommitId:$fileToInspect"""
+  return getCommandOutput(showFileContentsCommand)
+}
+
+private fun getCommandOutput(command: String): String {
+  return Runtime
+    .getRuntime()
+    .exec(command)
+    .inputStream
+    .bufferedReader()
+    .readText()
 }
