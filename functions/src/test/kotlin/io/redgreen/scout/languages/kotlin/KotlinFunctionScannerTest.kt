@@ -97,4 +97,16 @@ class KotlinFunctionScannerTest {
     assertThat(KotlinFunctionScanner.scan(compilationUnitWithComment))
       .isEmpty()
   }
+
+  @Test
+  fun `it should return an empty list for a file with comment containing the word 'fun '`() {
+    // given
+    val compilationUnitWithComment = """
+      /* it's going to be so much fun ! */
+    """.trimIndent()
+
+    // when & then
+    assertThat(KotlinFunctionScanner.scan(compilationUnitWithComment))
+      .isEmpty()
+  }
 }
