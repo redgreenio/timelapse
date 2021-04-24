@@ -2,6 +2,10 @@ package extendeddiff.samplecreator
 
 import java.io.File
 
+private const val NEWLINE = "\n"
+private const val QUOTE = "\""
+private const val EMPTY_STRING = ""
+
 fun main() {
   val outputDirectory = File("/Users/ragunathjawahar/Desktop/extended-diff-demo")
   val fileToInspect = """app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt"""
@@ -25,7 +29,7 @@ private fun commitsAffectingFile(
     .inputStream
     .bufferedReader()
     .readText()
-    .split("\n")
-    .map { it.replace("\"", "") }
+    .split(NEWLINE)
+    .map { it.replace(QUOTE, EMPTY_STRING) }
     .reversed()
 }
