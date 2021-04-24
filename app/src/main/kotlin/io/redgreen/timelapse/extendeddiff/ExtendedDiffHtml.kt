@@ -28,8 +28,22 @@ private sealed class LineNumber {
   data class PreviousSnapshot(override val value: Int) : LineNumber()
 }
 
+private class ComparisonResultComparator : Comparator<ComparisonResult> {
+  override fun compare(result1: ComparisonResult, result2: ComparisonResult): Int {
+    val result = result1.function.startLine - result2.function.startLine
+    return if (result == 0 && result1 is Deleted) {
+      -1
+    } else if (result == 0 && result2 is Deleted) {
+      1
+    } else {
+      result
+    }
+  }
+}
+
 fun ExtendedDiff.toHtml(): String {
-  val comparisonResults = (this as HasChanges).comparisonResults
+  val unorderedComparisonResults = (this as HasChanges).comparisonResults
+  val comparisonResults = unorderedComparisonResults.sortedWith(ComparisonResultComparator())
   val sourceCodeLines = toLines(sourceCode)
   val linesNumbersAndLines = mutableLineNumbersAndLines(comparisonResults, sourceCodeLines)
 
