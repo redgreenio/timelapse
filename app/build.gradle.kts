@@ -73,7 +73,7 @@ dependencies {
     because("Provides a decoupled API for analytics.")
   }
 
-  implementation("com.cloudbees:diff4j:1.3")
+  implementation(deps.diff4j)
 
   testImplementation(testFixtures(project(":fixtures:library")))
   testImplementation(deps.test.junit.api)
