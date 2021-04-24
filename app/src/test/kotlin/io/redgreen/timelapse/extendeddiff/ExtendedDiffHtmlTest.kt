@@ -171,4 +171,30 @@ class ExtendedDiffHtmlTest {
     // then
     Approvals.verifyHtml(hasChanges.toHtml())
   }
+
+  @Test
+  fun `deleted functions should not overlap modified functions`() {
+    // given
+    val kotlinSource = """
+      fun modifiedFunction() {
+        println("Hello, world!")
+      }
+    """.trimIndent()
+
+    val deletedFunction = """
+      fun deletedFunction() {
+      }
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Added(ParseResult.wellFormedFunction("modifiedFunction", 1, 3, 1)),
+      Deleted(ParseResult.wellFormedFunction("deletedFunction", 2, 3, 1), deletedFunction),
+    )
+
+    // when
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
 }
