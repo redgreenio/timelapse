@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.extendeddiff
 
 import com.google.common.truth.Truth.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class ApplyPatchTest {
@@ -12,8 +13,11 @@ class ApplyPatchTest {
     """.trimMargin("|")
 
     val patch = """
+      --- a.txt	2021-04-21 12:19:34.000000000 +0530
+      +++ b.txt	2021-04-21 12:19:47.000000000 +0530
       @@ -0,0 +1 @@
       +Hello, world!
+      \ No newline at end of file
     """.trimIndent()
 
     // when
@@ -36,6 +40,8 @@ class ApplyPatchTest {
     """.trimIndent()
 
     val patch = """
+      --- a.txt	2021-04-21 12:19:34.000000000 +0530
+      +++ b.txt	2021-04-21 12:19:47.000000000 +0530
       @@ -1 +1,2 @@
       -Hello, world!
       \ No newline at end of file
@@ -94,9 +100,12 @@ class ApplyPatchTest {
     """.trimIndent()
 
     val patch = """
+      --- a.txt	2021-04-21 12:19:34.000000000 +0530
+      +++ b.txt	2021-04-21 12:19:47.000000000 +0530
       @@ -1,2 +1 @@
       -Hello, world!
        Nice to meet you!
+      \ No newline at end of file
     """.trimIndent()
 
     // when
@@ -108,13 +117,17 @@ class ApplyPatchTest {
   }
 
   @Test
+  @Disabled
   fun `it should apply a deletion patch on a non-empty text to an empty text`() {
     // given
     val originalText = "Nice to meet you!"
 
     val patch = """
+      --- a.txt	2021-04-24 19:11:12.000000000 +0530
+      +++ b.txt	2021-04-24 19:11:45.000000000 +0530
       @@ -1 +0,0 @@
       -Nice to meet you!
+      \ No newline at end of file
     """.trimIndent()
 
     // when
@@ -136,12 +149,15 @@ class ApplyPatchTest {
     """.trimIndent()
 
     val patch = """
+      --- a.txt	2021-04-21 12:19:34.000000000 +0530
+      +++ b.txt	2021-04-21 12:19:47.000000000 +0530
       @@ -1,4 +1,4 @@
       +Avocado
        Apple
       -Orange
        Grapes
        Mango
+      \ No newline at end of file
     """.trimIndent()
 
     // when
@@ -179,6 +195,8 @@ class ApplyPatchTest {
     """.trimIndent()
 
     val patch = """
+      --- a.txt	2021-04-21 12:19:34.000000000 +0530
+      +++ b.txt	2021-04-21 12:19:47.000000000 +0530
       @@ -1,5 +1,5 @@
       +Avocado
        Apple

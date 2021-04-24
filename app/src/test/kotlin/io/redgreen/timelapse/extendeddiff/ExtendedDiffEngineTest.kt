@@ -9,11 +9,14 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
+import org.approvaltests.Approvals
+import org.approvaltests.reporters.QuietReporter
+import org.approvaltests.reporters.UseReporter
 import org.junit.jupiter.api.Test
 
 class ExtendedDiffEngineTest {
   @Test
-  internal fun `it should create a new instance of the engine for every new text`() {
+  fun `it should create a new instance of the engine for every new text`() {
     // given & when
     val diffEngine = ExtendedDiffEngine.newInstance("/* Hello, world! */", KotlinFunctionScanner)
 
@@ -155,4 +158,29 @@ class ExtendedDiffEngineTest {
     assertThat(extendedDiff)
       .isEqualTo(HasChanges(patchedText, comparisonResults))
   }
+
+  @Test
+  @UseReporter(QuietReporter::class)
+  fun `apply git patches from a real project`() {
+    // given
+    val resourceDirectory = "/fixtures/timelapse/"
+    val seedSourceCode = readResourceText("${resourceDirectory}seed.txt")
+    val patch1Text = readResourceText("${resourceDirectory}01.patch")
+    val patch2Text = readResourceText("${resourceDirectory}02.patch")
+    val patches = listOf(patch1Text, patch2Text)
+
+    val diffEngine = ExtendedDiffEngine.newInstance(seedSourceCode, KotlinFunctionScanner)
+
+    // when
+    var patchedSourceCode = seedSourceCode
+    patches.onEach { patch ->
+      patchedSourceCode = (diffEngine.extendedDiff(patch) as HasChanges).sourceCode
+    }
+
+    // then
+    Approvals.verify(patchedSourceCode)
+  }
+
+  private fun readResourceText(resourceFilePath: String): String =
+    ExtendedDiffEngineTest::class.java.getResourceAsStream(resourceFilePath).reader().readText()
 }
