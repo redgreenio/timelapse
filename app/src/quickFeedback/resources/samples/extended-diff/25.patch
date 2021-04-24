@@ -1,0 +1,65 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index 8d29c4e1..5949e286 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -20,12 +20,10 @@ private const val HTML_NBSP = "&nbsp;"
+ 
+ fun ExtendedDiff.toHtml(): String {
+   val comparisonResults = (this as HasChanges).comparisonResults
+-  val addedModifiedUnmodifiedRows = toRows(sourceCode, comparisonResults)
+-  val deletedRows = comparisonResults.filterIsInstance<Deleted>()
+-    .map { it.snippet.split(NEWLINE_CHAR).map { line -> deletedRowHtml(line) } }
+-    .flatten()
++  val currentSnapshotRows = toTableRows(sourceCode, comparisonResults)
++  val deletedResults = comparisonResults.filterIsInstance<Deleted>()
+ 
+-  return htmlTemplate(deletedRows + addedModifiedUnmodifiedRows)
++  return htmlTemplate(mergeDeletedContentWithCurrentSnapshot(currentSnapshotRows, deletedResults))
+ }
+ 
+ private fun htmlTemplate(tableRows: List<String>): String {
+@@ -55,7 +53,7 @@ private fun htmlTemplate(tableRows: List<String>): String {
+   """.trimIndent()
+ }
+ 
+-private fun toRows(
++private fun toTableRows(
+   sourceCode: String,
+   comparisonResults: List<ComparisonResult>
+ ): List<String> {
+@@ -65,12 +63,10 @@ private fun toRows(
+   return sourceCode.split(NEWLINE_CHAR).mapIndexed { index, line ->
+     val lineNumber = index + 1
+ 
+-    if (addedFunctionRanges.any { range -> lineNumber in range }) {
+-      addedRowHtml(lineNumber, line)
+-    } else if (modifiedFunctionRanges.any { range -> lineNumber in range }) {
+-      modifiedRowHtml(lineNumber, line)
+-    } else {
+-      unchangedRowHtml(lineNumber, line)
++    when {
++      addedFunctionRanges.any { range -> lineNumber in range } -> addedRowHtml(lineNumber, line)
++      modifiedFunctionRanges.any { range -> lineNumber in range } -> modifiedRowHtml(lineNumber, line)
++      else -> unchangedRowHtml(lineNumber, line)
+     }
+   }
+ }
+@@ -150,3 +146,18 @@ private fun padStartWithNbsp(line: String): String {
+     .joinToString(EMPTY_STRING)
+   return prefix + line.trimStart()
+ }
++
++private fun mergeDeletedContentWithCurrentSnapshot(
++  currentSnapshotRows: List<String>,
++  deletedResults: List<Deleted>
++): List<String> {
++  val mutableCurrentSnapshotRows = currentSnapshotRows.toMutableList()
++
++  deletedResults.reversed().onEach { deleted ->
++    val deletedLineNumber = deleted.function.startLine
++    val deletedHtmlRows = deleted.snippet.split(NEWLINE_CHAR).map { line -> deletedRowHtml(line) }
++    mutableCurrentSnapshotRows.addAll(deletedLineNumber - 1, deletedHtmlRows)
++  }
++
++  return mutableCurrentSnapshotRows.toList()
++}

@@ -1,0 +1,96 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index abe5d59a..d894e643 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -43,14 +43,25 @@ private fun htmlTemplate(tableRows: String): String {
+ 
+ private fun toRows(sourceCode: String, result: ComparisonResult): String {
+   return when (result) {
+-    is Added -> toAddedRows(sourceCode, result)
+-    is Deleted -> toDeletedRows(sourceCode, result)
+-    is Modified -> toModifiedRows(sourceCode, result)
++    is Added -> offsetWithPadding(toAddedRows(sourceCode, result))
++    is Deleted -> offsetWithPadding(toDeletedRows(result) + toUnchangedRows(sourceCode))
++    is Modified -> offsetWithPadding(toModifiedRows(sourceCode, result))
+   }
+ }
+ 
+-private fun toDeletedRows(sourceCode: String, deleted: Deleted): String {
+-  val unchangedRows = sourceCode
++private fun toDeletedRows(deleted: Deleted): List<String> {
++  return deleted.snippet.split(NEWLINE_CHAR).map { line ->
++    """
++      <tr class="deleted">
++          <td></td>
++          <td>$line</td>
++      </tr>
++    """.trimIndent()
++  }
++}
++
++private fun toUnchangedRows(sourceCode: String): List<String> {
++  return sourceCode
+     .split(NEWLINE_CHAR)
+     .mapIndexed { index, line ->
+       val lineNumber = index + 1
+@@ -61,25 +72,16 @@ private fun toDeletedRows(sourceCode: String, deleted: Deleted): String {
+         </tr>
+       """.trimIndent()
+     }
+-
+-  val deletedRows = deleted.snippet.split(NEWLINE_CHAR).map { line ->
+-    """
+-      <tr class="deleted">
+-          <td></td>
+-          <td>$line</td>
+-      </tr>
+-    """.trimIndent()
+-  }
+-
+-  return """${offsetWithPadding(deletedRows)}
+-            ${offsetWithPadding(unchangedRows)}"""
+ }
+ 
+-private fun toModifiedRows(sourceCode: String, modified: Modified): String {
++private fun toModifiedRows(
++  sourceCode: String,
++  modified: Modified
++): List<String> {
+   val lines = sourceCode.split(NEWLINE_CHAR)
+   val modifiedFunctionRange = modified.function.startLine..modified.function.endLine
+ 
+-  val tableRows = lines.mapIndexed { index, line ->
++  return lines.mapIndexed { index, line ->
+     val lineNumber = index + 1
+     val cssClassName = if (lineNumber in modifiedFunctionRange) "modified" else ""
+     """
+@@ -89,18 +91,16 @@ private fun toModifiedRows(sourceCode: String, modified: Modified): String {
+        </tr>
+     """.trimIndent()
+   }
+-
+-  return offsetWithPadding(tableRows)
+ }
+ 
+ private fun toAddedRows(
+   sourceCode: String,
+   added: Added
+-): String {
++): List<String> {
+   val lines = sourceCode.split(NEWLINE_CHAR)
+   val addedRange = added.function.startLine..added.function.endLine
+ 
+-  val tableRows = lines
++  return lines
+     .mapIndexed { index, line ->
+       val lineNumber = index + 1
+       val cssClassName = if (lineNumber in addedRange) "added" else ""
+@@ -111,8 +111,6 @@ private fun toAddedRows(
+         </tr>
+       """.trimIndent()
+     }
+-
+-  return offsetWithPadding(tableRows)
+ }
+ 
+ private fun classAttribute(cssClassName: String = ""): String {

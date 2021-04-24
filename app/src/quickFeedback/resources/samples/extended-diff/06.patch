@@ -1,0 +1,115 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index 837f0a3d..a5dc918b 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -2,6 +2,7 @@ package io.redgreen.timelapse.extendeddiff
+ 
+ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
+ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
++import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+ import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
+ 
+ private const val NEWLINE_CHAR = '\n'
+@@ -82,6 +83,7 @@ fun ExtendedDiff.toHtml(): String {
+       """.trimIndent()
+     }
+     else -> {
++      val modified = (this as HasChanges).comparisonResults.first() as Modified
+       """
+         <html lang="en-US">
+         <head>
+@@ -100,26 +102,7 @@ fun ExtendedDiff.toHtml(): String {
+         <body>
+         <table>
+             <tbody>
+-            <tr>
+-                <td>1</td>
+-                <td>class SomeClass {</td>
+-            </tr>
+-            <tr class="modified">
+-                <td>2</td>
+-                <td>&nbsp;&nbsp;func a() {</td>
+-            </tr>
+-            <tr class="modified">
+-                <td>3</td>
+-                <td>&nbsp;&nbsp;&nbsp;&nbsp;// Hello, world!</td>
+-            </tr>
+-            <tr class="modified">
+-                <td>4</td>
+-                <td>&nbsp;&nbsp;}</td>
+-            </tr>
+-            <tr>
+-                <td>5</td>
+-                <td>}</td>
+-            </tr>
++            ${toModifiedRows(sourceCode, modified)}
+             </tbody>
+         </table>
+         </body>
+@@ -129,6 +112,24 @@ fun ExtendedDiff.toHtml(): String {
+   }
+ }
+ 
++private fun toModifiedRows(sourceCode: String, modified: Modified): String {
++  val lines = sourceCode.split(NEWLINE_CHAR)
++  val modifiedFunctionRange = modified.function.startLine..modified.function.endLine
++
++  val tableRows = lines.mapIndexed { index, line ->
++    val lineNumber = index + 1
++    val cssClassName = if (lineNumber in modifiedFunctionRange) "modified" else ""
++    """
++       <tr${classAttribute(cssClassName)}>
++           <td>$lineNumber</td>
++           <td>${padLeftWithNbsp(line)}</td>
++       </tr>
++    """.trimIndent()
++  }
++
++  return offsetWithPadding(tableRows)
++}
++
+ private fun toRows(
+   sourceCode: String,
+   added: Added
+@@ -139,10 +140,11 @@ private fun toRows(
+   val tableRows = lines
+     .mapIndexed { index, line ->
+       val lineNumber = index + 1
++      val cssClassName = if (lineNumber in addedRange) "added" else ""
+       """
+-        <tr${classAttribute(lineNumber in addedRange)}>
++        <tr${classAttribute(cssClassName)}>
+             <td>$lineNumber</td>
+-            <td>$line</td>
++            <td>${padLeftWithNbsp(line)}</td>
+         </tr>
+       """.trimIndent()
+     }
+@@ -150,12 +152,11 @@ private fun toRows(
+   return offsetWithPadding(tableRows)
+ }
+ 
+-private fun classAttribute(added: Boolean): String {
+-  return if (added) {
+-    " class=\"added\""
+-  } else {
+-    ""
++private fun classAttribute(cssClassName: String = ""): String {
++  if (cssClassName.isEmpty()) {
++    return ""
+   }
++  return " class=\"$cssClassName\""
+ }
+ 
+ private fun offsetWithPadding(tableRowSection: List<String>): String {
+@@ -171,3 +172,10 @@ private fun offsetWithPadding(tableRowSection: List<String>): String {
+     }
+     .joinToString("$NEWLINE_CHAR")
+ }
++
++private fun padLeftWithNbsp(line: String): String {
++  val prefix = line.takeWhile { it.isWhitespace() }
++    .map { "&nbsp;" }
++    .joinToString("")
++  return prefix + line.trimStart()
++}

@@ -1,0 +1,108 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index b4bdabe7..8c64863e 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -36,19 +36,26 @@ fun ExtendedDiff.toHtml(): String {
+ 
+   mergeUnchangedLines(sourceCodeLines, comparisonResults, linesNumbersAndLines)
+ 
++  val htmlRows = mapToTableRows(linesNumbersAndLines, comparisonResults)
++  return htmlTemplate(htmlRows)
++}
++
++private fun mapToTableRows(
++  linesNumbersAndLines: MutableList<Pair<LineNumber, String>>,
++  comparisonResults: List<ComparisonResult>
++): List<String> {
+   val addedFunctionRanges = addedFunctionRanges(comparisonResults)
+   val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
+ 
+-  val htmlRows = linesNumbersAndLines.map { (lineNumber, line) ->
+-    when {
+-      isDeleted(lineNumber) -> deletedRowHtml(line)
+-      isInRangeOf(addedFunctionRanges, lineNumber) -> addedRowHtml(lineNumber.value, line)
+-      isInRangeOf(modifiedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
+-      else -> unchangedRowHtml(lineNumber.value, line)
++  return linesNumbersAndLines
++    .map { (lineNumber, line) ->
++      when {
++        isDeleted(lineNumber) -> deletedRowHtml(line)
++        isInRangeOf(addedFunctionRanges, lineNumber) -> addedRowHtml(lineNumber.value, line)
++        isInRangeOf(modifiedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
++        else -> unchangedRowHtml(lineNumber.value, line)
++      }
+     }
+-  }
+-
+-  return htmlTemplate(htmlRows)
+ }
+ 
+ private fun mergeUnchangedLines(
+@@ -57,36 +64,45 @@ private fun mergeUnchangedLines(
+   linesNumbersAndLines: MutableList<Pair<LineNumber, String>>
+ ) {
+   val unchangedLineNumbers = unchangedLineNumbers(sourceCodeLines, linesNumbersAndLines)
++  unchangedLineNumbers.onEach { unchangedLineNumber ->
++    mergeUnchangedLine(sourceCodeLines, linesNumbersAndLines, comparisonResults, unchangedLineNumber)
++  }
++}
+ 
++private fun mergeUnchangedLine(
++  sourceCodeLines: List<String>,
++  linesNumbersAndLines: MutableList<Pair<LineNumber, String>>,
++  comparisonResults: List<ComparisonResult>,
++  unchangedLineNumber: CurrentSnapshot
++) {
+   val deletedFunctionStartLinesAndLengths = comparisonResults
+     .filterIsInstance<Deleted>()
+     .map { it.function.startLine to it.function.endLine - it.function.startLine }
+ 
+-  unchangedLineNumbers.onEach { unchangedLineNumber ->
+-    val collidingLineNumberAndLength = deletedFunctionStartLinesAndLengths.find {
+-      it.first == unchangedLineNumber.value
+-    }
+-    val foundCollision = collidingLineNumberAndLength != null
++  val collidingLineNumberAndLength = deletedFunctionStartLinesAndLengths.find {
++    it.first == unchangedLineNumber.value
++  }
+ 
+-    if (foundCollision) {
+-      val collidingLineNumberAndLine = linesNumbersAndLines
+-        .find { it.first is PreviousSnapshot && it.first.value == unchangedLineNumber.value }
++  val foundCollision = collidingLineNumberAndLength != null
+ 
+-      if (collidingLineNumberAndLine != null) {
+-        val collidingLineAndLineNumberIndex = linesNumbersAndLines.indexOf(collidingLineNumberAndLine)
+-        val indexToInsert = collidingLineAndLineNumberIndex + collidingLineNumberAndLength!!.second
+-        val lineNumberLineRow = unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1]
+-        linesNumbersAndLines.add(indexToInsert + 1, lineNumberLineRow)
+-      }
++  if (foundCollision) {
++    val collidingLineNumberAndLine = linesNumbersAndLines
++      .find { it.first is PreviousSnapshot && it.first.value == unchangedLineNumber.value }
++
++    if (collidingLineNumberAndLine != null) {
++      val collidingLineAndLineNumberIndex = linesNumbersAndLines.indexOf(collidingLineNumberAndLine)
++      val indexToInsert = collidingLineAndLineNumberIndex + collidingLineNumberAndLength!!.second
++      val lineNumberLineRow = unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1]
++      linesNumbersAndLines.add(indexToInsert + 1, lineNumberLineRow)
++    }
++  } else {
++    val previousLineNumber = previousLineNumber(linesNumbersAndLines, unchangedLineNumber)
++    if (previousLineNumber != null) {
++      val indexToInsert = indexToInsert(linesNumbersAndLines, previousLineNumber)
++      val lineNumberLineRow = unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1]
++      linesNumbersAndLines.add(indexToInsert, lineNumberLineRow)
+     } else {
+-      val previousLineNumber = previousLineNumber(linesNumbersAndLines, unchangedLineNumber)
+-      if (previousLineNumber != null) {
+-        val indexToInsert = indexToInsert(linesNumbersAndLines, previousLineNumber)
+-        val lineNumberLineRow = unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1]
+-        linesNumbersAndLines.add(indexToInsert, lineNumberLineRow)
+-      } else {
+-        linesNumbersAndLines.add(0, unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1])
+-      }
++      linesNumbersAndLines.add(0, unchangedLineNumber to sourceCodeLines[unchangedLineNumber.value - 1])
+     }
+   }
+ }

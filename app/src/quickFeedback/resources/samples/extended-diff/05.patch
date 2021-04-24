@@ -1,0 +1,85 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index 3cc78dbb..837f0a3d 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -4,6 +4,8 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
+ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
+ import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
+ 
++private const val NEWLINE_CHAR = '\n'
++
+ @SuppressWarnings("LongMethod")
+ fun ExtendedDiff.toHtml(): String {
+   val isAdded = this is HasChanges && this.comparisonResults.first() is Added
+@@ -11,6 +13,8 @@ fun ExtendedDiff.toHtml(): String {
+ 
+   return when {
+     isAdded -> {
++      val added = (this as HasChanges).comparisonResults.first() as Added
++
+       """
+         <html lang="en-US">
+         <head>
+@@ -29,14 +33,7 @@ fun ExtendedDiff.toHtml(): String {
+         <body>
+         <table>
+             <tbody>
+-            <tr>
+-                <td>1</td>
+-                <td>fun a() {}</td>
+-            </tr>
+-            <tr class="added">
+-                <td>2</td>
+-                <td>fun b() {}</td>
+-            </tr>
++            ${toRows(sourceCode, added)}
+             </tbody>
+         </table>
+         </body>
+@@ -131,3 +128,46 @@ fun ExtendedDiff.toHtml(): String {
+     }
+   }
+ }
++
++private fun toRows(
++  sourceCode: String,
++  added: Added
++): String {
++  val lines = sourceCode.split(NEWLINE_CHAR)
++  val addedRange = added.function.startLine..added.function.endLine
++
++  val tableRows = lines
++    .mapIndexed { index, line ->
++      val lineNumber = index + 1
++      """
++        <tr${classAttribute(lineNumber in addedRange)}>
++            <td>$lineNumber</td>
++            <td>$line</td>
++        </tr>
++      """.trimIndent()
++    }
++
++  return offsetWithPadding(tableRows)
++}
++
++private fun classAttribute(added: Boolean): String {
++  return if (added) {
++    " class=\"added\""
++  } else {
++    ""
++  }
++}
++
++private fun offsetWithPadding(tableRowSection: List<String>): String {
++  return tableRowSection
++    .joinToString("$NEWLINE_CHAR")
++    .split(NEWLINE_CHAR)
++    .mapIndexed { index, line ->
++      if (index == 0) {
++        line
++      } else {
++        "            $line"
++      }
++    }
++    .joinToString("$NEWLINE_CHAR")
++}

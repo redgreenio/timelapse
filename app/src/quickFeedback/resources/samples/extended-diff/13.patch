@@ -1,0 +1,24 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index 11b35f63..50f68d47 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -11,6 +11,10 @@ private const val NEWLINE_CHAR = '\n'
+ fun ExtendedDiff.toHtml(): String {
+   val result = (this as HasChanges).comparisonResults.first()
+ 
++  return htmlTemplate(toRows(sourceCode, result))
++}
++
++private fun htmlTemplate(tableRows: String): String {
+   return """
+         <html lang="en-US">
+         <head>
+@@ -29,7 +33,7 @@ fun ExtendedDiff.toHtml(): String {
+         <body>
+         <table>
+             <tbody>
+-            ${toRows(sourceCode, result)}
++            $tableRows
+             </tbody>
+         </table>
+         </body>
