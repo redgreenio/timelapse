@@ -1,4 +1,5 @@
 @file:Suppress("SameParameterValue")
+
 package extendeddiff.samplecreator
 
 import java.io.File
@@ -8,7 +9,7 @@ private const val QUOTE = "\""
 private const val EMPTY_STRING = ""
 
 fun main() {
-  val fileToInspect = """app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt"""
+  val filePath = """app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt"""
   val outputDirectory = File("/Users/ragunathjawahar/Desktop/extended-diff-demo")
   val seedTextFile = outputDirectory.resolve("seed.txt")
 
@@ -16,19 +17,37 @@ fun main() {
     outputDirectory.mkdirs()
   }
 
-  val commitsAffectingFile = commitsAffectingFile(fileToInspect)
+  val commitsAffectingFile = commitsAffectingFile(filePath)
 
   val seedCommitId = commitsAffectingFile.first()
-  val seedText = getSeedText(seedCommitId, fileToInspect)
-  writeToFile(seedText, seedTextFile)
+  writeSeedFile(seedCommitId, filePath, seedTextFile)
+  writePatchFiles(commitsAffectingFile, seedCommitId, filePath, outputDirectory)
+}
 
+private fun writeSeedFile(
+  seedCommitId: String,
+  filePath: String,
+  seedTextOutputFile: File
+) {
+  val seedText = getSeedText(seedCommitId, filePath)
+  writeToFile(seedText, seedTextOutputFile)
+}
+
+private fun writePatchFiles(
+  commitsAffectingFile: List<String>,
+  seedCommitId: String,
+  filePath: String,
+  outputDirectory: File
+) {
   commitsAffectingFile.drop(1).foldIndexed(seedCommitId) { index, ancestor, descendent ->
-    val diff = diff(ancestor, descendent, fileToInspect)
-    val patchFileName = "${String.format("%02d", index + 1)}.patch"
-    writeToFile(diff, outputDirectory.resolve(patchFileName))
+    val diff = diff(ancestor, descendent, filePath)
+    writeToFile(diff, outputDirectory.resolve(getPatchFileName(index)))
     descendent
   }
 }
+
+private fun getPatchFileName(index: Int): String =
+  "${String.format("%02d", index + 1)}.patch"
 
 private fun commitsAffectingFile(filePath: String): List<String> {
   val commitsAffectingFileCommand = """git log --pretty=format:"%h" --follow -- $filePath"""
