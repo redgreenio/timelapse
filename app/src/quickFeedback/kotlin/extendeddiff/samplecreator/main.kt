@@ -21,6 +21,13 @@ fun main() {
   val seedCommitId = commitsAffectingFile.first()
   val seedText = getSeedText(seedCommitId, fileToInspect)
   writeToFile(seedText, seedTextFile)
+
+  commitsAffectingFile.drop(1).foldIndexed(seedCommitId) { index, ancestor, descendent ->
+    val diff = diff(ancestor, descendent, fileToInspect)
+    val patchFileName = "${String.format("%02d", index + 1)}.patch"
+    writeToFile(diff, outputDirectory.resolve(patchFileName))
+    descendent
+  }
 }
 
 private fun commitsAffectingFile(filePath: String): List<String> {
@@ -47,4 +54,9 @@ private fun getCommandOutput(command: String): String {
 
 private fun writeToFile(content: String, outputFile: File) {
   outputFile.writeText(content)
+}
+
+private fun diff(ancestor: String, descendent: String, fileToInspect: String): String {
+  val gitDiffCommand = """git diff -u $ancestor $descendent -- $fileToInspect"""
+  return getCommandOutput(gitDiffCommand)
 }
