@@ -85,4 +85,16 @@ class KotlinFunctionScannerTest {
       )
       .inOrder()
   }
+
+  @Test
+  fun `it should return an empty list for a file with comment containing the word function`() {
+    // given
+    val compilationUnitWithComment = """
+      /* function */
+    """.trimIndent()
+
+    // when & then
+    assertThat(KotlinFunctionScanner.scan(compilationUnitWithComment))
+      .isEmpty()
+  }
 }
