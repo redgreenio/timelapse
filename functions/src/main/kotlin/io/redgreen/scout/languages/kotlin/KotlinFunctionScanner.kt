@@ -13,7 +13,7 @@ object KotlinFunctionScanner : FunctionScanner {
     var lineNumber = 1
     val lines = snippet.split('\n')
     for (line in lines) {
-      if (line.contains(KEYWORD)) {
+      if (line.contains(KEYWORD) && line.indexOf('(') != -1) {
         val endOfFunctionKeyword = line.indexOf(KEYWORD) + KEYWORD.length
         val indexOfParentheses = line.indexOf('(')
         val name = line.substring(endOfFunctionKeyword, indexOfParentheses).trim()
