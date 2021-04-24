@@ -10,6 +10,7 @@ import org.approvaltests.reporters.QuietReporter
 import org.approvaltests.reporters.UseReporter
 import org.junit.jupiter.api.Test
 
+@UseReporter(QuietReporter::class)
 class ExtendedDiffHtmlTest {
   @Test
   fun `it should handle added function`() {
@@ -51,7 +52,6 @@ class ExtendedDiffHtmlTest {
   }
 
   @Test
-  @UseReporter(QuietReporter::class)
   fun `it should handle deleted function`() {
     // given
     val kotlinSource = """
@@ -101,7 +101,6 @@ class ExtendedDiffHtmlTest {
   }
 
   @Test
-  @UseReporter(QuietReporter::class)
   fun `it should handle added, modified and deleted functions`() {
     // given
     val kotlinSource = """
@@ -189,6 +188,51 @@ class ExtendedDiffHtmlTest {
     val comparisonResults = listOf(
       Added(ParseResult.wellFormedFunction("modifiedFunction", 1, 3, 1)),
       Deleted(ParseResult.wellFormedFunction("deletedFunction", 2, 3, 1), deletedFunction),
+    )
+
+    // when
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
+
+  @Test
+  fun `it should handle comparison results in any order`() {
+    // given
+    val kotlinSource = """
+      function b() {
+      }
+      
+      
+      function d() {
+        println("Knock, knock!")
+      }
+      
+    """.trimIndent()
+
+    val functionA = """
+      fun a() {
+        // Nothing here...
+      }
+    """.trimIndent()
+    val functionC = """
+      fun c(a: Int, b: Int): Int {
+        return a + b
+      }
+    """.trimIndent()
+    val functionE = """
+      fun e(a: Double, b: Double): Double {
+        return a * b
+      }
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Deleted(ParseResult.wellFormedFunction("e", 8, 10, 1), functionE),
+      Added(ParseResult.wellFormedFunction("d", 5, 7, 1)),
+      Deleted(ParseResult.wellFormedFunction("c", 4, 6, 1), functionC),
+      Deleted(ParseResult.wellFormedFunction("a", 1, 3, 1), functionA),
+      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1))
     )
 
     // when

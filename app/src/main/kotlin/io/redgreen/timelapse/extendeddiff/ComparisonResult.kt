@@ -3,7 +3,9 @@ package io.redgreen.timelapse.extendeddiff
 import io.redgreen.scout.ParseResult.WellFormedFunction
 
 sealed class ComparisonResult {
-  data class Added(val function: WellFormedFunction) : ComparisonResult()
-  data class Deleted(val function: WellFormedFunction, val snippet: String) : ComparisonResult()
-  data class Modified(val function: WellFormedFunction) : ComparisonResult()
+  abstract val function: WellFormedFunction
+
+  data class Added(override val function: WellFormedFunction) : ComparisonResult()
+  data class Deleted(override val function: WellFormedFunction, val snippet: String) : ComparisonResult()
+  data class Modified(override val function: WellFormedFunction) : ComparisonResult()
 }
