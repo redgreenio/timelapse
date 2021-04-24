@@ -16,6 +16,7 @@ object deps {
   const val sentry = "io.sentry:sentry:4.3.0"
   const val slf4jSimple = "org.slf4j:slf4j-simple:1.7.30"
   const val controlsFx = "org.controlsfx:controlsfx:11.1.0"
+  const val diff4j = "com.cloudbees:diff4j:1.3" /* Repackaged the code from NetBeans */
 
   object arrow {
     const val coreData = "io.arrow-kt:arrow-core-data:0.12.0"
