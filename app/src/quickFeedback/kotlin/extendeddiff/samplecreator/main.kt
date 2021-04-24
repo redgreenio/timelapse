@@ -8,8 +8,9 @@ private const val QUOTE = "\""
 private const val EMPTY_STRING = ""
 
 fun main() {
-  val outputDirectory = File("/Users/ragunathjawahar/Desktop/extended-diff-demo")
   val fileToInspect = """app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt"""
+  val outputDirectory = File("/Users/ragunathjawahar/Desktop/extended-diff-demo")
+  val seedTextFile = outputDirectory.resolve("seed.txt")
 
   if (!outputDirectory.exists()) {
     outputDirectory.mkdirs()
@@ -19,7 +20,7 @@ fun main() {
 
   val seedCommitId = commitsAffectingFile.first()
   val seedText = getSeedText(seedCommitId, fileToInspect)
-  println(seedText)
+  writeToFile(seedText, seedTextFile)
 }
 
 private fun commitsAffectingFile(filePath: String): List<String> {
@@ -42,4 +43,8 @@ private fun getCommandOutput(command: String): String {
     .inputStream
     .bufferedReader()
     .readText()
+}
+
+private fun writeToFile(content: String, outputFile: File) {
+  outputFile.writeText(content)
 }
