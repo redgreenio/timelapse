@@ -1,0 +1,67 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index ff316681..663cc699 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -84,17 +84,15 @@ private fun toModifiedRows(
+   modified: Modified
+ ): List<String> {
+   val lines = sourceCode.split(NEWLINE_CHAR)
+-  val modifiedFunctionRange = modified.function.startLine..modified.function.endLine
++  val modifiedRange = modified.function.startLine..modified.function.endLine
+ 
+   return lines.mapIndexed { index, line ->
+     val lineNumber = index + 1
+-    val cssClassName = if (lineNumber in modifiedFunctionRange) CSS_CLASS_MODIFIED else EMPTY_STRING
+-    """
+-       <tr${classAttribute(cssClassName)}>
+-           <td>$lineNumber</td>
+-           <td>${padStartWithNbsp(line)}</td>
+-       </tr>
+-    """.trimIndent()
++    if (lineNumber in modifiedRange) {
++      modifiedRowHtml(lineNumber, line)
++    } else {
++      unchangedRowHtml(lineNumber, line)
++    }
+   }
+ }
+ 
+@@ -108,7 +106,11 @@ private fun toAddedRows(
+   return lines
+     .mapIndexed { index, line ->
+       val lineNumber = index + 1
+-      if (lineNumber in addedRange) addedRowHtml(lineNumber, line) else unchangedRowHtml(lineNumber, line)
++      if (lineNumber in addedRange) {
++        addedRowHtml(lineNumber, line)
++      } else {
++        unchangedRowHtml(lineNumber, line)
++      }
+     }
+ }
+ 
+@@ -121,6 +123,15 @@ private fun addedRowHtml(lineNumber: Int, line: String): String {
+   """.trimIndent()
+ }
+ 
++private fun modifiedRowHtml(lineNumber: Int, line: String): String {
++  return """
++       <tr${classAttribute(CSS_CLASS_MODIFIED)}>
++           <td>$lineNumber</td>
++           <td>${padStartWithNbsp(line)}</td>
++       </tr>
++  """.trimIndent()
++}
++
+ private fun unchangedRowHtml(lineNumber: Int, line: String): String {
+   return """
+         <tr>
+@@ -131,9 +142,6 @@ private fun unchangedRowHtml(lineNumber: Int, line: String): String {
+ }
+ 
+ private fun classAttribute(cssClassName: String): String {
+-  if (cssClassName.isEmpty()) {
+-    return EMPTY_STRING
+-  }
+   return " class=\"$cssClassName\""
+ }
+ 

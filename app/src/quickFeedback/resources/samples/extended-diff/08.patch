@@ -1,0 +1,70 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index 26d1cd16..21e11d19 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -11,10 +11,11 @@ private const val NEWLINE_CHAR = '\n'
+ fun ExtendedDiff.toHtml(): String {
+   val isAdded = this is HasChanges && this.comparisonResults.first() is Added
+   val isDeletion = this is HasChanges && this.comparisonResults.first() is Deleted
++  val isModified = this is HasChanges && this.comparisonResults.first() is Modified
+ 
+   return when {
+-    isAdded -> {
+-      val added = (this as HasChanges).comparisonResults.first() as Added
++    isAdded || isModified -> {
++      val added = (this as HasChanges).comparisonResults.first()
+ 
+       """
+         <html lang="en-US">
+@@ -34,7 +35,7 @@ fun ExtendedDiff.toHtml(): String {
+         <body>
+         <table>
+             <tbody>
+-            ${toAddedRows(sourceCode, added)}
++            ${toRows(sourceCode, added)}
+             </tbody>
+         </table>
+         </body>
+@@ -82,33 +83,15 @@ fun ExtendedDiff.toHtml(): String {
+         </html>
+       """.trimIndent()
+     }
+-    else -> {
+-      val modified = (this as HasChanges).comparisonResults.first() as Modified
+-      """
+-        <html lang="en-US">
+-        <head>
+-            <style>
+-              .added {
+-                background-color: #e6ffed;
+-              }
+-              .modified {
+-                background-color: #dbedff80;
+-              }
+-              .deleted {
+-                background-color: #ffdce0;
+-              }
+-            </style>
+-        </head>
+-        <body>
+-        <table>
+-            <tbody>
+-            ${toModifiedRows(sourceCode, modified)}
+-            </tbody>
+-        </table>
+-        </body>
+-        </html>
+-      """.trimIndent()
+-    }
++    else -> TODO()
++  }
++}
++
++private fun toRows(sourceCode: String, result: ComparisonResult): String {
++  return when (result) {
++    is Added -> toAddedRows(sourceCode, result)
++    is Deleted -> TODO()
++    is Modified -> toModifiedRows(sourceCode, result)
+   }
+ }
+ 

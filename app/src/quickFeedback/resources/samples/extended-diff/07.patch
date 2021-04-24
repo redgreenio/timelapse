@@ -1,0 +1,22 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index a5dc918b..26d1cd16 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -34,7 +34,7 @@ fun ExtendedDiff.toHtml(): String {
+         <body>
+         <table>
+             <tbody>
+-            ${toRows(sourceCode, added)}
++            ${toAddedRows(sourceCode, added)}
+             </tbody>
+         </table>
+         </body>
+@@ -130,7 +130,7 @@ private fun toModifiedRows(sourceCode: String, modified: Modified): String {
+   return offsetWithPadding(tableRows)
+ }
+ 
+-private fun toRows(
++private fun toAddedRows(
+   sourceCode: String,
+   added: Added
+ ): String {

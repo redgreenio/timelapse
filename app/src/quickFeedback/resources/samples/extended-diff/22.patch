@@ -1,0 +1,39 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index 663cc699..9f07d7a2 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -60,14 +60,10 @@ private fun toRows(sourceCode: String, result: ComparisonResult): List<String> {
+ }
+ 
+ private fun toDeletedRows(deleted: Deleted): List<String> {
+-  return deleted.snippet.split(NEWLINE_CHAR).map { line ->
+-    """
+-      <tr class="$CSS_CLASS_DELETED">
+-          <td></td>
+-          <td>$line</td>
+-      </tr>
+-    """.trimIndent()
+-  }
++  return deleted
++    .snippet
++    .split(NEWLINE_CHAR)
++    .map { line -> deletedRowHtml(line) }
+ }
+ 
+ private fun toUnchangedRows(sourceCode: String): List<String> {
+@@ -132,6 +128,15 @@ private fun modifiedRowHtml(lineNumber: Int, line: String): String {
+   """.trimIndent()
+ }
+ 
++private fun deletedRowHtml(line: String): String {
++  return """
++      <tr${classAttribute(CSS_CLASS_DELETED)}>
++          <td></td>
++          <td>$line</td>
++      </tr>
++  """.trimIndent()
++}
++
+ private fun unchangedRowHtml(lineNumber: Int, line: String): String {
+   return """
+         <tr>
