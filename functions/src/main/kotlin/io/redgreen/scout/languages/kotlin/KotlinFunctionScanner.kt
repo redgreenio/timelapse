@@ -4,7 +4,7 @@ import io.redgreen.scout.FunctionScanner
 import io.redgreen.scout.PossibleFunction
 
 object KotlinFunctionScanner : FunctionScanner {
-  private const val KEYWORD = "fun"
+  private const val KEYWORD = "fun "
 
   override fun scan(snippet: String): List<PossibleFunction> {
     if (snippet.isBlank()) return emptyList()
