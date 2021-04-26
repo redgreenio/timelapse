@@ -9,7 +9,8 @@ import java.net.URL
 
 class ExtendedDiffPrototypeApplication : Application() {
   override fun start(primaryStage: Stage) {
-    val parent = FXMLLoader.load<BorderPane>(getUrlForResource())
+    val fxmlLoader = FXMLLoader()
+    val parent = fxmlLoader.load<BorderPane>(getUrlForResource().openStream())
     val extendedDiffScene = Scene(parent)
 
     with(primaryStage) {
@@ -17,6 +18,9 @@ class ExtendedDiffPrototypeApplication : Application() {
       scene = extendedDiffScene
       show()
     }
+
+    val controller = fxmlLoader.getController<ExtendedDiffController>()
+    controller.start()
   }
 
   private fun getUrlForResource(): URL {
