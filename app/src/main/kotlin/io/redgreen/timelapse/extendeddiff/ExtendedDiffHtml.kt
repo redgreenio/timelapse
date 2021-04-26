@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.extendeddiff
 
 import io.redgreen.scout.ParseResult.WellFormedFunction
+import io.redgreen.timelapse.diff.toHtmlFriendly
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
@@ -10,7 +11,6 @@ import io.redgreen.timelapse.extendeddiff.LineNumber.CurrentSnapshot
 import io.redgreen.timelapse.extendeddiff.LineNumber.PreviousSnapshot
 
 private const val NEWLINE_CHAR = "\n"
-private const val EMPTY_STRING = ""
 
 private const val CSS_COLOR_ADDED = "#e6ffed"
 private const val CSS_COLOR_MODIFIED = "#dbedff80"
@@ -19,8 +19,6 @@ private const val CSS_COLOR_DELETED = "#ffdce0"
 private const val CSS_CLASS_ADDED = "added"
 private const val CSS_CLASS_MODIFIED = "modified"
 private const val CSS_CLASS_DELETED = "deleted"
-
-private const val HTML_NBSP = "&nbsp;"
 
 private sealed class LineNumber {
   abstract val value: Int
@@ -237,7 +235,7 @@ private fun addedRowHtml(lineNumber: Int, line: String): String {
   return """
         <tr${classAttribute(CSS_CLASS_ADDED)}>
             <td>$lineNumber</td>
-            <td>${padStartWithNbsp(line)}</td>
+            <td>${toHtmlFriendly(line)}</td>
         </tr>
   """.trimIndent()
 }
@@ -246,7 +244,7 @@ private fun modifiedRowHtml(lineNumber: Int, line: String): String {
   return """
        <tr${classAttribute(CSS_CLASS_MODIFIED)}>
            <td>$lineNumber</td>
-           <td>${padStartWithNbsp(line)}</td>
+           <td>${toHtmlFriendly(line)}</td>
        </tr>
   """.trimIndent()
 }
@@ -255,7 +253,7 @@ private fun deletedRowHtml(line: String): String {
   return """
       <tr${classAttribute(CSS_CLASS_DELETED)}>
           <td></td>
-          <td>${padStartWithNbsp(line)}</td>
+          <td>${toHtmlFriendly(line)}</td>
       </tr>
   """.trimIndent()
 }
@@ -264,7 +262,7 @@ private fun unchangedRowHtml(lineNumber: Int, line: String): String {
   return """
         <tr>
             <td>$lineNumber</td>
-            <td>${padStartWithNbsp(line)}</td>
+            <td>${toHtmlFriendly(line)}</td>
         </tr>
   """.trimIndent()
 }
@@ -288,11 +286,4 @@ private fun offsetWithPadding(tableRowBlocks: List<String>): String {
       }
     }
     .joinToString(NEWLINE_CHAR)
-}
-
-private fun padStartWithNbsp(line: String): String {
-  val prefix = line.takeWhile { it.isWhitespace() }
-    .map { HTML_NBSP }
-    .joinToString(EMPTY_STRING)
-  return prefix + line.trimStart()
 }
