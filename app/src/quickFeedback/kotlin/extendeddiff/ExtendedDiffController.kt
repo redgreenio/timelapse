@@ -5,7 +5,6 @@ import extendeddiff.samplecreator.Samples
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ExtendedDiffEngine
 import io.redgreen.timelapse.extendeddiff.toHtml
-import io.redgreen.timelapse.foo.fastLazy
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -27,26 +26,40 @@ class ExtendedDiffController {
   private lateinit var nextButton: Button
 
   @FXML
+  private lateinit var resetButton: Button
+
+  @FXML
   private lateinit var patchCountLabel: Label
 
   private var patchCount = 0
   private val sample = Samples.EXTENDED_DIFF
 
-  private val diffEngine by fastLazy {
-    val seedSourceCode = readResourceFile(sampleResourcePath(sample.name, SEED_FILE))
-    ExtendedDiffEngine.newInstance(seedSourceCode, KotlinFunctionScanner)
-  }
+  private val seedSourceCode = readResourceFile(sampleResourcePath(sample.name, SEED_FILE))
+  private lateinit var diffEngine: ExtendedDiffEngine
 
   fun start() {
-    val seedSourceCodeExtendedDiff = diffEngine.extendedDiff(PATCH_FOR_SEED_SOURCE)
-    renderHtml(seedSourceCodeExtendedDiff.toHtml())
+    showSeedSourceCode()
 
     nextButton.setOnAction {
       patchCount++
       applyNextPatch(patchCount)
       updatePatchCountLabel(patchCount, sample.patchesCount)
-      disableButtonOnLastPatch(patchCount, sample.patchesCount)
+      disableNextButtonOnLastPatch(patchCount, sample.patchesCount)
+      resetButton.isDisable = patchCount == 0
     }
+
+    resetButton.setOnAction { showSeedSourceCode() }
+  }
+
+  private fun showSeedSourceCode() {
+    patchCount = 0
+    resetButton.isDisable = true
+    nextButton.isDisable = false
+    patchCountLabel.text = ""
+
+    diffEngine = ExtendedDiffEngine.newInstance(seedSourceCode, KotlinFunctionScanner)
+    val seedSourceCodeExtendedDiff = diffEngine.extendedDiff(PATCH_FOR_SEED_SOURCE)
+    renderHtml(seedSourceCodeExtendedDiff.toHtml())
   }
 
   private fun applyNextPatch(patchCount: Int) {
@@ -60,7 +73,7 @@ class ExtendedDiffController {
     patchCountLabel.text = String.format(FORMAT_PATCH_COUNT, patchCount, totalPatches)
   }
 
-  private fun disableButtonOnLastPatch(patchCount: Int, totalPatches: Int) {
+  private fun disableNextButtonOnLastPatch(patchCount: Int, totalPatches: Int) {
     val isLastPatch = patchCount == totalPatches
     if (isLastPatch) {
       nextButton.isDisable = true
