@@ -51,7 +51,7 @@ class ApplyPatchTest {
     """.trimIndent()
 
     // when
-    val patchedText = applyPatch(helloWorldText, patch)
+    val patchedText = applyPatch(helloWorldText, patch).replaceLineEndingOnWindows()
 
     // then
     assertThat(patchedText)
@@ -161,7 +161,7 @@ class ApplyPatchTest {
     """.trimIndent()
 
     // when
-    val patchedText = applyPatch(originalText, patch)
+    val patchedText = applyPatch(originalText, patch).replaceLineEndingOnWindows()
 
     // then
     assertThat(patchedText)
@@ -216,7 +216,7 @@ class ApplyPatchTest {
     """.trimIndent()
 
     // when
-    val patchedText = applyPatch(originalText, patch)
+    val patchedText = applyPatch(originalText, patch).replaceLineEndingOnWindows()
 
     // then
     assertThat(patchedText)
@@ -259,5 +259,14 @@ class ApplyPatchTest {
     // then
     assertThat(patchedText)
       .isEqualTo("Hello, stranger!")
+  }
+}
+
+private fun String.replaceLineEndingOnWindows(): String {
+  val isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+  return if (isWindows) {
+    this.replace("\r\n", "\n")
+  } else {
+    this
   }
 }
