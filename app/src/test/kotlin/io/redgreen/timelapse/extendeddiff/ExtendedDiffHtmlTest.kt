@@ -5,6 +5,7 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
+import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
 import org.approvaltests.Approvals
 import org.approvaltests.reporters.QuietReporter
 import org.approvaltests.reporters.UseReporter
@@ -240,5 +241,19 @@ class ExtendedDiffHtmlTest {
 
     // then
     Approvals.verifyHtml(hasChanges.toHtml())
+  }
+
+  @Test
+  fun `it should render HTML for no changes`() {
+    // given
+    val kotlinSource = """
+      fun sayHello() {
+        println("Hey, hey!")
+      }
+    """.trimIndent()
+    val noChanges = NoChanges(kotlinSource)
+
+    // when & then
+    Approvals.verifyHtml(noChanges.toHtml())
   }
 }
