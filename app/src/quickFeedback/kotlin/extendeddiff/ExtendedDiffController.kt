@@ -65,7 +65,8 @@ class ExtendedDiffController {
   private fun applyNextPatch(patchCount: Int) {
     val patchFileName = String.format(FORMAT_PATCH_FILE, patchCount)
     val patchToApply = readResourceFile(sampleResourcePath(sample.name, patchFileName))
-    val nextHtml = diffEngine.extendedDiff(patchToApply).toHtml()
+    val extendedDiff = diffEngine.extendedDiff(patchToApply)
+    val nextHtml = extendedDiff.toHtml()
     renderHtml(nextHtml)
   }
 
