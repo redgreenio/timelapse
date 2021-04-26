@@ -5,12 +5,17 @@ import extendeddiff.samplecreator.Samples
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ExtendedDiffEngine
 import io.redgreen.timelapse.extendeddiff.toHtml
+import io.redgreen.timelapse.foo.fastLazy
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.web.WebView
 
 class ExtendedDiffController {
+  companion object {
+    private const val PATCH_FOR_SEED_SOURCE = ""
+  }
+
   @FXML
   private lateinit var codeViewerWebView: WebView
 
@@ -23,22 +28,38 @@ class ExtendedDiffController {
   private var patchCount = 0
   private val sample = Samples.EXTENDED_DIFF
 
-  fun start() {
+  private val diffEngine by fastLazy {
     val seedSourceCode = readResourceFile("/samples/${sample.name}/seed.txt")
-    val diffEngine = ExtendedDiffEngine.newInstance(seedSourceCode, KotlinFunctionScanner)
-    val seedSourceCodeExtendedDiff = diffEngine.extendedDiff("")
+    ExtendedDiffEngine.newInstance(seedSourceCode, KotlinFunctionScanner)
+  }
 
-    val html = seedSourceCodeExtendedDiff.toHtml()
-    renderHtml(html)
+  fun start() {
+    val seedSourceCodeExtendedDiff = diffEngine.extendedDiff(PATCH_FOR_SEED_SOURCE)
+    renderHtml(seedSourceCodeExtendedDiff.toHtml())
 
     nextButton.setOnAction {
       patchCount++
-      val patchFileName = String.format("%02d.patch", patchCount)
-      val patchToApply = readResourceFile("/samples/${sample.name}/$patchFileName")
-      val nextHtml = diffEngine.extendedDiff(patchToApply).toHtml()
-      renderHtml(nextHtml)
+      applyNextPatch(patchCount)
+      updatePatchCountLabel(patchCount, sample.patchesCount)
+      disableButtonOnLastPatch(patchCount, sample.patchesCount)
+    }
+  }
 
-      patchCountLabel.text = String.format("%d/%d", patchCount, sample.patchesCount)
+  private fun applyNextPatch(patchCount: Int) {
+    val patchFileName = String.format("%02d.patch", patchCount)
+    val patchToApply = readResourceFile("/samples/${sample.name}/$patchFileName")
+    val nextHtml = diffEngine.extendedDiff(patchToApply).toHtml()
+    renderHtml(nextHtml)
+  }
+
+  private fun updatePatchCountLabel(patchCount: Int, totalPatches: Int) {
+    patchCountLabel.text = String.format("%d/%d", patchCount, totalPatches)
+  }
+
+  private fun disableButtonOnLastPatch(patchCount: Int, totalPatches: Int) {
+    val isLastPatch = patchCount == totalPatches
+    if (isLastPatch) {
+      nextButton.isDisable = true
     }
   }
 
