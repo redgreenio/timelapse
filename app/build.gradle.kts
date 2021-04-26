@@ -17,7 +17,7 @@ group = "io.redgreen"
 version = "2021.0.2"
 
 javafx {
-  modules("javafx.controls", "javafx.web")
+  modules("javafx.controls", "javafx.web", "javafx.fxml")
 }
 
 sourceSets {
