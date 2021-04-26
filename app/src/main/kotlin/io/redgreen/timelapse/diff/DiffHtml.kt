@@ -174,7 +174,7 @@ private fun mapToTableRow(diffLine: DiffLine): String {
   }
 }
 
-private fun toHtmlFriendly(line: String): String {
+fun toHtmlFriendly(line: String): String {
   val startSpaceCharsTrimmedLine = line.trimStart(CHAR_SPACE)
   val nStartSpaceChars = line.length - startSpaceCharsTrimmedLine.length
 
