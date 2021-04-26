@@ -13,7 +13,11 @@ import javafx.scene.web.WebView
 
 class ExtendedDiffController {
   companion object {
+    private const val SEED_FILE = "seed.txt"
     private const val PATCH_FOR_SEED_SOURCE = ""
+
+    private const val FORMAT_PATCH_FILE = "%02d.patch"
+    private const val FORMAT_PATCH_COUNT = "%d/%d"
   }
 
   @FXML
@@ -29,7 +33,7 @@ class ExtendedDiffController {
   private val sample = Samples.EXTENDED_DIFF
 
   private val diffEngine by fastLazy {
-    val seedSourceCode = readResourceFile("/samples/${sample.name}/seed.txt")
+    val seedSourceCode = readResourceFile(sampleResourcePath(sample.name, SEED_FILE))
     ExtendedDiffEngine.newInstance(seedSourceCode, KotlinFunctionScanner)
   }
 
@@ -46,14 +50,14 @@ class ExtendedDiffController {
   }
 
   private fun applyNextPatch(patchCount: Int) {
-    val patchFileName = String.format("%02d.patch", patchCount)
-    val patchToApply = readResourceFile("/samples/${sample.name}/$patchFileName")
+    val patchFileName = String.format(FORMAT_PATCH_FILE, patchCount)
+    val patchToApply = readResourceFile(sampleResourcePath(sample.name, patchFileName))
     val nextHtml = diffEngine.extendedDiff(patchToApply).toHtml()
     renderHtml(nextHtml)
   }
 
   private fun updatePatchCountLabel(patchCount: Int, totalPatches: Int) {
-    patchCountLabel.text = String.format("%d/%d", patchCount, totalPatches)
+    patchCountLabel.text = String.format(FORMAT_PATCH_COUNT, patchCount, totalPatches)
   }
 
   private fun disableButtonOnLastPatch(patchCount: Int, totalPatches: Int) {
@@ -72,5 +76,9 @@ class ExtendedDiffController {
       .getResourceAsStream(resourcePath)
       .reader()
       .readText()
+  }
+
+  private fun sampleResourcePath(sample: String, fileName: String): String {
+    return "/samples/$sample/$fileName"
   }
 }
