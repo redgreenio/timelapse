@@ -13,6 +13,8 @@ import org.approvaltests.Approvals
 import org.approvaltests.reporters.QuietReporter
 import org.approvaltests.reporters.UseReporter
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledOnOs
+import org.junit.jupiter.api.condition.OS
 
 class ExtendedDiffEngineTest {
   @Test
@@ -39,6 +41,7 @@ class ExtendedDiffEngineTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `it should apply a patch and return an extended diff`() {
     // given
     val kotlinSourceCode = "fun a() {}"
@@ -72,6 +75,7 @@ class ExtendedDiffEngineTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `it should apply successive patches and return an extended diff`() {
     // given
     val kotlinSourceCode = "fun a() {}"
@@ -118,6 +122,7 @@ class ExtendedDiffEngineTest {
   }
 
   @Test
+  @DisabledOnOs(OS.WINDOWS)
   fun `it should get an extended diff for the Swift programming language`() {
     // given
     val swiftSourceCode = """
