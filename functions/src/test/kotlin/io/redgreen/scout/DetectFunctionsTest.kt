@@ -21,10 +21,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getParseResults(KotlinFunctionScanner::scan, functionWithTopLevelFunctions))
+    assertThat(getParseResults(functionWithTopLevelFunctions, KotlinFunctionScanner::scan))
       .hasSize(3)
 
-    assertThat(getParseResults(KotlinFunctionScanner::scan, functionWithTopLevelFunctions))
+    assertThat(getParseResults(functionWithTopLevelFunctions, KotlinFunctionScanner::scan))
       .containsExactly(
         ParseResult.wellFormedFunction("add", 1, 3, 1),
         ParseResult.wellFormedFunction("subtract", 5, 7, 1),
@@ -57,10 +57,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getParseResults(KotlinFunctionScanner::scan, fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getParseResults(fileWithClassFunctionsAndOneTopLevelFunction, KotlinFunctionScanner::scan))
       .hasSize(4)
 
-    assertThat(getParseResults(KotlinFunctionScanner::scan, fileWithClassFunctionsAndOneTopLevelFunction))
+    assertThat(getParseResults(fileWithClassFunctionsAndOneTopLevelFunction, KotlinFunctionScanner::scan))
       .containsExactly(
         ParseResult.wellFormedFunction("add", 4, 6, 1),
         ParseResult.wellFormedFunction("subtract", 8, 10, 1),
@@ -76,7 +76,7 @@ class DetectFunctionsTest {
       Nothing to see here...
     """.trimIndent()
 
-    assertThat(getParseResults(KotlinFunctionScanner::scan, nothing))
+    assertThat(getParseResults(nothing, KotlinFunctionScanner::scan))
       .isEmpty()
   }
 
@@ -88,7 +88,7 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getParseResults(KotlinFunctionScanner::scan, extensionFunction))
+    assertThat(getParseResults(extensionFunction, KotlinFunctionScanner::scan))
       .containsExactly(
         ParseResult.wellFormedFunction("String.fullStop", 1, 3, 1)
       )

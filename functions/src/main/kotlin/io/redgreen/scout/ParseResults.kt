@@ -3,8 +3,8 @@ package io.redgreen.scout
 import io.redgreen.scout.ParseResult.WellFormedFunction
 
 fun getParseResults(
-  scanner: (String) -> List<PossibleFunction>,
-  snippet: String
+  snippet: String,
+  scanner: (String) -> List<PossibleFunction>
 ): List<ParseResult> {
   val possibleFunctions = scanner(snippet)
   if (possibleFunctions.isEmpty()) {
