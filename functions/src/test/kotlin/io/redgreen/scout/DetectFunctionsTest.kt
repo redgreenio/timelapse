@@ -93,4 +93,18 @@ class DetectFunctionsTest {
         ParseResult.wellFormedFunction("String.fullStop", 1, 3, 1)
       )
   }
+
+  @Test
+  fun `it should ignore functions declared inside multiline strings`() {
+    // given
+    val functionDeclaredInsideMultilineString = "fun HelloWorld.x(): String {\n" +
+      "  return \"\"\"fun a() {}\"\"\"\n" +
+      "}"
+
+    // when & then
+    assertThat(getParseResults(functionDeclaredInsideMultilineString, KotlinFunctionScanner::scan))
+      .containsExactly(
+        ParseResult.wellFormedFunction("HelloWorld.x", 1, 3, 1)
+      )
+  }
 }
