@@ -37,7 +37,7 @@ fun main() {
     .onEach { logger.info("Inspecting file ${it.fileName}") }
     .map { Files.readAllBytes(it) }
     .map { String(it) }
-    .map { snippet -> getParseResults(SwiftFunctionScanner::scan, snippet) }
+    .map { snippet -> getParseResults(snippet, SwiftFunctionScanner::scan) }
     .onEach { if (it.isEmpty()) logger.warn("No functions found, suspicious. PTAL?") }
     .filter { it.isNotEmpty() }
     .flatten()

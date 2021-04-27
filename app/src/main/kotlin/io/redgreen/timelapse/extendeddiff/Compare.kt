@@ -51,5 +51,5 @@ private fun getWellFormedFunctions(
   source: String,
   scanner: FunctionScanner
 ): List<WellFormedFunction> {
-  return getParseResults(scanner::scan, source).filterIsInstance<WellFormedFunction>()
+  return getParseResults(source, scanner::scan).filterIsInstance<WellFormedFunction>()
 }
