@@ -79,4 +79,18 @@ class DetectFunctionsTest {
     assertThat(getParseResults(KotlinFunctionScanner::scan, nothing))
       .isEmpty()
   }
+
+  @Test
+  fun `it should detect extension functions`() {
+    val extensionFunction = """
+      fun String.fullStop(): String {
+        return "$this."
+      }
+    """.trimIndent()
+
+    assertThat(getParseResults(KotlinFunctionScanner::scan, extensionFunction))
+      .containsExactly(
+        ParseResult.wellFormedFunction("String.fullStop", 1, 3, 1)
+      )
+  }
 }
