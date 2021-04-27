@@ -109,4 +109,16 @@ class KotlinFunctionScannerTest {
     assertThat(KotlinFunctionScanner.scan(compilationUnitWithComment))
       .isEmpty()
   }
+
+  @Test
+  fun `it should skip functions within multiline string literals`() {
+    // given
+    val functionDeclaredInsideMultilineString = "fun HelloWorld.x(): String {\n" +
+      "  return \"\"\"fun a() {}\"\"\"\n" +
+      "}"
+
+    // when & then
+    assertThat(KotlinFunctionScanner.scan(functionDeclaredInsideMultilineString))
+      .containsExactly(PossibleFunction("HelloWorld.x", 1))
+  }
 }
