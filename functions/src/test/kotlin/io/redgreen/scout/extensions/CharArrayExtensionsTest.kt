@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.util.Optional
+import java.lang.Character.MIN_VALUE as NULL_CHAR
 
 class CharArrayExtensionsTest {
   @Nested
@@ -161,6 +163,37 @@ class CharArrayExtensionsTest {
       val emptyArray = CharArray(0)
       assertThat(alphabetsCharArray.endsWith(emptyArray))
         .isFalse()
+    }
+  }
+
+  @Nested
+  inner class Top {
+    @Test
+    fun `it returns empty if the char buffer is empty`() {
+      assertThat(CharArray(0).top())
+        .isEqualTo(Optional.empty<Char>())
+    }
+
+    @Test
+    fun `it returns empty if the char buffer is filled with null sentinel chars`() {
+      assertThat(CharArray(4) { NULL_CHAR }.top())
+        .isEqualTo(Optional.empty<Char>())
+    }
+
+    @Test
+    fun `it returns the latest char for a partially filled buffer`() {
+      // given
+      val charArray = CharArray(4) { NULL_CHAR }
+
+      // when
+      with(charArray) {
+        push('1')
+        push('2')
+      }
+
+      // then
+      assertThat(charArray.top().get())
+        .isEqualTo('2')
     }
   }
 
