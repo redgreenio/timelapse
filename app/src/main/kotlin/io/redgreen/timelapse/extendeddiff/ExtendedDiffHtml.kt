@@ -204,6 +204,10 @@ private fun htmlTemplate(tableRows: List<String>): String {
               .deleted {
                 background-color: $CSS_COLOR_DELETED;
               }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+              }
               table td {
                 font-family: "monospace";
                 font-size: small;
