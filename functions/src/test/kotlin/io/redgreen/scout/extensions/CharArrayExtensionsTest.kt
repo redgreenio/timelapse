@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.util.Optional
-import java.lang.Character.MIN_VALUE as NULL_CHAR
 
 class CharArrayExtensionsTest {
   @Nested
@@ -176,14 +175,14 @@ class CharArrayExtensionsTest {
 
     @Test
     fun `it returns empty if the char buffer is filled with null sentinel chars`() {
-      assertThat(CharArray(4) { NULL_CHAR }.top())
+      assertThat(CharArray(4).top())
         .isEqualTo(Optional.empty<Char>())
     }
 
     @Test
     fun `it returns the latest char for a partially filled buffer`() {
       // given
-      val charArray = CharArray(4) { NULL_CHAR }
+      val charArray = CharArray(4)
 
       // when
       with(charArray) {
@@ -194,6 +193,59 @@ class CharArrayExtensionsTest {
       // then
       assertThat(charArray.top().get())
         .isEqualTo('2')
+    }
+  }
+
+  @Nested
+  inner class ContentsToString {
+    @Test
+    fun `it returns empty for an empty array`() {
+      assertThat(CharArray(0).contents())
+        .isEqualTo(Optional.empty<String>())
+    }
+
+    @Test
+    fun `it returns empty for a buffer with null chars`() {
+      // given
+      val charArrayWithNulls = CharArray(5)
+
+      // when & then
+      assertThat(charArrayWithNulls.contents())
+        .isEqualTo(Optional.empty<String>())
+    }
+
+    @Test
+    fun `it returns contents of a full buffer`() {
+      // given
+      val charArray = CharArray(4)
+
+      // when
+      with(charArray) {
+        push('a')
+        push('b')
+        push('c')
+        push('d')
+      }
+
+      // then
+      assertThat(charArray.contents().get())
+        .isEqualTo("abcd")
+    }
+
+    @Test
+    fun `it returns contents of a partially filled buffer`() {
+      // given
+      val charArray = CharArray(4)
+
+      // when
+      with(charArray) {
+        push('a')
+        push('b')
+      }
+
+      // then
+      assertThat(charArray.contents().get())
+        .isEqualTo("ab")
     }
   }
 

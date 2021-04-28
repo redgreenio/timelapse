@@ -33,3 +33,10 @@ fun CharArray.top(): Optional<Char> {
   }
   return Optional.empty()
 }
+
+fun CharArray.contents(): Optional<String> {
+  if (this.isNotEmpty() && this[lastIndex] != NULL_CHAR) {
+    return Optional.of(this.filter { it != NULL_CHAR }.joinToString(""))
+  }
+  return Optional.empty()
+}
