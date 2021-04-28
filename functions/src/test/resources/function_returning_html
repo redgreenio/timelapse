@@ -1,0 +1,26 @@
+fun html() {
+  return """
+    <html lang="en-US">
+    <head>
+        <style>
+          .added {
+            background-color: #e6ffed;
+          }
+          .modified {
+            background-color: #dbedff80;
+          }
+          .deleted {
+            background-color: #ffdce0;
+          }
+        </style>
+    </head>
+    <body>
+    <table>
+        <tbody>
+        ${toRows(sourceCode, added)}
+        </tbody>
+    </table>
+    </body>
+    </html>
+  """.trimIndent()
+}

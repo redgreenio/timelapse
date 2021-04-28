@@ -2,6 +2,7 @@ package io.redgreen.scout.languages.kotlin
 
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.scout.PossibleFunction
+import io.redgreen.scout.extensions.readResourceFile
 import org.junit.jupiter.api.Test
 
 class KotlinFunctionScannerTest {
@@ -120,5 +121,30 @@ class KotlinFunctionScannerTest {
     // when & then
     assertThat(KotlinFunctionScanner.scan(functionDeclaredInsideMultilineString))
       .containsExactly(PossibleFunction("HelloWorld.x", 1))
+  }
+
+  @Test
+  fun `it should ignore braces within multiline strings`() {
+    // given
+    val snippetWithCssAndMultilineStrings = readResourceFile("/function_returning_html")
+
+    // when & then
+    assertThat(KotlinFunctionScanner.scan(snippetWithCssAndMultilineStrings))
+      .containsExactly(PossibleFunction("html", 1))
+  }
+
+  @Test
+  fun `it should detect functions amidst of multiline strings, complex curly braces, html, and css`() {
+    // given
+    val trickyKotlinFile = readResourceFile("/file_with_several_functions_and_tricky_curly_braces")
+
+    // when & then
+    assertThat(KotlinFunctionScanner.scan(trickyKotlinFile))
+      .containsExactly(
+        PossibleFunction("ExtendedDiff.toHtml", 10),
+        PossibleFunction("toRows", 132),
+        PossibleFunction("classAttribute", 153),
+        PossibleFunction("offsetWithPadding", 161),
+      )
   }
 }

@@ -2,6 +2,7 @@ package io.redgreen.scout
 
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.scout.ParseResult.WellFormedFunction
+import io.redgreen.scout.extensions.readResourceFile
 import org.junit.jupiter.api.Test
 
 class ParseTest {
@@ -334,5 +335,15 @@ class ParseTest {
     // then
     assertThat(parseResult)
       .isEqualTo(ParseResult.wellFormedFunction(1, 3, 1))
+  }
+
+  @Test
+  fun `it can detect function with css, html, and multiline string`() {
+    // given
+    val snippetWithCssAndMultilineStrings = readResourceFile("/function_returning_html")
+
+    // when & then
+    assertThat(parse(snippetWithCssAndMultilineStrings))
+      .isEqualTo(ParseResult.wellFormedFunction(1, 26, 1))
   }
 }

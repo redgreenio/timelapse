@@ -2,8 +2,10 @@ package io.redgreen.scout
 
 import io.redgreen.scout.ScanMode.FIND_BLOCKS
 import io.redgreen.scout.ScanMode.SKIP_MULTILINE_COMMENT
+import io.redgreen.scout.ScanMode.SKIP_MULTILINE_STRING_LITERAL
 import io.redgreen.scout.ScanMode.SKIP_SINGLE_LINE_COMMENT
 import io.redgreen.scout.ScanMode.SKIP_STRING_LITERAL
+import io.redgreen.scout.extensions.contents
 import io.redgreen.scout.extensions.push
 import io.redgreen.scout.extensions.top
 import java.util.Stack
@@ -15,6 +17,7 @@ private enum class ScanMode {
   SKIP_SINGLE_LINE_COMMENT,
   SKIP_MULTILINE_COMMENT,
   SKIP_STRING_LITERAL,
+  SKIP_MULTILINE_STRING_LITERAL,
 }
 
 private const val TOKEN_OPEN_CURLY = '{'
@@ -23,9 +26,11 @@ private const val TOKEN_FORWARD_SLASH = '/'
 private const val TOKEN_NEW_LINE = '\n'
 private const val TOKEN_ASTERISK = '*'
 private const val TOKEN_STRING_QUOTE = '"'
+private const val TOKEN_MULTILINE_STRING = "\"\"\""
 
-private const val PREVIOUS_CHARS_BUFFER_SIZE = 3
+private const val PREVIOUS_CHARS_BUFFER_SIZE = 2
 
+@SuppressWarnings("LoopWithTooManyJumpStatements", "LongMethod", "ComplexMethod", "NestedBlockDepth", "ReturnCount")
 fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
   val snippetChars = snippet.toCharArray()
   val previousCharsBuffer = CharArray(PREVIOUS_CHARS_BUFFER_SIZE)
@@ -40,7 +45,12 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
       lineNumber++
     }
 
-    if (char == TOKEN_STRING_QUOTE && mode == FIND_BLOCKS) {
+    val quoteFoundWhenLookingForBlocks = char == TOKEN_STRING_QUOTE && mode == FIND_BLOCKS
+    if (quoteFoundWhenLookingForBlocks && isMultilineString(previousCharsBuffer, char)) {
+      mode = SKIP_MULTILINE_STRING_LITERAL
+      previousCharsBuffer.push(char)
+      continue
+    } else if (quoteFoundWhenLookingForBlocks) {
       mode = SKIP_STRING_LITERAL
       previousCharsBuffer.push(char)
       continue
@@ -91,6 +101,10 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
           }
         }
       }
+
+      SKIP_MULTILINE_STRING_LITERAL -> if (isMultilineString(previousCharsBuffer, char)) {
+        mode = FIND_BLOCKS
+      }
     }
 
     previousCharsBuffer.push(char)
@@ -119,4 +133,13 @@ private fun isMultilineComment(
     previousCharsBuffer.top().get() == TOKEN_FORWARD_SLASH &&
     char == TOKEN_ASTERISK &&
     currentScanMode != SKIP_SINGLE_LINE_COMMENT
+}
+
+private fun isMultilineString(
+  previousCharsBuffer: CharArray,
+  char: Char
+): Boolean {
+  val bufferContents = previousCharsBuffer.contents()
+  return bufferContents.isPresent &&
+    "$bufferContents$char" == TOKEN_MULTILINE_STRING
 }

@@ -27,6 +27,7 @@ object KotlinFunctionScanner : FunctionScanner {
       }
 
       if (withinMultilineString) {
+        lineNumber++
         continue
       }
 
