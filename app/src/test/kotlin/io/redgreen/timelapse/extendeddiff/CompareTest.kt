@@ -149,12 +149,12 @@ class CompareTest {
     // then
     assertThat(comparisonResults)
       .containsExactly(
-        Modified(ParseResult.wellFormedFunction("a", 1, 3, 1))
+        Modified(ParseResult.wellFormedFunction("a", 1, 3, 1), after)
       )
   }
 
   @Test
-  fun `it should detect multiple modified functions`() {
+  fun `it should return an empty result if the functions moved around without any changes`() {
     // given
     val before = """
       fun a() {
@@ -177,10 +177,7 @@ class CompareTest {
 
     // then
     assertThat(comparisonResults)
-      .containsExactly(
-        Modified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
-        Modified(ParseResult.wellFormedFunction("a", 4, 5, 1))
-      )
+      .isEmpty()
   }
 
   @Test
@@ -217,12 +214,58 @@ class CompareTest {
       fun b() {
       }
     """.trimIndent()
+    val snippetC = """
+      fun c() {
+        println("Hello, world!")
+      }
+    """.trimIndent()
 
     assertThat(comparisonResults)
       .containsExactly(
         Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), snippetB),
         Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
-        Modified(ParseResult.wellFormedFunction("c", 7, 9, 1))
+        Modified(ParseResult.wellFormedFunction("c", 7, 9, 1), snippetC)
+      )
+  }
+
+  @Test
+  fun `it should only detect functions with changes to their function body`() {
+    // given
+    val before = """
+      fun a() {
+        // Hello, world!
+      }
+
+      fun b() {
+      }
+
+      fun c() {
+      }
+    """.trimIndent()
+
+    val after = """
+      fun a() {
+      }
+
+      fun b() {
+      }
+
+      fun c() {
+      }
+    """.trimIndent()
+
+    // when
+    val comparisonResults = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    val functionA = """
+      fun a() {
+      }
+    """.trimIndent()
+
+    assertThat(comparisonResults)
+      .containsExactly(
+        Modified(ParseResult.wellFormedFunction("a", 1, 2, 1), functionA)
       )
   }
 }
