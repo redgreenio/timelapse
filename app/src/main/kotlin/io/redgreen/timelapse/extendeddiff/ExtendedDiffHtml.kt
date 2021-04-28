@@ -11,6 +11,7 @@ import io.redgreen.timelapse.extendeddiff.LineNumber.CurrentSnapshot
 import io.redgreen.timelapse.extendeddiff.LineNumber.PreviousSnapshot
 
 private const val NEWLINE_CHAR = "\n"
+private const val ZERO_WIDTH_SPACE = "\u200B"
 
 private const val CSS_COLOR_ADDED = "#e6ffed"
 private const val CSS_COLOR_MODIFIED = "#dbedff80"
@@ -256,7 +257,7 @@ private fun modifiedRowHtml(lineNumber: Int, line: String): String {
 private fun deletedRowHtml(line: String): String {
   return """
       <tr${classAttribute(CSS_CLASS_DELETED)}>
-          <td></td>
+          <td>$ZERO_WIDTH_SPACE</td>
           <td>${toHtmlFriendly(line)}</td>
       </tr>
   """.trimIndent()
