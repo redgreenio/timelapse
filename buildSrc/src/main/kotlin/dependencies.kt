@@ -19,7 +19,7 @@ object deps {
   const val diff4j = "com.cloudbees:diff4j:1.3" /* Repackaged the code from NetBeans */
 
   object arrow {
-    const val coreData = "io.arrow-kt:arrow-core-data:0.12.0"
+    const val coreData = "io.arrow-kt:arrow-core-data:0.12.1"
   }
 
   object rxJava2 {
