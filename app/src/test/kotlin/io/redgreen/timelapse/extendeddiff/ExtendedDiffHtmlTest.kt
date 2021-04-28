@@ -42,8 +42,13 @@ class ExtendedDiffHtmlTest {
       }
     """.trimIndent()
 
+    val snippetA = """
+      |  func a() {
+      |    // Hello, world!
+      |  }
+    """.trimMargin("|")
     val comparisonResults = listOf(
-      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1))
+      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1), snippetA)
     )
 
     val hasChanges = HasChanges(swiftSource, comparisonResults)
@@ -90,8 +95,13 @@ class ExtendedDiffHtmlTest {
       }
     """.trimIndent()
 
+    val snippetA = """
+      |  func a() {
+      |    // Hello, world!
+      |  }
+    """.trimIndent()
     val comparisonResults = listOf(
-      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1)),
+      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1), snippetA),
       Added(ParseResult.wellFormedFunction("b", 6, 8, 1)),
     )
 
@@ -120,6 +130,10 @@ class ExtendedDiffHtmlTest {
         // Nothing here...
       }
     """.trimIndent()
+    val functionB = """
+      function b() {
+      }
+    """.trimIndent()
     val functionC = """
       fun c(a: Int, b: Int): Int {
         return a + b
@@ -133,7 +147,7 @@ class ExtendedDiffHtmlTest {
 
     val comparisonResults = listOf(
       Deleted(ParseResult.wellFormedFunction("a", 1, 3, 1), functionA),
-      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
+      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1), functionB),
       Deleted(ParseResult.wellFormedFunction("c", 4, 6, 1), functionC),
       Added(ParseResult.wellFormedFunction("d", 5, 7, 1)),
       Deleted(ParseResult.wellFormedFunction("e", 8, 10, 1), functionE)
@@ -217,6 +231,10 @@ class ExtendedDiffHtmlTest {
         // Nothing here...
       }
     """.trimIndent()
+    val functionB = """
+      function b() {
+      }
+    """.trimIndent()
     val functionC = """
       fun c(a: Int, b: Int): Int {
         return a + b
@@ -233,7 +251,7 @@ class ExtendedDiffHtmlTest {
       Added(ParseResult.wellFormedFunction("d", 5, 7, 1)),
       Deleted(ParseResult.wellFormedFunction("c", 4, 6, 1), functionC),
       Deleted(ParseResult.wellFormedFunction("a", 1, 3, 1), functionA),
-      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1))
+      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1), functionB)
     )
 
     // when

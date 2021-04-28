@@ -33,9 +33,31 @@ internal fun compare(
     .map { Deleted(it, snippet(beforeSource, it.startLine, it.endLine)) }
 
   val modifiedResults = modifiedFunctions
-    .map(::Modified)
+    .filter { functionContentsChanged(beforeSource, functionsInBefore, afterSource, it) }
+    .map { Modified(it, snippet(afterSource, it.startLine, it.endLine)) }
 
   return addedResults + deletedResults + modifiedResults
+}
+
+private fun functionContentsChanged(
+  beforeSource: String,
+  functionsInBefore: List<WellFormedFunction>,
+  afterSource: String,
+  supposedlyModifiedFunction: WellFormedFunction
+): Boolean {
+  val functionFromBeforeSource = functionsInBefore
+    .find { it.name == supposedlyModifiedFunction.name }
+    ?: return true
+
+  val beforeStartLine = functionFromBeforeSource.startLine
+  val beforeEndLine = functionFromBeforeSource.endLine
+  val beforeFunctionSnippet = snippet(beforeSource, beforeStartLine, beforeEndLine)
+
+  val afterStartLine = supposedlyModifiedFunction.startLine
+  val afterEndLine = supposedlyModifiedFunction.endLine
+  val afterFunctionSnippet = snippet(afterSource, afterStartLine, afterEndLine)
+
+  return beforeFunctionSnippet != afterFunctionSnippet
 }
 
 private fun snippet(
