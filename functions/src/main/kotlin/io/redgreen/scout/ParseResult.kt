@@ -20,8 +20,8 @@ sealed class ParseResult(
     override val endLine: Int,
     val depth: Depth
   ) : ParseResult(startLine, endLine) {
-    fun addName(name: String): ParseResult {
-      return copy(name = Optional.of(Name(name)))
+    fun enrichWithNameAndStartLine(name: String, startLine: Int): ParseResult {
+      return copy(name = Optional.of(Name(name)), startLine = startLine)
     }
   }
 

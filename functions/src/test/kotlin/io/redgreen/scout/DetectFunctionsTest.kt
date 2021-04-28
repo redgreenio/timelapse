@@ -142,7 +142,7 @@ class DetectFunctionsTest {
     assertThat(getParseResults(trickyKotlinFile, KotlinFunctionScanner::scan))
       .containsExactly(
         ParseResult.wellFormedFunction("ExtendedDiff.toHtml", 10, 130, 3),
-        ParseResult.wellFormedFunction("toRows", 135, 151, 2),
+        ParseResult.wellFormedFunction("toRows", 132, 151, 2),
         ParseResult.wellFormedFunction("classAttribute", 153, 159, 2),
         ParseResult.wellFormedFunction("offsetWithPadding", 161, 173, 3),
       )

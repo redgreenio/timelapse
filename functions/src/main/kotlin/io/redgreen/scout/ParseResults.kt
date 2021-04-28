@@ -19,7 +19,7 @@ fun getParseResults(
 
   return possibleFunctions.zip(parseResults) { possibleFunction, result ->
     if (result is WellFormedFunction) {
-      result.addName(possibleFunction.name)
+      result.enrichWithNameAndStartLine(possibleFunction.name, possibleFunction.startLineNumber)
     } else {
       result
     }
