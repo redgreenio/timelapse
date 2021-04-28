@@ -320,4 +320,19 @@ class ParseTest {
     assertThat(actualParseResult.length)
       .isEqualTo(5)
   }
+
+  @Test
+  fun `it can skip blocks inside multiline string literals`() {
+    // given
+    val functionDeclaredInsideMultilineString = "fun HelloWorld.x(): String {\n" +
+      "  return \"\"\"fun a() {}\"\"\"\n" +
+      "}"
+
+    // when
+    val parseResult = parse(functionDeclaredInsideMultilineString)
+
+    // then
+    assertThat(parseResult)
+      .isEqualTo(ParseResult.wellFormedFunction(1, 3, 1))
+  }
 }
