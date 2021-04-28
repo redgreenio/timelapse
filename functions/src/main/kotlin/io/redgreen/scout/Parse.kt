@@ -4,8 +4,9 @@ import io.redgreen.scout.ScanMode.FIND_BLOCKS
 import io.redgreen.scout.ScanMode.SKIP_MULTILINE_COMMENT
 import io.redgreen.scout.ScanMode.SKIP_SINGLE_LINE_COMMENT
 import io.redgreen.scout.ScanMode.SKIP_STRING_LITERAL
+import io.redgreen.scout.extensions.push
+import io.redgreen.scout.extensions.top
 import java.util.Stack
-import java.lang.Character.MIN_VALUE as NULL_CHAR
 
 typealias Depth = Int
 
@@ -23,9 +24,11 @@ private const val TOKEN_NEW_LINE = '\n'
 private const val TOKEN_ASTERISK = '*'
 private const val TOKEN_STRING_QUOTE = '"'
 
+private const val PREVIOUS_CHARS_BUFFER_SIZE = 3
+
 fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
   val snippetChars = snippet.toCharArray()
-  var previousChar = NULL_CHAR
+  val previousCharsBuffer = CharArray(PREVIOUS_CHARS_BUFFER_SIZE)
 
   var mode = FIND_BLOCKS
   var maximumDepth = 0
@@ -39,13 +42,13 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
 
     if (char == TOKEN_STRING_QUOTE && mode == FIND_BLOCKS) {
       mode = SKIP_STRING_LITERAL
-      previousChar = char
+      previousCharsBuffer.push(char)
       continue
     }
 
     when {
-      isSingleLineComment(mode, previousChar, char) -> mode = SKIP_SINGLE_LINE_COMMENT
-      isMultilineComment(mode, previousChar, char) -> mode = SKIP_MULTILINE_COMMENT
+      isSingleLineComment(mode, previousCharsBuffer, char) -> mode = SKIP_SINGLE_LINE_COMMENT
+      isMultilineComment(mode, previousCharsBuffer, char) -> mode = SKIP_MULTILINE_COMMENT
     }
 
     when (mode) {
@@ -57,7 +60,7 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
         mode = FIND_BLOCKS
       }
 
-      SKIP_MULTILINE_COMMENT -> if (previousChar == TOKEN_ASTERISK && char == TOKEN_FORWARD_SLASH) {
+      SKIP_MULTILINE_COMMENT -> if (previousCharsBuffer.top().get() == TOKEN_ASTERISK && char == TOKEN_FORWARD_SLASH) {
         mode = FIND_BLOCKS
       }
 
@@ -90,14 +93,30 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
       }
     }
 
-    previousChar = char
+    previousCharsBuffer.push(char)
   }
 
   return ParseResult.nothing(startLineNumber, lineNumber)
 }
 
-private fun isSingleLineComment(currentScanMode: ScanMode, previousChar: Char, char: Char): Boolean =
-  previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_FORWARD_SLASH && currentScanMode != SKIP_STRING_LITERAL
+private fun isSingleLineComment(
+  currentScanMode: ScanMode,
+  previousCharsBuffer: CharArray,
+  char: Char
+): Boolean {
+  return previousCharsBuffer.top().isPresent &&
+    previousCharsBuffer.top().get() == TOKEN_FORWARD_SLASH &&
+    char == TOKEN_FORWARD_SLASH &&
+    currentScanMode != SKIP_STRING_LITERAL
+}
 
-private fun isMultilineComment(currentScanMode: ScanMode, previousChar: Char, char: Char): Boolean =
-  previousChar == TOKEN_FORWARD_SLASH && char == TOKEN_ASTERISK && currentScanMode != SKIP_SINGLE_LINE_COMMENT
+private fun isMultilineComment(
+  currentScanMode: ScanMode,
+  previousCharsBuffer: CharArray,
+  char: Char
+): Boolean {
+  return previousCharsBuffer.top().isPresent &&
+    previousCharsBuffer.top().get() == TOKEN_FORWARD_SLASH &&
+    char == TOKEN_ASTERISK &&
+    currentScanMode != SKIP_SINGLE_LINE_COMMENT
+}
