@@ -1,6 +1,7 @@
 package io.redgreen.scout
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.scout.extensions.readResourceFile
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import org.junit.jupiter.api.Test
 
@@ -111,15 +112,39 @@ class DetectFunctionsTest {
   @Test
   fun `it should ignore functions declared inside multiline strings spanned across multiple lines`() {
     // given
-    val multilineStringContainingFunctions = DetectFunctionsTest::class.java
-      .getResourceAsStream("/multiline_string_containing_functions")
-      .reader()
-      .readText()
+    val multilineStringContainingFunctions = readResourceFile("/multiline_string_containing_functions")
 
     // when & then
     assertThat(getParseResults(multilineStringContainingFunctions, KotlinFunctionScanner::scan))
       .containsExactly(
         ParseResult.wellFormedFunction("HelloWorld.justAnotherFunction", 1, 10, 1)
+      )
+  }
+
+  @Test
+  fun `it can detect function with css, html, and multiline string`() {
+    // given
+    val snippetWithCssAndMultilineStrings = readResourceFile("/function_returning_html")
+
+    // when & then
+    assertThat(getParseResults(snippetWithCssAndMultilineStrings, KotlinFunctionScanner::scan))
+      .containsExactly(
+        ParseResult.wellFormedFunction("html", 1, 26, 1)
+      )
+  }
+
+  @Test
+  fun `it should detect functions amidst of multiline strings, complex curly braces, html, and css`() {
+    // given
+    val trickyKotlinFile = readResourceFile("/file_with_several_functions_and_tricky_curly_braces")
+
+    // when & then
+    assertThat(getParseResults(trickyKotlinFile, KotlinFunctionScanner::scan))
+      .containsExactly(
+        ParseResult.wellFormedFunction("ExtendedDiff.toHtml", 10, 130, 3),
+        ParseResult.wellFormedFunction("toRows", 135, 151, 2),
+        ParseResult.wellFormedFunction("classAttribute", 153, 159, 2),
+        ParseResult.wellFormedFunction("offsetWithPadding", 161, 173, 3),
       )
   }
 }
