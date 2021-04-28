@@ -192,36 +192,36 @@ private fun toLineNumberAndContent(
 
 private fun htmlTemplate(tableRows: List<String>): String {
   return """
-        <html lang="en-US">
-        <head>
-            <style>
-              .added {
-                background-color: $CSS_COLOR_ADDED;
-              }
-              .modified {
-                background-color: $CSS_COLOR_MODIFIED;
-              }
-              .deleted {
-                background-color: $CSS_COLOR_DELETED;
-              }
-              table {
-                width: 100%;
-                border-collapse: collapse;
-              }
-              table td {
-                font-family: "monospace";
-                font-size: small;
-              }
-            </style>
-        </head>
-        <body>
-        <table>
-            <tbody>
-            ${offsetWithPadding(tableRows)}
-            </tbody>
-        </table>
-        </body>
-        </html>
+    <html lang="en-US">
+    <head>
+      <style>
+        .added {
+          background-color: $CSS_COLOR_ADDED;
+        }
+        .modified {
+          background-color: $CSS_COLOR_MODIFIED;
+        }
+        .deleted {
+          background-color: $CSS_COLOR_DELETED;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        table td {
+          font-family: "monospace";
+          font-size: small;
+        }
+      </style>
+    </head>
+    <body>
+    <table>
+      <tbody>
+        ${offsetWithPadding(tableRows)}
+      </tbody>
+    </table>
+    </body>
+    </html>
   """.trimIndent()
 }
 
@@ -242,37 +242,37 @@ private fun modifiedFunctionRanges(comparisonResults: List<ComparisonResult>): L
 
 private fun addedRowHtml(lineNumber: Int, line: String): String {
   return """
-        <tr${classAttribute(CSS_CLASS_ADDED)}>
-            <td>$lineNumber</td>
-            <td>${toHtmlFriendly(line)}</td>
-        </tr>
+    <tr${classAttribute(CSS_CLASS_ADDED)}>
+      <td>$lineNumber</td>
+      <td>${toHtmlFriendly(line)}</td>
+    </tr>
   """.trimIndent()
 }
 
 private fun modifiedRowHtml(lineNumber: Int, line: String): String {
   return """
-       <tr${classAttribute(CSS_CLASS_MODIFIED)}>
-           <td>$lineNumber</td>
-           <td>${toHtmlFriendly(line)}</td>
-       </tr>
+    <tr${classAttribute(CSS_CLASS_MODIFIED)}>
+      <td>$lineNumber</td>
+      <td>${toHtmlFriendly(line)}</td>
+    </tr>
   """.trimIndent()
 }
 
 private fun deletedRowHtml(line: String): String {
   return """
-      <tr${classAttribute(CSS_CLASS_DELETED)}>
-          <td>$ZERO_WIDTH_SPACE</td>
-          <td>${toHtmlFriendly(line)}</td>
-      </tr>
+    <tr${classAttribute(CSS_CLASS_DELETED)}>
+      <td>$ZERO_WIDTH_SPACE</td>
+      <td>${toHtmlFriendly(line)}</td>
+    </tr>
   """.trimIndent()
 }
 
 private fun unchangedRowHtml(lineNumber: Int, line: String): String {
   return """
-        <tr>
-            <td>$lineNumber</td>
-            <td>${toHtmlFriendly(line)}</td>
-        </tr>
+    <tr>
+      <td>$lineNumber</td>
+      <td>${toHtmlFriendly(line)}</td>
+    </tr>
   """.trimIndent()
 }
 
@@ -291,7 +291,7 @@ private fun offsetWithPadding(tableRowBlocks: List<String>): String {
       if (firstLine) {
         line
       } else {
-        "            $line"
+        "        $line"
       }
     }
     .joinToString(NEWLINE_CHAR)
