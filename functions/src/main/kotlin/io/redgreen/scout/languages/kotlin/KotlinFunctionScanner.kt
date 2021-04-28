@@ -6,6 +6,7 @@ import kotlin.streams.toList
 
 object KotlinFunctionScanner : FunctionScanner {
   private const val KEYWORD_FUN = "fun "
+  private const val MULTILINE_STRING_BOUNDARY = "\"\"\""
 
   private const val CHAR_LEFT_PARENTHESES = '('
   private const val CHAR_QUOTE = '"'
@@ -15,8 +16,20 @@ object KotlinFunctionScanner : FunctionScanner {
 
     val possibleFunctions = mutableListOf<PossibleFunction>()
     var lineNumber = 1
+    var multilineStringEncountered: Boolean
+    var withinMultilineString = false
+
     val lines = snippet.split('\n')
     for (line in lines) {
+      multilineStringEncountered = line.contains(MULTILINE_STRING_BOUNDARY)
+      if (multilineStringEncountered) {
+        withinMultilineString = !withinMultilineString
+      }
+
+      if (withinMultilineString) {
+        continue
+      }
+
       val containsFunctionSignature = line.contains(KEYWORD_FUN) && line.indexOf(CHAR_LEFT_PARENTHESES) != -1
       if (containsFunctionSignature && isNotStringLiteral(line)) {
         val endOfFunctionKeyword = line.indexOf(KEYWORD_FUN) + KEYWORD_FUN.length

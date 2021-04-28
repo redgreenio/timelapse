@@ -107,4 +107,19 @@ class DetectFunctionsTest {
         ParseResult.wellFormedFunction("HelloWorld.x", 1, 3, 1)
       )
   }
+
+  @Test
+  fun `it should ignore functions declared inside multiline strings spanned across multiple lines`() {
+    // given
+    val multilineStringContainingFunctions = DetectFunctionsTest::class.java
+      .getResourceAsStream("/multiline_string_containing_functions")
+      .reader()
+      .readText()
+
+    // when & then
+    assertThat(getParseResults(multilineStringContainingFunctions, KotlinFunctionScanner::scan))
+      .containsExactly(
+        ParseResult.wellFormedFunction("HelloWorld.justAnotherFunction", 1, 10, 1)
+      )
+  }
 }
