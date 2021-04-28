@@ -1,0 +1,10 @@
+fun HelloWorld.justAnotherFunction() {
+  return """
+    fun a() {
+    }
+
+    fun b() {
+      println("Hello, hello!")
+    }
+  """.trimIndent()
+}
