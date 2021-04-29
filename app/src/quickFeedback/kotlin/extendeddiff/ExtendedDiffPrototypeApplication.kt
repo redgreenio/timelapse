@@ -1,5 +1,6 @@
 package extendeddiff
 
+import io.redgreen.timelapse.foo.getResourceUrl
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -24,7 +25,7 @@ class ExtendedDiffPrototypeApplication : Application() {
   }
 
   private fun getUrlForResource(): URL {
-    return ExtendedDiffPrototypeApplication::class.java.getResource("/fxml/extended-diff-prototype.fxml")
+    return getResourceUrl("/fxml/extended-diff-prototype.fxml")!!
   }
 }
 

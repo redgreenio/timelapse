@@ -10,6 +10,7 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
+import io.redgreen.timelapse.foo.readResourceText
 import org.approvaltests.Approvals
 import org.approvaltests.reporters.QuietReporter
 import org.approvaltests.reporters.UseReporter
@@ -191,7 +192,4 @@ class ExtendedDiffEngineTest {
     // then
     Approvals.verify(patchedSourceCode)
   }
-
-  private fun readResourceText(resourceFilePath: String): String =
-    ExtendedDiffEngineTest::class.java.getResourceAsStream(resourceFilePath).reader().readText()
 }

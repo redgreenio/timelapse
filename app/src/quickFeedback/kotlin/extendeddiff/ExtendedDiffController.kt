@@ -1,10 +1,10 @@
 package extendeddiff
 
-import extendeddiff.samplecreator.Sample
 import extendeddiff.samplecreator.Samples
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ExtendedDiffEngine
 import io.redgreen.timelapse.extendeddiff.toHtml
+import io.redgreen.timelapse.foo.readResourceText
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -34,7 +34,7 @@ class ExtendedDiffController {
   private var patchCount = 0
   private val sample = Samples.EXTENDED_DIFF
 
-  private val seedSourceCode = readResourceFile(sampleResourcePath(sample.name, SEED_FILE))
+  private val seedSourceCode = readResourceText(sampleResourcePath(sample.name, SEED_FILE))
   private lateinit var diffEngine: ExtendedDiffEngine
 
   fun start() {
@@ -64,7 +64,7 @@ class ExtendedDiffController {
 
   private fun applyNextPatch(patchCount: Int) {
     val patchFileName = String.format(FORMAT_PATCH_FILE, patchCount)
-    val patchToApply = readResourceFile(sampleResourcePath(sample.name, patchFileName))
+    val patchToApply = readResourceText(sampleResourcePath(sample.name, patchFileName))
     val extendedDiff = diffEngine.extendedDiff(patchToApply)
     val nextHtml = extendedDiff.toHtml()
     renderHtml(nextHtml)
@@ -83,13 +83,6 @@ class ExtendedDiffController {
 
   private fun renderHtml(html: String) {
     codeViewerWebView.engine.loadContent(html)
-  }
-
-  private fun readResourceFile(resourcePath: String): String {
-    return Sample::class.java
-      .getResourceAsStream(resourcePath)
-      .reader()
-      .readText()
   }
 
   private fun sampleResourcePath(sample: String, fileName: String): String {
