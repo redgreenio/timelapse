@@ -1,0 +1,15 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 05e2c1022..d6cba5edf 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -117,8 +117,8 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+     resultsAdapter.updateAndNotifyChanges(patients)
+   }
+ 
+-  fun openAgeFilterSheet() {
+-    activity.startActivityForResult(PatientSearchAgeFilterSheet.intent(context), REQCODE_AGE)
++  fun openAgeFilterSheet(ageText: String) {
++    activity.startActivityForResult(PatientSearchAgeFilterSheet.intent(context, ageText), REQCODE_AGE)
+   }
+ 
+   fun openPatientSummaryScreen(patientUuid: UUID) {

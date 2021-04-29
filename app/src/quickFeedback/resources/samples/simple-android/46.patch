@@ -1,0 +1,12 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 621216f34..c079dcb94 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -60,7 +60,6 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+     TheActivity.component.inject(this)
+ 
+     fullNameEditText.showKeyboard()
+-
+     backButton.setOnClickListener {
+       screenRouter.pop()
+     }

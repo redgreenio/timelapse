@@ -1,0 +1,12 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 11f114654..02df5832b 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -159,6 +159,7 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+     } else {
+       null
+     }
++    fullNameInputLayout.isErrorEnabled = visible
+   }
+ 
+   fun setEmptyDateOfBirthAndAgeErrorVisible(visible: Boolean) {

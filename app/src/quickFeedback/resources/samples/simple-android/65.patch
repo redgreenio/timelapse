@@ -1,0 +1,22 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 8adc85be5..efe1771c9 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -80,7 +80,7 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+       RxTextView
+           .textChanges(patientNameEditText)
+           .map(CharSequence::toString)
+-          .map(::SearchQueryNameChanged)
++          .map(::SearchQueryTextChanged)
+ 
+   private fun searchClicks(): Observable<SearchClicked> {
+     val imeSearchClicks = RxTextView
+@@ -113,7 +113,7 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+     screenRouter.push(PatientSearchResultsScreenKey(PatientSearchCriteria.Name(name)))
+   }
+ 
+-  fun setEmptyFullNameErrorVisible(visible: Boolean) {
++  fun setEmptyTextFieldErrorVisible(visible: Boolean) {
+     patientNameEditText.error = if (visible) {
+       resources.getString(R.string.patientsearch_error_empty_fullname)
+     } else null

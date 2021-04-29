@@ -1,0 +1,27 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index c44a30ab4..d0783b1e3 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -4,6 +4,7 @@ import android.content.Context
+ import android.support.v7.widget.LinearLayoutManager
+ import android.support.v7.widget.RecyclerView
+ import android.util.AttributeSet
++import android.view.View
+ import android.widget.Button
+ import android.widget.EditText
+ import android.widget.ImageButton
+@@ -99,6 +100,14 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+     searchEditText.showKeyboard()
+   }
+ 
++  fun showCreatePatientButton(shouldBeShown: Boolean) {
++    if (shouldBeShown) {
++      newPatientButton.visibility = View.VISIBLE
++    } else {
++      newPatientButton.visibility = View.GONE
++    }
++  }
++
+   fun setupSearchResultsList() {
+     patientRecyclerView.adapter = resultsAdapter
+     patientRecyclerView.layoutManager = LinearLayoutManager(context)

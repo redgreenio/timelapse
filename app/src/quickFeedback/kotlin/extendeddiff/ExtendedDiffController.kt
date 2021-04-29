@@ -41,8 +41,8 @@ class ExtendedDiffController {
   @FXML
   private lateinit var functionStatsLabel: Label
 
-  private var patchCount = 0
-  private val sample = Samples.EXTENDED_DIFF
+  private val sample = Samples.SIMPLE_ANDROID
+  private var patchCount = sample.patchCountOffset
 
   private val seedSourceCode = readResourceText(sampleResourcePath(sample.name, SEED_FILE))
   private lateinit var diffEngine: ExtendedDiffEngine
@@ -52,6 +52,7 @@ class ExtendedDiffController {
 
     nextButton.setOnAction {
       patchCount++
+
       applyNextPatch(patchCount)
       updatePatchCountLabel(patchCount, sample.patchesCount)
       disableNextButtonOnLastPatch(patchCount, sample.patchesCount)
@@ -62,7 +63,7 @@ class ExtendedDiffController {
   }
 
   private fun showSeedSourceCode() {
-    patchCount = 0
+    patchCount = sample.patchCountOffset
     resetButton.isDisable = true
     nextButton.isDisable = false
     patchCountLabel.text = ""

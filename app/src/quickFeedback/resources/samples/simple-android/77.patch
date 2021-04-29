@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index ced849c6b..18c7a6c88 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -116,7 +116,7 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+   }
+ 
+   fun setEmptyTextFieldErrorVisible(visible: Boolean) {
+-    searchQueryEditText.error = if (visible) {
++    searchQueryTextInputLayout.error = if (visible) {
+       resources.getString(R.string.patientsearch_error_empty_fullname)
+     } else null
+   }

@@ -1,0 +1,24 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 391e92112..e32e222e3 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -71,6 +71,9 @@ class PatientSearchScreen(
+   private val searchButtonFrame
+     get() = binding!!.searchButtonFrame
+ 
++  private val searchButton
++    get() = binding!!.searchButton
++
+   private val allPatientsInFacility: AllPatientsInFacilityView by unsafeLazy {
+     allPatientsInFacilityView
+   }
+@@ -153,8 +156,7 @@ class PatientSearchScreen(
+         .filter { it.actionId == EditorInfo.IME_ACTION_SEARCH }
+         .map { SearchClicked() }
+ 
+-    val searchClicksFromButton = searchButtonFrame
+-        .button
++    val searchClicksFromButton = searchButton
+         .clicks()
+         .map { SearchClicked() }
+ 
