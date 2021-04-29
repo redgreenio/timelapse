@@ -1,0 +1,17 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index d6b872a76..c5c0ce167 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -136,4 +136,12 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+   fun openPersonalDetailsEntryScreen() {
+     screenRouter.push(PatientEntryScreen.KEY)
+   }
++
++  fun showSearchButtonAsDisabled() {
++    searchButton.setBackgroundResource(R.color.patientsearch_search_disabled)
++  }
++
++  fun showSearchButtonAsEnabled() {
++    searchButton.setBackgroundResource(R.color.patientsearch_search_enabled)
++  }
+ }

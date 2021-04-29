@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 824b227a9..2f22aa111 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -12,7 +12,7 @@ import io.reactivex.Observable
+ import io.reactivex.rxkotlin.ofType
+ import kotlinx.android.synthetic.main.screen_patient_search.view.*
+ import org.simple.clinic.R
+-import org.simple.clinic.activity.TheActivity
++import org.simple.clinic.main.TheActivity
+ import org.simple.clinic.allpatientsinfacility.AllPatientsInFacilityListScrolled
+ import org.simple.clinic.allpatientsinfacility.AllPatientsInFacilitySearchResultClicked
+ import org.simple.clinic.allpatientsinfacility.AllPatientsInFacilityView

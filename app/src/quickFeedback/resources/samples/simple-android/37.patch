@@ -1,0 +1,17 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 4bc8c67ac..f815fea8e 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -59,6 +59,12 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+ 
+     TheActivity.component.inject(this)
+ 
++    searchEditText.setOnEditorActionListener { _, _, _ ->
++      // Swallow IME key presses because a search is triggered on every text change automatically.
++      // Without this, the keyboard gets dismissed
++      true
++    }
++
+     Observable
+         .mergeArray(
+             searchQueryChanges(),

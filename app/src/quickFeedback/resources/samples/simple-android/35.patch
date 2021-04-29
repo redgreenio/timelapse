@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index d6cba5edf..2a8315727 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -17,7 +17,7 @@ import io.reactivex.rxkotlin.ofType
+ import io.reactivex.schedulers.Schedulers.io
+ import kotterknife.bindView
+ import org.simple.clinic.R
+-import org.simple.clinic.TheActivity
++import org.simple.clinic.activity.TheActivity
+ import org.simple.clinic.newentry.PatientEntryScreen
+ import org.simple.clinic.patient.PatientSearchResult
+ import org.simple.clinic.router.screen.ActivityResult

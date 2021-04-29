@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 18c7a6c88..c6bd1d612 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -28,7 +28,7 @@ import org.simple.clinic.widgets.ScreenDestroyed
+ import org.simple.clinic.widgets.UiEvent
+ import org.simple.clinic.widgets.hideKeyboard
+ import org.simple.clinic.widgets.showKeyboard
+-import org.threeten.bp.Instant
++import java.time.Instant
+ import java.util.UUID
+ import javax.inject.Inject
+ 

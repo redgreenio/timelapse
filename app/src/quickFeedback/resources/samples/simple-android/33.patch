@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index d25e53263..05e2c1022 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -85,7 +85,7 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+   private fun ageFilterTextChanges() = screenRouter.streamScreenResults()
+       .ofType<ActivityResult>()
+       .filter { it.requestCode == REQCODE_AGE && it.succeeded() }
+-      .map { PatientSearchAgeFilterSheet.extract(it.data!!) }
++      .map { PatientSearchAgeFilterSheet.extractResult(it.data!!) }
+       .startWith(SearchQueryAgeChanged(""))
+ 
+   private fun newPatientButtonClicks() = RxView.clicks(newPatientButton)

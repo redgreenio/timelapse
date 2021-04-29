@@ -1,0 +1,12 @@
+diff --git a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+index 2a8315727..4bc8c67ac 100644
+--- a/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
++++ b/app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt
+@@ -59,7 +59,6 @@ class PatientSearchScreen(context: Context, attrs: AttributeSet) : RelativeLayou
+ 
+     TheActivity.component.inject(this)
+ 
+-    // TODO: Can we use sealed classes to represent events?
+     Observable
+         .mergeArray(
+             searchQueryChanges(),
