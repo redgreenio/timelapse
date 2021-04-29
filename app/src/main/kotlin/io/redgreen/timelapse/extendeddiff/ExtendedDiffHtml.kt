@@ -37,7 +37,7 @@ fun ExtendedDiff.toHtml(): String {
     mergeUnchangedLines(sourceCodeLines, comparisonResults, linesNumbersAndLines)
     mapToTableRows(linesNumbersAndLines, comparisonResults)
   } else {
-    val sourceCodeLines = toLines((this as NoChanges).text)
+    val sourceCodeLines = toLines((this as NoChanges).sourceCode)
     sourceCodeLines
       .mapIndexed { index, line -> unchangedRowHtml(index + 1, line) }
   }
