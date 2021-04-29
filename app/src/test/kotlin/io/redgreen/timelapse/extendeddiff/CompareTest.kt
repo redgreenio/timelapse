@@ -6,6 +6,7 @@ import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import org.junit.jupiter.api.Test
 
 class CompareTest {
@@ -31,7 +32,8 @@ class CompareTest {
     // then
     assertThat(comparisonResults)
       .containsExactly(
-        Added(ParseResult.wellFormedFunction("b", 4, 5, 1))
+        Added(ParseResult.wellFormedFunction("b", 4, 5, 1)),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1)),
       )
   }
 
@@ -61,7 +63,8 @@ class CompareTest {
     assertThat(comparisonResults)
       .containsExactly(
         Added(ParseResult.wellFormedFunction("b", 4, 5, 1)),
-        Added(ParseResult.wellFormedFunction("c", 7, 8, 1))
+        Added(ParseResult.wellFormedFunction("c", 7, 8, 1)),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1)),
       )
       .inOrder()
   }
@@ -92,7 +95,8 @@ class CompareTest {
     """.trimIndent()
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), deletedFunctionSnippet)
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), deletedFunctionSnippet),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1)),
       )
   }
 
@@ -224,7 +228,8 @@ class CompareTest {
       .containsExactly(
         Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), snippetB),
         Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
-        Modified(ParseResult.wellFormedFunction("c", 7, 9, 1), snippetC)
+        Modified(ParseResult.wellFormedFunction("c", 7, 9, 1), snippetC),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1))
       )
   }
 

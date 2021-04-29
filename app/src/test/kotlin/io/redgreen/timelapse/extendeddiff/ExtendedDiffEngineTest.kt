@@ -7,6 +7,7 @@ import io.redgreen.scout.languages.swift.SwiftFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
 import org.approvaltests.Approvals
@@ -67,7 +68,8 @@ class ExtendedDiffEngineTest {
       fun b() {}
     """.trimIndent()
     val comparisonResults = listOf(
-      Added(ParseResult.wellFormedFunction("b", 2, 2, 1))
+      Added(ParseResult.wellFormedFunction("b", 2, 2, 1)),
+      Unmodified(ParseResult.wellFormedFunction("a", 1, 1, 1)),
     )
 
     assertThat(extendedDiff)

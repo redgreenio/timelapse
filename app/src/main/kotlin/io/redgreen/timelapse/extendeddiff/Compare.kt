@@ -7,6 +7,7 @@ import io.redgreen.scout.split
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 
 internal fun compare(
   beforeSource: String,
@@ -38,11 +39,16 @@ internal fun compare(
     .filter { functionContentsChanged(beforeSource, functionsInBefore, afterSource, it) }
     .map { Modified(it, snippet(afterSource, it.startLine, it.endLine)) }
 
-  val modifiedResultsWhoseLineNumbersDidNotChange = possiblyUnchangedFunctions
+  val modifiedFunctionsNoLineNumberChange = possiblyUnchangedFunctions
     .filter { functionContentsChanged(beforeSource, functionsInBefore, afterSource, it) }
+
+  val modifiedNoLineNumberChangeResults = modifiedFunctionsNoLineNumberChange
     .map { Modified(it, snippet(afterSource, it.startLine, it.endLine)) }
 
-  return addedResults + deletedResults + modifiedResults + modifiedResultsWhoseLineNumbersDidNotChange
+  val unmodifiedFunctions = possiblyUnchangedFunctions - modifiedFunctionsNoLineNumberChange
+  val unmodifiedResults = unmodifiedFunctions.map(::Unmodified)
+
+  return addedResults + deletedResults + modifiedResults + modifiedNoLineNumberChangeResults + unmodifiedResults
 }
 
 private fun functionContentsChanged(

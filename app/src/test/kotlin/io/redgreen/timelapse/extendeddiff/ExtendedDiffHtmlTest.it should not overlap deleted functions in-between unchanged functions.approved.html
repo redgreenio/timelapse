@@ -1,0 +1,61 @@
+<html lang="en-US">
+<head>
+  <style>
+    .added {
+      background-color: #e6ffed;
+    }
+    .modified {
+      background-color: #dbedff80;
+    }
+    .deleted {
+      background-color: #ffdce0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table td {
+      font-family: "monospace";
+      font-size: small;
+    }
+  </style>
+</head>
+<body>
+<table>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>fun getReview(book: Book): Review {</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>&nbsp;&nbsp;val rating = book.read()</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>&nbsp;&nbsp;val ratingFromFriends = book.discussWithFriends()</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>&nbsp;&nbsp;return Review(rating + ratingFromFriends)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>}</td>
+    </tr>
+    <tr class="deleted">
+      <td>​</td>
+      <td>fun getAuthor(book: Book): Author {</td>
+    </tr>
+    <tr class="deleted">
+      <td>​</td>
+      <td>&nbsp;&nbsp;return book.author</td>
+    </tr>
+    <tr class="deleted">
+      <td>​</td>
+      <td>}</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
