@@ -2,6 +2,13 @@ package extendeddiff
 
 import extendeddiff.samplecreator.Samples
 import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
+import io.redgreen.timelapse.extendeddiff.ComparisonResult
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
+import io.redgreen.timelapse.extendeddiff.ExtendedDiff
+import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiffEngine
 import io.redgreen.timelapse.extendeddiff.toHtml
 import io.redgreen.timelapse.foo.readResourceText
@@ -31,6 +38,9 @@ class ExtendedDiffController {
   @FXML
   private lateinit var patchCountLabel: Label
 
+  @FXML
+  private lateinit var functionStatsLabel: Label
+
   private var patchCount = 0
   private val sample = Samples.EXTENDED_DIFF
 
@@ -59,15 +69,14 @@ class ExtendedDiffController {
 
     diffEngine = ExtendedDiffEngine.newInstance(seedSourceCode, KotlinFunctionScanner)
     val seedSourceCodeExtendedDiff = diffEngine.extendedDiff(PATCH_FOR_SEED_SOURCE)
-    renderHtml(seedSourceCodeExtendedDiff.toHtml())
+    displayDiff(seedSourceCodeExtendedDiff)
   }
 
   private fun applyNextPatch(patchCount: Int) {
     val patchFileName = String.format(FORMAT_PATCH_FILE, patchCount)
     val patchToApply = readResourceText(sampleResourcePath(sample.name, patchFileName))
     val extendedDiff = diffEngine.extendedDiff(patchToApply)
-    val nextHtml = extendedDiff.toHtml()
-    renderHtml(nextHtml)
+    displayDiff(extendedDiff)
   }
 
   private fun updatePatchCountLabel(patchCount: Int, totalPatches: Int) {
@@ -81,11 +90,23 @@ class ExtendedDiffController {
     }
   }
 
-  private fun renderHtml(html: String) {
-    codeViewerWebView.engine.loadContent(html)
+  private fun displayDiff(extendedDiff: ExtendedDiff) {
+    codeViewerWebView.engine.loadContent(extendedDiff.toHtml())
+    if (extendedDiff is HasChanges) {
+      functionStatsLabel.text = getStats(extendedDiff.comparisonResults)
+    }
   }
 
   private fun sampleResourcePath(sample: String, fileName: String): String {
     return "/samples/$sample/$fileName"
+  }
+
+  private fun getStats(comparisonResults: List<ComparisonResult>): String {
+    val addedCount = comparisonResults.filterIsInstance<Added>().count()
+    val deletedCount = comparisonResults.filterIsInstance<Deleted>().count()
+    val modifiedCount = comparisonResults.filterIsInstance<Modified>().count()
+    val unmodifiedCount = comparisonResults.filterIsInstance<Unmodified>().count()
+
+    return "$addedCount (Add), $deletedCount (Del.), $modifiedCount (Mod.), $unmodifiedCount (Unmod.)"
   }
 }
