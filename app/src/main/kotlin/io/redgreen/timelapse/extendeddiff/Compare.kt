@@ -20,9 +20,11 @@ internal fun compare(
   val deletedFunctions = functionsInBefore - functionsInAfter
 
   val addedFunctionNames = addedFunctions.map(WellFormedFunction::name)
-  val deletedFunctionName = deletedFunctions.map(WellFormedFunction::name)
-  val modifiedFunctionNames = deletedFunctionName.intersect(addedFunctionNames)
+  val deletedFunctionNames = deletedFunctions.map(WellFormedFunction::name)
+  val modifiedFunctionNames = deletedFunctionNames.intersect(addedFunctionNames)
   val modifiedFunctions = functionsInAfter.filter { modifiedFunctionNames.contains(it.name) }
+
+  val possiblyUnchangedFunctions = functionsInAfter - addedFunctions
 
   val addedResults = addedFunctions
     .filter { it.name !in modifiedFunctionNames }
@@ -36,7 +38,11 @@ internal fun compare(
     .filter { functionContentsChanged(beforeSource, functionsInBefore, afterSource, it) }
     .map { Modified(it, snippet(afterSource, it.startLine, it.endLine)) }
 
-  return addedResults + deletedResults + modifiedResults
+  val modifiedResultsWhoseLineNumbersDidNotChange = possiblyUnchangedFunctions
+    .filter { functionContentsChanged(beforeSource, functionsInBefore, afterSource, it) }
+    .map { Modified(it, snippet(afterSource, it.startLine, it.endLine)) }
+
+  return addedResults + deletedResults + modifiedResults + modifiedResultsWhoseLineNumbersDidNotChange
 }
 
 private fun functionContentsChanged(
