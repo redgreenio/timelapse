@@ -12,7 +12,12 @@
       prefWidth="1280.0" xmlns="http://javafx.com/javafx/15" xmlns:fx="http://javafx.com/fxml/1">
   <bottom>
     <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-      <Label fx:id="patchCountLabel"/>
+      <Label fx:id="functionStatsLabel"/>
+      <Label fx:id="patchCountLabel">
+        <HBox.margin>
+          <Insets left="10.0"/>
+        </HBox.margin>
+      </Label>
       <Button fx:id="resetButton" disable="true" mnemonicParsing="false" text="Reset" textAlignment="CENTER">
         <HBox.margin>
           <Insets left="10.0"/>
