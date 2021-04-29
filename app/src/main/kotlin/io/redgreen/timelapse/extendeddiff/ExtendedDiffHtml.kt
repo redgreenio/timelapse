@@ -36,6 +36,7 @@ fun ExtendedDiff.toHtml(): String {
     val sourceCodeLines = toLines(sourceCode)
     val linesNumbersAndLines = mutableLineNumbersAndLines(comparisonResults, sourceCodeLines)
     mergeUnchangedLines(sourceCodeLines, comparisonResults, linesNumbersAndLines)
+    addVerticalPaddingForDeletedFunctions(linesNumbersAndLines)
     mapToTableRows(linesNumbersAndLines, comparisonResults)
   } else {
     val sourceCodeLines = toLines((this as NoChanges).sourceCode)
@@ -44,6 +45,37 @@ fun ExtendedDiff.toHtml(): String {
   }
 
   return htmlTemplate(htmlRows)
+}
+
+private fun addVerticalPaddingForDeletedFunctions(
+  linesNumbersAndLines: MutableList<Pair<LineNumber, String>>
+) {
+  val indicesOfBlankLines =
+    linesNumbersAndLines.foldIndexed(mutableListOf<Int>()) { index, indicesOfBlankLines, (lineNumber, line) ->
+      val addBeforeDeletedFunction = index > 0 && linesNumbersAndLines[index - 1].second.isNotBlank()
+      val addAfterDeletedFunction =
+        index != linesNumbersAndLines.lastIndex && linesNumbersAndLines[index + 1].second.isNotBlank()
+      val beginFunction =
+        lineNumber is PreviousSnapshot && (index == 0 || linesNumbersAndLines[index - 1].first !is PreviousSnapshot)
+      if (beginFunction && addBeforeDeletedFunction) {
+        indicesOfBlankLines.add(index)
+      }
+
+      val endFunction = lineNumber is PreviousSnapshot &&
+        (index != linesNumbersAndLines.lastIndex && linesNumbersAndLines[index + 1].first !is PreviousSnapshot)
+      if (endFunction && addAfterDeletedFunction) {
+        indicesOfBlankLines.add(index + 1)
+      }
+      // 1. Add before the deleted function NOT 3 && [(Not Deleted) && line is not blank]
+      // 2. Add after the deleted function NOT 4 && [(Not Deleted) && line is not blank]
+      // 3. Don't add before the deleted function [index is 0 || previous line is blank]
+      // 4. Don't add after the deleted function [index is last index || next line is blank]
+      indicesOfBlankLines
+    }
+  indicesOfBlankLines.reverse()
+  indicesOfBlankLines.onEach {
+    linesNumbersAndLines.add(it, PreviousSnapshot(-1) to "")
+  }
 }
 
 private fun mapToTableRows(
