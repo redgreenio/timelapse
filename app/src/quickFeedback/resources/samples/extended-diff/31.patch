@@ -1,0 +1,39 @@
+diff --git a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+index 8c64863e..edefb302 100644
+--- a/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
++++ b/app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt
+@@ -5,6 +5,7 @@ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
+ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
+ import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+ import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
++import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
+ import io.redgreen.timelapse.extendeddiff.LineNumber.CurrentSnapshot
+ import io.redgreen.timelapse.extendeddiff.LineNumber.PreviousSnapshot
+ 
+@@ -29,14 +30,19 @@ private sealed class LineNumber {
+ }
+ 
+ fun ExtendedDiff.toHtml(): String {
+-  val unorderedComparisonResults = (this as HasChanges).comparisonResults
+-  val comparisonResults = unorderedComparisonResults.sortedWith(ComparisonResultComparator())
+-  val sourceCodeLines = toLines(sourceCode)
+-  val linesNumbersAndLines = mutableLineNumbersAndLines(comparisonResults, sourceCodeLines)
+-
+-  mergeUnchangedLines(sourceCodeLines, comparisonResults, linesNumbersAndLines)
++  val htmlRows = if (this is HasChanges) {
++    val unorderedComparisonResults = this.comparisonResults
++    val comparisonResults = unorderedComparisonResults.sortedWith(ComparisonResultComparator())
++    val sourceCodeLines = toLines(sourceCode)
++    val linesNumbersAndLines = mutableLineNumbersAndLines(comparisonResults, sourceCodeLines)
++    mergeUnchangedLines(sourceCodeLines, comparisonResults, linesNumbersAndLines)
++    mapToTableRows(linesNumbersAndLines, comparisonResults)
++  } else {
++    val sourceCodeLines = toLines((this as NoChanges).text)
++    sourceCodeLines
++      .mapIndexed { index, line -> unchangedRowHtml(index + 1, line) }
++  }
+ 
+-  val htmlRows = mapToTableRows(linesNumbersAndLines, comparisonResults)
+   return htmlTemplate(htmlRows)
+ }
+ 
