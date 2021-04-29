@@ -117,6 +117,7 @@ class ExtendedDiffEngineTest {
 
     val comparisonResults = listOf(
       Deleted(ParseResult.wellFormedFunction("a", 1, 1, 1), snippetA),
+      Unmodified(ParseResult.wellFormedFunction("b", 1, 1, 1)),
     )
 
     assertThat(extendedDiff)

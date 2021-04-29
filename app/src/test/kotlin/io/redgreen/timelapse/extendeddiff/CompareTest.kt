@@ -181,7 +181,10 @@ class CompareTest {
 
     // then
     assertThat(comparisonResults)
-      .isEmpty()
+      .containsExactly(
+        Unmodified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
+        Unmodified(ParseResult.wellFormedFunction("a", 4, 5, 1))
+      )
   }
 
   @Test
@@ -270,7 +273,9 @@ class CompareTest {
 
     assertThat(comparisonResults)
       .containsExactly(
-        Modified(ParseResult.wellFormedFunction("a", 1, 2, 1), functionA)
+        Modified(ParseResult.wellFormedFunction("a", 1, 2, 1), functionA),
+        Unmodified(ParseResult.wellFormedFunction("b", 4, 5, 1)),
+        Unmodified(ParseResult.wellFormedFunction("c", 7, 8, 1)),
       )
   }
 
@@ -297,5 +302,35 @@ class CompareTest {
       .containsExactly(
         Modified(ParseResult.wellFormedFunction("hello", 1, 3, 1), after)
       )
+  }
+
+  @Test
+  fun `it should detect unmodified functions`() {
+    // given
+    val before = """
+      fun a() {
+      }
+
+      fun b() {
+      }
+
+      fun c() {
+      }
+    """.trimIndent()
+
+    val after = """
+      fun b() {
+      }
+
+      fun c() {
+      }
+    """.trimIndent()
+
+    // when
+    val comparisonResult = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    assertThat(comparisonResult.filterIsInstance<Unmodified>())
+      .hasSize(2)
   }
 }
