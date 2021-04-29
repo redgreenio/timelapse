@@ -17,15 +17,22 @@ internal fun compare(
   val functionsInBefore = getWellFormedFunctions(beforeSource, scanner)
   val functionsInAfter = getWellFormedFunctions(afterSource, scanner)
 
-  val addedFunctions = functionsInAfter - functionsInBefore
-  val deletedFunctions = functionsInBefore - functionsInAfter
+  val functionNamesInBefore = functionsInBefore.map(WellFormedFunction::name)
+  val functionNamesInAfter = functionsInAfter.map(WellFormedFunction::name)
 
-  val addedFunctionNames = addedFunctions.map(WellFormedFunction::name)
-  val deletedFunctionNames = deletedFunctions.map(WellFormedFunction::name)
+  val addedFunctionNames = functionNamesInAfter - functionNamesInBefore
+  val deletedFunctionNames = functionNamesInBefore - functionNamesInAfter
   val modifiedFunctionNames = deletedFunctionNames.intersect(addedFunctionNames)
-  val modifiedFunctions = functionsInAfter.filter { modifiedFunctionNames.contains(it.name) }
+  val possiblyUnchangedFunctionNames = functionNamesInAfter - addedFunctionNames
 
-  val possiblyUnchangedFunctions = functionsInAfter - addedFunctions
+  val addedFunctions = functionsInAfter
+    .filter { addedFunctionNames.contains(it.name) }
+  val deletedFunctions = functionsInBefore
+    .filter { deletedFunctionNames.contains(it.name) }
+  val modifiedFunctions = functionsInAfter
+    .filter { modifiedFunctionNames.contains(it.name) }
+  val possiblyUnchangedFunctions = functionsInAfter
+    .filter { possiblyUnchangedFunctionNames.contains(it.name) }
 
   val addedResults = addedFunctions
     .filter { it.name !in modifiedFunctionNames }
