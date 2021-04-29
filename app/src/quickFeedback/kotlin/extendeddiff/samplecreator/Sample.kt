@@ -1,7 +1,7 @@
 package extendeddiff.samplecreator
 
 object Samples {
-  internal val EXTENDED_DIFF = Sample("extended-diff", 30)
+  internal val EXTENDED_DIFF = Sample("extended-diff", 36)
 }
 
 data class Sample(
