@@ -4,6 +4,7 @@ import io.redgreen.scout.ParseResult
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
 import org.approvaltests.Approvals
@@ -273,5 +274,32 @@ class ExtendedDiffHtmlTest {
 
     // when & then
     Approvals.verifyHtml(noChanges.toHtml())
+  }
+
+  @Test
+  fun `it should not overlap deleted functions in-between unchanged functions`() {
+    // given
+    val kotlinSource = """
+      fun getReview(book: Book): Review {
+        val rating = book.read()
+        val ratingFromFriends = book.discussWithFriends()
+        return Review(rating + ratingFromFriends)
+      }
+    """.trimIndent()
+
+    val getAuthorFunction = """
+      fun getAuthor(book: Book): Author {
+        return book.author
+      }
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Deleted(ParseResult.wellFormedFunction("getAuthor", 2, 4, 1), getAuthorFunction),
+      Unmodified(ParseResult.wellFormedFunction("getReview", 1, 5, 1)),
+    )
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // when & then
+    Approvals.verifyHtml(hasChanges.toHtml())
   }
 }

@@ -8,4 +8,5 @@ sealed class ComparisonResult {
   data class Added(override val function: WellFormedFunction) : ComparisonResult()
   data class Deleted(override val function: WellFormedFunction, val snippet: String) : ComparisonResult()
   data class Modified(override val function: WellFormedFunction, val snippet: String) : ComparisonResult()
+  data class Unmodified(override val function: WellFormedFunction) : ComparisonResult()
 }

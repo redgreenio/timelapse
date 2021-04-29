@@ -5,6 +5,7 @@ import io.redgreen.timelapse.diff.toHtmlFriendly
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
 import io.redgreen.timelapse.extendeddiff.LineNumber.CurrentSnapshot
@@ -84,8 +85,8 @@ private fun mergeUnchangedLine(
     .filterIsInstance<Deleted>()
     .map { it.function.startLine to it.function.endLine - it.function.startLine }
 
-  val collidingLineNumberAndLength = deletedFunctionStartLinesAndLengths.find {
-    it.first == unchangedLineNumber.value
+  val collidingLineNumberAndLength = deletedFunctionStartLinesAndLengths.find { (startLine, _) ->
+    startLine == unchangedLineNumber.value
   }
 
   val foundCollision = collidingLineNumberAndLength != null
@@ -186,6 +187,10 @@ private fun toLineNumberAndContent(
         .snippet
         .split(NEWLINE_CHAR)
         .mapIndexed { index, line -> PreviousSnapshot(result.function.startLine + index) to line }
+    }
+
+    is Unmodified -> {
+      lineNumbersRange(result.function).map { CurrentSnapshot(it) to sourceCodeLines[it - 1] }
     }
   }
 }
