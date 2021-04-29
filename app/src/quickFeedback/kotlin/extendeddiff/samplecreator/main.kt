@@ -8,16 +8,18 @@ private const val NEWLINE = "\n"
 private const val QUOTE = "\""
 private const val EMPTY_STRING = ""
 
+private const val repositoryPath = "/Users/ragunathjawahar/GitHubProjects/simple-android/"
+private const val filePath = "app/src/main/java/org/simple/clinic/search/PatientSearchScreen.kt"
+private val outputDirectory = File("/Users/ragunathjawahar/Desktop/simple-android-demo")
+
 fun main() {
-  val filePath = """app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt"""
-  val outputDirectory = File("/Users/ragunathjawahar/Desktop/extended-diff-demo")
   val seedTextFile = outputDirectory.resolve("seed.txt")
 
   if (!outputDirectory.exists()) {
     outputDirectory.mkdirs()
   }
 
-  val commitsAffectingFile = commitsAffectingFile(filePath)
+  val commitsAffectingFile = commitsAffectingFile(repositoryPath, filePath)
 
   val seedCommitId = commitsAffectingFile.first()
   writeSeedFile(seedCommitId, filePath, seedTextFile)
@@ -29,7 +31,7 @@ private fun writeSeedFile(
   filePath: String,
   seedTextOutputFile: File
 ) {
-  val seedText = getSeedText(seedCommitId, filePath)
+  val seedText = getSeedText(repositoryPath, seedCommitId, filePath)
   writeToFile(seedText, seedTextOutputFile)
 }
 
@@ -40,7 +42,7 @@ private fun writePatchFiles(
   outputDirectory: File
 ) {
   commitsAffectingFile.drop(1).foldIndexed(seedCommitId) { index, ancestor, descendent ->
-    val diff = diff(ancestor, descendent, filePath)
+    val diff = diff(repositoryPath, filePath, ancestor, descendent)
     writeToFile(diff, outputDirectory.resolve(getPatchFileName(index)))
     descendent
   }
@@ -49,16 +51,16 @@ private fun writePatchFiles(
 private fun getPatchFileName(index: Int): String =
   "${String.format("%02d", index + 1)}.patch"
 
-private fun commitsAffectingFile(filePath: String): List<String> {
-  val commitsAffectingFileCommand = """git log --pretty=format:"%h" --follow -- $filePath"""
+private fun commitsAffectingFile(repositoryPath: String, filePath: String): List<String> {
+  val commitsAffectingFileCommand = """git --git-dir $repositoryPath.git log --pretty=format:"%h" --follow -- $filePath"""
   return getCommandOutput(commitsAffectingFileCommand)
     .split(NEWLINE)
     .map { it.replace(QUOTE, EMPTY_STRING) }
     .reversed()
 }
 
-private fun getSeedText(seedCommitId: String, fileToInspect: String): String {
-  val showFileContentsCommand = """git show $seedCommitId:$fileToInspect"""
+private fun getSeedText(repositoryPath: String, seedCommitId: String, fileToInspect: String): String {
+  val showFileContentsCommand = """git --git-dir $repositoryPath.git show $seedCommitId:$fileToInspect"""
   return getCommandOutput(showFileContentsCommand)
 }
 
@@ -75,7 +77,7 @@ private fun writeToFile(content: String, outputFile: File) {
   outputFile.writeText(content)
 }
 
-private fun diff(ancestor: String, descendent: String, fileToInspect: String): String {
-  val gitDiffCommand = """git diff -u $ancestor $descendent -- $fileToInspect"""
+private fun diff(repositoryPath: String, fileToInspect: String, ancestor: String, descendent: String): String {
+  val gitDiffCommand = """git --git-dir $repositoryPath.git diff -u $ancestor $descendent -- $fileToInspect"""
   return getCommandOutput(gitDiffCommand)
 }
