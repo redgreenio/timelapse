@@ -4,6 +4,7 @@ import io.redgreen.scout.ParseResult
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Renamed
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
@@ -296,6 +297,24 @@ class ExtendedDiffHtmlTest {
     val comparisonResults = listOf(
       Deleted(ParseResult.wellFormedFunction("getAuthor", 2, 4, 1), getAuthorFunction),
       Unmodified(ParseResult.wellFormedFunction("getReview", 1, 5, 1)),
+    )
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // when & then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
+
+  @Test
+  fun `it should render renamed function`() {
+    // given
+    val kotlinSource = """
+      fun add(x: Int, y: Int): Int {
+        return x + y
+      }
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Renamed(ParseResult.wellFormedFunction("add", 1, 3, 1), "plus")
     )
     val hasChanges = HasChanges(kotlinSource, comparisonResults)
 
