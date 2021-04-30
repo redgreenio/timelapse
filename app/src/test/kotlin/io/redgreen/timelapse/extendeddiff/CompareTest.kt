@@ -359,4 +359,32 @@ class CompareTest {
         Renamed(ParseResult.wellFormedFunction("sayHello", 1, 3, 1), "greet")
       )
   }
+
+  @Test
+  fun `it should detect renamed functions even if the parameters are put in different lines`() {
+    // given
+    val before = """
+      fun plus(x: Int, y: Int): Int {
+        return x + y
+      }
+    """.trimIndent()
+
+    val after = """
+      fun add(
+        x: Int,
+        y: Int
+      ): Int {
+        return x + y
+      }
+    """.trimIndent()
+
+    // when
+    val comparisonResult = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    assertThat(comparisonResult)
+      .containsExactly(
+        Renamed(ParseResult.wellFormedFunction("add", 1, 6, 1), "plus")
+      )
+  }
 }
