@@ -41,7 +41,7 @@ class ExtendedDiffController {
   @FXML
   private lateinit var functionStatsLabel: Label
 
-  private val sample = Samples.SIMPLE_ANDROID
+  private val sample = Samples.EXTENDED_DIFF
   private var patchCount = sample.patchCountOffset
 
   private val seedSourceCode = readResourceText(sampleResourcePath(sample.name, SEED_FILE))
