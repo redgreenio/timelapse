@@ -149,6 +149,7 @@ private fun mapToTableRows(
 ): List<String> {
   val addedFunctionRanges = addedFunctionRanges(comparisonResults)
   val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
+  val renamedFunctionRanges = renamedFunctionRanges(comparisonResults)
 
   return linesNumbersAndLines
     .map { (lineNumber, line) ->
@@ -156,10 +157,17 @@ private fun mapToTableRows(
         isDeleted(lineNumber) -> deletedRowHtml(line)
         isInRangeOf(addedFunctionRanges, lineNumber) -> addedRowHtml(lineNumber.value, line)
         isInRangeOf(modifiedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
+        isInRangeOf(renamedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
         lineNumber is LineNumber.ForReadability -> readabilityRowHtml()
         else -> unchangedRowHtml(lineNumber.value, line)
       }
     }
+}
+
+fun renamedFunctionRanges(comparisonResults: List<ComparisonResult>): List<IntRange> {
+  return comparisonResults
+    .filterIsInstance<Renamed>()
+    .map { lineNumbersRange(it.function) }
 }
 
 private fun mergeUnchangedLines(
@@ -291,7 +299,9 @@ private fun toLineNumberAndContent(
       lineNumbersRange(result.function).map { CurrentSnapshot(it) to sourceCodeLines[it - 1] }
     }
 
-    is Renamed -> TODO()
+    is Renamed -> {
+      lineNumbersRange(result.function).map { CurrentSnapshot(it) to sourceCodeLines[it - 1] }
+    }
   }
 }
 
