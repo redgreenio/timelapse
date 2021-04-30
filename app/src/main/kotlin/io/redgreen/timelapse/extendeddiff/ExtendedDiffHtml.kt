@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.extendeddiff
 
+import io.redgreen.scout.Name
 import io.redgreen.scout.ParseResult.WellFormedFunction
 import io.redgreen.timelapse.diff.toHtmlFriendly
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
@@ -15,6 +16,8 @@ import io.redgreen.timelapse.extendeddiff.LineNumber.PreviousSnapshot
 private const val NEWLINE_CHAR = "\n"
 private const val ZERO_WIDTH_SPACE = "\u200B"
 private const val BLANK_LINE = ""
+private const val LEFT_PARENTHESES = '('
+private const val SPACE = ' '
 
 private const val CSS_COLOR_ADDED = "#e6ffed"
 private const val CSS_COLOR_MODIFIED = "#dbedff80"
@@ -148,23 +151,99 @@ private fun mapToTableRows(
   comparisonResults: List<ComparisonResult>
 ): List<String> {
   val addedFunctionRanges = addedFunctionRanges(comparisonResults)
+  val startLinesAndAddedFunctionNames = startLinesAndFunctionNames(comparisonResults.filterIsInstance<Added>())
+
   val modifiedFunctionRanges = modifiedFunctionRanges(comparisonResults)
+  val startLinesAndModifiedFunctionNames = startLinesAndFunctionNames(comparisonResults.filterIsInstance<Modified>())
+
   val renamedFunctionRanges = renamedFunctionRanges(comparisonResults)
+  val startLinesAndRenamedFunctionNames = startLinesAndFunctionNames(comparisonResults.filterIsInstance<Renamed>())
+
+  val startLinesAndDeletedFunctionNames = startLinesAndFunctionNames(comparisonResults.filterIsInstance<Deleted>())
 
   return linesNumbersAndLines
     .map { (lineNumber, line) ->
       when {
-        isDeleted(lineNumber) -> deletedRowHtml(line)
-        isInRangeOf(addedFunctionRanges, lineNumber) -> addedRowHtml(lineNumber.value, line)
-        isInRangeOf(modifiedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
-        isInRangeOf(renamedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
+        isDeleted(lineNumber) -> createDeletedRow(lineNumber, line, startLinesAndDeletedFunctionNames)
+
+        isInRangeOf(addedFunctionRanges, lineNumber) -> {
+          createAddedRow(lineNumber, line, startLinesAndAddedFunctionNames)
+        }
+
+        isInRangeOf(modifiedFunctionRanges, lineNumber) -> {
+          createModifiedRow(lineNumber, line, startLinesAndModifiedFunctionNames)
+        }
+
+        isInRangeOf(renamedFunctionRanges, lineNumber) -> {
+          createRenamedRow(lineNumber, line, startLinesAndRenamedFunctionNames)
+        }
+
         lineNumber is LineNumber.ForReadability -> readabilityRowHtml()
+
         else -> unchangedRowHtml(lineNumber.value, line)
       }
     }
 }
 
-fun renamedFunctionRanges(comparisonResults: List<ComparisonResult>): List<IntRange> {
+private fun createRenamedRow(
+  lineNumber: LineNumber,
+  line: String,
+  startLinesAndRenamedFunctionNames: List<Pair<Int, Name>>
+): String {
+  val lineNumberRenamedFunctionName = startLinesAndRenamedFunctionNames.find { it.first == lineNumber.value }
+  return if (lineNumberRenamedFunctionName != null) {
+    modifiedRowHtml(lineNumber.value, line, lineNumberRenamedFunctionName.second)
+  } else {
+    modifiedRowHtml(lineNumber.value, line)
+  }
+}
+
+private fun createModifiedRow(
+  lineNumber: LineNumber,
+  line: String,
+  startLinesAndModifiedFunctionNames: List<Pair<Int, Name>>
+): String {
+  val lineNumberModifiedFunctionName = startLinesAndModifiedFunctionNames.find { it.first == lineNumber.value }
+  return if (lineNumberModifiedFunctionName != null) {
+    modifiedRowHtml(lineNumber.value, line, lineNumberModifiedFunctionName.second)
+  } else {
+    modifiedRowHtml(lineNumber.value, line)
+  }
+}
+
+private fun createDeletedRow(
+  lineNumber: LineNumber,
+  line: String,
+  startLinesAndDeletedFunctionNames: List<Pair<Int, Name>>
+): String {
+  val lineNumberDeletedFunctionName = startLinesAndDeletedFunctionNames.find { it.first == lineNumber.value }
+  return if (lineNumberDeletedFunctionName != null) {
+    deletedRowHtml(line, lineNumberDeletedFunctionName.second)
+  } else {
+    deletedRowHtml(line)
+  }
+}
+
+private fun createAddedRow(
+  lineNumber: LineNumber,
+  line: String,
+  startLinesAndAddedFunctionNames: List<Pair<Int, Name>>
+): String {
+  val lineNumberAddedFunctionName = startLinesAndAddedFunctionNames.find { it.first == lineNumber.value }
+  return if (lineNumberAddedFunctionName != null) {
+    addedRowHtml(lineNumber.value, line, lineNumberAddedFunctionName.second)
+  } else {
+    addedRowHtml(lineNumber.value, line)
+  }
+}
+
+private fun startLinesAndFunctionNames(comparisonResults: List<ComparisonResult>): List<Pair<Int, Name>> {
+  return comparisonResults
+    .map(ComparisonResult::function)
+    .map { it.startLine to it.name.get() }
+}
+
+private fun renamedFunctionRanges(comparisonResults: List<ComparisonResult>): List<IntRange> {
   return comparisonResults
     .filterIsInstance<Renamed>()
     .map { lineNumbersRange(it.function) }
@@ -367,11 +446,45 @@ private fun addedRowHtml(lineNumber: Int, line: String): String {
   """.trimIndent()
 }
 
+fun addedRowHtml(lineNumber: Int, line: String, functionName: Name): String {
+  return """
+      <tr${classAttribute(CSS_CLASS_ADDED)}>
+        <td>$lineNumber</td>
+        <td>${makeFunctionNameBold(line, functionName)}</td>
+      </tr>
+  """.trimIndent()
+}
+
+fun deletedRowHtml(line: String, functionName: Name): String {
+  return """
+      <tr${classAttribute(CSS_CLASS_DELETED)}>
+        <td>$ZERO_WIDTH_SPACE</td>
+        <td>${makeFunctionNameBold(line, functionName)}</td>
+      </tr>
+  """.trimIndent()
+}
+
+private fun makeFunctionNameBold(line: String, functionName: Name): String {
+  val htmlFriendlyLine = toHtmlFriendly(line)
+  val beginIndex = htmlFriendlyLine.indexOf(SPACE)
+  val endIndex = htmlFriendlyLine.indexOf(LEFT_PARENTHESES)
+  return htmlFriendlyLine.replaceRange(beginIndex + 1, endIndex, "<b>${functionName.value}</b>")
+}
+
 private fun modifiedRowHtml(lineNumber: Int, line: String): String {
   return """
     <tr${classAttribute(CSS_CLASS_MODIFIED)}>
       <td>$lineNumber</td>
       <td>${toHtmlFriendly(line)}</td>
+    </tr>
+  """.trimIndent()
+}
+
+fun modifiedRowHtml(lineNumber: Int, line: String, functionName: Name): String {
+  return """
+    <tr${classAttribute(CSS_CLASS_MODIFIED)}>
+      <td>$lineNumber</td>
+      <td>${makeFunctionNameBold(line, functionName)}</td>
     </tr>
   """.trimIndent()
 }

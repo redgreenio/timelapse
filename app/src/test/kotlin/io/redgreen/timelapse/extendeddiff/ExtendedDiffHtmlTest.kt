@@ -91,7 +91,7 @@ class ExtendedDiffHtmlTest {
           // Hello, world!
         }
         
-        fun b() {
+        func b() {
           println("I am new!")
         }
       }
@@ -117,11 +117,11 @@ class ExtendedDiffHtmlTest {
   fun `it should handle added, modified and deleted functions`() {
     // given
     val kotlinSource = """
-      function b() {
+      fun b() {
       }
       
       
-      function d() {
+      fun d() {
         println("Knock, knock!")
       }
       
@@ -133,7 +133,7 @@ class ExtendedDiffHtmlTest {
       }
     """.trimIndent()
     val functionB = """
-      function b() {
+      fun b() {
       }
     """.trimIndent()
     val functionC = """
@@ -218,11 +218,11 @@ class ExtendedDiffHtmlTest {
   fun `it should handle comparison results in any order`() {
     // given
     val kotlinSource = """
-      function b() {
+      fun b() {
       }
       
       
-      function d() {
+      fun d() {
         println("Knock, knock!")
       }
       
@@ -234,7 +234,7 @@ class ExtendedDiffHtmlTest {
       }
     """.trimIndent()
     val functionB = """
-      function b() {
+      fun b() {
       }
     """.trimIndent()
     val functionC = """
