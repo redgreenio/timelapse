@@ -106,8 +106,13 @@ class ExtendedDiffController {
     val addedCount = comparisonResults.filterIsInstance<Added>().count()
     val deletedCount = comparisonResults.filterIsInstance<Deleted>().count()
     val modifiedCount = comparisonResults.filterIsInstance<Modified>().count()
+    val renamedCount = comparisonResults.filterIsInstance<ComparisonResult.Renamed>().count()
     val unmodifiedCount = comparisonResults.filterIsInstance<Unmodified>().count()
 
-    return "$addedCount (Add), $deletedCount (Del.), $modifiedCount (Mod.), $unmodifiedCount (Unmod.)"
+    return "$addedCount (Add), " +
+      "$deletedCount (Del.), " +
+      "$modifiedCount (Mod.), " +
+      "$renamedCount (Ren.), " +
+      "$unmodifiedCount (Unmod.)"
   }
 }
