@@ -5,6 +5,7 @@ import io.redgreen.timelapse.diff.toHtmlFriendly
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Renamed
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.HasChanges
 import io.redgreen.timelapse.extendeddiff.ExtendedDiff.NoChanges
@@ -289,6 +290,8 @@ private fun toLineNumberAndContent(
     is Unmodified -> {
       lineNumbersRange(result.function).map { CurrentSnapshot(it) to sourceCodeLines[it - 1] }
     }
+
+    is Renamed -> TODO()
   }
 }
 

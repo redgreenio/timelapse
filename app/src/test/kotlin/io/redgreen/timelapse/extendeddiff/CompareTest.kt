@@ -6,6 +6,7 @@ import io.redgreen.scout.languages.kotlin.KotlinFunctionScanner
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Renamed
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
 import org.junit.jupiter.api.Test
 
@@ -332,5 +333,30 @@ class CompareTest {
     // then
     assertThat(comparisonResult.filterIsInstance<Unmodified>())
       .hasSize(2)
+  }
+
+  @Test
+  fun `it should detect renamed functions`() {
+    // given
+    val before = """
+      fun greet() {
+        println("Hello, world!")
+      }
+    """.trimIndent()
+
+    val after = """
+      fun sayHello() {
+        println("Hello, world!")
+      }
+    """.trimIndent()
+
+    // when
+    val comparisonResult = compare(before, after, KotlinFunctionScanner)
+
+    // then
+    assertThat(comparisonResult)
+      .containsExactly(
+        Renamed(ParseResult.wellFormedFunction("sayHello", 1, 3, 1), "greet")
+      )
   }
 }
