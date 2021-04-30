@@ -7,7 +7,11 @@ import io.redgreen.scout.split
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Added
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Modified
+import io.redgreen.timelapse.extendeddiff.ComparisonResult.Renamed
 import io.redgreen.timelapse.extendeddiff.ComparisonResult.Unmodified
+
+typealias FunctionBody = String
+typealias FunctionName = String
 
 internal fun compare(
   beforeSource: String,
@@ -27,10 +31,30 @@ internal fun compare(
 
   val addedFunctions = functionsInAfter
     .filter { addedFunctionNames.contains(it.name) }
+    .toMutableList()
+
   val deletedFunctions = functionsInBefore
     .filter { deletedFunctionNames.contains(it.name) }
+    .toMutableList()
+
+  val renamedFunctionNames = getRenamedFunctionNames(addedFunctions, afterSource, deletedFunctions, beforeSource)
+
+  val renamedResults = mutableListOf<Renamed>()
+
+  renamedFunctionNames.onEach { (addedFunctionName, deletedFunctionName) ->
+    val indexOfAddedFunctionToRemove = addedFunctions.indexOfFirst { it.name.get().value == addedFunctionName }
+    addedFunctions.removeAt(indexOfAddedFunctionToRemove)
+
+    val indexOfDeletedFunctionToRemove = deletedFunctions.indexOfFirst { it.name.get().value == deletedFunctionName }
+    deletedFunctions.removeAt(indexOfDeletedFunctionToRemove)
+
+    val renamedFunction = functionsInAfter.find { it.name.get().value == addedFunctionName }!!
+    renamedResults.add(Renamed(renamedFunction, deletedFunctionName))
+  }
+
   val modifiedFunctions = functionsInAfter
     .filter { modifiedFunctionNames.contains(it.name) }
+
   val possiblyUnchangedFunctions = functionsInAfter
     .filter { possiblyUnchangedFunctionNames.contains(it.name) }
 
@@ -55,7 +79,50 @@ internal fun compare(
   val unmodifiedFunctions = possiblyUnchangedFunctions - modifiedFunctionsNoLineNumberChange
   val unmodifiedResults = unmodifiedFunctions.map(::Unmodified)
 
-  return addedResults + deletedResults + modifiedResults + modifiedNoLineNumberChangeResults + unmodifiedResults
+  return addedResults + deletedResults +
+    modifiedResults + modifiedNoLineNumberChangeResults +
+    unmodifiedResults +
+    renamedResults
+}
+
+fun getRenamedFunctionNames(
+  addedFunctions: List<WellFormedFunction>,
+  afterSource: String,
+  deletedFunctions: List<WellFormedFunction>,
+  beforeSource: String
+): List<Pair<FunctionName, FunctionName>> {
+  val addedFunctionBodiesAndNames = functionBodiesAndNames(afterSource, addedFunctions)
+  val deletedFunctionBodiesAndNames = functionBodiesAndNames(beforeSource, deletedFunctions)
+
+  val identicalFunctionBodies = addedFunctionBodiesAndNames.map(Pair<String, String>::first)
+    .intersect(deletedFunctionBodiesAndNames.map(Pair<String, String>::first))
+
+  return identicalFunctionBodies.map { identicalBody ->
+    val addedFunctionName = addedFunctionBodiesAndNames
+      .find { (addedFunctionBody, _) -> addedFunctionBody == identicalBody }!!.second
+    val deletedFunctionName = deletedFunctionBodiesAndNames
+      .find { (deletedFunctionBody, _) -> deletedFunctionBody == identicalBody }!!.second
+
+    addedFunctionName to deletedFunctionName
+  }
+}
+
+private fun functionBodiesAndNames(
+  source: String,
+  functionsToLookup: List<WellFormedFunction>
+): List<Pair<FunctionBody, FunctionName>> {
+  return functionsToLookup
+    .map { getFunctionBody(it, source) to it.name.get().value }
+}
+
+private fun getFunctionBody(
+  wellFormedFunction: WellFormedFunction,
+  afterSource: String
+): String {
+  val functionWithSignature = split(afterSource, wellFormedFunction.startLine, wellFormedFunction.endLine)
+    .joinToString("\n")
+  return functionWithSignature
+    .substring(functionWithSignature.indexOf("{"), functionWithSignature.length)
 }
 
 private fun functionContentsChanged(
