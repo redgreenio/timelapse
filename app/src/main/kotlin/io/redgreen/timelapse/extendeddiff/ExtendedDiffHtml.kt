@@ -17,16 +17,22 @@ private const val ZERO_WIDTH_SPACE = "\u200B"
 private const val CSS_COLOR_ADDED = "#e6ffed"
 private const val CSS_COLOR_MODIFIED = "#dbedff80"
 private const val CSS_COLOR_DELETED = "#ffdce0"
+private const val CSS_COLOR_READABILITY = "#fafafa"
 
 private const val CSS_CLASS_ADDED = "added"
 private const val CSS_CLASS_MODIFIED = "modified"
 private const val CSS_CLASS_DELETED = "deleted"
+private const val CSS_CLASS_READABILITY = "readability"
 
 private sealed class LineNumber {
   abstract val value: Int
 
   data class CurrentSnapshot(override val value: Int) : LineNumber()
   data class PreviousSnapshot(override val value: Int) : LineNumber()
+  object ForReadability : LineNumber() {
+    override val value: Int
+      get() = -1
+  }
 }
 
 fun ExtendedDiff.toHtml(): String {
@@ -74,7 +80,7 @@ private fun addVerticalPaddingForDeletedFunctions(
     }
   indicesOfBlankLines.reverse()
   indicesOfBlankLines.onEach {
-    linesNumbersAndLines.add(it, PreviousSnapshot(-1) to "")
+    linesNumbersAndLines.add(it, LineNumber.ForReadability to "")
   }
 }
 
@@ -91,6 +97,7 @@ private fun mapToTableRows(
         isDeleted(lineNumber) -> deletedRowHtml(line)
         isInRangeOf(addedFunctionRanges, lineNumber) -> addedRowHtml(lineNumber.value, line)
         isInRangeOf(modifiedFunctionRanges, lineNumber) -> modifiedRowHtml(lineNumber.value, line)
+        lineNumber is LineNumber.ForReadability -> readabilityRowHtml()
         else -> unchangedRowHtml(lineNumber.value, line)
       }
     }
@@ -241,6 +248,9 @@ private fun htmlTemplate(tableRows: List<String>): String {
         .deleted {
           background-color: $CSS_COLOR_DELETED;
         }
+        .readability {
+          background-color: $CSS_COLOR_READABILITY;
+        }
         table {
           width: 100%;
           border-collapse: collapse;
@@ -300,6 +310,15 @@ private fun deletedRowHtml(line: String): String {
     <tr${classAttribute(CSS_CLASS_DELETED)}>
       <td>$ZERO_WIDTH_SPACE</td>
       <td>${toHtmlFriendly(line)}</td>
+    </tr>
+  """.trimIndent()
+}
+
+private fun readabilityRowHtml(): String {
+  return """
+    <tr${classAttribute(CSS_CLASS_READABILITY)}>
+      <td>$ZERO_WIDTH_SPACE</td>
+      <td></td>
     </tr>
   """.trimIndent()
 }
