@@ -9,5 +9,6 @@ include(
   "liftoff",
   "architecture",
   "git",
-  "functions"
+  "functions",
+  "languages",
 )
