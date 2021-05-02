@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.repositories
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.tasks.JacocoReport
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import plugins as pluginDeps
+import pluginsDeps as pluginDeps
 
 class TimelapsePlugin : Plugin<Project> {
   private val inUseFreeCompilerArgs = listOf("-Xinline-classes")

@@ -1,13 +1,13 @@
 plugins {
-  id("antlr")
+  id(pluginsDeps.antlr.id)
 }
 
 dependencies {
   implementation(deps.log4j.api)
   implementation(deps.log4j.core)
 
-  antlr("org.antlr:antlr4:4.9.2")
-  implementation("org.antlr:antlr4-runtime:4.9.2")
+  antlr(deps.antlr.core)
+  implementation(deps.antlr.runtime)
 
   testImplementation(deps.test.junit.api)
   testRuntimeOnly(deps.test.junit.engine)
