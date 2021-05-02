@@ -33,8 +33,8 @@ class CompareTest {
     // then
     assertThat(comparisonResults)
       .containsExactly(
-        Added(ParseResult.wellFormedFunction("b", 4, 5, 1)),
-        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1)),
+        Added(ParseResult.wellFormedFunction("b", 4, 5)),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2)),
       )
   }
 
@@ -63,9 +63,9 @@ class CompareTest {
     // then
     assertThat(comparisonResults)
       .containsExactly(
-        Added(ParseResult.wellFormedFunction("b", 4, 5, 1)),
-        Added(ParseResult.wellFormedFunction("c", 7, 8, 1)),
-        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1)),
+        Added(ParseResult.wellFormedFunction("b", 4, 5)),
+        Added(ParseResult.wellFormedFunction("c", 7, 8)),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2)),
       )
       .inOrder()
   }
@@ -96,8 +96,8 @@ class CompareTest {
     """.trimIndent()
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), deletedFunctionSnippet),
-        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1)),
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5), deletedFunctionSnippet),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2)),
       )
   }
 
@@ -129,8 +129,8 @@ class CompareTest {
     """.trimIndent()
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("a", 1, 2, 1), snippetA),
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), snippetB)
+        Deleted(ParseResult.wellFormedFunction("a", 1, 2), snippetA),
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5), snippetB)
       )
   }
 
@@ -154,7 +154,7 @@ class CompareTest {
     // then
     assertThat(comparisonResults)
       .containsExactly(
-        Modified(ParseResult.wellFormedFunction("a", 1, 3, 1), after)
+        Modified(ParseResult.wellFormedFunction("a", 1, 3), after)
       )
   }
 
@@ -183,8 +183,8 @@ class CompareTest {
     // then
     assertThat(comparisonResults)
       .containsExactly(
-        Unmodified(ParseResult.wellFormedFunction("b", 1, 2, 1)),
-        Unmodified(ParseResult.wellFormedFunction("a", 4, 5, 1))
+        Unmodified(ParseResult.wellFormedFunction("b", 1, 2)),
+        Unmodified(ParseResult.wellFormedFunction("a", 4, 5))
       )
   }
 
@@ -230,10 +230,10 @@ class CompareTest {
 
     assertThat(comparisonResults)
       .containsExactly(
-        Deleted(ParseResult.wellFormedFunction("b", 4, 5, 1), snippetB),
-        Added(ParseResult.wellFormedFunction("x", 4, 5, 1)),
-        Modified(ParseResult.wellFormedFunction("c", 7, 9, 1), snippetC),
-        Unmodified(ParseResult.wellFormedFunction("a", 1, 2, 1))
+        Deleted(ParseResult.wellFormedFunction("b", 4, 5), snippetB),
+        Added(ParseResult.wellFormedFunction("x", 4, 5)),
+        Modified(ParseResult.wellFormedFunction("c", 7, 9), snippetC),
+        Unmodified(ParseResult.wellFormedFunction("a", 1, 2))
       )
   }
 
@@ -274,9 +274,9 @@ class CompareTest {
 
     assertThat(comparisonResults)
       .containsExactly(
-        Modified(ParseResult.wellFormedFunction("a", 1, 2, 1), functionA),
-        Unmodified(ParseResult.wellFormedFunction("b", 4, 5, 1)),
-        Unmodified(ParseResult.wellFormedFunction("c", 7, 8, 1)),
+        Modified(ParseResult.wellFormedFunction("a", 1, 2), functionA),
+        Unmodified(ParseResult.wellFormedFunction("b", 4, 5)),
+        Unmodified(ParseResult.wellFormedFunction("c", 7, 8)),
       )
   }
 
@@ -301,7 +301,7 @@ class CompareTest {
     // then
     assertThat(comparisonResult)
       .containsExactly(
-        Modified(ParseResult.wellFormedFunction("hello", 1, 3, 1), after)
+        Modified(ParseResult.wellFormedFunction("hello", 1, 3), after)
       )
   }
 
@@ -356,7 +356,7 @@ class CompareTest {
     // then
     assertThat(comparisonResult)
       .containsExactly(
-        Renamed(ParseResult.wellFormedFunction("sayHello", 1, 3, 1), "greet")
+        Renamed(ParseResult.wellFormedFunction("sayHello", 1, 3), "greet")
       )
   }
 
@@ -384,7 +384,7 @@ class CompareTest {
     // then
     assertThat(comparisonResult)
       .containsExactly(
-        Renamed(ParseResult.wellFormedFunction("add", 1, 6, 1), "plus")
+        Renamed(ParseResult.wellFormedFunction("add", 1, 6), "plus")
       )
   }
 }

@@ -97,7 +97,7 @@ fun parse(snippet: String, lineNumberOffset: Int = 0): ParseResult {
           depthStack.pop()
 
           if (depthStack.isEmpty()) {
-            return ParseResult.wellFormedFunction(startLineNumber, lineNumber, maximumDepth)
+            return ParseResult.wellFormedFunction(startLineNumber, lineNumber)
           }
         }
       }

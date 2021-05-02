@@ -69,8 +69,8 @@ class ExtendedDiffEngineTest {
       fun b() {}
     """.trimIndent()
     val comparisonResults = listOf(
-      Added(ParseResult.wellFormedFunction("b", 2, 2, 1)),
-      Unmodified(ParseResult.wellFormedFunction("a", 1, 1, 1)),
+      Added(ParseResult.wellFormedFunction("b", 2, 2)),
+      Unmodified(ParseResult.wellFormedFunction("a", 1, 1)),
     )
 
     assertThat(extendedDiff)
@@ -116,8 +116,8 @@ class ExtendedDiffEngineTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Deleted(ParseResult.wellFormedFunction("a", 1, 1, 1), snippetA),
-      Unmodified(ParseResult.wellFormedFunction("b", 1, 1, 1)),
+      Deleted(ParseResult.wellFormedFunction("a", 1, 1), snippetA),
+      Unmodified(ParseResult.wellFormedFunction("b", 1, 1)),
     )
 
     assertThat(extendedDiff)
@@ -165,7 +165,7 @@ class ExtendedDiffEngineTest {
       |  }
     """.trimMargin("|")
     val comparisonResults = listOf(
-      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1), snippetA)
+      Modified(ParseResult.wellFormedFunction("a", 2, 4), snippetA)
     )
 
     assertThat(extendedDiff)
