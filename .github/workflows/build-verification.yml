@@ -32,6 +32,9 @@ jobs:
       - name: Run Detekt
         run: ./gradlew detekt
 
+      - name: Generate ANTLR classes
+        run: ./gradlew languages:generateGrammarSource
+
       - name: Run Unit Tests with Coverage
         run: ./gradlew test jacocoTestReport
 
