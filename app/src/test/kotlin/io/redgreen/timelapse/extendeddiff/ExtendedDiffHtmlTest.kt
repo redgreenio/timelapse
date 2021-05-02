@@ -24,7 +24,7 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Added(ParseResult.wellFormedFunction("b", 2, 2, 1))
+      Added(ParseResult.wellFormedFunction("b", 2, 2))
     )
 
     val hasChanges = HasChanges(kotlinSource, comparisonResults)
@@ -50,7 +50,7 @@ class ExtendedDiffHtmlTest {
       |  }
     """.trimMargin("|")
     val comparisonResults = listOf(
-      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1), snippetA)
+      Modified(ParseResult.wellFormedFunction("a", 2, 4), snippetA)
     )
 
     val hasChanges = HasChanges(swiftSource, comparisonResults)
@@ -73,7 +73,7 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Deleted(ParseResult.wellFormedFunction("a", 1, 2, 1), snippetA)
+      Deleted(ParseResult.wellFormedFunction("a", 1, 2), snippetA)
     )
 
     val hasChanges = HasChanges(kotlinSource, comparisonResults)
@@ -103,8 +103,8 @@ class ExtendedDiffHtmlTest {
       |  }
     """.trimIndent()
     val comparisonResults = listOf(
-      Modified(ParseResult.wellFormedFunction("a", 2, 4, 1), snippetA),
-      Added(ParseResult.wellFormedFunction("b", 6, 8, 1)),
+      Modified(ParseResult.wellFormedFunction("a", 2, 4), snippetA),
+      Added(ParseResult.wellFormedFunction("b", 6, 8)),
     )
 
     val hasChanges = HasChanges(swiftSource, comparisonResults)
@@ -148,11 +148,11 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Deleted(ParseResult.wellFormedFunction("a", 1, 3, 1), functionA),
-      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1), functionB),
-      Deleted(ParseResult.wellFormedFunction("c", 4, 6, 1), functionC),
-      Added(ParseResult.wellFormedFunction("d", 5, 7, 1)),
-      Deleted(ParseResult.wellFormedFunction("e", 8, 10, 1), functionE)
+      Deleted(ParseResult.wellFormedFunction("a", 1, 3), functionA),
+      Modified(ParseResult.wellFormedFunction("b", 1, 2), functionB),
+      Deleted(ParseResult.wellFormedFunction("c", 4, 6), functionC),
+      Added(ParseResult.wellFormedFunction("d", 5, 7)),
+      Deleted(ParseResult.wellFormedFunction("e", 8, 10), functionE)
     )
 
     // when
@@ -177,8 +177,8 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Added(ParseResult.wellFormedFunction("newlyAddedFunction", 1, 3, 1)),
-      Deleted(ParseResult.wellFormedFunction("deletedFunction", 2, 3, 1), deletedFunction),
+      Added(ParseResult.wellFormedFunction("newlyAddedFunction", 1, 3)),
+      Deleted(ParseResult.wellFormedFunction("deletedFunction", 2, 3), deletedFunction),
     )
 
     // when
@@ -203,8 +203,8 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Added(ParseResult.wellFormedFunction("modifiedFunction", 1, 3, 1)),
-      Deleted(ParseResult.wellFormedFunction("deletedFunction", 2, 3, 1), deletedFunction),
+      Added(ParseResult.wellFormedFunction("modifiedFunction", 1, 3)),
+      Deleted(ParseResult.wellFormedFunction("deletedFunction", 2, 3), deletedFunction),
     )
 
     // when
@@ -249,11 +249,11 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Deleted(ParseResult.wellFormedFunction("e", 8, 10, 1), functionE),
-      Added(ParseResult.wellFormedFunction("d", 5, 7, 1)),
-      Deleted(ParseResult.wellFormedFunction("c", 4, 6, 1), functionC),
-      Deleted(ParseResult.wellFormedFunction("a", 1, 3, 1), functionA),
-      Modified(ParseResult.wellFormedFunction("b", 1, 2, 1), functionB)
+      Deleted(ParseResult.wellFormedFunction("e", 8, 10), functionE),
+      Added(ParseResult.wellFormedFunction("d", 5, 7)),
+      Deleted(ParseResult.wellFormedFunction("c", 4, 6), functionC),
+      Deleted(ParseResult.wellFormedFunction("a", 1, 3), functionA),
+      Modified(ParseResult.wellFormedFunction("b", 1, 2), functionB)
     )
 
     // when
@@ -295,8 +295,8 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Deleted(ParseResult.wellFormedFunction("getAuthor", 2, 4, 1), getAuthorFunction),
-      Unmodified(ParseResult.wellFormedFunction("getReview", 1, 5, 1)),
+      Deleted(ParseResult.wellFormedFunction("getAuthor", 2, 4), getAuthorFunction),
+      Unmodified(ParseResult.wellFormedFunction("getReview", 1, 5)),
     )
     val hasChanges = HasChanges(kotlinSource, comparisonResults)
 
@@ -314,7 +314,7 @@ class ExtendedDiffHtmlTest {
     """.trimIndent()
 
     val comparisonResults = listOf(
-      Renamed(ParseResult.wellFormedFunction("add", 1, 3, 1), "plus")
+      Renamed(ParseResult.wellFormedFunction("add", 1, 3), "plus")
     )
     val hasChanges = HasChanges(kotlinSource, comparisonResults)
 
