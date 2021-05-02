@@ -1,5 +1,5 @@
 @Suppress("ClassName")
-object plugins {
+object pluginsDeps {
   object kotlinJvm {
     const val id = "org.jetbrains.kotlin.jvm"
   }
@@ -22,5 +22,9 @@ object plugins {
 
   object ktlint {
     const val id = "org.jlleitschuh.gradle.ktlint"
+  }
+
+  object antlr {
+    const val id = "antlr"
   }
 }

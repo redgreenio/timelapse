@@ -2,9 +2,6 @@
 @Suppress("ClassName")
 object deps {
   object versions {
-    const val mobius = "1.5.3"
-    const val junit = "5.7.1"
-    const val moshi = "1.12.0"
     const val java = "15"
     const val javaFx = "15"
   }
@@ -33,10 +30,12 @@ object deps {
   }
 
   object mobius {
-    const val core = "com.spotify.mobius:mobius-core:${versions.mobius}"
-    const val rx3 = "com.spotify.mobius:mobius-rx3:${versions.mobius}"
-    const val extras = "com.spotify.mobius:mobius-extras:${versions.mobius}"
-    const val test = "com.spotify.mobius:mobius-test:${versions.mobius}"
+    private const val version = "1.5.3"
+
+    const val core = "com.spotify.mobius:mobius-core:$version"
+    const val rx3 = "com.spotify.mobius:mobius-rx3:$version"
+    const val extras = "com.spotify.mobius:mobius-extras:$version"
+    const val test = "com.spotify.mobius:mobius-test:$version"
   }
 
   object humanize {
@@ -45,8 +44,10 @@ object deps {
   }
 
   object moshi {
-    const val runtime = "com.squareup.moshi:moshi:${versions.moshi}"
-    const val apt = "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
+    private const val version = "1.12.0"
+
+    const val runtime = "com.squareup.moshi:moshi:$version"
+    const val apt = "com.squareup.moshi:moshi-kotlin-codegen:$version"
   }
 
   object log4j {
@@ -56,9 +57,11 @@ object deps {
 
   object test {
     object junit {
-      const val api = "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
-      const val params = "org.junit.jupiter:junit-jupiter-params:${versions.junit}"
-      const val engine = "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
+      private const val version = "5.7.1"
+
+      const val api = "org.junit.jupiter:junit-jupiter-api:$version"
+      const val params = "org.junit.jupiter:junit-jupiter-params:$version"
+      const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
     }
 
     object mockito {
@@ -68,5 +71,12 @@ object deps {
 
     const val truth = "com.google.truth:truth:1.1.2"
     const val approvalTests = "com.approvaltests:approvaltests:11.0.0"
+  }
+
+  object antlr {
+    private const val version = "4.9.2"
+
+    const val core = "org.antlr:antlr4:$version"
+    const val runtime = "org.antlr:antlr4-runtime:$version"
   }
 }
