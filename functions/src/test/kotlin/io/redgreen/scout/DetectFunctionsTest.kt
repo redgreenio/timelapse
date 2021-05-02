@@ -22,10 +22,11 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getParseResults(functionWithTopLevelFunctions, KotlinFunctionScanner::scan))
+    val parseResults = getParseResults(functionWithTopLevelFunctions, KotlinFunctionScanner)
+    assertThat(parseResults)
       .hasSize(3)
 
-    assertThat(getParseResults(functionWithTopLevelFunctions, KotlinFunctionScanner::scan))
+    assertThat(parseResults)
       .containsExactly(
         ParseResult.wellFormedFunction("add", 1, 3),
         ParseResult.wellFormedFunction("subtract", 5, 7),
@@ -58,10 +59,10 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getParseResults(fileWithClassFunctionsAndOneTopLevelFunction, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(fileWithClassFunctionsAndOneTopLevelFunction, KotlinFunctionScanner))
       .hasSize(4)
 
-    assertThat(getParseResults(fileWithClassFunctionsAndOneTopLevelFunction, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(fileWithClassFunctionsAndOneTopLevelFunction, KotlinFunctionScanner))
       .containsExactly(
         ParseResult.wellFormedFunction("add", 4, 6),
         ParseResult.wellFormedFunction("subtract", 8, 10),
@@ -77,7 +78,7 @@ class DetectFunctionsTest {
       Nothing to see here...
     """.trimIndent()
 
-    assertThat(getParseResults(nothing, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(nothing, KotlinFunctionScanner))
       .isEmpty()
   }
 
@@ -89,7 +90,7 @@ class DetectFunctionsTest {
       }
     """.trimIndent()
 
-    assertThat(getParseResults(extensionFunction, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(extensionFunction, KotlinFunctionScanner))
       .containsExactly(
         ParseResult.wellFormedFunction("String.fullStop", 1, 3)
       )
@@ -103,7 +104,7 @@ class DetectFunctionsTest {
       "}"
 
     // when & then
-    assertThat(getParseResults(functionDeclaredInsideMultilineString, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(functionDeclaredInsideMultilineString, KotlinFunctionScanner))
       .containsExactly(
         ParseResult.wellFormedFunction("HelloWorld.x", 1, 3)
       )
@@ -115,7 +116,7 @@ class DetectFunctionsTest {
     val multilineStringContainingFunctions = readResourceFile("/multiline_string_containing_functions")
 
     // when & then
-    assertThat(getParseResults(multilineStringContainingFunctions, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(multilineStringContainingFunctions, KotlinFunctionScanner))
       .containsExactly(
         ParseResult.wellFormedFunction("HelloWorld.justAnotherFunction", 1, 10)
       )
@@ -127,7 +128,7 @@ class DetectFunctionsTest {
     val snippetWithCssAndMultilineStrings = readResourceFile("/function_returning_html")
 
     // when & then
-    assertThat(getParseResults(snippetWithCssAndMultilineStrings, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(snippetWithCssAndMultilineStrings, KotlinFunctionScanner))
       .containsExactly(
         ParseResult.wellFormedFunction("html", 1, 26)
       )
@@ -139,9 +140,9 @@ class DetectFunctionsTest {
     val trickyKotlinFile = readResourceFile("/file_with_several_functions_and_tricky_curly_braces")
 
     // when & then
-    assertThat(getParseResults(trickyKotlinFile, KotlinFunctionScanner::scan))
+    assertThat(getParseResults(trickyKotlinFile, KotlinFunctionScanner))
       .containsExactly(
-        ParseResult.wellFormedFunction("ExtendedDiff.toHtml", 10, 130),
+        ParseResult.wellFormedFunction("ExtendedDiff.toHtml", 9, 130),
         ParseResult.wellFormedFunction("toRows", 132, 151),
         ParseResult.wellFormedFunction("classAttribute", 153, 159),
         ParseResult.wellFormedFunction("offsetWithPadding", 161, 173),
