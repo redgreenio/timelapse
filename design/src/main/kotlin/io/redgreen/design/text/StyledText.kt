@@ -1,13 +1,20 @@
 package io.redgreen.design.text
 
 data class StyledText(val text: String) {
-  fun visit(onEnterNewline: (lineNumber: Int) -> Unit) {
+  fun visit(
+    onEnterLine: (lineNumber: Int) -> Unit = { /* no-op */ },
+    onExitLine: (lineNumber: Int) -> Unit = { /* no-op */ }
+  ) {
     var lineNumber = 1
-    onEnterNewline(lineNumber)
-    text.onEach {
-      if (it == '\n') {
+    onEnterLine(lineNumber)
+    text.onEachIndexed { index, char ->
+      if (char == '\n') {
         lineNumber++
-        onEnterNewline(lineNumber)
+        onEnterLine(lineNumber)
+      }
+
+      if ((index + 1 > text.lastIndex) || (index + 1 != text.lastIndex && text[index + 1] == '\n')) {
+        onExitLine(lineNumber)
       }
     }
   }
