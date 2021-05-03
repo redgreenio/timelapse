@@ -148,4 +148,35 @@ class DetectFunctionsTest {
         ParseResult.wellFormedFunction("offsetWithPadding", 161, 173),
       )
   }
+
+  @Test
+  fun `it should detect function expressions`() {
+    // given
+    val kotlinSource = """
+      fun add(x: Int, y: Int): Int = x + y
+      
+      fun subtract(x: Int, y: Int) = x - y
+      
+      fun multiply(x: Int, y: Int) =
+        x * y
+        
+      private fun ageFilterTextChanges() = screenRouter.streamScreenResults()
+        .ofType<ActivityResult>()
+        .filter { it.requestCode == REQCODE_AGE && it.succeeded() }
+        .map { PatientSearchAgeFilterSheet.extract(it.data!!) }
+        .startWith(SearchQueryAgeChanged(""))
+    """.trimIndent()
+
+    // when
+    val parseResults = getParseResults(kotlinSource, KotlinFunctionScanner)
+
+    // then
+    assertThat(parseResults)
+      .containsExactly(
+        ParseResult.wellFormedFunction("add", 1, 1),
+        ParseResult.wellFormedFunction("subtract", 3, 3),
+        ParseResult.wellFormedFunction("multiply", 5, 6),
+        ParseResult.wellFormedFunction("ageFilterTextChanges", 8, 12)
+      )
+  }
 }
