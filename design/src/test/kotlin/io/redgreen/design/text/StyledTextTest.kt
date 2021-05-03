@@ -12,13 +12,22 @@ class StyledTextTest {
       Two
       Three
     """.trimIndent()
+
     private val styledText = StyledText(text)
+
     private val lineBuilder = StringBuilder()
 
     @Test
     fun `it should provide callbacks while entering a new line`() {
+      // given
+      val visitor = object : DefaultStyledTextVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          lineBuilder.append(lineNumber)
+        }
+      }
+
       // when
-      styledText.visit(onEnterLine = { lineNumber -> lineBuilder.append(lineNumber) })
+      styledText.visit(visitor)
 
       // then
       assertThat(lineBuilder.toString())
@@ -26,12 +35,20 @@ class StyledTextTest {
     }
 
     @Test
-    fun `it should provide callbacks  while exiting a line`() {
+    fun `it should provide callbacks while exiting a line`() {
+      // given
+      val visitor = object : DefaultStyledTextVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          lineBuilder.append("begin $lineNumber ")
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          lineBuilder.append("end $lineNumber ")
+        }
+      }
+
       // when
-      styledText.visit(
-        onEnterLine = { lineNumber -> lineBuilder.append("begin $lineNumber ") },
-        onExitLine = { lineNumber -> lineBuilder.append("end $lineNumber ") }
-      )
+      styledText.visit(visitor)
 
       // then
       assertThat(lineBuilder.toString())
