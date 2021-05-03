@@ -16,8 +16,6 @@ import io.redgreen.timelapse.extendeddiff.LineNumber.PreviousSnapshot
 private const val NEWLINE_CHAR = "\n"
 private const val ZERO_WIDTH_SPACE = "\u200B"
 private const val BLANK_LINE = ""
-private const val LEFT_PARENTHESES = '('
-private const val SPACE = ' '
 
 private const val CSS_COLOR_ADDED = "#e6ffed"
 private const val CSS_COLOR_MODIFIED = "#dbedff80"
@@ -466,9 +464,10 @@ fun deletedRowHtml(line: String, functionName: Name): String {
 
 private fun makeFunctionNameBold(line: String, functionName: Name): String {
   val htmlFriendlyLine = toHtmlFriendly(line)
-  val beginIndex = htmlFriendlyLine.indexOf(SPACE)
-  val endIndex = htmlFriendlyLine.indexOf(LEFT_PARENTHESES)
-  return htmlFriendlyLine.replaceRange(beginIndex + 1, endIndex, "<b>${functionName.value}</b>")
+  val funKeywordIndex = htmlFriendlyLine.indexOf("fun")
+  val functionNameStartIndex = htmlFriendlyLine.indexOf(functionName.value, funKeywordIndex)
+  val functionNameEndIndex = functionNameStartIndex + functionName.value.length
+  return htmlFriendlyLine.replaceRange(functionNameStartIndex, functionNameEndIndex, "<b>${functionName.value}</b>")
 }
 
 private fun modifiedRowHtml(lineNumber: Int, line: String): String {
