@@ -1,0 +1,52 @@
+<html lang="en-US">
+<head>
+  <style>
+    .added {
+      background-color: #e6ffed;
+    }
+    .modified {
+      background-color: #dbedff80;
+    }
+    .deleted {
+      background-color: #ffdce0;
+    }
+    .readability {
+      background-color: #fafafa;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table td {
+      font-family: "monospace";
+      font-size: small;
+    }
+  </style>
+</head>
+<body>
+<table>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>fun a() {}</td>
+    </tr>
+    <tr class="readability">
+      <td>​</td>
+      <td></td>
+    </tr>
+    <tr class="deleted">
+      <td>​</td>
+      <td>fun <b>b</b>() {}</td>
+    </tr>
+    <tr class="readability">
+      <td>​</td>
+      <td></td>
+    </tr>
+    <tr class="deleted">
+      <td>​</td>
+      <td>fun <b>c</b>() {}</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

@@ -337,4 +337,22 @@ class ExtendedDiffHtmlTest {
     // when & then
     Approvals.verifyHtml(hasChanges.toHtml())
   }
+
+  @Test
+  fun `it should add readability lines between deleted functions`() {
+    // given
+    val kotlinSource = """
+      fun a() {}
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Unmodified(ParseResult.wellFormedFunction("a", 1, 1)),
+      Deleted(ParseResult.wellFormedFunction("b", 3, 3), "fun b() {}"),
+      Deleted(ParseResult.wellFormedFunction("c", 5, 5), "fun c() {}")
+    )
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // when & then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
 }
