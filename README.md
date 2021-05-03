@@ -1,4 +1,4 @@
-# Timelapse
+# Timelapse ![CI](https://github.com/redgreenio/timelapse/actions/workflows/build-verification.yml/badge.svg)
 
 Timelapse onboards developers onto codebases before you make that cup of instant noodles!
 
