@@ -321,4 +321,20 @@ class ExtendedDiffHtmlTest {
     // when & then
     Approvals.verifyHtml(hasChanges.toHtml())
   }
+
+  @Test
+  fun `it should add bold to function with modifier`() {
+    // given
+    val kotlinSource = """
+      private inline fun greet() = println("Hello, world")
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Renamed(ParseResult.wellFormedFunction("greet", 1, 1), "helloWorld")
+    )
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // when & then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
 }
