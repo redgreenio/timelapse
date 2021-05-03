@@ -417,6 +417,7 @@ private fun htmlTemplate(tableRows: List<String>): String {
     </table>
     </body>
     </html>
+    
   """.trimIndent()
 }
 
