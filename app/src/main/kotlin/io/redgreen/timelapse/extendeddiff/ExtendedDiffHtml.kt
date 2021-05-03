@@ -126,8 +126,9 @@ private fun isBeginFunction(
   lineNumber: LineNumber,
   linesNumbersAndLines: MutableList<Pair<LineNumber, String>>
 ): Boolean {
+  val line = linesNumbersAndLines[index].second
   return lineNumber is PreviousSnapshot &&
-    (index == 0 || linesNumbersAndLines[index - 1].first !is PreviousSnapshot)
+    (index == 0 || line.contains("fun") || linesNumbersAndLines[index - 1].first !is PreviousSnapshot)
 }
 
 private fun canAddReadabilityLineBeforeDeletedFunction(
