@@ -5,3 +5,11 @@ plugins {
 javafx {
   modules("javafx.controls")
 }
+
+dependencies {
+  testImplementation(deps.test.junit.api)
+  testImplementation(deps.test.junit.params)
+  testRuntimeOnly(deps.test.junit.engine)
+
+  testImplementation(deps.test.truth)
+}
