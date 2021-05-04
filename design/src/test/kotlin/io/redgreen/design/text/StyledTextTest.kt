@@ -3,7 +3,6 @@ package io.redgreen.design.text
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
 
 class StyledTextTest {
   @Nested
@@ -21,9 +20,13 @@ class StyledTextTest {
     @Test
     fun `it should provide callbacks while entering a new line`() {
       // given
-      val visitor = object : DefaultStyledTextVisitor() {
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
           lineBuilder.append(lineNumber)
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          /* no-op */
         }
       }
 
@@ -38,7 +41,7 @@ class StyledTextTest {
     @Test
     fun `it should provide callbacks while exiting a line`() {
       // given
-      val visitor = object : DefaultStyledTextVisitor() {
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
           lineBuilder.append("begin $lineNumber ")
         }
@@ -62,11 +65,7 @@ class StyledTextTest {
       styledText
         .addStyle(LineStyle("added", 1..3))
 
-      val visitor = object : DefaultStyledTextVisitor() {
-        override fun onEnterLine(lineNumber: Int) {
-          fail { "onEnterLine() should not be called when there's an associated `LineStyle`" }
-        }
-
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
           lineBuilder.append(
             """
@@ -74,6 +73,10 @@ class StyledTextTest {
               
             """.trimIndent()
           )
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          /* no-op */
         }
       }
 
