@@ -14,7 +14,6 @@ class StyledTextTest {
     """.trimIndent()
 
     private val styledText = StyledText(text)
-    private val textBuilder = StringBuilder()
 
     @Test
     fun `it should provide callbacks while entering a new line`() {
@@ -37,7 +36,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo("1One2Two3Three")
     }
 
@@ -62,7 +61,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo("begin 1 end 1 begin 2 end 2 begin 3 end 3 ")
     }
 
@@ -95,7 +94,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo(
           """
             <tr class="added"><td>1</td></tr>
@@ -135,7 +134,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo(
           """
             <exit class="added">1</exit>
@@ -152,7 +151,6 @@ class StyledTextTest {
     @Test
     fun `it should be able to handle different line styles for different lines`() {
       // given
-      val textBuilder = StringBuilder()
 
       val text = """
         Hello, world!
@@ -181,7 +179,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo(
           """
             <tr><td class="greeting">1</td><td>Hello, world!</td></tr>
@@ -197,7 +195,6 @@ class StyledTextTest {
     @Test
     fun `it should receive callbacks for text without style`() {
       // given
-      val textBuilder = StringBuilder()
 
       val text = """
         fun helloWorld() {
@@ -223,7 +220,7 @@ class StyledTextTest {
       StyledText(text).visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo(
           """
           fun helloWorld() {
@@ -237,7 +234,6 @@ class StyledTextTest {
     @Test
     fun `it should receive callback for text with style`() {
       // given
-      val textBuilder = StringBuilder()
       val text = "Hello, Oreo!"
 
       val styledText = StyledText(text)
@@ -265,14 +261,13 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo("Hello, <bold>Oreo</bold>!")
     }
 
     @Test
     fun `it should apply more than one style on the same line`() {
       // given
-      val textBuilder = StringBuilder()
       val text = "HelloWorld"
 
       val styledText = StyledText(text)
@@ -297,14 +292,13 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo("<bold>Hello</bold><em>World</em>")
     }
 
     @Test
     fun `it should apply multiple styles on multiple lines`() {
       // given
-      val textBuilder = StringBuilder()
       val text = """
         fun helloWorld() {
           println("Hello, world!")
@@ -337,7 +331,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(textBuilder.toString())
+      assertThat(visitor.textBuilder.toString())
         .isEqualTo(
           """
             fun <span class="identifier">helloWorld</span>() {
