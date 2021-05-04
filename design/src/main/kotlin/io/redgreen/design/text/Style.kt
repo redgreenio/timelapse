@@ -9,5 +9,6 @@ data class LineStyle(
 
 data class TextStyle(
   val name: String,
+  val lineNumber: Int,
   val charIndexRange: IntRange
 )

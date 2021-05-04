@@ -241,7 +241,7 @@ class StyledTextTest {
       val text = "Hello, Oreo!"
 
       val styledText = StyledText(text)
-        .addStyle(TextStyle("bold", 7..10))
+        .addStyle(TextStyle("bold", 1, 7..10))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
@@ -276,8 +276,8 @@ class StyledTextTest {
       val text = "HelloWorld"
 
       val styledText = StyledText(text)
-        .addStyle(TextStyle("bold", 0..4))
-        .addStyle(TextStyle("em", 5..9))
+        .addStyle(TextStyle("bold", 1, 0..4))
+        .addStyle(TextStyle("em", 1, 5..9))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
