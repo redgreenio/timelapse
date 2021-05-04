@@ -1,5 +1,6 @@
 package io.redgreen.design.text
 
+import java.lang.StringBuilder
 import java.util.Optional
 
 data class StyledText(val text: String) {
@@ -14,6 +15,8 @@ data class StyledText(val text: String) {
         { visitor.onEnterLine(lineNumber) }
       )
 
+    val textBuilder = StringBuilder()
+
     text.onEachIndexed { index, char ->
       if (char == '\n') {
         lineNumber++
@@ -23,9 +26,16 @@ data class StyledText(val text: String) {
             { visitor.onEnterLine(lineNumber, it) },
             { visitor.onEnterLine(lineNumber) }
           )
+      } else {
+        if (char != '\n') {
+          textBuilder.append(char)
+        }
       }
 
       if ((index + 1 > text.lastIndex) || (index + 1 != text.lastIndex && text[index + 1] == '\n')) {
+        visitor.onText(textBuilder.toString())
+        textBuilder.clear()
+
         getLineStyle(lineNumber)
           .ifPresentOrElse(
             { visitor.onExitLine(lineNumber, it) },

@@ -24,6 +24,10 @@ class StyledTextTest {
           lineBuilder.append(lineNumber)
         }
 
+        override fun onText(text: String) {
+          lineBuilder.append(text)
+        }
+
         override fun onExitLine(lineNumber: Int) {
           /* no-op */
         }
@@ -34,7 +38,7 @@ class StyledTextTest {
 
       // then
       assertThat(lineBuilder.toString())
-        .isEqualTo("123")
+        .isEqualTo("1One2Two3Three")
     }
 
     @Test
@@ -43,6 +47,10 @@ class StyledTextTest {
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
           lineBuilder.append("begin $lineNumber ")
+        }
+
+        override fun onText(text: String) {
+          // no-op
         }
 
         override fun onExitLine(lineNumber: Int) {
@@ -74,6 +82,10 @@ class StyledTextTest {
           )
         }
 
+        override fun onText(text: String) {
+          // no-op
+        }
+
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
           /* no-op */
         }
@@ -103,6 +115,10 @@ class StyledTextTest {
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
           /* no-op */
+        }
+
+        override fun onText(text: String) {
+          // no-op
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
@@ -140,7 +156,7 @@ class StyledTextTest {
 
       val text = """
         Hello, world!
-        How, are you?
+        How are you?
       """.trimIndent()
 
       val styledText = StyledText(text)
@@ -150,6 +166,10 @@ class StyledTextTest {
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
           lineStyleBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
+        }
+
+        override fun onText(text: String) {
+          lineStyleBuilder.append("<td>$text</td>")
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
@@ -164,9 +184,52 @@ class StyledTextTest {
       assertThat(lineStyleBuilder.toString())
         .isEqualTo(
           """
-            <tr><td class="greeting">1</td></tr>
-            <tr><td class="question">2</td></tr>
+            <tr><td class="greeting">1</td><td>Hello, world!</td></tr>
+            <tr><td class="question">2</td><td>How are you?</td></tr>
             
+          """.trimIndent()
+        )
+    }
+  }
+
+  @Nested
+  inner class Text {
+    @Test
+    fun `it should receive callbacks for text without style`() {
+      // given
+      val textBuilder = StringBuilder()
+
+      val text = """
+        fun helloWorld() {
+          println("Hello, world!")
+        }
+      """.trimIndent()
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          // no-op
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          textBuilder.append("\n")
+        }
+
+        override fun onText(text: String) {
+          textBuilder.append(text)
+        }
+      }
+
+      // when
+      StyledText(text).visit(visitor)
+
+      // then
+      assertThat(textBuilder.toString())
+        .isEqualTo(
+          """
+          fun helloWorld() {
+            println("Hello, world!")
+          }
+          
           """.trimIndent()
         )
     }
