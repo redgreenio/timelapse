@@ -268,5 +268,37 @@ class StyledTextTest {
       assertThat(textBuilder.toString())
         .isEqualTo("Hello, <bold>Oreo</bold>!")
     }
+
+    @Test
+    fun `it should apply more than one style on the same line`() {
+      // given
+      val textBuilder = StringBuilder()
+      val text = "HelloWorld"
+
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("bold", 0..4))
+        .addStyle(TextStyle("em", 5..9))
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          // no-op
+        }
+
+        override fun onText(text: String, textStyle: TextStyle) {
+          textBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          // no-op
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(textBuilder.toString())
+        .isEqualTo("<bold>Hello</bold><em>World</em>")
+    }
   }
 }

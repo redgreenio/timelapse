@@ -5,7 +5,7 @@ import java.util.Optional
 
 data class StyledText(val text: String) {
   private val lineStyles = mutableListOf<LineStyle>()
-  private var textStyle: TextStyle? = null
+  private val textStyles = mutableListOf<TextStyle>()
 
   fun visit(visitor: StyledTextVisitor) {
     var lineNumber = 1
@@ -28,22 +28,14 @@ data class StyledText(val text: String) {
             { visitor.onEnterLine(lineNumber) }
           )
       } else {
-        if (textStyle != null && index == textStyle!!.charRange.first) {
-          visitor.onText(textBuilder.toString())
-          textBuilder.clear()
-          textBuilder.append(char)
-        } else if (textStyle != null && index == textStyle!!.charRange.last) {
-          textBuilder.append(char)
-          visitor.onText(textBuilder.toString(), textStyle!!)
-          textBuilder.clear()
-        } else if ((textStyle != null && index !in textStyle!!.charRange) || char != '\n') {
-          textBuilder.append(char)
-        }
+        processStyledText(index, char, textBuilder, visitor)
       }
 
       if ((index + 1 > text.lastIndex) || (index + 1 != text.lastIndex && text[index + 1] == '\n')) {
-        visitor.onText(textBuilder.toString())
-        textBuilder.clear()
+        if (textBuilder.isNotEmpty()) {
+          visitor.onText(textBuilder.toString())
+          textBuilder.clear()
+        }
 
         getLineStyle(lineNumber)
           .ifPresentOrElse(
@@ -54,17 +46,48 @@ data class StyledText(val text: String) {
     }
   }
 
-  private fun getLineStyle(lineNumber: Int): Optional<LineStyle> {
-    return Optional.ofNullable(lineStyles.find { lineNumber in it.lineNumberRange })
-  }
-
   fun addStyle(lineStyle: LineStyle): StyledText {
     lineStyles.add(lineStyle)
     return this
   }
 
   fun addStyle(textStyle: TextStyle): StyledText {
-    this.textStyle = textStyle
+    textStyles.add(textStyle)
     return this
+  }
+
+  private fun processStyledText(
+    index: Int,
+    char: Char,
+    textBuilder: StringBuilder,
+    visitor: StyledTextVisitor
+  ) {
+    val textStyle = if (getTextStyle(index).isPresent) {
+      getTextStyle(index).get()
+    } else {
+      null
+    }
+
+    if (textStyle != null && index == textStyle.charIndexRange.first) {
+      if (textBuilder.isNotEmpty()) {
+        visitor.onText(textBuilder.toString())
+        textBuilder.clear()
+      }
+      textBuilder.append(char)
+    } else if (textStyle != null && index == textStyle.charIndexRange.last) {
+      textBuilder.append(char)
+      visitor.onText(textBuilder.toString(), textStyle)
+      textBuilder.clear()
+    } else if ((textStyle != null && index !in textStyle.charIndexRange) || char != '\n') {
+      textBuilder.append(char)
+    }
+  }
+
+  private fun getLineStyle(lineNumber: Int): Optional<LineStyle> {
+    return Optional.ofNullable(lineStyles.find { lineNumber in it.lineNumberRange })
+  }
+
+  private fun getTextStyle(charIndex: Int): Optional<TextStyle> {
+    return Optional.ofNullable(textStyles.find { charIndex in it.charIndexRange })
   }
 }
