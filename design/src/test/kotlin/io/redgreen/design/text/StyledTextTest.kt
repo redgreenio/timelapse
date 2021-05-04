@@ -20,11 +20,11 @@ class StyledTextTest {
       // given
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
-          textBuilder.append(lineNumber)
+          contentBuilder.append(lineNumber)
         }
 
         override fun onText(text: String) {
-          textBuilder.append(text)
+          contentBuilder.append(text)
         }
 
         override fun onExitLine(lineNumber: Int) {
@@ -36,7 +36,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo("1One2Two3Three")
     }
 
@@ -45,7 +45,7 @@ class StyledTextTest {
       // given
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
-          textBuilder.append("begin $lineNumber ")
+          contentBuilder.append("begin $lineNumber ")
         }
 
         override fun onText(text: String) {
@@ -53,7 +53,7 @@ class StyledTextTest {
         }
 
         override fun onExitLine(lineNumber: Int) {
-          textBuilder.append("end $lineNumber ")
+          contentBuilder.append("end $lineNumber ")
         }
       }
 
@@ -61,7 +61,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo("begin 1 end 1 begin 2 end 2 begin 3 end 3 ")
     }
 
@@ -73,7 +73,7 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-          textBuilder.append(
+          contentBuilder.append(
             """
               <tr class="${style.name}"><td>$lineNumber</td></tr>
               
@@ -94,7 +94,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo(
           """
             <tr class="added"><td>1</td></tr>
@@ -121,7 +121,7 @@ class StyledTextTest {
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
-          textBuilder.append(
+          contentBuilder.append(
             """
               <exit class="${style.name}">$lineNumber</exit>
               
@@ -134,7 +134,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo(
           """
             <exit class="added">1</exit>
@@ -163,15 +163,15 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-          textBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
+          contentBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
         }
 
         override fun onText(text: String) {
-          textBuilder.append("<td>$text</td>")
+          contentBuilder.append("<td>$text</td>")
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
-          textBuilder.append("</tr>\n")
+          contentBuilder.append("</tr>\n")
         }
       }
 
@@ -179,7 +179,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo(
           """
             <tr><td class="greeting">1</td><td>Hello, world!</td></tr>
@@ -208,11 +208,11 @@ class StyledTextTest {
         }
 
         override fun onExitLine(lineNumber: Int) {
-          textBuilder.append("\n")
+          contentBuilder.append("\n")
         }
 
         override fun onText(text: String) {
-          textBuilder.append(text)
+          contentBuilder.append(text)
         }
       }
 
@@ -220,7 +220,7 @@ class StyledTextTest {
       StyledText(text).visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo(
           """
           fun helloWorld() {
@@ -245,11 +245,11 @@ class StyledTextTest {
         }
 
         override fun onText(text: String) {
-          textBuilder.append(text)
+          contentBuilder.append(text)
         }
 
         override fun onText(text: String, textStyle: TextStyle) {
-          textBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
+          contentBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
         }
 
         override fun onExitLine(lineNumber: Int) {
@@ -261,7 +261,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo("Hello, <bold>Oreo</bold>!")
     }
 
@@ -280,7 +280,7 @@ class StyledTextTest {
         }
 
         override fun onText(text: String, textStyle: TextStyle) {
-          textBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
+          contentBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
         }
 
         override fun onExitLine(lineNumber: Int) {
@@ -292,7 +292,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo("<bold>Hello</bold><em>World</em>")
     }
 
@@ -311,15 +311,15 @@ class StyledTextTest {
         }
 
         override fun onExitLine(lineNumber: Int) {
-          textBuilder.append("\n")
+          contentBuilder.append("\n")
         }
 
         override fun onText(text: String) {
-          textBuilder.append(text)
+          contentBuilder.append(text)
         }
 
         override fun onText(text: String, textStyle: TextStyle) {
-          textBuilder.append("""<span class="${textStyle.name}">$text</span>""")
+          contentBuilder.append("""<span class="${textStyle.name}">$text</span>""")
         }
       }
 
@@ -331,7 +331,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(visitor.textBuilder.toString())
+      assertThat(visitor.content)
         .isEqualTo(
           """
             fun <span class="identifier">helloWorld</span>() {

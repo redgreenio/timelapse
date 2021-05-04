@@ -7,7 +7,10 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     private const val CALL_STACK_INDEX_OF_CALLBACK_METHOD = 2
   }
 
-  val textBuilder = StringBuilder()
+  protected val contentBuilder = StringBuilder()
+
+  val content: String
+    get() = contentBuilder.toString()
 
   override fun onEnterLine(lineNumber: Int) {
     failOnUnexpectedCallback()
