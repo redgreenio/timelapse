@@ -8,4 +8,8 @@ open class DefaultStyledTextVisitor : StyledTextVisitor {
   override fun onExitLine(lineNumber: Int) {
     /* override if necessary :) */
   }
+
+  override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+    /* override if necessary :) */
+  }
 }
