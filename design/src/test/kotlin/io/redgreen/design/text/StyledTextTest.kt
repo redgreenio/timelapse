@@ -73,12 +73,10 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-          contentBuilder.append(
-            """
-              <tr class="${style.name}"><td>$lineNumber</td></tr>
-              
-            """.trimIndent()
-          )
+          if (lineNumber != 1) {
+            contentBuilder.append("\n")
+          }
+          contentBuilder.append("""<tr class="${style.name}"><td>$lineNumber</td></tr>""")
         }
 
         override fun onText(text: String) {
@@ -100,7 +98,6 @@ class StyledTextTest {
             <tr class="added"><td>1</td></tr>
             <tr class="added"><td>2</td></tr>
             <tr class="added"><td>3</td></tr>
-            
           """.trimIndent()
         )
     }
@@ -113,7 +110,9 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-          /* no-op */
+          if (lineNumber == 1) return
+
+          contentBuilder.append("\n")
         }
 
         override fun onText(text: String) {
@@ -124,7 +123,6 @@ class StyledTextTest {
           contentBuilder.append(
             """
               <exit class="${style.name}">$lineNumber</exit>
-              
             """.trimIndent()
           )
         }
@@ -140,7 +138,6 @@ class StyledTextTest {
             <exit class="added">1</exit>
             <exit class="added">2</exit>
             <exit class="added">3</exit>
-            
           """.trimIndent()
         )
     }
@@ -163,6 +160,9 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+          if (lineNumber != 1) {
+            contentBuilder.append("\n")
+          }
           contentBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
         }
 
@@ -171,7 +171,7 @@ class StyledTextTest {
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
-          contentBuilder.append("</tr>\n")
+          contentBuilder.append("</tr>")
         }
       }
 
@@ -184,7 +184,6 @@ class StyledTextTest {
           """
             <tr><td class="greeting">1</td><td>Hello, world!</td></tr>
             <tr><td class="question">2</td><td>How are you?</td></tr>
-            
           """.trimIndent()
         )
     }
@@ -204,11 +203,13 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
-          // no-op
+          if (lineNumber == 1) return
+
+          contentBuilder.append("\n")
         }
 
         override fun onExitLine(lineNumber: Int) {
-          contentBuilder.append("\n")
+          // no-op
         }
 
         override fun onText(text: String) {
@@ -226,7 +227,6 @@ class StyledTextTest {
           fun helloWorld() {
             println("Hello, world!")
           }
-          
           """.trimIndent()
         )
     }
@@ -307,11 +307,12 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
-          // no-op
+          if (lineNumber == 1) return
+          contentBuilder.append("\n")
         }
 
         override fun onExitLine(lineNumber: Int) {
-          contentBuilder.append("\n")
+          // no-op
         }
 
         override fun onText(text: String) {
@@ -337,7 +338,6 @@ class StyledTextTest {
             fun <span class="identifier">helloWorld</span>() {
               println("<span class="diff">Hello, world!</span>")
             }
-            
           """.trimIndent()
         )
     }
