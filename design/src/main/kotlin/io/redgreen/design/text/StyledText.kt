@@ -18,8 +18,10 @@ data class StyledText(val text: String) {
 
     val textBuilder = StringBuilder()
 
+    var lineOffset = 0
     text.onEachIndexed { index, char ->
       if (char == '\n') {
+        lineOffset = -index - 1
         lineNumber++
 
         getLineStyle(lineNumber)
@@ -28,7 +30,8 @@ data class StyledText(val text: String) {
             { visitor.onEnterLine(lineNumber) }
           )
       } else {
-        processStyledText(index, char, textBuilder, visitor)
+        val localIndex = index + lineOffset
+        processStyledText(lineNumber, localIndex, char, textBuilder, visitor)
       }
 
       if ((index + 1 > text.lastIndex) || (index + 1 != text.lastIndex && text[index + 1] == '\n')) {
@@ -57,28 +60,30 @@ data class StyledText(val text: String) {
   }
 
   private fun processStyledText(
-    index: Int,
+    lineNumber: Int,
+    localIndex: Int,
     char: Char,
     textBuilder: StringBuilder,
     visitor: StyledTextVisitor
   ) {
-    val textStyle = if (getTextStyle(index).isPresent) {
-      getTextStyle(index).get()
+    val textStyleOptional = getTextStyle(lineNumber, localIndex)
+    val textStyle = if (textStyleOptional.isPresent) {
+      textStyleOptional.get()
     } else {
       null
     }
 
-    if (textStyle != null && index == textStyle.charIndexRange.first) {
+    if (textStyle != null && localIndex == textStyle.charIndexRange.first) {
       if (textBuilder.isNotEmpty()) {
         visitor.onText(textBuilder.toString())
         textBuilder.clear()
       }
       textBuilder.append(char)
-    } else if (textStyle != null && index == textStyle.charIndexRange.last) {
+    } else if (textStyle != null && localIndex == textStyle.charIndexRange.last) {
       textBuilder.append(char)
       visitor.onText(textBuilder.toString(), textStyle)
       textBuilder.clear()
-    } else if ((textStyle != null && index !in textStyle.charIndexRange) || char != '\n') {
+    } else if ((textStyle != null && localIndex !in textStyle.charIndexRange) || char != '\n') {
       textBuilder.append(char)
     }
   }
@@ -87,7 +92,7 @@ data class StyledText(val text: String) {
     return Optional.ofNullable(lineStyles.find { lineNumber in it.lineNumberRange })
   }
 
-  private fun getTextStyle(charIndex: Int): Optional<TextStyle> {
-    return Optional.ofNullable(textStyles.find { charIndex in it.charIndexRange })
+  private fun getTextStyle(lineNumber: Int, localCharIndex: Int): Optional<TextStyle> {
+    return Optional.ofNullable(textStyles.find { lineNumber == it.lineNumber && localCharIndex in it.charIndexRange })
   }
 }
