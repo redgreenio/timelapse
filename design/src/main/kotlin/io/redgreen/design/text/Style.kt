@@ -6,3 +6,8 @@ data class LineStyle(
 ) {
   constructor(name: String, lineNumber: Int) : this(name, lineNumber..lineNumber)
 }
+
+data class TextStyle(
+  val name: String,
+  val charRange: IntRange
+)
