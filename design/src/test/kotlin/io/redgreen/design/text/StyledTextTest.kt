@@ -14,18 +14,18 @@ class StyledTextTest {
     """.trimIndent()
 
     private val styledText = StyledText(text)
-    private val lineBuilder = StringBuilder()
+    private val textBuilder = StringBuilder()
 
     @Test
     fun `it should provide callbacks while entering a new line`() {
       // given
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
-          lineBuilder.append(lineNumber)
+          textBuilder.append(lineNumber)
         }
 
         override fun onText(text: String) {
-          lineBuilder.append(text)
+          textBuilder.append(text)
         }
 
         override fun onExitLine(lineNumber: Int) {
@@ -37,7 +37,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(lineBuilder.toString())
+      assertThat(textBuilder.toString())
         .isEqualTo("1One2Two3Three")
     }
 
@@ -46,7 +46,7 @@ class StyledTextTest {
       // given
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int) {
-          lineBuilder.append("begin $lineNumber ")
+          textBuilder.append("begin $lineNumber ")
         }
 
         override fun onText(text: String) {
@@ -54,7 +54,7 @@ class StyledTextTest {
         }
 
         override fun onExitLine(lineNumber: Int) {
-          lineBuilder.append("end $lineNumber ")
+          textBuilder.append("end $lineNumber ")
         }
       }
 
@@ -62,7 +62,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(lineBuilder.toString())
+      assertThat(textBuilder.toString())
         .isEqualTo("begin 1 end 1 begin 2 end 2 begin 3 end 3 ")
     }
 
@@ -74,7 +74,7 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-          lineBuilder.append(
+          textBuilder.append(
             """
               <tr class="${style.name}"><td>$lineNumber</td></tr>
               
@@ -95,7 +95,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(lineBuilder.toString())
+      assertThat(textBuilder.toString())
         .isEqualTo(
           """
             <tr class="added"><td>1</td></tr>
@@ -122,7 +122,7 @@ class StyledTextTest {
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
-          lineBuilder.append(
+          textBuilder.append(
             """
               <exit class="${style.name}">$lineNumber</exit>
               
@@ -135,7 +135,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(lineBuilder.toString())
+      assertThat(textBuilder.toString())
         .isEqualTo(
           """
             <exit class="added">1</exit>
@@ -152,7 +152,7 @@ class StyledTextTest {
     @Test
     fun `it should be able to handle different line styles for different lines`() {
       // given
-      val lineStyleBuilder = StringBuilder()
+      val textBuilder = StringBuilder()
 
       val text = """
         Hello, world!
@@ -165,15 +165,15 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-          lineStyleBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
+          textBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
         }
 
         override fun onText(text: String) {
-          lineStyleBuilder.append("<td>$text</td>")
+          textBuilder.append("<td>$text</td>")
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
-          lineStyleBuilder.append("</tr>\n")
+          textBuilder.append("</tr>\n")
         }
       }
 
@@ -181,7 +181,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      assertThat(lineStyleBuilder.toString())
+      assertThat(textBuilder.toString())
         .isEqualTo(
           """
             <tr><td class="greeting">1</td><td>Hello, world!</td></tr>
