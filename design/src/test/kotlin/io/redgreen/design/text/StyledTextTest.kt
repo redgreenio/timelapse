@@ -300,5 +300,52 @@ class StyledTextTest {
       assertThat(textBuilder.toString())
         .isEqualTo("<bold>Hello</bold><em>World</em>")
     }
+
+    @Test
+    fun `it should apply multiple styles on multiple lines`() {
+      // given
+      val textBuilder = StringBuilder()
+      val text = """
+        fun helloWorld() {
+          println("Hello, world!")
+        }
+      """.trimIndent()
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          // no-op
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          textBuilder.append("\n")
+        }
+
+        override fun onText(text: String) {
+          textBuilder.append(text)
+        }
+
+        override fun onText(text: String, textStyle: TextStyle) {
+          textBuilder.append("""<span class="${textStyle.name}">$text</span>""")
+        }
+      }
+
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("identifier", 1, 4..13))
+        .addStyle(TextStyle("diff", 2, 11..23))
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(textBuilder.toString())
+        .isEqualTo(
+          """
+            fun <span class="identifier">helloWorld</span>() {
+              println("<span class="diff">Hello, world!</span>")
+            }
+            
+          """.trimIndent()
+        )
+    }
   }
 }
