@@ -233,5 +233,40 @@ class StyledTextTest {
           """.trimIndent()
         )
     }
+
+    @Test
+    fun `it should receive callback for text with style`() {
+      // given
+      val textBuilder = StringBuilder()
+      val text = "Hello, Oreo!"
+
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("bold", 7..10))
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          // no-op
+        }
+
+        override fun onText(text: String) {
+          textBuilder.append(text)
+        }
+
+        override fun onText(text: String, textStyle: TextStyle) {
+          textBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          // no-op
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(textBuilder.toString())
+        .isEqualTo("Hello, <bold>Oreo</bold>!")
+    }
   }
 }
