@@ -23,6 +23,10 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     failOnUnexpectedCallback()
   }
 
+  override fun onText(text: String) {
+    failOnUnexpectedCallback()
+  }
+
   private fun failOnUnexpectedCallback() {
     val methodName = getMethodName()
     fail { "Unexpected call to `$methodName`" }
