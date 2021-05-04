@@ -1,42 +1,46 @@
 package io.redgreen.design.text
 
+import java.util.Optional
+
 data class StyledText(val text: String) {
-  private var lineStyle: LineStyle? = null
+  private val lineStyles = mutableListOf<LineStyle>()
 
   fun visit(visitor: StyledTextVisitor) {
     var lineNumber = 1
 
-    if (doesLineHasStyle(lineNumber)) {
-      visitor.onEnterLine(lineNumber, lineStyle!!)
-    } else {
-      visitor.onEnterLine(lineNumber)
-    }
+    getLineStyle(lineNumber)
+      .ifPresentOrElse(
+        { visitor.onEnterLine(lineNumber, it) },
+        { visitor.onEnterLine(lineNumber) }
+      )
 
     text.onEachIndexed { index, char ->
       if (char == '\n') {
         lineNumber++
-        if (doesLineHasStyle(lineNumber)) {
-          visitor.onEnterLine(lineNumber, lineStyle!!)
-        } else {
-          visitor.onEnterLine(lineNumber)
-        }
+
+        getLineStyle(lineNumber)
+          .ifPresentOrElse(
+            { visitor.onEnterLine(lineNumber, it) },
+            { visitor.onEnterLine(lineNumber) }
+          )
       }
 
       if ((index + 1 > text.lastIndex) || (index + 1 != text.lastIndex && text[index + 1] == '\n')) {
-        if (doesLineHasStyle(lineNumber)) {
-          visitor.onExitLine(lineNumber, lineStyle!!)
-        } else {
-          visitor.onExitLine(lineNumber)
-        }
+        getLineStyle(lineNumber)
+          .ifPresentOrElse(
+            { visitor.onExitLine(lineNumber, it) },
+            { visitor.onExitLine(lineNumber) }
+          )
       }
     }
   }
 
-  private fun doesLineHasStyle(lineNumber: Int): Boolean {
-    return lineStyle != null && lineNumber in lineStyle!!.lineNumberRange
+  private fun getLineStyle(lineNumber: Int): Optional<LineStyle> {
+    return Optional.ofNullable(lineStyles.find { lineNumber in it.lineNumberRange })
   }
 
-  fun addStyle(lineStyle: LineStyle) {
-    this.lineStyle = lineStyle
+  fun addStyle(lineStyle: LineStyle): StyledText {
+    lineStyles.add(lineStyle)
+    return this
   }
 }

@@ -130,4 +130,45 @@ class StyledTextTest {
         )
     }
   }
+
+  @Nested
+  inner class LineStyles {
+    @Test
+    fun `it should be able to handle different line styles for different lines`() {
+      // given
+      val lineStyleBuilder = StringBuilder()
+
+      val text = """
+        Hello, world!
+        How, are you?
+      """.trimIndent()
+
+      val styledText = StyledText(text)
+        .addStyle(LineStyle("greeting", 1))
+        .addStyle(LineStyle("question", 2))
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+          lineStyleBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
+        }
+
+        override fun onExitLine(lineNumber: Int, style: LineStyle) {
+          lineStyleBuilder.append("</tr>\n")
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(lineStyleBuilder.toString())
+        .isEqualTo(
+          """
+            <tr><td class="greeting">1</td></tr>
+            <tr><td class="question">2</td></tr>
+            
+          """.trimIndent()
+        )
+    }
+  }
 }
