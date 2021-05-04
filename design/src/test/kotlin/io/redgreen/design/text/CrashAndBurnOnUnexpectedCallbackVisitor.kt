@@ -19,6 +19,10 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     failOnUnexpectedCallback()
   }
 
+  override fun onExitLine(lineNumber: Int, style: LineStyle) {
+    failOnUnexpectedCallback()
+  }
+
   private fun failOnUnexpectedCallback() {
     val methodName = getMethodName()
     fail { "Unexpected call to `$methodName`" }

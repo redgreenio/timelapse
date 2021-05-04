@@ -14,7 +14,6 @@ class StyledTextTest {
     """.trimIndent()
 
     private val styledText = StyledText(text)
-
     private val lineBuilder = StringBuilder()
 
     @Test
@@ -75,7 +74,7 @@ class StyledTextTest {
           )
         }
 
-        override fun onExitLine(lineNumber: Int) {
+        override fun onExitLine(lineNumber: Int, style: LineStyle) {
           /* no-op */
         }
       }
@@ -90,6 +89,42 @@ class StyledTextTest {
             <tr class="added"><td>1</td></tr>
             <tr class="added"><td>2</td></tr>
             <tr class="added"><td>3</td></tr>
+            
+          """.trimIndent()
+        )
+    }
+
+    @Test
+    fun `it should provide callbacks with a line style when exiting a line`() {
+      // given
+      styledText
+        .addStyle(LineStyle("added", 1..3))
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+          /* no-op */
+        }
+
+        override fun onExitLine(lineNumber: Int, style: LineStyle) {
+          lineBuilder.append(
+            """
+              <exit class="${style.name}">$lineNumber</exit>
+              
+            """.trimIndent()
+          )
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(lineBuilder.toString())
+        .isEqualTo(
+          """
+            <exit class="added">1</exit>
+            <exit class="added">2</exit>
+            <exit class="added">3</exit>
             
           """.trimIndent()
         )

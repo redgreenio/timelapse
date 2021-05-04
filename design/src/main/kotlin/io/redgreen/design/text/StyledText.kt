@@ -5,15 +5,17 @@ data class StyledText(val text: String) {
 
   fun visit(visitor: StyledTextVisitor) {
     var lineNumber = 1
-    if (lineStyle != null && lineNumber in lineStyle!!.lineNumberRange) {
+
+    if (doesLineHasStyle(lineNumber)) {
       visitor.onEnterLine(lineNumber, lineStyle!!)
     } else {
       visitor.onEnterLine(lineNumber)
     }
+
     text.onEachIndexed { index, char ->
       if (char == '\n') {
         lineNumber++
-        if (lineStyle != null && lineNumber in lineStyle!!.lineNumberRange) {
+        if (doesLineHasStyle(lineNumber)) {
           visitor.onEnterLine(lineNumber, lineStyle!!)
         } else {
           visitor.onEnterLine(lineNumber)
@@ -21,9 +23,17 @@ data class StyledText(val text: String) {
       }
 
       if ((index + 1 > text.lastIndex) || (index + 1 != text.lastIndex && text[index + 1] == '\n')) {
-        visitor.onExitLine(lineNumber)
+        if (doesLineHasStyle(lineNumber)) {
+          visitor.onExitLine(lineNumber, lineStyle!!)
+        } else {
+          visitor.onExitLine(lineNumber)
+        }
       }
     }
+  }
+
+  private fun doesLineHasStyle(lineNumber: Int): Boolean {
+    return lineStyle != null && lineNumber in lineStyle!!.lineNumberRange
   }
 
   fun addStyle(lineStyle: LineStyle) {
