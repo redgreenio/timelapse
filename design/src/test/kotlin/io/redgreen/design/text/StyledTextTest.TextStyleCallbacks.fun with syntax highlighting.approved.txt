@@ -1,3 +1,0 @@
-<tr><td><span class="keyword">private</span> <span class="keyword">fun</span> <span class="function-name">helloWorld</span><span class="lpar">(</span><span class="rpar">)</span> <span class="lcurly">{</span></td></tr>
-<tr><td>  <span class="function-call">println</span><span class="lpar">(</span><span class="string">"Hello, world!"</span><span class="rpar">)</span></td></tr>
-<tr><td><span class="rcurly">}</span></td></tr>
