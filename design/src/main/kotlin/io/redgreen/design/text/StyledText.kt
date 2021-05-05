@@ -95,7 +95,7 @@ data class StyledText(val text: String) {
       textBuilder.append(char)
       visitor.onText(textBuilder.toString())
       textBuilder.clear()
-      visitor.onEndStyle(textStyles.first())
+      textStyles.reversed().onEach(visitor::onEndStyle)
     } else if ((textStyles != null && localIndex !in textStyles.first().charIndexRange) || char != '\n') {
       textBuilder.append(char)
     }
