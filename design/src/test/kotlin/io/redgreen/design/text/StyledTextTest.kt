@@ -477,15 +477,6 @@ class StyledTextTest {
         .isEqualTo("<b>Hello, <i>world</i>!</b>")
     }
 
-    // Case 1: Incomplete overlap (start)
-    // ----------------------------------
-    // Hello, world!
-    // ^           ^ <== bold
-    // ^   ^         <== italic
-    // ----------------------------------
-    // <b><i>Hello</i>, world!<b>
-    /* onText(text, style) */
-
     // Case 2: Complete overlap
     // ----------------------------------
     // Hello, world!
@@ -533,6 +524,47 @@ class StyledTextTest {
       // then
       assertThat(visitor.content)
         .isEqualTo("He<b>llo<i>, wo</b>rld</i>!")
+    }
+
+    // Case: Incomplete overlap (start)
+    // ----------------------------------
+    // Hello, world!
+    // ^           ^ <== bold
+    // ^   ^         <== italic
+    // ----------------------------------
+    // <b><i>Hello</i>, world!</b>
+    @Test
+    fun `it should handle overlapping start indices`() {
+      // given
+      val text = "Hello, world!"
+
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("b", 1, 0..12))
+        .addStyle(TextStyle("i", 1, 0..4))
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {}
+        override fun onExitLine(lineNumber: Int) {}
+
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("<${textStyle.name}>")
+        }
+
+        override fun onText(text: String) {
+          contentBuilder.append(text)
+        }
+
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("</${textStyle.name}>")
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(visitor.content)
+        .isEqualTo("<b><i>Hello</i>, world!</b>")
     }
   }
 }

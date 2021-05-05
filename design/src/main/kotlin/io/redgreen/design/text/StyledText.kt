@@ -80,23 +80,23 @@ data class StyledText(val text: String) {
     } else {
       null
     }
-    val textStyle = textStylePair?.first
+    val textStyles = textStylePair?.first
     val styleOccurrence = textStylePair?.second
 
-    if (textStyle != null && (styleOccurrence == BEGIN || styleOccurrence == BEGIN_END)) {
+    if (textStyles != null && (styleOccurrence == BEGIN || styleOccurrence == BEGIN_END)) {
       if (textBuilder.isNotEmpty()) {
         visitor.onText(textBuilder.toString())
         textBuilder.clear()
       }
-      visitor.onBeginStyle(textStyle)
+      textStyles.onEach(visitor::onBeginStyle)
     }
 
-    if (textStyle != null && (styleOccurrence == END || styleOccurrence == BEGIN_END)) {
+    if (textStyles != null && (styleOccurrence == END || styleOccurrence == BEGIN_END)) {
       textBuilder.append(char)
       visitor.onText(textBuilder.toString())
       textBuilder.clear()
-      visitor.onEndStyle(textStyle)
-    } else if ((textStyle != null && localIndex !in textStyle.charIndexRange) || char != '\n') {
+      visitor.onEndStyle(textStyles.first())
+    } else if ((textStyles != null && localIndex !in textStyles.first().charIndexRange) || char != '\n') {
       textBuilder.append(char)
     }
   }
@@ -105,7 +105,7 @@ data class StyledText(val text: String) {
     return Optional.ofNullable(lineStyles.find { lineNumber in it.lineNumberRange })
   }
 
-  private fun getTextStyle(lineNumber: Int, localCharIndex: Int): Optional<Pair<TextStyle, StyleOccurrence>> {
+  private fun getTextStyle(lineNumber: Int, localCharIndex: Int): Optional<Pair<List<TextStyle>, StyleOccurrence>> {
     val beginEndTextStylePredicate = beginEndTextStylePredicate(lineNumber, localCharIndex)
     val beginTextStylePredicate = beginStylePredicate(lineNumber, localCharIndex)
     val endStylePredicate = endStylePredicate(lineNumber, localCharIndex)
@@ -115,10 +115,11 @@ data class StyledText(val text: String) {
       beginTextStylePredicate to BEGIN,
       endStylePredicate to END,
     )
+
     for ((predicate, occurrence) in predicatesToOccurrences) {
-      val textStyle = textStyles.find(predicate)
-      if (textStyle != null) {
-        return Optional.of(textStyle to occurrence)
+      val textStyles = textStyles.filter(predicate)
+      if (textStyles.isNotEmpty()) {
+        return Optional.of(textStyles to occurrence)
       }
     }
 
