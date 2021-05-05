@@ -494,41 +494,45 @@ class StyledTextTest {
     // ----------------------------------
     // <b><i>Hello, world!</i></b>
 
-    // Case 3: Intersecting overlap
+    // Case: Intersecting overlap
     // ----------------------------------
     // Hello, world!
     //   ^     ^     <== bold
     //      ^     ^  <== italic
     // ----------------------------------
+    // He<b>llo<i>, wo</b>rld</i>!
+    @Test
+    fun `it should handle intersecting overlap`() {
+      // given
+      val text = "Hello, world!"
 
-    // Option 1
-    // He<b>llo</b><b><i>, wo</i></b><i>rld</i>! ❌
-    // ------------------------------------------------------------------------------------
-    // He                                           | text[He]
-    //   <b>                                        | begin<b>       <== scope is <b>
-    //      llo                                     | text[llo]
-    //         </b><b><i>                           | begin<i>       <== scope is <b, i>
-    //                   , wo                       | text[, wo]
-    //                       </i></b><i>            | end<b>         <== scope is <i>
-    //                                  rld         | text[rld]
-    //                                     </i>     | end<i>         <== scope is empty
-    //                                         !    | text[!]
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("b", 1, 2..8))
+        .addStyle(TextStyle("i", 1, 5..11))
 
-    // Option 2
-    // He<b>llo<i>, wo</b>rld</i>! ✅
-    // ------------------------------------------------------------------------------------
-    // He                             | text[He]
-    //   <b>                          | begin<b>       <== scope is <b>
-    //      llo                       | text[llo]
-    //         <i>                    | begin<i>       <== scope is <b, i>
-    //            , wo                | text[, wo]
-    //                </b>            | end<b>         <== scope is <i>
-    //                    rld         | text[rld]
-    //                       </i>     | end<i>         <== scope is empty
-    //                           !    | text[!]
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {}
+        override fun onExitLine(lineNumber: Int) {}
 
-    // Parameters
-    // 1. Start and end indices for ranges are inclusive in styles.
-    // 2. Style callbacks should happen in order.
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("<${textStyle.name}>")
+        }
+
+        override fun onText(text: String) {
+          contentBuilder.append(text)
+        }
+
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("</${textStyle.name}>")
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(visitor.content)
+        .isEqualTo("He<b>llo<i>, wo</b>rld</i>!")
+    }
   }
 }
