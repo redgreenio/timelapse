@@ -145,7 +145,7 @@ class StyledTextTest {
   }
 
   @Nested
-  inner class LineStyles {
+  inner class LineStyleCallbacks {
     @Test
     fun `it should be able to handle different line styles for different lines`() {
       // given
