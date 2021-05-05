@@ -6,5 +6,6 @@ interface StyledTextVisitor {
   fun onEnterLine(lineNumber: Int, style: LineStyle)
   fun onExitLine(lineNumber: Int, style: LineStyle)
   fun onText(text: String)
-  fun onText(text: String, textStyle: TextStyle)
+  fun onBeginStyle(textStyle: TextStyle)
+  fun onEndStyle(textStyle: TextStyle)
 }
