@@ -2,7 +2,6 @@ package io.redgreen.design.text
 
 import com.google.common.truth.Truth.assertThat
 import org.approvaltests.Approvals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -444,30 +443,7 @@ class StyledTextTest {
     //        ^   ^  <== italic
     // ----------------------------------
     // <b>Hello, <i>world</i>!</b>
-
-    // Option 1 ❌
-    // <b>Hello, </b><b><i>world</i>!</b>
-    // ------------------------------------------------------------------------------------
-    // <b>                                    | begin<b>
-    //    Hello,                              | text[Hello, ] <== scope is <b>
-    //           </b><b><i>                   | begin<i>
-    //                     world              | text[world]   <== scope is <b, i>
-    //                          </i>          | end<i>
-    //                              !         | text[!]       <== scope is <b>
-    //                               </b>     | end<b>
-
-    // Option 2 ✅
-    // <b>Hello, <i>world</i>!</b>
-    // ------------------------------------------------------------------------------------
-    // <b>                             | begin<b>
-    //    Hello,                       | text[Hello, ] <== scope is <b>
-    //           <i>                   | begin<i>
-    //              world              | text[world]   <== scope is <b, i>
-    //                   </i>          | end<i>
-    //                       !         | text[!]       <== scope is <b>
-    //                        </b>     | end<b>
     @Test
-    @Disabled
     fun `it should handle subset overlap`() {
       // given
       val text = "Hello, world!"
