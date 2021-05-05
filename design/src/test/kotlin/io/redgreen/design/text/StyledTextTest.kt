@@ -2,6 +2,7 @@ package io.redgreen.design.text
 
 import com.google.common.truth.Truth.assertThat
 import org.approvaltests.Approvals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -425,5 +426,118 @@ class StyledTextTest {
       // then
       Approvals.verify(visitor.content)
     }
+  }
+
+  @Nested
+  inner class OverlappingTextStyles {
+    // Case: Subset overlap
+    // ----------------------------------
+    // Hello, world!
+    // ^           ^ <== bold
+    //        ^   ^  <== italic
+    // ----------------------------------
+    // <b>Hello, <i>world</i>!</b>
+
+    // Option 1 ❌
+    // <b>Hello, </b><b><i>world</i>!</b>
+    // ------------------------------------------------------------------------------------
+    // <b>                                    | begin<b>
+    //    Hello,                              | text[Hello, ] <== scope is <b>
+    //           </b><b><i>                   | begin<i>
+    //                     world              | text[world]   <== scope is <b, i>
+    //                          </i>          | end<i>
+    //                              !         | text[!]       <== scope is <b>
+    //                               </b>     | end<b>
+
+    // Option 2 ✅
+    // <b>Hello, <i>world</i>!</b>
+    // ------------------------------------------------------------------------------------
+    // <b>                             | begin<b>
+    //    Hello,                       | text[Hello, ] <== scope is <b>
+    //           <i>                   | begin<i>
+    //              world              | text[world]   <== scope is <b, i>
+    //                   </i>          | end<i>
+    //                       !         | text[!]       <== scope is <b>
+    //                        </b>     | end<b>
+    @Test
+    @Disabled
+    fun `it should handle subset overlap`() {
+      // given
+      val text = "Hello, world!"
+
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("b", 1, 0..12))
+        .addStyle(TextStyle("i", 1, 7..11))
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {}
+        override fun onExitLine(lineNumber: Int) {}
+
+        override fun onText(text: String, textStyle: TextStyle) {
+          contentBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(visitor.content)
+        .isEqualTo("<b>Hello, <i>world</i>!</b>")
+    }
+
+    // Case 1: Incomplete overlap (start)
+    // ----------------------------------
+    // Hello, world!
+    // ^           ^ <== bold
+    // ^   ^         <== italic
+    // ----------------------------------
+    // <b><i>Hello</i>, world!<b>
+    /* onText(text, style) */
+
+    // Case 2: Complete overlap
+    // ----------------------------------
+    // Hello, world!
+    // ^           ^ <== bold
+    // ^           ^ <== italic
+    // ----------------------------------
+    // <b><i>Hello, world!</i></b>
+
+    // Case 3: Intersecting overlap
+    // ----------------------------------
+    // Hello, world!
+    //   ^     ^     <== bold
+    //      ^     ^  <== italic
+    // ----------------------------------
+
+    // Option 1
+    // He<b>llo</b><b><i>, wo</i></b><i>rld</i>! ❌
+    // ------------------------------------------------------------------------------------
+    // He                                           | text[He]
+    //   <b>                                        | begin<b>       <== scope is <b>
+    //      llo                                     | text[llo]
+    //         </b><b><i>                           | begin<i>       <== scope is <b, i>
+    //                   , wo                       | text[, wo]
+    //                       </i></b><i>            | end<b>         <== scope is <i>
+    //                                  rld         | text[rld]
+    //                                     </i>     | end<i>         <== scope is empty
+    //                                         !    | text[!]
+
+    // Option 2
+    // He<b>llo<i>, wo</b>rld</i>! ✅
+    // ------------------------------------------------------------------------------------
+    // He                             | text[He]
+    //   <b>                          | begin<b>       <== scope is <b>
+    //      llo                       | text[llo]
+    //         <i>                    | begin<i>       <== scope is <b, i>
+    //            , wo                | text[, wo]
+    //                </b>            | end<b>         <== scope is <i>
+    //                    rld         | text[rld]
+    //                       </i>     | end<i>         <== scope is empty
+    //                           !    | text[!]
+
+    // Parameters
+    // 1. Start and end indices for ranges are inclusive in styles.
+    // 2. Style callbacks should happen in order.
   }
 }
