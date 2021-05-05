@@ -1,10 +1,10 @@
 package io.redgreen.design.text
 
-import org.junit.jupiter.api.fail
+import io.redgreen.negative.failOnUnexpectedCallback
 
 open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
   companion object {
-    private const val CALL_STACK_INDEX_OF_CALLBACK_METHOD = 2
+    private const val CALL_STACK_INDEX_OF_CALLBACK_METHOD = 1
   }
 
   protected val contentBuilder = StringBuilder()
@@ -13,38 +13,30 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     get() = contentBuilder.toString()
 
   override fun onEnterLine(lineNumber: Int) {
-    failOnUnexpectedCallback()
+    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-    failOnUnexpectedCallback()
+    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onExitLine(lineNumber: Int) {
-    failOnUnexpectedCallback()
+    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onExitLine(lineNumber: Int, style: LineStyle) {
-    failOnUnexpectedCallback()
+    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onText(text: String) {
-    failOnUnexpectedCallback()
+    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onBeginStyle(textStyle: TextStyle) {
-    failOnUnexpectedCallback()
+    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onEndStyle(textStyle: TextStyle) {
-    failOnUnexpectedCallback()
+    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
-
-  private fun failOnUnexpectedCallback() {
-    val methodName = getMethodName()
-    fail { "Unexpected call to `$methodName`" }
-  }
-
-  private fun getMethodName(): String =
-    Throwable().stackTrace[CALL_STACK_INDEX_OF_CALLBACK_METHOD].methodName
 }
