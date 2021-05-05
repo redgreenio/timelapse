@@ -1,6 +1,15 @@
 package io.redgreen.design.text
 
+import io.redgreen.design.text.StyleOccurrence.BEGIN
+import io.redgreen.design.text.StyleOccurrence.BEGIN_END
+import io.redgreen.design.text.StyleOccurrence.END
 import java.util.Optional
+
+private enum class StyleOccurrence {
+  BEGIN,
+  END,
+  BEGIN_END,
+}
 
 data class StyledText(val text: String) {
   private val lineStyles = mutableListOf<LineStyle>()
@@ -66,13 +75,15 @@ data class StyledText(val text: String) {
     visitor: StyledTextVisitor
   ) {
     val textStyleOptional = getTextStyle(lineNumber, localIndex)
-    val textStyle = if (textStyleOptional.isPresent) {
+    val textStylePair = if (textStyleOptional.isPresent) {
       textStyleOptional.get()
     } else {
       null
     }
+    val textStyle = textStylePair?.first
+    val styleOccurrence = textStylePair?.second
 
-    if (textStyle != null && localIndex == textStyle.charIndexRange.first) {
+    if (textStyle != null && (styleOccurrence == BEGIN || styleOccurrence == BEGIN_END)) {
       if (textBuilder.isNotEmpty()) {
         visitor.onText(textBuilder.toString())
         textBuilder.clear()
@@ -80,7 +91,7 @@ data class StyledText(val text: String) {
       visitor.onBeginStyle(textStyle)
     }
 
-    if (textStyle != null && localIndex == textStyle.charIndexRange.last) {
+    if (textStyle != null && (styleOccurrence == END || styleOccurrence == BEGIN_END)) {
       textBuilder.append(char)
       visitor.onText(textBuilder.toString())
       textBuilder.clear()
@@ -94,7 +105,52 @@ data class StyledText(val text: String) {
     return Optional.ofNullable(lineStyles.find { lineNumber in it.lineNumberRange })
   }
 
-  private fun getTextStyle(lineNumber: Int, localCharIndex: Int): Optional<TextStyle> {
-    return Optional.ofNullable(textStyles.find { lineNumber == it.lineNumber && localCharIndex in it.charIndexRange })
+  private fun getTextStyle(lineNumber: Int, localCharIndex: Int): Optional<Pair<TextStyle, StyleOccurrence>> {
+    val beginEndTextStylePredicate = beginEndTextStylePredicate(lineNumber, localCharIndex)
+    val beginTextStylePredicate = beginStylePredicate(lineNumber, localCharIndex)
+    val endStylePredicate = endStylePredicate(lineNumber, localCharIndex)
+
+    val predicatesToOccurrences = listOf(
+      beginEndTextStylePredicate to BEGIN_END,
+      beginTextStylePredicate to BEGIN,
+      endStylePredicate to END,
+    )
+    for ((predicate, occurrence) in predicatesToOccurrences) {
+      val textStyle = textStyles.find(predicate)
+      if (textStyle != null) {
+        return Optional.of(textStyle to occurrence)
+      }
+    }
+
+    return Optional.empty()
+  }
+
+  private fun beginEndTextStylePredicate(
+    lineNumber: Int,
+    localCharIndex: Int
+  ): (TextStyle) -> Boolean {
+    return { textStyle ->
+      lineNumber == textStyle.lineNumber &&
+        localCharIndex == textStyle.charIndexRange.first &&
+        localCharIndex == textStyle.charIndexRange.last
+    }
+  }
+
+  private fun beginStylePredicate(
+    lineNumber: Int,
+    localCharIndex: Int
+  ): (TextStyle) -> Boolean {
+    return { textStyle ->
+      lineNumber == textStyle.lineNumber && localCharIndex == textStyle.charIndexRange.first
+    }
+  }
+
+  private fun endStylePredicate(
+    lineNumber: Int,
+    localCharIndex: Int
+  ): (TextStyle) -> Boolean {
+    return { textStyle ->
+      lineNumber == textStyle.lineNumber && localCharIndex == textStyle.charIndexRange.last
+    }
   }
 }
