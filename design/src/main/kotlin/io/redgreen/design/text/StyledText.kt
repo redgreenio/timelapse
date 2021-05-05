@@ -1,6 +1,5 @@
 package io.redgreen.design.text
 
-import java.lang.StringBuilder
 import java.util.Optional
 
 data class StyledText(val text: String) {
@@ -78,12 +77,14 @@ data class StyledText(val text: String) {
         visitor.onText(textBuilder.toString())
         textBuilder.clear()
       }
+      visitor.onBeginStyle(textStyle)
     }
 
     if (textStyle != null && localIndex == textStyle.charIndexRange.last) {
       textBuilder.append(char)
-      visitor.onText(textBuilder.toString(), textStyle)
+      visitor.onText(textBuilder.toString())
       textBuilder.clear()
+      visitor.onEndStyle(textStyle)
     } else if ((textStyle != null && localIndex !in textStyle.charIndexRange) || char != '\n') {
       textBuilder.append(char)
     }

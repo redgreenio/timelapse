@@ -32,7 +32,11 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     failOnUnexpectedCallback()
   }
 
-  override fun onText(text: String, textStyle: TextStyle) {
+  override fun onBeginStyle(textStyle: TextStyle) {
+    failOnUnexpectedCallback()
+  }
+
+  override fun onEndStyle(textStyle: TextStyle) {
     failOnUnexpectedCallback()
   }
 

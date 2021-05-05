@@ -242,20 +242,19 @@ class StyledTextTest {
         .addStyle(TextStyle("bold", 1, 7..10))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
-        override fun onEnterLine(lineNumber: Int) {
-          // no-op
+        override fun onEnterLine(lineNumber: Int) {}
+        override fun onExitLine(lineNumber: Int) {}
+
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("<${textStyle.name}>")
         }
 
         override fun onText(text: String) {
           contentBuilder.append(text)
         }
 
-        override fun onText(text: String, textStyle: TextStyle) {
-          contentBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
-        }
-
-        override fun onExitLine(lineNumber: Int) {
-          // no-op
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("</${textStyle.name}>")
         }
       }
 
@@ -277,16 +276,19 @@ class StyledTextTest {
         .addStyle(TextStyle("em", 1, 5..9))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
-        override fun onEnterLine(lineNumber: Int) {
-          // no-op
+        override fun onEnterLine(lineNumber: Int) {}
+        override fun onExitLine(lineNumber: Int) {}
+
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("<${textStyle.name}>")
         }
 
-        override fun onText(text: String, textStyle: TextStyle) {
-          contentBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
+        override fun onText(text: String) {
+          contentBuilder.append(text)
         }
 
-        override fun onExitLine(lineNumber: Int) {
-          // no-op
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("</${textStyle.name}>")
         }
       }
 
@@ -308,21 +310,23 @@ class StyledTextTest {
       """.trimIndent()
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onExitLine(lineNumber: Int) {}
+
         override fun onEnterLine(lineNumber: Int) {
           if (lineNumber == 1) return
           contentBuilder.append("\n")
         }
 
-        override fun onExitLine(lineNumber: Int) {
-          // no-op
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("""<span class="${textStyle.name}">""")
         }
 
         override fun onText(text: String) {
           contentBuilder.append(text)
         }
 
-        override fun onText(text: String, textStyle: TextStyle) {
-          contentBuilder.append("""<span class="${textStyle.name}">$text</span>""")
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("""</span>""")
         }
       }
 
@@ -352,20 +356,19 @@ class StyledTextTest {
         .addStyle(TextStyle("brackets", 1, 1))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
-        override fun onEnterLine(lineNumber: Int) {
-          // no-op
-        }
+        override fun onEnterLine(lineNumber: Int) {}
+        override fun onExitLine(lineNumber: Int) {}
 
-        override fun onExitLine(lineNumber: Int) {
-          // no-op
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("[")
         }
 
         override fun onText(text: String) {
           contentBuilder.append(text)
         }
 
-        override fun onText(text: String, textStyle: TextStyle) {
-          contentBuilder.append("[$text]")
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("]")
         }
       }
 
@@ -398,12 +401,16 @@ class StyledTextTest {
           contentBuilder.append("</td></tr>")
         }
 
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("""<span class="${textStyle.name}">""")
+        }
+
         override fun onText(text: String) {
           contentBuilder.append(text)
         }
 
-        override fun onText(text: String, textStyle: TextStyle) {
-          contentBuilder.append("""<span class="${textStyle.name}">$text</span>""")
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("</span>")
         }
       }
 
@@ -473,8 +480,16 @@ class StyledTextTest {
         override fun onEnterLine(lineNumber: Int) {}
         override fun onExitLine(lineNumber: Int) {}
 
-        override fun onText(text: String, textStyle: TextStyle) {
-          contentBuilder.append("<${textStyle.name}>$text</${textStyle.name}>")
+        override fun onBeginStyle(textStyle: TextStyle) {
+          contentBuilder.append("<${textStyle.name}>")
+        }
+
+        override fun onText(text: String) {
+          contentBuilder.append(text)
+        }
+
+        override fun onEndStyle(textStyle: TextStyle) {
+          contentBuilder.append("</${textStyle.name}>")
         }
       }
 
