@@ -12,4 +12,5 @@ dependencies {
   testRuntimeOnly(deps.test.junit.engine)
 
   testImplementation(deps.test.truth)
+  testImplementation(deps.test.approvalTests)
 }

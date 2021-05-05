@@ -1,6 +1,7 @@
 package io.redgreen.design.text
 
 import com.google.common.truth.Truth.assertThat
+import org.approvaltests.Approvals
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -340,6 +341,89 @@ class StyledTextTest {
             }
           """.trimIndent()
         )
+    }
+
+    @Test
+    fun `it should add styles to single characters`() {
+      // given
+      val text = "abc"
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("brackets", 1, 1))
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          // no-op
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          // no-op
+        }
+
+        override fun onText(text: String) {
+          contentBuilder.append(text)
+        }
+
+        override fun onText(text: String, textStyle: TextStyle) {
+          contentBuilder.append("[$text]")
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(visitor.content)
+        .isEqualTo("a[b]c")
+    }
+
+    @Test
+    fun `fun with syntax highlighting`() {
+      // given
+      val text = """
+        private fun helloWorld() {
+          println("Hello, world!")
+        }
+      """.trimIndent()
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          if (lineNumber != 1) {
+            contentBuilder.append("\n")
+          }
+          contentBuilder.append("<tr><td>")
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          contentBuilder.append("</td></tr>")
+        }
+
+        override fun onText(text: String) {
+          contentBuilder.append(text)
+        }
+
+        override fun onText(text: String, textStyle: TextStyle) {
+          contentBuilder.append("""<span class="${textStyle.name}">$text</span>""")
+        }
+      }
+
+      val styledText = StyledText(text)
+        .addStyle(TextStyle("keyword", 1, 0..6))
+        .addStyle(TextStyle("keyword", 1, 8..10))
+        .addStyle(TextStyle("function-name", 1, 12..21))
+        .addStyle(TextStyle("lpar", 1, 22))
+        .addStyle(TextStyle("rpar", 1, 23))
+        .addStyle(TextStyle("function-call", 2, 2..8))
+        .addStyle(TextStyle("lpar", 2, 9))
+        .addStyle(TextStyle("string", 2, 10..24))
+        .addStyle(TextStyle("rpar", 2, 25))
+        .addStyle(TextStyle("lcurly", 1, 25))
+        .addStyle(TextStyle("rcurly", 3, 0))
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      Approvals.verify(visitor.content)
     }
   }
 }

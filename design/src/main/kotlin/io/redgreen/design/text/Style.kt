@@ -11,4 +11,6 @@ data class TextStyle(
   val name: String,
   val lineNumber: Int,
   val charIndexRange: IntRange
-)
+) {
+  constructor(name: String, lineNumber: Int, charIndex: Int) : this(name, lineNumber, charIndex..charIndex)
+}
