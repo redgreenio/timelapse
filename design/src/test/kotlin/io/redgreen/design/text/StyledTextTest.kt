@@ -191,7 +191,7 @@ class StyledTextTest {
   }
 
   @Nested
-  inner class Text {
+  inner class TextStyleCallbacks {
     @Test
     fun `it should receive callbacks for text without style`() {
       // given
