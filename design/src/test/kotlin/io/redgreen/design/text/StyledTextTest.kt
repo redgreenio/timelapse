@@ -20,16 +20,14 @@ class StyledTextTest {
     fun `it should provide callbacks while entering a new line`() {
       // given
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onExitLine(lineNumber: Int) {}
+
         override fun onEnterLine(lineNumber: Int) {
           contentBuilder.append(lineNumber)
         }
 
         override fun onText(text: String) {
           contentBuilder.append(text)
-        }
-
-        override fun onExitLine(lineNumber: Int) {
-          /* no-op */
         }
       }
 
@@ -45,12 +43,10 @@ class StyledTextTest {
     fun `it should provide callbacks while exiting a line`() {
       // given
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onText(text: String) {}
+
         override fun onEnterLine(lineNumber: Int) {
           contentBuilder.append("begin $lineNumber ")
-        }
-
-        override fun onText(text: String) {
-          // no-op
         }
 
         override fun onExitLine(lineNumber: Int) {
@@ -73,19 +69,14 @@ class StyledTextTest {
         .addStyle(LineStyle("added", 1..3))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onText(text: String) {}
+        override fun onExitLine(lineNumber: Int, style: LineStyle) {}
+
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
           if (lineNumber != 1) {
             contentBuilder.append("\n")
           }
           contentBuilder.append("""<tr class="${style.name}"><td>$lineNumber</td></tr>""")
-        }
-
-        override fun onText(text: String) {
-          // no-op
-        }
-
-        override fun onExitLine(lineNumber: Int, style: LineStyle) {
-          /* no-op */
         }
       }
 
@@ -110,14 +101,12 @@ class StyledTextTest {
         .addStyle(LineStyle("added", 1..3))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onText(text: String) {}
+
         override fun onEnterLine(lineNumber: Int, style: LineStyle) {
           if (lineNumber == 1) return
 
           contentBuilder.append("\n")
-        }
-
-        override fun onText(text: String) {
-          // no-op
         }
 
         override fun onExitLine(lineNumber: Int, style: LineStyle) {
@@ -149,7 +138,6 @@ class StyledTextTest {
     @Test
     fun `it should be able to handle different line styles for different lines`() {
       // given
-
       val text = """
         Hello, world!
         How are you?
@@ -203,14 +191,12 @@ class StyledTextTest {
       """.trimIndent()
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onExitLine(lineNumber: Int) {}
+
         override fun onEnterLine(lineNumber: Int) {
           if (lineNumber == 1) return
 
           contentBuilder.append("\n")
-        }
-
-        override fun onExitLine(lineNumber: Int) {
-          // no-op
         }
 
         override fun onText(text: String) {
