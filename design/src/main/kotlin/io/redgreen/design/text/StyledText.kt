@@ -78,8 +78,9 @@ data class StyledText(val text: String) {
         visitor.onText(textBuilder.toString())
         textBuilder.clear()
       }
-      textBuilder.append(char)
-    } else if (textStyle != null && localIndex == textStyle.charIndexRange.last) {
+    }
+
+    if (textStyle != null && localIndex == textStyle.charIndexRange.last) {
       textBuilder.append(char)
       visitor.onText(textBuilder.toString(), textStyle)
       textBuilder.clear()
