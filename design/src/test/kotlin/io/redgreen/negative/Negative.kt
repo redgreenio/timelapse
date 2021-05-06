@@ -3,7 +3,7 @@ package io.redgreen.negative
 import org.junit.jupiter.api.fail
 import java.lang.reflect.Method
 
-fun failOnUnexpectedCallback(stackTraceMethodCallIndex: Int, vararg params: Any) {
+fun failOnInvocation(stackTraceMethodCallIndex: Int, vararg params: Any) {
   val stackTraceElement = Throwable().stackTrace[stackTraceMethodCallIndex]
   fail { "Unexpected call to `${getMethodSignature(stackTraceElement, params)}`" }
 }

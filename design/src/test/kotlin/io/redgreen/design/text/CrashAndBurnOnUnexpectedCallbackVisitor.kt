@@ -1,6 +1,6 @@
 package io.redgreen.design.text
 
-import io.redgreen.negative.failOnUnexpectedCallback
+import io.redgreen.negative.failOnInvocation
 
 open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
   companion object {
@@ -13,30 +13,30 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     get() = contentBuilder.toString()
 
   override fun onEnterLine(lineNumber: Int) {
-    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
+    failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onEnterLine(lineNumber: Int, style: LineStyle) {
-    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
+    failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onExitLine(lineNumber: Int) {
-    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
+    failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onExitLine(lineNumber: Int, style: LineStyle) {
-    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
+    failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onText(text: String) {
-    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
+    failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onBeginStyle(textStyle: TextStyle) {
-    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
+    failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
   override fun onEndStyle(textStyle: TextStyle) {
-    failOnUnexpectedCallback(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
+    failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 }
