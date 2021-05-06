@@ -36,8 +36,25 @@ class NegativeTest {
       .contains("greet(String)")
   }
 
+  @Test
+  fun `it should show function parameters for a caller with overloaded parameters`() {
+    val assertionError = assertThrows<AssertionFailedError> {
+      greet("Jane", "Doe")
+    }
+
+    assertThat(assertionError.message)
+      .contains("greet(String, String)")
+  }
+
+  @Suppress("SameParameterValue")
   private fun greet(name: String) {
     println("Hello, $name!")
     failOnUnexpectedCallback(1, name)
+  }
+
+  @Suppress("SameParameterValue")
+  private fun greet(firstName: String, lastName: String) {
+    println("Hello, $firstName $lastName!")
+    failOnUnexpectedCallback(1, firstName, lastName)
   }
 }
