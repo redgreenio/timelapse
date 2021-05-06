@@ -391,7 +391,7 @@ class StyledTextTest {
         }
 
         override fun onText(text: String) {
-          contentBuilder.append(text)
+          contentBuilder.append(text.replace(" ", "&nbsp;"))
         }
 
         override fun onEndStyle(textStyle: TextStyle) {
@@ -416,7 +416,7 @@ class StyledTextTest {
       styledText.visit(visitor)
 
       // then
-      Approvals.verify(visitor.content)
+      Approvals.verifyHtml(htmlTemplate(visitor.content))
     }
   }
 
@@ -586,4 +586,50 @@ class StyledTextTest {
         .isEqualTo("<b><i>Hello, world!</i></b>")
     }
   }
+}
+
+private fun htmlTemplate(tableRows: String): String {
+  return """
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: monospace;
+            font-size: large;
+            background-color: #2B2B2B;
+          }
+          .keyword {
+            color: #CC7832;
+          }
+          .function-name {
+            color: #FFC66D;
+          }
+          .diff .function-name {
+            background-color: #214283;
+            color: #A9B7C6;
+          }
+          .lpar, .rpar {
+            color: #E8BA36;
+          }
+          .lcurly, .rcurly {
+            color: #54A857;
+          }
+          .function-call {
+            color: #A9B7C6;
+            font-style: italic;
+          }
+          .string {
+            color: #6A8759;
+          }
+        </style>
+      </head>
+      <body>
+        <table>
+          <tbody>
+            $tableRows
+          </tbody>
+        </table>
+      </body>
+    </html>
+  """.trimIndent()
 }
