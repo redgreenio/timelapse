@@ -13,11 +13,22 @@ private fun getMethodSignature(
   params: Array<out Any>
 ): String {
   val clazz = Class.forName(stackTraceElement.className)
+  val methodName = stackTraceElement.methodName
   val parameterTypes = params.map { it::class.java }.toTypedArray()
-  val declaredMethod = clazz.getDeclaredMethod(stackTraceElement.methodName, *parameterTypes)
+  val declaredMethod = bestMatchingMethod(clazz, methodName, parameterTypes)
   val parameterList = getParameters(declaredMethod)
 
   return "${declaredMethod.name}($parameterList)"
+}
+
+private fun bestMatchingMethod(
+  clazz: Class<*>,
+  methodName: String,
+  parameterTypes: Array<Class<out Any>>
+) = try {
+  clazz.getDeclaredMethod(methodName, *parameterTypes)
+} catch (exception: NoSuchMethodException) {
+  clazz.declaredMethods.first { it.name == methodName }
 }
 
 private fun getParameters(method: Method): String {
