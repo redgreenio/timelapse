@@ -70,13 +70,13 @@ class StyledTextTest {
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onText(text: String) {}
-        override fun onExitLine(lineNumber: Int, style: LineStyle) {}
+        override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {}
 
-        override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+        override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
           if (lineNumber != 1) {
             contentBuilder.append("\n")
           }
-          contentBuilder.append("""<tr class="${style.name}"><td>$lineNumber</td></tr>""")
+          contentBuilder.append("""<tr class="${lineStyle.name}"><td>$lineNumber</td></tr>""")
         }
       }
 
@@ -103,16 +103,16 @@ class StyledTextTest {
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
         override fun onText(text: String) {}
 
-        override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+        override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
           if (lineNumber == 1) return
 
           contentBuilder.append("\n")
         }
 
-        override fun onExitLine(lineNumber: Int, style: LineStyle) {
+        override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
           contentBuilder.append(
             """
-              <exit class="${style.name}">$lineNumber</exit>
+              <exit class="${lineStyle.name}">$lineNumber</exit>
             """.trimIndent()
           )
         }
@@ -148,18 +148,18 @@ class StyledTextTest {
         .addStyle(LineStyle("question", 2))
 
       val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
-        override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+        override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
           if (lineNumber != 1) {
             contentBuilder.append("\n")
           }
-          contentBuilder.append("""<tr><td class="${style.name}">$lineNumber</td>""")
+          contentBuilder.append("""<tr><td class="${lineStyle.name}">$lineNumber</td>""")
         }
 
         override fun onText(text: String) {
           contentBuilder.append("<td>$text</td>")
         }
 
-        override fun onExitLine(lineNumber: Int, style: LineStyle) {
+        override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
           contentBuilder.append("</tr>")
         }
       }

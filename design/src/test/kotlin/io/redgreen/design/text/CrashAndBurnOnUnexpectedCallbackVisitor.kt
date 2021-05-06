@@ -16,7 +16,7 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
-  override fun onEnterLine(lineNumber: Int, style: LineStyle) {
+  override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
     failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
@@ -24,7 +24,7 @@ open class CrashAndBurnOnUnexpectedCallbackVisitor : StyledTextVisitor {
     failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
-  override fun onExitLine(lineNumber: Int, style: LineStyle) {
+  override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
     failOnInvocation(CALL_STACK_INDEX_OF_CALLBACK_METHOD)
   }
 
