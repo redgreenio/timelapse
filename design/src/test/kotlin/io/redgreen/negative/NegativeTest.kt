@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.opentest4j.AssertionFailedError
 
+@Suppress("SameParameterValue")
 class NegativeTest {
   @Test
   fun `it should show method name of the caller`() {
@@ -46,15 +47,28 @@ class NegativeTest {
       .contains("greet(String, String)")
   }
 
-  @Suppress("SameParameterValue")
+  @Test
+  fun `it should detect functions with primitive parameter types`() {
+    val assertionError = assertThrows<AssertionFailedError> {
+      add(3, 5)
+    }
+
+    assertThat(assertionError.message)
+      .contains("add(int, int)")
+  }
+
   private fun greet(name: String) {
     println("Hello, $name!")
     failOnUnexpectedCallback(1, name)
   }
 
-  @Suppress("SameParameterValue")
   private fun greet(firstName: String, lastName: String) {
     println("Hello, $firstName $lastName!")
     failOnUnexpectedCallback(1, firstName, lastName)
+  }
+
+  private fun add(x: Int, y: Int): Int {
+    failOnUnexpectedCallback(1, x, y)
+    return x + y
   }
 }
