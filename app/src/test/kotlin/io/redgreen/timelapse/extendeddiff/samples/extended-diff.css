@@ -140,3 +140,8 @@ td:nth-child(2) {
 .muted {
   color: #A0A0A0;
 }
+
+.property {
+  color: #660E7A;
+  font-style: italic;
+}
