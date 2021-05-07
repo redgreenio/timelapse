@@ -98,9 +98,9 @@ td:nth-child(2) {
   color: #3F3F3F;
   background-color: #FFD54F;
   text-align: center;
-  padding: 0.1em 0.25em 0.1em 0.25em;
-  border-radius: 0.2em;
-  font-size: 0.95em;
+  padding: 0.0em 0.25em 0.0em 0.25em;
+  border-radius: 0.3em;
+  font-size: 0.9em;
   font-weight: normal;
 }
 
