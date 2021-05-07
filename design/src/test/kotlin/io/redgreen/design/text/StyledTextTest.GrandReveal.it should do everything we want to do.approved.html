@@ -144,6 +144,10 @@
       padding-left: 0.2em;
       padding-right: 0.2em;
     }
+
+    .muted {
+      color: #A0A0A0;
+    }
   </style>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   <script>
@@ -161,23 +165,23 @@
   <tbody>
     <tr>
       <td class="line-number">1</td>
-      <td>package io.redgreen.design.text</td>
+      <td class="muted">package io.redgreen.design.text</td>
     </tr>
     <tr>
       <td class="line-number">2</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr>
       <td class="line-number">3</td>
-      <td>import com.google.common.truth.Truth.assertThat</td>
+      <td class="muted">import com.google.common.truth.Truth.assertThat</td>
     </tr>
     <tr>
       <td class="line-number">4</td>
-      <td>import org.junit.jupiter.api.Nested</td>
+      <td class="muted">import org.junit.jupiter.api.Nested</td>
     </tr>
     <tr>
       <td class="line-number">5</td>
-      <td>import org.junit.jupiter.api.Test</td>
+      <td class="muted">import org.junit.jupiter.api.Test</td>
     </tr>
     <tr class="deleted-line">
       <td class="no-line-number">&ZeroWidthSpace;</td>
@@ -189,51 +193,51 @@
     </tr>
     <tr>
       <td class="line-number">7</td>
-      <td class="affected-line">class StyledTextTest {</td>
+      <td class="muted">class StyledTextTest {</td>
     </tr>
     <tr>
       <td class="line-number">8</td>
-      <td class="affected-line">&nbsp;&nbsp;@Nested</td>
+      <td class="muted">&nbsp;&nbsp;@Nested</td>
     </tr>
     <tr>
       <td class="line-number">9</td>
-      <td class="affected-line">&nbsp;&nbsp;inner class NewlineCallbacks {</td>
+      <td class="muted">&nbsp;&nbsp;inner class NewlineCallbacks {</td>
     </tr>
     <tr>
       <td class="line-number">10</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;private val text = """</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;private val text = """</td>
     </tr>
     <tr>
       <td class="line-number">11</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One</td>
     </tr>
     <tr>
       <td class="line-number">12</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two</td>
     </tr>
     <tr>
       <td class="line-number">13</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Three</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Three</td>
     </tr>
     <tr>
       <td class="line-number">14</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
     </tr>
     <tr>
       <td class="line-number">15</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr>
       <td class="line-number">16</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;private val styledText = StyledText(text)</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;private val styledText = StyledText(text)</td>
     </tr>
     <tr>
       <td class="line-number">17</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr>
       <td class="line-number">18</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;private val lineBuilder = StringBuilder()</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;private val lineBuilder = StringBuilder()</td>
     </tr>
     <tr>
       <td class="line-number">19</td>
@@ -251,7 +255,7 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">22</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
     </tr>
     <tr class="modified-line function-body">
       <td class="line-number">23</td>
@@ -259,15 +263,15 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">24</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">25</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(lineNumber)</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(lineNumber)</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">26</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">27</td>
@@ -295,27 +299,27 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">33</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">34</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">35</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">36</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">37</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">38</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("123")</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("123")</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">39</td>
@@ -339,7 +343,7 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">43</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
     </tr>
     <tr class="modified-line function-body">
       <td class="line-number">44</td>
@@ -347,31 +351,31 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">45</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">46</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("begin $lineNumber ")</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("begin $lineNumber ")</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">47</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">48</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">49</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onExitLine(lineNumber: Int) {</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onExitLine(lineNumber: Int) {</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">50</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("end $lineNumber ")</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("end $lineNumber ")</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">51</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">52</td>
@@ -383,27 +387,27 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">54</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">55</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">56</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">57</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">58</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">59</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("begin 1 end 1 begin 2 end 2 begin 3 end 3 ")</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("begin 1 end 1 begin 2 end 2 begin 3 end 3 ")</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">60</td>
@@ -427,19 +431,19 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">64</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">65</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">66</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.addStyle(LineStyle("added", 1..3))</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.addStyle(LineStyle("added", 1..3))</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">67</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr class="modified-line function-body">
       <td class="line-number">68</td>
@@ -459,39 +463,39 @@
     </tr>
     <tr class="readability-line function-body">
       <td class="no-line-number">&ZeroWidthSpace;</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">69</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int, style: LineStyle) {</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int, style: LineStyle) {</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">70</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">71</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">72</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;${style.name}&quot;&gt;&lt;td&gt;$lineNumber&lt;/td&gt;&lt;/tr&gt;</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;${style.name}&quot;&gt;&lt;td&gt;$lineNumber&lt;/td&gt;&lt;/tr&gt;</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">73</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">74</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">75</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">76</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">77</td>
@@ -519,55 +523,55 @@
     </tr>
     <tr class="function-body">
       <td class="line-number">83</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">84</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">85</td>
-      <td></td>
+      <td class="muted"></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">86</td>
-      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">87</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">88</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo(</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo(</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">89</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">90</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">91</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">92</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">93</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">94</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">95</td>
-      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+      <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
     </tr>
     <tr class="function-body">
       <td class="line-number">96</td>
@@ -577,11 +581,11 @@
 
     <tr>
       <td class="line-number">97</td>
-      <td class="affected-line">&nbsp;&nbsp;}</td>
+      <td class="muted">&nbsp;&nbsp;}</td>
     </tr>
     <tr>
       <td class="line-number">98</td>
-      <td class="affected-line">}</td>
+      <td class="muted">}</td>
     </tr>
     <tr>
       <td class="line-number">99</td>
