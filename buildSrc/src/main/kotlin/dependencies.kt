@@ -51,8 +51,10 @@ object deps {
   }
 
   object log4j {
-    const val api = "org.apache.logging.log4j:log4j-api:2.12.1"
-    const val core = "org.apache.logging.log4j:log4j-core:2.12.1"
+    private const val version = "2.14.1"
+
+    const val api = "org.apache.logging.log4j:log4j-api:$version"
+    const val core = "org.apache.logging.log4j:log4j-core:$version"
   }
 
   object test {
