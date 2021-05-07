@@ -355,4 +355,22 @@ class ExtendedDiffHtmlTest {
     // when & then
     Approvals.verifyHtml(hasChanges.toHtml())
   }
+
+  @Test
+  fun `it should not crash if the first line of the function does not contain the function name`() {
+    // given
+    val kotlinSource = """
+      @SuppressWarnings("NothingReally")
+      private inline fun greet() =
+        println("Hello, world")
+    """.trimIndent()
+
+    val comparisonResults = listOf(
+      Renamed(ParseResult.wellFormedFunction("greet", 1, 3), "helloWorld")
+    )
+    val hasChanges = HasChanges(kotlinSource, comparisonResults)
+
+    // when & then
+    Approvals.verifyHtml(hasChanges.toHtml())
+  }
 }
