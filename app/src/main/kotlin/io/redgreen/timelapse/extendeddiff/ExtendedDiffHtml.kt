@@ -482,10 +482,16 @@ private fun modifiedRowHtml(lineNumber: Int, line: String): String {
 }
 
 fun modifiedRowHtml(lineNumber: Int, line: String, functionName: Name): String {
+  val content = if (line.contains(functionName.value)) {
+    makeFunctionNameBold(line, functionName)
+  } else {
+    toHtmlFriendly(line)
+  }
+
   return """
     <tr${classAttribute(CSS_CLASS_MODIFIED)}>
       <td>$lineNumber</td>
-      <td>${makeFunctionNameBold(line, functionName)}</td>
+      <td>$content</td>
     </tr>
   """.trimIndent()
 }
