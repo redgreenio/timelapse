@@ -131,6 +131,14 @@
     .identifier {
       color: #000000;
     }
+
+    .function-signature .collapsed-body-indicator {
+      display: inline;
+    }
+
+    .open .function-signature .collapsed-body-indicator {
+      display: none;
+    }
   </style>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   <script>
@@ -234,7 +242,7 @@
     <tbody>
     <tr class="function-signature">
       <td class="line-number">21</td>
-      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> <span class="identifier">`it should provide callbacks while entering a new line`</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> <span class="identifier">`it should provide callbacks while entering a new line`</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span><span class="collapsed-body-indicator"> ... <span class="curly">}</span></span></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">22</td>
@@ -322,7 +330,7 @@
     <tbody>
     <tr class="function-signature">
       <td class="line-number">42</td>
-      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> <span class="identifier">`it should provide callbacks while exiting a line`</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> <span class="identifier">`it should provide callbacks while exiting a line`</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span><span class="collapsed-body-indicator"> ... <span class="curly">}</span></span></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">43</td>
@@ -410,7 +418,7 @@
     <tbody>
     <tr class="function-signature">
       <td class="line-number">63</td>
-      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> <span class="identifier">`it should provide callbacks with a line style when entering a line`</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> <span class="identifier">`it should provide callbacks with a line style when entering a line`</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span><span class="collapsed-body-indicator"> ... <span class="curly">}</span></span></td>
     </tr>
     <tr class="function-body">
       <td class="line-number">64</td>
