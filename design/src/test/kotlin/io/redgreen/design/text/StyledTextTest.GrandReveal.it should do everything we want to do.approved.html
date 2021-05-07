@@ -112,432 +112,452 @@
     .annotation {
       color: #808000;
     }
+
+    .function-signature ~ .function-body {
+      display: none;
+    }
+
+    .open .function-signature ~ .function-body {
+      display: table-row;
+    }
   </style>
 </head>
 
 <body>
 <table>
   <tbody>
-  <tr>
-    <td class="line-number">1</td>
-    <td>package io.redgreen.design.text</td>
-  </tr>
-  <tr>
-    <td class="line-number">2</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">3</td>
-    <td>import com.google.common.truth.Truth.assertThat</td>
-  </tr>
-  <tr>
-    <td class="line-number">4</td>
-    <td>import org.junit.jupiter.api.Nested</td>
-  </tr>
-  <tr>
-    <td class="line-number">5</td>
-    <td>import org.junit.jupiter.api.Test</td>
-  </tr>
-  <tr class="deleted-line">
-    <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td class="affected-line"><span class="keyword">import</span> org.junit.jupiter.api.fail</td>
-  </tr>
-  <tr>
-    <td class="line-number">6</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">7</td>
-    <td class="affected-line">class StyledTextTest {</td>
-  </tr>
-  <tr>
-    <td class="line-number">8</td>
-    <td class="affected-line">&nbsp;&nbsp;@Nested</td>
-  </tr>
-  <tr>
-    <td class="line-number">9</td>
-    <td class="affected-line">&nbsp;&nbsp;inner class NewlineCallbacks {</td>
-  </tr>
-  <tr>
-    <td class="line-number">10</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;private val text = """</td>
-  </tr>
-  <tr>
-    <td class="line-number">11</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One</td>
-  </tr>
-  <tr>
-    <td class="line-number">12</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two</td>
-  </tr>
-  <tr>
-    <td class="line-number">13</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Three</td>
-  </tr>
-  <tr>
-    <td class="line-number">14</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
-  </tr>
-  <tr>
-    <td class="line-number">15</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">16</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;private val styledText = StyledText(text)</td>
-  </tr>
-  <tr>
-    <td class="line-number">17</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">18</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;private val lineBuilder = StringBuilder()</td>
-  </tr>
-  <tr>
-    <td class="line-number">19</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">20</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@Test</span> <span class="change-count">1/3</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">21</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> `it should provide callbacks while entering a new line`<span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">22</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number">23</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> visitor = <span class="keyword">object</span> : <span class="modified-highlight">CrashAndBurnOnUnexpectedCallbackVisitor</span>&ZeroWidthSpace;<span class="predecessor">DefaultStyledTextVisitor</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">24</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
-  </tr>
-  <tr>
-    <td class="line-number">25</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(lineNumber)</td>
-  </tr>
-  <tr>
-    <td class="line-number">26</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-  </tr>
-  <tr>
-    <td class="line-number">27</td>
-    <td></td>
-  </tr>
-  <tr class="added-line">
-    <td class="line-number">28</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">override</span> <span class="keyword">fun</span> onExitLine<span class="parantheses">(</span>lineNumber: Int<span class="parantheses">)</span> <span class="curly">{</span></td>
-  </tr>
-  <tr class="added-line">
-    <td class="line-number">29</td>
-    <td class="affected-line comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* no-op */</td>
-  </tr>
-  <tr class="added-line">
-    <td class="line-number">30</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">31</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">32</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">33</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
-  </tr>
-  <tr>
-    <td class="line-number">34</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
-  </tr>
-  <tr>
-    <td class="line-number">35</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">36</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
-  </tr>
-  <tr>
-    <td class="line-number">37</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
-  </tr>
-  <tr>
-    <td class="line-number">38</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("123")</td>
-  </tr>
-  <tr>
-    <td class="line-number">39</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">40</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">41</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@Test</span> <span class="change-count">2/3</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">42</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> `it should provide callbacks while exiting a line`<span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td></td>
-  </tr>
-  <tr>
-    <td class="line-number">43</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number">44</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> visitor = <span class="keyword">object</span> : <span class="modified-highlight">CrashAndBurnOnUnexpectedCallbackVisitor</span>&ZeroWidthSpace;<span class="predecessor">DefaultStyledTextVisitor</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">45</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
-  </tr>
-  <tr>
-    <td class="line-number">46</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("begin $lineNumber ")</td>
-  </tr>
-  <tr>
-    <td class="line-number">47</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-  </tr>
-  <tr>
-    <td class="line-number">48</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">49</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onExitLine(lineNumber: Int) {</td>
-  </tr>
-  <tr>
-    <td class="line-number">50</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("end $lineNumber ")</td>
-  </tr>
-  <tr>
-    <td class="line-number">51</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-  </tr>
-  <tr>
-    <td class="line-number">52</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">53</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">54</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
-  </tr>
-  <tr>
-    <td class="line-number">55</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
-  </tr>
-  <tr>
-    <td class="line-number">56</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">57</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
-  </tr>
-  <tr>
-    <td class="line-number">58</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
-  </tr>
-  <tr>
-    <td class="line-number">59</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("begin 1 end 1 begin 2 end 2 begin 3 end 3 ")</td>
-  </tr>
-  <tr>
-    <td class="line-number">60</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">61</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">62</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@Test</span> <span class="change-count">3/3</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">63</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> `it should provide callbacks with a line style when entering a line`<span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td></td>
-  </tr>
-  <tr>
-    <td class="line-number">64</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
-  </tr>
-  <tr>
-    <td class="line-number">65</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText</td>
-  </tr>
-  <tr>
-    <td class="line-number">66</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.addStyle(LineStyle("added", 1..3))</td>
-  </tr>
-  <tr>
-    <td class="line-number">67</td>
-    <td></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number">68</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> visitor = <span class="keyword">object</span> : <span class="modified-highlight">CrashAndBurnOnUnexpectedCallbackVisitor</span>&ZeroWidthSpace;<span class="predecessor">DefaultStyledTextVisitor</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
-  </tr>
-  <tr class="deleted-line">
-    <td class="no-line-number"></td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">override</span> <span class="keyword">fun</span> onEnterLine<span class="parantheses">(</span>lineNumber: Int<span class="parantheses">)</span> <span class="curly">{</span></td>
-  </tr>
-  <tr class="deleted-line">
-    <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fail <span class="curly">{</span> <span class="string">"onEnterLine() should not be called when there's an associated `LineStyle`"</span> <span class="curly">}</span></td>
-  </tr>
-  <tr class="deleted-line">
-    <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr class="readability-line">
-    <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">69</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int, style: LineStyle) {</td>
-  </tr>
-  <tr>
-    <td class="line-number">70</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(</td>
-  </tr>
-  <tr>
-    <td class="line-number">71</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
-  </tr>
-  <tr>
-    <td class="line-number">72</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;${style.name}&quot;&gt;&lt;td&gt;$lineNumber&lt;/td&gt;</tr></td>
-  </tr>
-  <tr>
-    <td class="line-number">73</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-  </tr>
-  <tr>
-    <td class="line-number">74</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
-  </tr>
-  <tr>
-    <td class="line-number">75</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-  </tr>
-  <tr>
-    <td class="line-number">76</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
-  </tr>
-  <tr>
-    <td class="line-number">77</td>
-    <td></td>
-  </tr>
-  <tr class="added-line">
-    <td class="line-number">78</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">override</span> <span class="keyword">fun</span> onExitLine<span class="parantheses">(</span>lineNumber: Int<span class="parantheses">)</span> <span class="curly">{</span></td>
-  </tr>
-  <tr class="added-line">
-    <td class="line-number">79</td>
-    <td class="affected-line comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* no-op */</td>
-  </tr>
-  <tr class="added-line">
-    <td class="line-number">80</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">81</td>
-    <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">82</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">83</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
-  </tr>
-  <tr>
-    <td class="line-number">84</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
-  </tr>
-  <tr>
-    <td class="line-number">85</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">86</td>
-    <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
-  </tr>
-  <tr>
-    <td class="line-number">87</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
-  </tr>
-  <tr>
-    <td class="line-number">88</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo(</td>
-  </tr>
-  <tr>
-    <td class="line-number">89</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
-  </tr>
-  <tr>
-    <td class="line-number">90</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;</td>
-  </tr>
-  <tr>
-    <td class="line-number">91</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;</td>
-  </tr>
-  <tr>
-    <td class="line-number">92</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;</td>
-  </tr>
-  <tr>
-    <td class="line-number">93</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-  </tr>
-  <tr>
-    <td class="line-number">94</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
-  </tr>
-  <tr>
-    <td class="line-number">95</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-  </tr>
-  <tr>
-    <td class="line-number">96</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
-  </tr>
-  <tr>
-    <td class="line-number">97</td>
-    <td>&nbsp;&nbsp;}</td>
-  </tr>
-  <tr>
-    <td class="line-number">98</td>
-    <td>}</td>
-  </tr>
-  <tr>
-    <td class="line-number">99</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="line-number">100</td>
-    <td></td>
-  </tr>
+    <tr>
+      <td class="line-number">1</td>
+      <td>package io.redgreen.design.text</td>
+    </tr>
+    <tr>
+      <td class="line-number">2</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">3</td>
+      <td>import com.google.common.truth.Truth.assertThat</td>
+    </tr>
+    <tr>
+      <td class="line-number">4</td>
+      <td>import org.junit.jupiter.api.Nested</td>
+    </tr>
+    <tr>
+      <td class="line-number">5</td>
+      <td>import org.junit.jupiter.api.Test</td>
+    </tr>
+    <tr class="deleted-line">
+      <td class="no-line-number">&ZeroWidthSpace;</td>
+      <td class="affected-line"><span class="keyword">import</span> org.junit.jupiter.api.fail</td>
+    </tr>
+    <tr>
+      <td class="line-number">6</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">7</td>
+      <td class="affected-line">class StyledTextTest {</td>
+    </tr>
+    <tr>
+      <td class="line-number">8</td>
+      <td class="affected-line">&nbsp;&nbsp;@Nested</td>
+    </tr>
+    <tr>
+      <td class="line-number">9</td>
+      <td class="affected-line">&nbsp;&nbsp;inner class NewlineCallbacks {</td>
+    </tr>
+    <tr>
+      <td class="line-number">10</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;private val text = """</td>
+    </tr>
+    <tr>
+      <td class="line-number">11</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One</td>
+    </tr>
+    <tr>
+      <td class="line-number">12</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two</td>
+    </tr>
+    <tr>
+      <td class="line-number">13</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Three</td>
+    </tr>
+    <tr>
+      <td class="line-number">14</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
+    </tr>
+    <tr>
+      <td class="line-number">15</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">16</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;private val styledText = StyledText(text)</td>
+    </tr>
+    <tr>
+      <td class="line-number">17</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">18</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;private val lineBuilder = StringBuilder()</td>
+    </tr>
+    <tr>
+      <td class="line-number">19</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">20</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@Test</span> <span class="change-count">1/3</span></td>
+    </tr>
+
+    <tbody>
+    <tr class="function-signature">
+      <td class="line-number">21</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> `it should provide callbacks while entering a new line`<span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">22</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
+    </tr>
+    <tr class="modified-line function-body">
+      <td class="line-number">23</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> visitor = <span class="keyword">object</span> : <span class="modified-highlight">CrashAndBurnOnUnexpectedCallbackVisitor</span>&ZeroWidthSpace;<span class="predecessor">DefaultStyledTextVisitor</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">24</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">25</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(lineNumber)</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">26</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">27</td>
+      <td></td>
+    </tr>
+    <tr class="added-line function-body">
+      <td class="line-number">28</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">override</span> <span class="keyword">fun</span> onExitLine<span class="parantheses">(</span>lineNumber: Int<span class="parantheses">)</span> <span class="curly">{</span></td>
+    </tr>
+    <tr class="added-line function-body">
+      <td class="line-number">29</td>
+      <td class="affected-line comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* no-op */</td>
+    </tr>
+    <tr class="added-line function-body">
+      <td class="line-number">30</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">31</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">32</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">33</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">34</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">35</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">36</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">37</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">38</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("123")</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">39</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    </tbody>
+
+    <tr>
+      <td class="line-number">40</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">41</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@Test</span> <span class="change-count">2/3</span></td>
+    </tr>
+
+    <tbody>
+    <tr class="function-signature">
+      <td class="line-number">42</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> `it should provide callbacks while exiting a line`<span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">43</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
+    </tr>
+    <tr class="modified-line function-body">
+      <td class="line-number">44</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> visitor = <span class="keyword">object</span> : <span class="modified-highlight">CrashAndBurnOnUnexpectedCallbackVisitor</span>&ZeroWidthSpace;<span class="predecessor">DefaultStyledTextVisitor</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">45</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int) {</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">46</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("begin $lineNumber ")</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">47</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">48</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">49</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onExitLine(lineNumber: Int) {</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">50</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append("end $lineNumber ")</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">51</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">52</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">53</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">54</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">55</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">56</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">57</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">58</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">59</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo("begin 1 end 1 begin 2 end 2 begin 3 end 3 ")</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">60</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    </tbody>
+
+    <tr>
+      <td class="line-number">61</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">62</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="annotation">@Test</span> <span class="change-count">3/3</span></td>
+    </tr>
+
+    <tbody>
+    <tr class="function-signature">
+      <td class="line-number">63</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span> `it should provide callbacks with a line style when entering a line`<span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">64</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// given</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">65</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">66</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.addStyle(LineStyle("added", 1..3))</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">67</td>
+      <td></td>
+    </tr>
+    <tr class="modified-line function-body">
+      <td class="line-number">68</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> visitor = <span class="keyword">object</span> : <span class="modified-highlight">CrashAndBurnOnUnexpectedCallbackVisitor</span>&ZeroWidthSpace;<span class="predecessor">DefaultStyledTextVisitor</span><span class="parantheses">(</span><span class="parantheses">)</span> <span class="curly">{</span></td>
+    </tr>
+    <tr class="deleted-line function-body">
+      <td class="no-line-number"></td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">override</span> <span class="keyword">fun</span> onEnterLine<span class="parantheses">(</span>lineNumber: Int<span class="parantheses">)</span> <span class="curly">{</span></td>
+    </tr>
+    <tr class="deleted-line function-body">
+      <td class="no-line-number">&ZeroWidthSpace;</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fail <span class="curly">{</span> <span class="string">"onEnterLine() should not be called when there's an associated `LineStyle`"</span> <span class="curly">}</span></td>
+    </tr>
+    <tr class="deleted-line function-body">
+      <td class="no-line-number">&ZeroWidthSpace;</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    <tr class="readability-line function-body">
+      <td class="no-line-number">&ZeroWidthSpace;</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">69</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override fun onEnterLine(lineNumber: Int, style: LineStyle) {</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">70</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lineBuilder.append(</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">71</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">72</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;${style.name}&quot;&gt;&lt;td&gt;$lineNumber&lt;/td&gt;</tr></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">73</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">74</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">75</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">76</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">77</td>
+      <td></td>
+    </tr>
+    <tr class="added-line function-body">
+      <td class="line-number">78</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">override</span> <span class="keyword">fun</span> onExitLine<span class="parantheses">(</span>lineNumber: Int<span class="parantheses">)</span> <span class="curly">{</span></td>
+    </tr>
+    <tr class="added-line function-body">
+      <td class="line-number">79</td>
+      <td class="affected-line comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* no-op */</td>
+    </tr>
+    <tr class="added-line function-body">
+      <td class="line-number">80</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">81</td>
+      <td class="affected-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">82</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">83</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// when</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">84</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;styledText.visit(visitor)</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">85</td>
+      <td></td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">86</td>
+      <td class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// then</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">87</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;assertThat(lineBuilder.toString())</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">88</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isEqualTo(</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">89</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"""</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">90</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;1&lt;/td&gt;&lt;/tr&gt;</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">91</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">92</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;added&quot;&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">93</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">94</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;""".trimIndent()</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">95</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+    </tr>
+    <tr class="function-body">
+      <td class="line-number">96</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+    </tr>
+    </tbody>
+
+    <tr>
+      <td class="line-number">97</td>
+      <td class="affected-line">&nbsp;&nbsp;}</td>
+    </tr>
+    <tr>
+      <td class="line-number">98</td>
+      <td class="affected-line">}</td>
+    </tr>
+    <tr>
+      <td class="line-number">99</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="line-number">100</td>
+      <td></td>
+    </tr>
   </tbody>
 </table>
 </body>
