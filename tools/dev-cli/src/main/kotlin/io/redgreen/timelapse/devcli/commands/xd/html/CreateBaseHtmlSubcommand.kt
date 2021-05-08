@@ -7,9 +7,9 @@ import picocli.CommandLine.Parameters
 import java.io.File
 
 @Command(
-  name = "xd-html",
+  name = "html",
   mixinStandardHelpOptions = true,
-  description = ["creates a base HTML file for use with Xd"]
+  description = ["creates a base HTML file for use with XD"]
 )
 class CreateBaseHtmlSubcommand : Runnable {
   companion object {
