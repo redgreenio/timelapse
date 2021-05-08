@@ -131,6 +131,46 @@ class StyledTextTest {
           """.trimIndent()
         )
     }
+
+    @Test
+    fun `it should handle content with end of line chars`() {
+      // given
+      val text = """
+        a
+        
+      """.trimIndent()
+
+      val styledText = StyledText(text)
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          if (lineNumber != 1) {
+            contentBuilder.append("\n")
+          }
+          contentBuilder.append("[")
+        }
+
+        override fun onText(text: String) {
+          contentBuilder.append(text)
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          contentBuilder.append("]")
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(visitor.content)
+        .isEqualTo(
+          """
+            [a]
+            []
+          """.trimIndent()
+        )
+    }
   }
 
   @Nested
