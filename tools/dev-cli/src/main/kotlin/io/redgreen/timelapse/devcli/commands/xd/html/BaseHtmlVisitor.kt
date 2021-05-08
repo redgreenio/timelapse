@@ -3,12 +3,18 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 import io.redgreen.design.text.LineStyle
 import io.redgreen.design.text.StyledTextVisitor
 import io.redgreen.design.text.TextStyle
+import org.apache.commons.text.StringEscapeUtils
 import kotlin.LazyThreadSafetyMode.NONE
 
 class BaseHtmlVisitor : StyledTextVisitor {
   companion object {
     private const val INDENT = "  "
     private const val NEWLINE = "\n"
+    private const val CHAR_SPACE = ' '
+    private const val CHAR_TAB = '\t'
+
+    private const val NBSP = "&nbsp;"
+    private const val TAB = "$NBSP$NBSP$NBSP$NBSP"
 
     private const val MARKER_TABLE_ROWS = "{table-rows}"
   }
@@ -30,7 +36,7 @@ class BaseHtmlVisitor : StyledTextVisitor {
     }
 
   override fun onText(text: String) {
-    contentBuilder.append(text)
+    contentBuilder.append(toHtmlFriendly(text))
   }
 
   override fun onEnterLine(lineNumber: Int) {
@@ -66,5 +72,15 @@ class BaseHtmlVisitor : StyledTextVisitor {
 
   override fun onEndStyle(textStyle: TextStyle) {
     // no-p
+  }
+
+  private fun toHtmlFriendly(line: String): String {
+    val startSpaceCharsTrimmedLine = line.trimStart(CHAR_SPACE)
+    val nStartSpaceChars = line.length - startSpaceCharsTrimmedLine.length
+
+    val htmlEscapedLine = StringEscapeUtils.escapeHtml4(line).trimStart(CHAR_SPACE)
+    return (1..nStartSpaceChars)
+      .joinToString("") { NBSP } + htmlEscapedLine
+      .replace("$CHAR_TAB", TAB)
   }
 }
