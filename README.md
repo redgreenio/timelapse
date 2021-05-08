@@ -53,14 +53,6 @@ gradlew installGitHooks
 ./gradlew installGitHooks
 ```
 
-### ProGuard
-
-Create a new directory inside the project directory for de-obfuscating ProGuard traces from production.
-
-```shell
-mkdir proguard-lab
-```
-
 ## 🚀 Creating a release
 
 Ensure the working directory is clean before creating a release. Stash or commit changes to a different branch if the working directory is dirty.
@@ -160,13 +152,21 @@ git commit -m "build: prepare for next development version"
 | Windows          | ❌            | ❌           | `-`       |
 | Linux            | ❌            | ❌           | `-`       |
 
-# Other tools
+# Tools
+
+## Diff
 
 To generate unified diffs for reproducing bugs or handling new use cases, make use of the `diff` utility.
 
 ```shell
 diff -u a.txt b.txt
 ```
+
+## ProGuard
+
+ProGuard can come in handy to de-obfuscate stack traces from production.
+
+The runnable jars are placed inside the `/tools/proguard` directory.
 
 ## License
 
