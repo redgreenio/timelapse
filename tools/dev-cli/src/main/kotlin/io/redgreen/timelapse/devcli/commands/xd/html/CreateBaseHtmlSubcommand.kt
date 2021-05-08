@@ -41,7 +41,7 @@ class CreateBaseHtmlSubcommand : Runnable {
     outputFile.writeText(getHtml(fileContent))
 
     val message = ansi()
-      .render("@|green Base HTML file written to:|@\n@|green ${outputFile.canonicalPath}|@")
+      .render("@|green Base HTML file written to:|@\n@|bold ${outputFile.canonicalPath}|@")
     println(message)
   }
 
