@@ -171,6 +171,50 @@ class StyledTextTest {
           """.trimIndent()
         )
     }
+
+    @Test
+    fun `it should handle content with empty lines`() {
+      // given
+      val text = """
+        |
+        |
+        |
+        |
+      """.trimMargin("|")
+
+      val styledText = StyledText(text)
+
+      val visitor = object : CrashAndBurnOnUnexpectedCallbackVisitor() {
+        override fun onEnterLine(lineNumber: Int) {
+          if (lineNumber != 1) {
+            contentBuilder.append("\n")
+          }
+          contentBuilder.append(">")
+        }
+
+        override fun onText(text: String) {
+          contentBuilder.append(text)
+        }
+
+        override fun onExitLine(lineNumber: Int) {
+          // no-op
+        }
+      }
+
+      // when
+      styledText.visit(visitor)
+
+      // then
+      assertThat(visitor.content)
+        .isEqualTo(
+          """
+            >
+            >
+            >
+            >
+          """.trimIndent()
+        )
+    }
   }
 
   @Nested
