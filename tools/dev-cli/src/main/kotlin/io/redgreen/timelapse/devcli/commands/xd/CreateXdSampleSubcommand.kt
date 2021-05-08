@@ -7,7 +7,8 @@ import picocli.CommandLine.Spec
 @Command(
   name = "xd-sample",
   mixinStandardHelpOptions = true,
-  description = ["creates seed and patch files for Xd sample"]
+  description = ["creates seed and patch files for Xd sample"],
+  hidden = true
 )
 class CreateXdSampleSubcommand : Runnable {
   @Spec
