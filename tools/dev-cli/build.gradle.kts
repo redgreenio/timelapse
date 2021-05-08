@@ -1,6 +1,8 @@
 dependencies {
-  implementation(deps.picocli)
   implementation(projects.design)
+
+  implementation(deps.picocli)
+  implementation(deps.commonsText)
 
   testImplementation(deps.test.junit.api)
   testRuntimeOnly(deps.test.junit.engine)
