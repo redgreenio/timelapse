@@ -23,7 +23,11 @@ class BaseHtmlVisitor : StyledTextVisitor {
   }
 
   val content: String
-    get() = template.replace(MARKER_TABLE_ROWS, contentBuilder.toString())
+    get() {
+      val rawTableRows = contentBuilder.toString()
+      val indentedTableRows = rawTableRows.split(NEWLINE).joinToString(NEWLINE) { "$INDENT$it" }
+      return template.replace(MARKER_TABLE_ROWS, indentedTableRows)
+    }
 
   override fun onText(text: String) {
     contentBuilder.append(text)
