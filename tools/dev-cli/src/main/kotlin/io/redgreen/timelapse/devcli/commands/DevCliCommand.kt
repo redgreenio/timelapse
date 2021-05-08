@@ -5,7 +5,7 @@ import io.redgreen.timelapse.devcli.commands.xd.html.CreateBaseHtmlSubcommand
 import picocli.CommandLine.Command
 
 @Command(
-  name = "time",
+  name = "dev-cli",
   mixinStandardHelpOptions = true,
   subcommands = [CreateBaseHtmlSubcommand::class, CreateXdSampleSubcommand::class],
   description = ["Accelerator for developing Timelapse features."],
