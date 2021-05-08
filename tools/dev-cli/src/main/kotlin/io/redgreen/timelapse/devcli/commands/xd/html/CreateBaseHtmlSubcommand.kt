@@ -2,6 +2,8 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 
 import io.redgreen.design.text.StyledText
 import picocli.CommandLine.Command
+import picocli.CommandLine.Option
+import picocli.CommandLine.Parameters
 import java.io.File
 
 @Command(
@@ -11,14 +13,27 @@ import java.io.File
 )
 class CreateBaseHtmlSubcommand : Runnable {
   companion object {
-    private val COMMIT_HASH_RANGE = 0..7
+    private const val COMMIT_HASH_RANGE = 8
     private const val EXTENSION_HTML = ".html"
+    private const val DIRECTORY_XD_BASE_HTML = "xd-base-html"
+
+    private const val PROPERTY_KEY_USER_HOME = "user.home"
   }
 
+  @Parameters(index = "0", description = ["File name"])
+  lateinit var fileName: String
+
+  @Parameters(index = "1", description = ["Commit hash"])
+  lateinit var commitHash: String
+
+  @Option(names = ["-o", "--output"], description = ["Output directory path"])
+  var outputDirectoryPath: File = File(System.getProperty(PROPERTY_KEY_USER_HOME)).resolve(DIRECTORY_XD_BASE_HTML)
+
   override fun run() {
-    val fileName = "ExtendedDiffHtml.kt"
-    val commitHash = "91bf2ea245bda89ace754e188243ebde7cf55e47"
-    val outputFile = File("/Users/ragunathjawahar/Desktop/html/${baseHtmlFileName(commitHash, fileName)}")
+    if (!outputDirectoryPath.exists()) {
+      outputDirectoryPath.mkdirs()
+    }
+    val outputFile = outputDirectoryPath.resolve(baseHtmlFileName(commitHash, fileName))
 
     val filePath = GitCommand.LsFiles.from(fileName).execute()
     val fileContent = GitCommand.Show.from(commitHash, filePath).execute()
@@ -34,6 +49,7 @@ class CreateBaseHtmlSubcommand : Runnable {
   }
 
   private fun baseHtmlFileName(commitHash: String, fileName: String): String {
-    return "$fileName-${commitHash.substring(COMMIT_HASH_RANGE)}$EXTENSION_HTML"
+    val range = 0..((commitHash.length - 1).coerceAtMost(COMMIT_HASH_RANGE))
+    return "$fileName-${commitHash.substring(range)}$EXTENSION_HTML"
   }
 }
