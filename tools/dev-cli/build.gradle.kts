@@ -44,7 +44,7 @@ tasks.register("executable", DefaultTask::class) {
   group = "Distribution"
 
   inputs.files(tasks.named("shadowJar"))
-  outputs.file("${buildDir.resolve("exec").resolve("time")}")
+  outputs.file("${buildDir.resolve("exec").resolve("dev-cli")}")
 
   doLast {
     val execFile = outputs.files.singleFile
