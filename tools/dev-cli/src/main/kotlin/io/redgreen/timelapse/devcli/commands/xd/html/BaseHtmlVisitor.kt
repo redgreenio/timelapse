@@ -10,11 +10,6 @@ class BaseHtmlVisitor : StyledTextVisitor {
     private const val INDENT = "  "
     private const val NEWLINE = "\n"
 
-    private const val BEGIN_TR = "<tr>"
-    private const val END_TR = "</tr>"
-    private const val BEGIN_TD = "<td>"
-    private const val END_TD = "</td>"
-
     private const val MARKER_TABLE_ROWS = "{table-rows}"
   }
 
@@ -39,18 +34,18 @@ class BaseHtmlVisitor : StyledTextVisitor {
       contentBuilder.append(NEWLINE)
     }
     contentBuilder
-      .append(BEGIN_TR)
+      .append("<tr>")
       .append(NEWLINE)
-      .append("$INDENT$BEGIN_TD$lineNumber$END_TD")
+      .append("""$INDENT<td class="line-number">$lineNumber</td>""")
       .append(NEWLINE)
-      .append("$INDENT$BEGIN_TD")
+      .append("$INDENT<td>")
   }
 
   override fun onExitLine(lineNumber: Int) {
     contentBuilder
-      .append(END_TD)
+      .append("</td>")
       .append(NEWLINE)
-      .append(END_TR)
+      .append("</tr>")
   }
 
   override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
