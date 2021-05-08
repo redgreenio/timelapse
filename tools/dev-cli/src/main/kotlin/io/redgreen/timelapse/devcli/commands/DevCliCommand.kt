@@ -1,7 +1,7 @@
 package io.redgreen.timelapse.devcli.commands
 
-import io.redgreen.timelapse.devcli.commands.xd.CreateBaseHtmlSubcommand
 import io.redgreen.timelapse.devcli.commands.xd.CreateXdSampleSubcommand
+import io.redgreen.timelapse.devcli.commands.xd.html.CreateBaseHtmlSubcommand
 import picocli.CommandLine.Command
 import picocli.CommandLine.Option
 import java.io.File
