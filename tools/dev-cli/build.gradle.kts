@@ -1,3 +1,11 @@
+plugins {
+  application
+}
+
+application {
+  mainClass.set("io.redgreen.timelapse.devcli.MainKt")
+}
+
 dependencies {
   implementation(projects.design)
 
