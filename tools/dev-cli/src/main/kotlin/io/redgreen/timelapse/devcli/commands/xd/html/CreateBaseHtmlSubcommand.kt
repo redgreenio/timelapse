@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.devcli.commands.xd.html
 
 import io.redgreen.design.text.StyledText
+import org.fusesource.jansi.Ansi.ansi
 import picocli.CommandLine.Command
 import picocli.CommandLine.Option
 import picocli.CommandLine.Parameters
@@ -39,7 +40,9 @@ class CreateBaseHtmlSubcommand : Runnable {
     val fileContent = GitCommand.Show.from(commitHash, filePath).execute()
     outputFile.writeText(getHtml(fileContent))
 
-    println("Base HTML file written to: ${outputFile.canonicalPath}")
+    val message = ansi()
+      .render("@|green Base HTML file written to:|@\n@|green ${outputFile.canonicalPath}|@")
+    println(message)
   }
 
   private fun getHtml(fileContent: String): String {

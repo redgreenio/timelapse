@@ -15,6 +15,7 @@ object deps {
   const val controlsFx = "org.controlsfx:controlsfx:11.1.0"
   const val diff4j = "com.cloudbees:diff4j:1.3" /* Repackaged the code from NetBeans */
   const val picocli = "info.picocli:picocli:4.6.1"
+  const val jansi = "org.fusesource.jansi:jansi:2.3.2"
 
   object arrow {
     const val coreData = "io.arrow-kt:arrow-core-data:0.12.1"
