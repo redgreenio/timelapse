@@ -14,6 +14,7 @@ object deps {
   const val slf4jSimple = "org.slf4j:slf4j-simple:1.7.30"
   const val controlsFx = "org.controlsfx:controlsfx:11.1.0"
   const val diff4j = "com.cloudbees:diff4j:1.3" /* Repackaged the code from NetBeans */
+  const val picocli = "info.picocli:picocli:4.6.1"
 
   object arrow {
     const val coreData = "io.arrow-kt:arrow-core-data:0.12.1"
@@ -57,6 +58,13 @@ object deps {
     const val core = "org.apache.logging.log4j:log4j-core:$version"
   }
 
+  object antlr {
+    private const val version = "4.9.2"
+
+    const val core = "org.antlr:antlr4:$version"
+    const val runtime = "org.antlr:antlr4-runtime:$version"
+  }
+
   object test {
     object junit {
       private const val version = "5.7.1"
@@ -73,12 +81,5 @@ object deps {
 
     const val truth = "com.google.truth:truth:1.1.2"
     const val approvalTests = "com.approvaltests:approvaltests:11.2.3"
-  }
-
-  object antlr {
-    private const val version = "4.9.2"
-
-    const val core = "org.antlr:antlr4:$version"
-    const val runtime = "org.antlr:antlr4-runtime:$version"
   }
 }
