@@ -12,6 +12,10 @@ private enum class StyleOccurrence {
 }
 
 data class StyledText(val text: String) {
+  companion object {
+    private const val CHAR_NEWLINE = '\n'
+  }
+
   private val lineStyles = mutableListOf<LineStyle>()
   private val textStyles = mutableListOf<TextStyle>()
 
@@ -24,11 +28,11 @@ data class StyledText(val text: String) {
         { visitor.onEnterLine(lineNumber) }
       )
 
-    val textBuilder = StringBuilder()
+    val buffer = StringBuilder()
 
     var lineOffset = 0
     text.onEachIndexed { index, char ->
-      if (char == '\n') {
+      if (char == CHAR_NEWLINE) {
         lineOffset = -index - 1
         lineNumber++
 
@@ -39,13 +43,20 @@ data class StyledText(val text: String) {
           )
       } else {
         val localIndex = index + lineOffset
-        processStyledText(lineNumber, localIndex, char, textBuilder, visitor)
+        val textStyleOptional = getTextStyle(lineNumber, localIndex)
+        if (textStyleOptional.isPresent) {
+          processStyledText(textStyleOptional.get(), localIndex, char, buffer, visitor)
+        } else {
+          buffer.append(char)
+        }
       }
 
-      if ((index + 1 > text.lastIndex) || (index + 1 != text.lastIndex && text[index + 1] == '\n')) {
-        if (textBuilder.isNotEmpty()) {
-          visitor.onText(textBuilder.toString())
-          textBuilder.clear()
+      val endOfContent = index + 1 > text.lastIndex
+      val nextCharIsNewline = !endOfContent && index + 1 <= text.lastIndex && text[index + 1] == CHAR_NEWLINE
+      if (endOfContent || nextCharIsNewline) {
+        if (buffer.isNotEmpty()) {
+          visitor.onText(buffer.toString())
+          buffer.clear()
         }
 
         getLineStyle(lineNumber)
@@ -68,36 +79,29 @@ data class StyledText(val text: String) {
   }
 
   private fun processStyledText(
-    lineNumber: Int,
+    textStylePair: Pair<List<TextStyle>, StyleOccurrence>,
     localIndex: Int,
     char: Char,
-    textBuilder: StringBuilder,
+    buffer: StringBuilder,
     visitor: StyledTextVisitor
   ) {
-    val textStyleOptional = getTextStyle(lineNumber, localIndex)
-    val textStylePair = if (textStyleOptional.isPresent) {
-      textStyleOptional.get()
-    } else {
-      null
-    }
-    val textStyles = textStylePair?.first
-    val styleOccurrence = textStylePair?.second
+    val (textStyles, styleOccurrence) = textStylePair
 
-    if (textStyles != null && (styleOccurrence == BEGIN || styleOccurrence == BEGIN_END)) {
-      if (textBuilder.isNotEmpty()) {
-        visitor.onText(textBuilder.toString())
-        textBuilder.clear()
+    if (styleOccurrence == BEGIN || styleOccurrence == BEGIN_END) {
+      if (buffer.isNotEmpty()) {
+        visitor.onText(buffer.toString())
+        buffer.clear()
       }
       textStyles.onEach(visitor::onBeginStyle)
     }
 
-    if (textStyles != null && (styleOccurrence == END || styleOccurrence == BEGIN_END)) {
-      textBuilder.append(char)
-      visitor.onText(textBuilder.toString())
-      textBuilder.clear()
+    if (styleOccurrence == END || styleOccurrence == BEGIN_END) {
+      buffer.append(char)
+      visitor.onText(buffer.toString())
+      buffer.clear()
       textStyles.reversed().onEach(visitor::onEndStyle)
-    } else if ((textStyles != null && localIndex !in textStyles.first().charIndexRange) || char != '\n') {
-      textBuilder.append(char)
+    } else if ((localIndex !in textStyles.first().charIndexRange) || char != CHAR_NEWLINE) {
+      buffer.append(char)
     }
   }
 

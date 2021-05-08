@@ -13,6 +13,7 @@ class BaseHtmlVisitorTest {
       fun add(x: Int, y: Int) {
         return x + y
       }
+      
     """.trimIndent()
     val styledText = StyledText(kotlinSource)
     val visitor = BaseHtmlVisitor()
