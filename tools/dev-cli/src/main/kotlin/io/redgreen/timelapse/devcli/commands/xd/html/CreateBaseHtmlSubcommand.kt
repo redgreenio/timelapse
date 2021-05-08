@@ -1,5 +1,6 @@
 package io.redgreen.timelapse.devcli.commands.xd.html
 
+import io.redgreen.design.text.StyledText
 import picocli.CommandLine.Command
 
 @Command(
@@ -15,6 +16,12 @@ class CreateBaseHtmlSubcommand : Runnable {
     val filePath = GitCommand.LsFiles.from(fileName).execute()
     val fileContent = GitCommand.Show.from(commitHash, filePath).execute()
 
-    println(fileContent)
+    println(getHtml(fileContent))
+  }
+
+  private fun getHtml(fileContent: String): String {
+    val visitor = BaseHtmlVisitor()
+    StyledText(fileContent).visit(visitor)
+    return visitor.content
   }
 }
