@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>SpreadOperator:main.kt$(*args)</ID>
+    <ID>UnusedPrivateMember:DevCliCommand.kt$DevCliCommand$@Option(names = ["--git-dir"], description = ["Set the path to the repository."]) private lateinit var gitDir: File</ID>
+  </CurrentIssues>
+</SmellBaseline>

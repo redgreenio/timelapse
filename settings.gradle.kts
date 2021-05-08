@@ -11,4 +11,5 @@ include(
   "git",
   "functions",
   "languages",
+  "tools:dev-cli",
 )
