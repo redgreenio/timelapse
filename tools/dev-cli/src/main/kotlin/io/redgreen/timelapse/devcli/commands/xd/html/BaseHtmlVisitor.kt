@@ -3,6 +3,7 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 import io.redgreen.design.text.LineStyle
 import io.redgreen.design.text.StyledTextVisitor
 import io.redgreen.design.text.TextStyle
+import kotlin.LazyThreadSafetyMode.NONE
 
 class BaseHtmlVisitor : StyledTextVisitor {
   companion object {
@@ -13,12 +14,21 @@ class BaseHtmlVisitor : StyledTextVisitor {
     private const val END_TR = "</tr>"
     private const val BEGIN_TD = "<td>"
     private const val END_TD = "</td>"
+
+    private const val MARKER_TABLE_ROWS = "{table-rows}"
   }
 
   private val contentBuilder = StringBuilder()
 
+  private val template by lazy(NONE) {
+    BaseHtmlVisitor::class.java.classLoader
+      .getResourceAsStream("template.html")!!
+      .reader()
+      .readText()
+  }
+
   val content: String
-    get() = contentBuilder.toString()
+    get() = template.replace(MARKER_TABLE_ROWS, contentBuilder.toString())
 
   override fun onText(text: String) {
     contentBuilder.append(text)
