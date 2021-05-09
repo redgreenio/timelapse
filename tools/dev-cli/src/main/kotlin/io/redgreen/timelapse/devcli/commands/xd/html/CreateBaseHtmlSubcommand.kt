@@ -34,25 +34,29 @@ class CreateBaseHtmlSubcommand : Runnable {
     if (!outputDirectoryPath.exists()) {
       outputDirectoryPath.mkdirs()
     }
-    val outputFile = outputDirectoryPath.resolve(baseHtmlFileName(commitHash, fileName))
+    val outputFile = outputDirectoryPath.resolve(baseHtmlFileName(fileName, commitHash))
 
     val filePath = GitCommand.LsFiles.from(fileName).execute()
-    val fileContent = GitCommand.Show.from(commitHash, filePath).execute()
-    outputFile.writeText(getHtml(fileContent))
+    val content = GitCommand.Show.from(commitHash, filePath).execute()
+    outputFile.writeText(getHtml("$fileName @ ${shortCommitHash(commitHash)}", content))
 
     val message = ansi()
       .render("@|green Base HTML file written to:|@\n@|bold ${outputFile.canonicalPath}|@")
     println(message)
   }
 
-  private fun getHtml(fileContent: String): String {
-    val visitor = BaseHtmlVisitor()
-    StyledText(fileContent).visit(visitor)
+  private fun getHtml(title: String, content: String): String {
+    val visitor = BaseHtmlVisitor(title)
+    StyledText(content).visit(visitor)
     return visitor.content
   }
 
-  private fun baseHtmlFileName(commitHash: String, fileName: String): String {
+  private fun baseHtmlFileName(fileName: String, commitHash: String): String {
+    return "$fileName-${shortCommitHash(commitHash)}$EXTENSION_HTML"
+  }
+
+  private fun shortCommitHash(commitHash: String): String {
     val range = 0..((commitHash.length - 1).coerceAtMost(COMMIT_HASH_RANGE))
-    return "$fileName-${commitHash.substring(range)}$EXTENSION_HTML"
+    return commitHash.substring(range)
   }
 }

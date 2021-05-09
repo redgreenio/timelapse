@@ -6,7 +6,7 @@ import io.redgreen.design.text.TextStyle
 import org.apache.commons.text.StringEscapeUtils
 import kotlin.LazyThreadSafetyMode.NONE
 
-class BaseHtmlVisitor : StyledTextVisitor {
+class BaseHtmlVisitor(private val title: String) : StyledTextVisitor {
   companion object {
     private const val INDENT = "  "
     private const val NEWLINE = "\n"
@@ -16,6 +16,7 @@ class BaseHtmlVisitor : StyledTextVisitor {
     private const val NBSP = "&nbsp;"
     private const val TAB = "$NBSP$NBSP$NBSP$NBSP"
 
+    private const val MARKER_TITLE = "{title}"
     private const val MARKER_TABLE_ROWS = "{table-rows}"
   }
 
@@ -32,7 +33,10 @@ class BaseHtmlVisitor : StyledTextVisitor {
     get() {
       val rawTableRows = contentBuilder.toString()
       val indentedTableRows = rawTableRows.split(NEWLINE).joinToString(NEWLINE) { "$INDENT$it" }
-      return template.replace(MARKER_TABLE_ROWS, indentedTableRows)
+
+      return template
+        .replace(MARKER_TITLE, title)
+        .replace(MARKER_TABLE_ROWS, indentedTableRows)
     }
 
   override fun onText(text: String) {

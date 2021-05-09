@@ -16,7 +16,7 @@ class BaseHtmlVisitorTest {
       
     """.trimIndent()
     val styledText = StyledText(kotlinSource)
-    val visitor = BaseHtmlVisitor()
+    val visitor = BaseHtmlVisitor("Untitled")
 
     // when
     styledText.visit(visitor)
