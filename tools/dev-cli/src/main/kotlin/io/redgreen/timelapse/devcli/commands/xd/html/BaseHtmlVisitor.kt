@@ -48,7 +48,7 @@ class BaseHtmlVisitor : StyledTextVisitor {
       .append(NEWLINE)
       .append("""$INDENT<td class="line-number">$lineNumber</td>""")
       .append(NEWLINE)
-      .append("$INDENT<td>")
+      .append("""$INDENT<td class="muted"">""")
   }
 
   override fun onExitLine(lineNumber: Int) {
