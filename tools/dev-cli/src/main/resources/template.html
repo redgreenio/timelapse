@@ -5,6 +5,8 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
   </style>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+          integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   <style>
     body {
       font-family: 'JetBrains Mono', monospace;
@@ -25,7 +27,142 @@
       color: #9F9F9F;
       min-width: 3em;
     }
+
+    .deleted-line {
+      background-color: #FFDCE0;
+    }
+
+    .deleted-line .no-line-number {
+      background-color: #FFB4BC;
+    }
+
+    .affected-line {
+      font-weight: normal;
+    }
+
+    .keyword {
+      color: #000080;
+    }
+
+    .comment {
+      color: #6D6D6D;
+    }
+
+    td:nth-child(2) {
+      padding: 0.18em 0.0em 0.18em 0.8em;
+      width: 100%;
+    }
+
+    .parentheses {
+      color: #19561E;
+      font-weight: normal;
+    }
+
+    .curly {
+      color: #0058BE;
+      font-weight: normal;
+    }
+
+    .modified-line {
+      background-color: #F1F8FF;
+    }
+
+    .modified-line .line-number {
+      background-color: #DBEDFF;
+    }
+
+    .modified-highlight {
+      background-color: #3B9DFF4D;
+      margin: 0;
+      padding: 0em 0.18em 0em 0.18em;
+      border-radius: 0.2em;
+    }
+
+    .added-line {
+      background-color: #E6FFED;
+    }
+
+    .added-line .line-number {
+      background-color: #C5FFD5;
+    }
+
+    .string {
+      color: #00733B;
+    }
+
+    .readability-line {
+      background-color: #F8F8F8;
+    }
+
+    .readability-line .no-line-number {
+      background-color: #EEEEEE;
+    }
+
+    .predecessor {
+      font-weight: normal;
+      color: #6D6D6D;
+      text-decoration: line-through;
+    }
+
+    .change-count {
+      color: #3F3F3F;
+      background-color: #FFD54F;
+      text-align: center;
+      padding: 0.0em 0.25em 0.0em 0.25em;
+      border-radius: 0.3em;
+      font-size: 0.9em;
+      font-weight: normal;
+    }
+
+    .annotation {
+      color: #808000;
+    }
+
+    .function-signature ~ .function-body {
+      display: none;
+    }
+
+    .open .function-signature ~ .function-body {
+      display: table-row;
+    }
+
+    .function-signature .identifier {
+      cursor: pointer;
+    }
+
+    .identifier {
+      color: #000000;
+    }
+
+    .function-signature .collapsed-body-indicator {
+      display: inline;
+    }
+
+    .open .function-signature .collapsed-body-indicator {
+      display: none;
+    }
+
+    .ellipsis {
+      padding-left: 0.2em;
+      padding-right: 0.2em;
+    }
+
+    .muted {
+      color: #A0A0A0;
+    }
+
+    .property {
+      color: #660E7A;
+      font-style: italic;
+    }
   </style>
+  <script>
+    $(document).ready(function () {
+      $('table').on('click', 'tr.function-signature .identifier', function () {
+        $(this).closest('tbody').toggleClass('open');
+      })
+    })
+  </script>
   <title>{title}</title>
 </head>
 
