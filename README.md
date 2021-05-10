@@ -165,6 +165,18 @@ git commit -m "build: prepare for next development version"
 ./install-dev-cli.sh
 ```
 
+#### Installation (Windows)
+
+```shell
+install-dev-cli
+```
+
+On installation, the script will print a path to add to your environment variable. Add this path to your local (not system) environment variable.
+
+```shell
+'dev-cli' installed. Please add 'C:\Users\varsh\.dev-cli' to your 'Path' variable.
+```
+
 #### Usage
 
 ```shell
