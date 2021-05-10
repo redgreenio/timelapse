@@ -44,7 +44,7 @@ class CreateBaseHtmlSubcommand : Runnable {
     }
     val outputFile = outputDirectoryPath.resolve(baseHtmlFileName(fileName, commitHash))
 
-    val lsFilesResult = GitCommand.LsFiles.from(fileName).execute()
+    val lsFilesResult = GitCommand.LsFiles.command(fileName).execute()
     val fileFound = lsFilesResult is Success && lsFilesResult.output.isNotEmpty()
     if (fileFound) {
       getFileContent(outputFile, lsFilesResult.output, commitHash)
@@ -54,7 +54,7 @@ class CreateBaseHtmlSubcommand : Runnable {
   }
 
   private fun getFileContent(outputFile: File, filePath: String, commitHash: String) {
-    when (val showResult = GitCommand.Show.from(commitHash, filePath).execute()) {
+    when (val showResult = GitCommand.Show.command(commitHash, filePath).execute()) {
       is Success -> {
         outputFile.writeText(getHtml("$fileName @ ${shortCommitHash(commitHash)}", showResult.output))
         val message = ansi().render("@|green Base HTML file written to:|@\n@|bold ${outputFile.canonicalPath}|@")
