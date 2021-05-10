@@ -10,6 +10,6 @@ import picocli.CommandLine.Command
   subcommands = [CreateBaseHtmlSubcommand::class, CreateXdSampleSubcommand::class],
   description = ["Accelerator for developing Timelapse features."],
   commandListHeading = "%nCommands:%n%nAvailable commands are:%n",
-  version = ["v0.0.3"],
+  version = ["v0.0.4"],
 )
 class DevCliCommand
