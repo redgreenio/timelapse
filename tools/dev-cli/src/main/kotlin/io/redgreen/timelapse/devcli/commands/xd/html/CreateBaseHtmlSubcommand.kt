@@ -36,8 +36,8 @@ class CreateBaseHtmlSubcommand : Runnable {
     }
     val outputFile = outputDirectoryPath.resolve(baseHtmlFileName(fileName, commitHash))
 
-    val filePath = GitCommand.LsFiles.from(fileName).execute()
-    val content = GitCommand.Show.from(commitHash, filePath).execute()
+    val filePath = GitCommand.LsFiles.from(fileName).execute().output
+    val content = GitCommand.Show.from(commitHash, filePath).execute().output
     outputFile.writeText(getHtml("$fileName @ ${shortCommitHash(commitHash)}", content))
 
     val message = ansi()

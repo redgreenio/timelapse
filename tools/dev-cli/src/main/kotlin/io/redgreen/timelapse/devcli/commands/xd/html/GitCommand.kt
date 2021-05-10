@@ -14,10 +14,10 @@ sealed class GitCommand {
   }
 }
 
-internal fun Array<String>.execute(): String {
+internal fun Array<String>.execute(): ExecutionResult {
   val process = ProcessBuilder()
     .command(*this)
     .start()
 
-  return process.inputStream.reader().readText().trim()
+  return ExecutionResult.from(process)
 }
