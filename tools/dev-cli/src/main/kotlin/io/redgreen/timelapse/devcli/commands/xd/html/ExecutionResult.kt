@@ -3,9 +3,9 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 sealed class ExecutionResult(open val output: String) {
   companion object {
     fun from(process: Process): ExecutionResult {
-      val successOutput = process.inputStream.reader().readText()
-      val errorOutput = process.errorStream.reader().readText()
-      val exitCode = process.exitValue()
+      val exitCode = process.waitFor()
+      val successOutput = process.inputStream.reader().readText().trim()
+      val errorOutput = process.errorStream.reader().readText().trim()
 
       return if (exitCode == 0) {
         Success(successOutput)
