@@ -12,6 +12,11 @@ sealed class GitCommand {
     fun from(commitHash: String, filePath: String): Array<String> =
       arrayOf("git", "show", "$commitHash:$filePath")
   }
+
+  object Status : GitCommand() {
+    fun command(): Array<String> =
+      arrayOf("git", "status")
+  }
 }
 
 internal fun Array<String>.execute(): ExecutionResult {

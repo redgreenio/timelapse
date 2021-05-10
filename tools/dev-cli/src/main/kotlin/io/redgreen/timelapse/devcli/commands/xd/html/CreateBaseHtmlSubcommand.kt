@@ -33,6 +33,12 @@ class CreateBaseHtmlSubcommand : Runnable {
   var outputDirectoryPath: File = File(System.getProperty(PROPERTY_KEY_USER_HOME)).resolve(DIRECTORY_XD_BASE_HTML)
 
   override fun run() {
+    val statusResult = GitCommand.Status.command().execute()
+    if (statusResult is Failure) {
+      println(ansi().render("@|red ${statusResult.output} |@"))
+      return
+    }
+
     if (!outputDirectoryPath.exists()) {
       outputDirectoryPath.mkdirs()
     }
