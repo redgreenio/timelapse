@@ -1,5 +1,5 @@
+CALL gradlew tools:dev-cli:test tools:dev-cli:shadowJar
 @echo off
-Rem gradlew tools:dev-cli:test tools:dev-cli:shadowJar
 
 set devCliDirectory=%homedrive%%homepath%\.dev-cli
 echo %devCliDirectory%
