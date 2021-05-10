@@ -1,6 +1,8 @@
 package io.redgreen.timelapse.devcli.commands.xd.html
 
 import io.redgreen.design.text.StyledText
+import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Failure
+import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Success
 import org.fusesource.jansi.Ansi.ansi
 import picocli.CommandLine.Command
 import picocli.CommandLine.Option
@@ -36,13 +38,28 @@ class CreateBaseHtmlSubcommand : Runnable {
     }
     val outputFile = outputDirectoryPath.resolve(baseHtmlFileName(fileName, commitHash))
 
-    val filePath = GitCommand.LsFiles.from(fileName).execute().output
-    val content = GitCommand.Show.from(commitHash, filePath).execute().output
-    outputFile.writeText(getHtml("$fileName @ ${shortCommitHash(commitHash)}", content))
+    val lsFilesResult = GitCommand.LsFiles.from(fileName).execute()
+    val fileFound = lsFilesResult is Success && lsFilesResult.output.isNotEmpty()
+    if (fileFound) {
+      getFileContent(outputFile, lsFilesResult.output, commitHash)
+    } else {
+      println(ansi().fgRed().a("File not found: ").bold().a(fileName))
+    }
+  }
 
-    val message = ansi()
-      .render("@|green Base HTML file written to:|@\n@|bold ${outputFile.canonicalPath}|@")
-    println(message)
+  private fun getFileContent(outputFile: File, filePath: String, commitHash: String) {
+    when (val showResult = GitCommand.Show.from(commitHash, filePath).execute()) {
+      is Success -> {
+        outputFile.writeText(getHtml("$fileName @ ${shortCommitHash(commitHash)}", showResult.output))
+        val message = ansi().render("@|green Base HTML file written to:|@\n@|bold ${outputFile.canonicalPath}|@")
+        println(message)
+      }
+
+      is Failure -> {
+        val message = ansi().render("@|red ${showResult.output} |@")
+        println(message)
+      }
+    }
   }
 
   private fun getHtml(title: String, content: String): String {
