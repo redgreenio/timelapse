@@ -181,9 +181,9 @@
     <td class="line-number">2</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">3</td>
-    <td class="muted">import io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted</td>
+    <td><span class="keyword">import</span> io.redgreen.timelapse.extendeddiff.ComparisonResult.Deleted</td>
   </tr>
   <tr>
     <td class="line-number">4</td>
@@ -195,11 +195,11 @@
   </tr>
   <tr>
     <td class="line-number">6</td>
-    <td class="muted">@SuppressWarnings(&quot;LongMethod&quot;)</td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/1</span></td>
   </tr>
   <tr>
     <td class="line-number">7</td>
-    <td class="muted">fun ExtendedDiff.toHtml(): String {</td>
+    <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">8</td>
@@ -217,9 +217,9 @@
     <td class="line-number">11</td>
     <td class="muted">&nbsp;&nbsp;&quot;&quot;&quot;.trimIndent()</td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">12</td>
-    <td class="muted">&nbsp;&nbsp;val isDeletion = this is HasChanges &amp;&amp; this.comparisonResults.first() is Deleted</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> isDeletion = <span class="keyword">this</span> <span class="keyword">is</span> HasChanges &amp;&amp; <span class="keyword">this</span>.comparisonResults.first<span class="parentheses">()</span> <span class="keyword">is</span> Deleted</td>
   </tr>
   <tr>
     <td class="line-number">13</td>
@@ -349,169 +349,169 @@
     <td class="line-number">44</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">45</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;isDeletion -&gt; {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isDeletion -&gt; <span class="curly">{</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">46</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">47</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;html lang=&quot;en-US&quot;&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;html lang=&quot;en-US&quot;&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">48</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;head&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;head&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">49</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;style&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">50</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.added {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.added {</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">51</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #e6ffed;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #e6ffed;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">52</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">53</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.modified {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.modified {</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">54</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #dbedff80;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #dbedff80;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">55</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">56</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.deleted {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.deleted {</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">57</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #ffdce0;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #ffdce0;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">58</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">59</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/style&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">60</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/head&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/head&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">61</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;body&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">62</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;table&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">63</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tbody&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">64</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;deleted&quot;&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">65</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">66</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;fun a() {&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;fun a() {&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">67</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">68</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;deleted&quot;&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">69</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">70</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;}&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;}&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">71</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">72</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">73</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;1&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;1&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">74</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;fun b() {&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;fun b() {&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">75</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">76</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">77</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;2&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;2&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">78</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;}&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;}&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">79</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">80</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tbody&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">81</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/table&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">82</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/body&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">83</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/html&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">84</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;.trimIndent()</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span>.trimIndent<span class="parentheses">(</span><span class="parentheses">)</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">85</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">86</td>
@@ -687,7 +687,7 @@
   </tr>
   <tr>
     <td class="line-number">129</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   </tbody>
 </table>
