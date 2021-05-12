@@ -211,11 +211,11 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td class="muted">@SuppressWarnings(&quot;LongMethod&quot;)</td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/1</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
-    <td class="muted">fun ExtendedDiff.toHtml(): String {</td>
+    <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">12</td>
@@ -225,9 +225,9 @@
     <td class="line-number">13</td>
     <td class="muted">&nbsp;&nbsp;val isDeletion = this is HasChanges &amp;&amp; this.comparisonResults.first() is Deleted</td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">14</td>
-    <td class="muted">&nbsp;&nbsp;val isModified = this is HasChanges &amp;&amp; this.comparisonResults.first() is Modified</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> isModified = <span class="keyword">this is</span> HasChanges &amp;&amp; <span class="keyword">this</span>.comparisonResults.first<span class="parentheses">()</span> <span class="keyword">is</span> Modified</td>
   </tr>
   <tr>
     <td class="line-number">15</td>
@@ -237,13 +237,13 @@
     <td class="line-number">16</td>
     <td class="muted">&nbsp;&nbsp;return when {</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">17</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;isAdded || isModified -&gt; {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isAdded <span class="modified-highlight">|| isModified</span> -&gt; {</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">18</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;val added = (this as HasChanges).comparisonResults.first()</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> added = (<span class="keyword">this as</span> HasChanges).comparisonResults.first<span class="parentheses">()</span><span class="predecessor"> as Added</span></td>
   </tr>
   <tr>
     <td class="line-number">19</td>
@@ -321,9 +321,9 @@
     <td class="line-number">37</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">38</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${toRows(sourceCode, added)}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">${<span class="modified-highlight">toRows</span><span class="predecessor">toAddedRows</span>(sourceCode, added)}</span></td>
   </tr>
   <tr>
     <td class="line-number">39</td>
@@ -513,9 +513,113 @@
     <td class="line-number">85</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">86</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;else -&gt; TODO()</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;else -&gt; <span class="modified-highlight">TODO()</span><span class="predecessor">{</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">val modified = (this as HasChanges).comparisonResults.first() as Modified</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&quot;&quot;&quot;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;html lang=&quot;en-US&quot;&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;head&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;style&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">.added {</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">background-color: #e6ffed;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">.modified {</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">background-color: #dbedff80;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">.deleted {</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">background-color: #ffdce0;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/style&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/head&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;body&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;table&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;tbody&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;${toModifiedRows(sourceCode, modified)}&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/tbody&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/table&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/body&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/html&gt;</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&quot;&quot;&quot;.trimIndent()</span></td>
+  </tr>
+  <tr class="modified-line">
+    <td class="line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
   </tr>
   <tr>
     <td class="line-number">87</td>
@@ -523,39 +627,39 @@
   </tr>
   <tr>
     <td class="line-number">88</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">89</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">90</td>
-    <td class="muted">private fun toRows(sourceCode: String, result: ComparisonResult): String {</td>
+    <td><span class="keyword">private fun</span> toRows<span class="parentheses">(</span>sourceCode: String, result: ComparisonResult<span class="parentheses">)</span>: String <span class="curly">{</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">91</td>
-    <td class="muted">&nbsp;&nbsp;return when (result) {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return when</span> <span class="parentheses">(</span>result<span class="parentheses">)</span> <span class="curly">{</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">92</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;is Added -&gt; toAddedRows(sourceCode, result)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is</span> Added -&gt; toAddedRows<span class="parentheses">(</span>sourceCode, result<span class="parentheses">)</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">93</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;is Deleted -&gt; TODO()</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is</span> Deleted -&gt; TODO<span class="parentheses">()</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">94</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;is Modified -&gt; toModifiedRows(sourceCode, result)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is</span> Modified -&gt; toModifiedRows<span class="parentheses">(</span>sourceCode, result<span class="parentheses">)</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">95</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">96</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">97</td>
