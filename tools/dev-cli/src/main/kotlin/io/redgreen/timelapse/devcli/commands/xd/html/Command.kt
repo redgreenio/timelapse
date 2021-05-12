@@ -8,4 +8,8 @@ class Command(private val arguments: Array<String>) {
 
     return ExecutionResult.from(process)
   }
+
+  override fun toString(): String {
+    return arguments.joinToString(" ")
+  }
 }
