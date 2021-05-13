@@ -167,3 +167,21 @@ td:nth-child(2) {
   padding: 0 0.18em 0 0.18em;
   border-radius: 0.2em;
 }
+
+.xd-comment {
+  background-color: rgba(200, 200, 200, 0.4);
+  color: rgba(0, 0, 0, 0.65);
+  padding: 0 0.2em 0 0;
+  border-radius: 0.18em;
+  vertical-align: center;
+}
+
+.xd-comment::before {
+  content: "CS";
+  color: white;
+  margin-right: 0.4em;
+  background-color: red;
+  font-weight: bold;
+  padding: 0 0.4em 0 0.4em;
+  border-radius: 0.18em 0 0 0.18em;
+}
