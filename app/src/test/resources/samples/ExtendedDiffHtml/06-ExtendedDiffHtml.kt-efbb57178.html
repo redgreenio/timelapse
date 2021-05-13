@@ -354,7 +354,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">36</td>
-    <td><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$<span class="curly">{</span><span class="identifier">toRows</span><span class="parentheses">(</span>sourceCode, added<span class="parentheses">)</span><span class="curly">}</span></span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$<span class="curly">{</span><span class="identifier">toRows</span><span class="parentheses">(</span>sourceCode, added<span class="parentheses">)</span><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">37</td>
@@ -774,23 +774,23 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">141</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> lineNumber = index + 1</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> lineNumber = index + <span class="number">1</span></td>
   </tr>
-  <tr class="added-line"td class="line-number">
+  <tr class="added-line">
     <td class="line-number">142</td>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">143</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr${classAttribute(lineNumber in addedRange)}&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span>$<span class="curly">{</span>classAttribute<span class="parentheses">(</span>lineNumber <span class="keyword">in</span> addedRange<span class="parentheses">)</span><span class="curly">}</span><span class="string">&gt;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">144</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;$lineNumber&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span>$lineNumber<span class="string">&lt;/td&gt;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">145</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;$line&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span>$line<span class="string">&lt;/td&gt;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">146</td>
@@ -826,11 +826,11 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">154</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return if</span>(added) <span class="curly">{</span></td>
+    <td>&nbsp;&nbsp;<span class="keyword">return if </span><span class="parentheses">(</span>added<span class="parentheses">)</span> <span class="curly">{</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">155</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot; class=</span><span class="keyword">\&quot;</span><span class="string">added</span><span class="keyword">\&quot;</span><span class="string">&quot;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot; class=</span><span class="escape-sequence">\&quot;</span><span class="string">added</span><span class="escape-sequence">\&quot;</span><span class="string">&quot;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">156</td>
@@ -862,11 +862,11 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">163</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span><span class="keyword">$</span>NEWLINE_CHAR<span class="string">&quot;</span><span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span>$<span class="const">NEWLINE_CHAR</span><span class="string">&quot;</span><span class="parentheses">)</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">164</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.split<span class="parentheses">(</span>NEWLINE_CHAR<span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.split<span class="parentheses">(</span><span class="const">NEWLINE_CHAR</span><span class="parentheses">)</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">165</td>
@@ -874,7 +874,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">166</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> <span class="parentheses">(</span>index == 0<span class="parentheses">)</span> <span class="curly">{</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> <span class="parentheses">(</span>index == <span class="number">0</span><span class="parentheses">)</span> <span class="curly">{</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">167</td>
@@ -886,7 +886,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">169</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;            <span class="keyword">$</span>line&quot;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;</span>            <span class="keyword">$</span>line<span class="string">&quot;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">170</td>
@@ -898,7 +898,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">172</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span><span class="keyword">$</span>NEWLINE_CHAR<span class="string">&quot;</span><span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span>$<span class="const">NEWLINE_CHAR</span><span class="string">&quot;</span><span class="parentheses">)</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">173</td>
