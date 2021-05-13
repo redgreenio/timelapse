@@ -156,3 +156,7 @@ td:nth-child(2) {
 .escape-sequence {
   color: #000080;
 }
+
+.reserved-symbol {
+  color: #000080;
+}
