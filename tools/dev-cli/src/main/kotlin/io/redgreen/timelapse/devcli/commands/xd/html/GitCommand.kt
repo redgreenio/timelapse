@@ -2,17 +2,17 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 
 sealed class GitCommand {
   object LsFiles : GitCommand() {
-    fun command(fileName: String): Command =
-      Command(arrayOf("git", "ls-files", fileName, "**/$fileName"))
+    fun command(fileName: String): ShellCommand =
+      ShellCommand(arrayOf("git", "ls-files", fileName, "**/$fileName"))
   }
 
   object Show : GitCommand() {
-    fun command(commitHash: String, filePath: String): Command =
-      Command(arrayOf("git", "show", "$commitHash:$filePath"))
+    fun command(commitHash: String, filePath: String): ShellCommand =
+      ShellCommand(arrayOf("git", "show", "$commitHash:$filePath"))
   }
 
   object Status : GitCommand() {
-    fun command(): Command =
-      Command(arrayOf("git", "status"))
+    fun command(): ShellCommand =
+      ShellCommand(arrayOf("git", "status"))
   }
 }
