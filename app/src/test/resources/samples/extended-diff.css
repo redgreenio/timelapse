@@ -152,3 +152,7 @@ td:nth-child(2) {
 .number {
   color: #007EE9;
 }
+
+.escape-sequence {
+  color: #000080;
+}
