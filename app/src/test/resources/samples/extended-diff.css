@@ -160,3 +160,10 @@ td:nth-child(2) {
 .reserved-symbol {
   color: #000080;
 }
+
+.deleted-highlight {
+  background-color: #FFB4BC;
+  margin: 0;
+  padding: 0 0.18em 0 0.18em;
+  border-radius: 0.2em;
+}
