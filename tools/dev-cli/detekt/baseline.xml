@@ -2,7 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>SpreadOperator:Command.kt$Command$(*arguments)</ID>
+    <ID>SpreadOperator:ShellCommand.kt$ShellCommand$(*arguments)</ID>
     <ID>SpreadOperator:main.kt$(*args)</ID>
   </CurrentIssues>
 </SmellBaseline>

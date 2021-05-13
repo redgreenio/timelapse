@@ -4,12 +4,12 @@ import io.redgreen.design.text.StyledText
 import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Failure
 import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Success
 import org.fusesource.jansi.Ansi.ansi
+import picocli.CommandLine.Command
 import picocli.CommandLine.Option
 import picocli.CommandLine.Parameters
 import java.io.File
-import picocli.CommandLine.Command as PicoCommand
 
-@PicoCommand(
+@Command(
   name = "html",
   mixinStandardHelpOptions = true,
   description = ["creates a base HTML file for use with XD"]
@@ -109,7 +109,7 @@ class CreateBaseHtmlSubcommand : Runnable {
     println("[D] $message")
   }
 
-  private fun Command.log() {
+  private fun ShellCommand.log() {
     debug("Executing `$this`")
   }
 }
