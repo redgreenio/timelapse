@@ -170,6 +170,24 @@
     .reserved-symbol {
       color: #000080;
     }
+
+    .xd-comment {
+      background-color: rgba(200, 200, 200, 0.4);
+      color: rgba(0, 0, 0, 0.65);
+      padding: 0 0.2em 0 0;
+      border-radius: 0.18em;
+      vertical-align: center;
+    }
+
+    .xd-comment::before {
+      content: "ef";
+      color: white;
+      margin-right: 0.4em;
+      background-color: red;
+      font-weight: bold;
+      padding: 0 0.4em 0 0.4em;
+      border-radius: 0.18em 0 0 0.18em;
+    }
   </style>
   <script>
     $(document).ready(function () {
@@ -434,79 +452,7 @@
   </tr>
   <tr class="modified-line">
     <td class="line-number">63</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight"><span class="reserved-symbol">$</span><span class="curly">{</span>toDeletedRows</span><span class="parentheses">()</span></span><span class="curly">}</span></span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;tbody&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;fun a() {&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/tr&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;}&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/tr&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;tr&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;1&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;fun b() {&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/tr&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;tr&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;2&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;td&gt;}&lt;/td&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/tr&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/tbody&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight"><span class="reserved-symbol">$</span><span class="curly">{</span>toDeletedRows<span class="parentheses">()<span class="curly">}</span></span></span> <span class="xd-comment">Affected call site 1/1</span></td>
   </tr>
   <tr>
     <td class="line-number">64</td>
@@ -578,79 +524,79 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">81</td>
-    <td><span class="keyword">private fun</span> toDeletedRows<span class="parentheses">()</span>: String <span class="curly">{</span> <span class="change-count">2/2</span></td>
+    <td><span class="keyword">private fun</span> toDeletedRows<span class="parentheses">()</span>: String <span class="curly">{</span> <span class="change-count">2/2</span> <span class="xd-comment">Extract function, affects 1 call site</span> </td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">82</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">&quot;&quot;&quot;&lt;tbody&gt;</span></td>
+    <td>&nbsp;&nbsp;<span class="keyword">return</span> <span class="muted">&quot;&quot;&quot;&lt;tbody&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">83</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">84</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">85</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;fun a() {&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;fun a() {&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">86</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;/tr&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">87</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">88</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">89</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;}&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;}&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">90</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;/tr&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">91</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;tr&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">92</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;1&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;1&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">93</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;fun b() {&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;fun b() {&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">94</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;/tr&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">95</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;tr&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">96</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;2&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;2&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">97</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;}&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;td&gt;}&lt;/td&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">98</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;/tr&gt;</span></td>
   </tr>
-  <tr class="added-line">
+  <tr>
     <td class="line-number">99</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tbody&gt;&quot;&quot;&quot;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="muted">&lt;/tbody&gt;&quot;&quot;&quot;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">100</td>
