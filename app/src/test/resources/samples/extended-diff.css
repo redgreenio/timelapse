@@ -148,3 +148,7 @@ td:nth-child(2) {
 .const {
   color: #660E7A;
 }
+
+.number {
+  color: #007EE9;
+}
