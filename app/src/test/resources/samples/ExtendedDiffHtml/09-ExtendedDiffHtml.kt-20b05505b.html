@@ -222,7 +222,7 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/1</span></td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/2</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
@@ -250,11 +250,11 @@
   </tr>
   <tr class="modified-line">
     <td class="line-number">17</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;isAdded <span class="modified-highlight">|| isModified</span> -&gt; {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isAdded <span class="modified-highlight">|| isModified</span> -&gt; <span class="curly">{</span></td>
   </tr>
   <tr class="modified-line">
     <td class="line-number">18</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> added = (<span class="keyword">this as</span> HasChanges).comparisonResults.first<span class="parentheses">()</span><span class="predecessor"> as Added</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> added = (<span class="keyword">this as</span> HasChanges).comparisonResults.first<span class="parentheses">()</span> <span class="predecessor">as Added</span></td>
   </tr>
   <tr>
     <td class="line-number">19</td>
@@ -334,7 +334,7 @@
   </tr>
   <tr class="modified-line">
     <td class="line-number">38</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">${<span class="modified-highlight">toRows</span><span class="predecessor">toAddedRows</span>(sourceCode, added)}</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span><span class="modified-highlight">toRows</span><span class="predecessor">toAddedRows</span><span class="parentheses">(</span>sourceCode, added<span class="parentheses">)</span><span class="curly">}</span></span></td>
   </tr>
   <tr>
     <td class="line-number">39</td>
@@ -526,7 +526,7 @@
   </tr>
   <tr class="modified-line">
     <td class="line-number">86</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;else -&gt; <span class="modified-highlight">TODO()</span><span class="predecessor">{</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span> -&gt; <span class="modified-highlight">TODO()</span><span class="predecessor">{</span></td>
   </tr>
   <tr class="modified-line">
     <td class="line-number"></td>
@@ -646,7 +646,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">90</td>
-    <td><span class="keyword">private fun</span> toRows<span class="parentheses">(</span>sourceCode: String, result: ComparisonResult<span class="parentheses">)</span>: String <span class="curly">{</span></td>
+    <td><span class="keyword">private fun</span> toRows<span class="parentheses">(</span>sourceCode: String, result: ComparisonResult<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/2</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">91</td>
