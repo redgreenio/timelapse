@@ -58,9 +58,19 @@ class CreateBaseHtmlSubcommand : Runnable {
     val lsFilesCommand = GitCommand.LsFiles.command(fileName)
     lsFilesCommand.log()
     val lsFilesResult = lsFilesCommand.execute()
-    val filePathInRepository = lsFilesResult.output.split(CHAR_NEWLINE).first()
+    val matchingFilePaths = lsFilesResult.output.split(CHAR_NEWLINE)
+    val filePathInRepository = matchingFilePaths.first()
     val fileFound = lsFilesResult is Success && filePathInRepository.isNotEmpty()
     if (fileFound) {
+      if (matchingFilePaths.size > 1) {
+        println(ansi().fgYellow().render("Multiple matching file paths found, using the first one."))
+        val numberedFilePaths = matchingFilePaths
+          .mapIndexed { index, filePath -> "${index + 1}) $filePath" }
+          .joinToString(CHAR_NEWLINE)
+        println(ansi().fgDefault().render(numberedFilePaths))
+        println()
+      }
+
       debug("'$fileName' found at '$filePathInRepository'")
       val outputFile = outputDirectoryPath.resolve(baseHtmlFileName(fileName, commitHash))
       getFileContent(outputFile, filePathInRepository, commitHash)
