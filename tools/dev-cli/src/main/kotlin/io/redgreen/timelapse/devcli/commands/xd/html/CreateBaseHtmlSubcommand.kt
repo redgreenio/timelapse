@@ -19,6 +19,7 @@ class CreateBaseHtmlSubcommand : Runnable {
     private const val COMMIT_HASH_RANGE = 8
     private const val EXTENSION_HTML = ".html"
     private const val DIRECTORY_XD_BASE_HTML = "xd-base-html"
+    private const val CHAR_NEWLINE = "\n"
 
     private const val PROPERTY_KEY_USER_HOME = "user.home"
   }
@@ -57,7 +58,7 @@ class CreateBaseHtmlSubcommand : Runnable {
     val lsFilesCommand = GitCommand.LsFiles.command(fileName)
     lsFilesCommand.log()
     val lsFilesResult = lsFilesCommand.execute()
-    val filePathInRepository = lsFilesResult.output
+    val filePathInRepository = lsFilesResult.output.split(CHAR_NEWLINE).first()
     val fileFound = lsFilesResult is Success && filePathInRepository.isNotEmpty()
     if (fileFound) {
       debug("'$fileName' found at '$filePathInRepository'")
