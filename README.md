@@ -2,6 +2,24 @@
 
 Timelapse onboards developers onto codebases before you make that cup of instant noodles!
 
+## System setup
+
+### Step 1 of 3 - IntelliJ IDEA
+
+Download and install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
+
+### Setup 2 of 3 - JDK 15
+
+Download and install JDK 15 for your OS.
+
+### Setup 3 of 3 - Rune CLI
+
+Install [Node.js](https://nodejs.org/en/) and then run the following command on your machine.
+
+```shell
+npm install -g rune-cli
+```
+
 ## Project setup
 
 ### Step 1 of 3 - Clone
@@ -55,7 +73,8 @@ gradlew installGitHooks
 
 ## 🚀 Creating a release
 
-Ensure the working directory is clean before creating a release. Stash or commit changes to a different branch if the working directory is dirty.
+Ensure the working directory is clean before creating a release. Stash or commit changes to a different branch if the
+working directory is dirty.
 
 ### Step 1 of 7 - Get the version for the release
 
@@ -82,6 +101,7 @@ Underneath the `## [Unreleased]` section, add the version and date in the follow
 ```
 
 Example,
+
 ```md
 ## [2021.0.2] - 2021-04-13
 ```
@@ -108,8 +128,10 @@ yet to be tested.
 ### Step 5 of 7 - Verifying the build
 
 You should see the version number for the build in two places,
+
 1. **The native package** - file name of the binary should contain the version number.
-2. **The application (after installation)** - Welcome screen should display the new version number in the bottom right corner.
+2. **The application (after installation)** - Welcome screen should display the new version number in the bottom right
+   corner.
 
 ### Step 6 of 7 - Tag the release
 
@@ -153,6 +175,7 @@ git commit -m "build: prepare for next development version"
 | Linux            | ❌            | ❌           | `-`       |
 
 ## Tools
+
 ### 1. dev-cli
 
 `dev-cli` is an internal tool that can help with the following dev related tasks.
@@ -171,7 +194,8 @@ git commit -m "build: prepare for next development version"
 install-dev-cli
 ```
 
-On installation, the script will print a path to add to your environment variable. Add this path to your local (not system) environment variable.
+On installation, the script will print a path to add to your environment variable. Add this path to your local (not
+system) environment variable.
 
 ```shell
 'dev-cli' installed. Please add 'C:\Users\varsh\.dev-cli' to your 'Path' variable.
