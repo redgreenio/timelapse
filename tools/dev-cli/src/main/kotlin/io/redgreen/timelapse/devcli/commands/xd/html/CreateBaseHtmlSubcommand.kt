@@ -3,6 +3,8 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 import io.redgreen.design.text.StyledText
 import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Failure
 import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Success
+import io.redgreen.timelapse.devcli.commands.xd.html.GitCommand.GetUnifiedPatch
+import io.redgreen.timelapse.git.model.PatchFile
 import org.fusesource.jansi.Ansi.ansi
 import picocli.CommandLine.Command
 import picocli.CommandLine.Option
@@ -87,7 +89,19 @@ class CreateBaseHtmlSubcommand : Runnable {
       is Success -> {
         debug("Retrieved file content at revision: $commitHash")
         debug("Writing file content to disk: ${outputFile.canonicalPath}")
-        outputFile.writeText(getHtml("$fileName @ ${shortCommitHash(commitHash)}", showResult.output))
+
+        val unifiedPatchExecutionResult = GetUnifiedPatch.command(commitHash, filePath).execute()
+        val affectedLineNumbers = if (unifiedPatchExecutionResult is Success) {
+          debug("Getting affected line numbers from patch.")
+          PatchFile.from(unifiedPatchExecutionResult.output).getAffectedLineNumbers()
+        } else {
+          debug("Unable to get affected line numbers from patch.")
+          emptyList()
+        }
+        debug("Affected line numbers: $affectedLineNumbers")
+
+        val html = getHtml("$fileName @ ${shortCommitHash(commitHash)}", showResult.output, affectedLineNumbers)
+        outputFile.writeText(html)
         val message = ansi().render("@|green Base HTML file written to:|@\n@|bold ${outputFile.canonicalPath}|@")
         println(message)
       }
@@ -100,8 +114,12 @@ class CreateBaseHtmlSubcommand : Runnable {
     }
   }
 
-  private fun getHtml(title: String, content: String): String {
-    val visitor = BaseHtmlVisitor(title)
+  private fun getHtml(
+    title: String,
+    content: String,
+    affectedLineNumbers: List<Int>
+  ): String {
+    val visitor = BaseHtmlVisitor(title, affectedLineNumbers)
     StyledText(content).visit(visitor)
     return visitor.content
   }

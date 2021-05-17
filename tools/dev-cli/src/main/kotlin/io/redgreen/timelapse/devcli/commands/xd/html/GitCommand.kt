@@ -15,4 +15,9 @@ sealed class GitCommand {
     fun command(): ShellCommand =
       ShellCommand(arrayOf("git", "status"))
   }
+
+  object GetUnifiedPatch : GitCommand() {
+    fun command(commitHash: String, filePath: String): ShellCommand =
+      ShellCommand(arrayOf("git", "diff", "-u", "$commitHash^1", commitHash, "--", filePath))
+  }
 }

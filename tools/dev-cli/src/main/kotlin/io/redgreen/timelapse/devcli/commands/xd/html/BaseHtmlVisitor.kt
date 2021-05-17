@@ -6,7 +6,10 @@ import io.redgreen.design.text.TextStyle
 import org.apache.commons.text.StringEscapeUtils
 import kotlin.LazyThreadSafetyMode.NONE
 
-class BaseHtmlVisitor(private val title: String) : StyledTextVisitor {
+class BaseHtmlVisitor(
+  private val title: String,
+  private val affectedLineNumbers: List<Int> = emptyList()
+) : StyledTextVisitor {
   companion object {
     private const val INDENT = "  "
     private const val NEWLINE = "\n"
@@ -52,7 +55,13 @@ class BaseHtmlVisitor(private val title: String) : StyledTextVisitor {
       .append(NEWLINE)
       .append("""$INDENT<td class="line-number">$lineNumber</td>""")
       .append(NEWLINE)
-      .append("""$INDENT<td class="muted">""")
+
+    val muted = lineNumber !in affectedLineNumbers
+    if (muted) {
+      contentBuilder.append("""$INDENT<td class="muted">""")
+    } else {
+      contentBuilder.append("""$INDENT<td>""")
+    }
   }
 
   override fun onExitLine(lineNumber: Int) {
