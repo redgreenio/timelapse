@@ -68,7 +68,7 @@ object deps {
 
   object test {
     object junit {
-      private const val version = "5.7.1"
+      private const val version = "5.7.2"
 
       const val api = "org.junit.jupiter:junit-jupiter-api:$version"
       const val params = "org.junit.jupiter:junit-jupiter-params:$version"
