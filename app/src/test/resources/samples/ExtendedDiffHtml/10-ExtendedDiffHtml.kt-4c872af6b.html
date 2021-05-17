@@ -175,19 +175,26 @@
     .xd-comment {
       background-color: rgba(200, 200, 200, 0.4);
       color: rgba(0, 0, 0, 0.65);
-      padding: 0 0.4em 0 0;
+      padding: 0 0.4em 0 0.2em;
       border-radius: 0.18em;
       vertical-align: center;
+      position: relative;
+      align-content: right;
     }
 
     .xd-comment::before {
       content: "ef";
+      font-size: 0.8em;
       color: white;
       margin-right: 0.4em;
       background-color: red;
       font-weight: bold;
-      padding: 0 0.4em 0 0.4em;
+      padding: 0.15em 0.4em 0.15em 0.4em;
       border-radius: 0.18em 0 0 0.18em;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      margin-top: -0.8em;
     }
   </style>
   <script>
@@ -453,7 +460,7 @@
   </tr>
   <tr class="modified-line">
     <td class="line-number">63</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight"><span class="reserved-symbol">$</span><span class="curly">{</span>toDeletedRows<span class="parentheses">()<span class="curly">}</span></span></span> <span class="xd-comment">Affected call site 1/1</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight"><span class="reserved-symbol">$</span><span class="curly">{</span>toDeletedRows<span class="parentheses">()<span class="curly">}</span></span></span> <span class="xd-comment">&nbsp;&nbsp;&nbsp;Affected call site 1/1</span></td>
   </tr>
   <tr>
     <td class="line-number">64</td>
@@ -525,7 +532,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">81</td>
-    <td><span class="keyword">private fun</span> toDeletedRows<span class="parentheses">()</span>: String <span class="curly">{</span> <span class="change-count">2/2</span> <span class="xd-comment">Extract function, affects 1 call site</span> </td>
+    <td><span class="keyword">private fun</span> toDeletedRows<span class="parentheses">()</span>: String <span class="curly">{</span> <span class="change-count">2/2</span> <span class="xd-comment">&nbsp;&nbsp;&nbsp;Extract function, affects 1 call site</span> </td>
   </tr>
   <tr>
     <td class="line-number">82</td>
