@@ -24,4 +24,23 @@ class BaseHtmlVisitorTest {
     // then
     Approvals.verifyHtml(visitor.content)
   }
+
+  @Test
+  fun `it should highlight affected lines in a commit`() {
+    // given
+    val kotlinSource = """
+      fun add(x: Int, y: Int) {
+        return x + y
+      }
+      
+    """.trimIndent()
+    val styledText = StyledText(kotlinSource)
+    val visitor = BaseHtmlVisitor("Untitled", listOf(2))
+
+    // when
+    styledText.visit(visitor)
+
+    // then
+    Approvals.verifyHtml(visitor.content)
+  }
 }
