@@ -87,12 +87,18 @@ internal class PatchFileTest {
     // then
     assertThat(affectedLineNumbers)
       .containsExactly(
-        5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, // Hunk 1
-        76, 77, // Hunk 2
-        104, // Hunk 3
-        131, 133, 134, // Hunk 4
-        178, // Hunk 5
-        197, 198 // Hunk 6
+        // Hunk 1
+        5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+        // Hunk 2
+        76, 77,
+        // Hunk 3
+        104,
+        // Hunk 4
+        131, 133, 134,
+        // Hunk 5
+        178,
+        // Hunk 6
+        197, 198
       )
   }
 }
