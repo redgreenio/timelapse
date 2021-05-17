@@ -5,9 +5,10 @@ class PatchFile(private val unifiedPatch: String) {
     private const val CHAR_NEWLINE = "\n"
     private const val CHAR_SPACE = " "
     private const val CHAR_PLUS = "+"
+    private const val CHAR_MINUS = "-"
+    private const val CHAR_FORWARD_SLASH = "\\"
+    private const val HUNK_HEADER_PREFIX = "@@"
 
-    private const val HEADER_LINE_COUNT = 3
-    private const val INDEX_LINE_UNIFIED_DIFF_HEADER = 2
     private const val INDEX_PART_HUNK_B = 2
 
     fun from(unifiedPatch: String): PatchFile =
@@ -16,21 +17,41 @@ class PatchFile(private val unifiedPatch: String) {
 
   fun getAffectedLineNumbers(): List<Int> {
     val lines = unifiedPatch.split(CHAR_NEWLINE)
-    val unifiedDiffHeader = lines[INDEX_LINE_UNIFIED_DIFF_HEADER]
-    val headerParts = unifiedDiffHeader.split(CHAR_SPACE)
-    val hunkHeaderB = HunkHeader.from(headerParts[INDEX_PART_HUNK_B])
-    val hunkLines = lines.drop(HEADER_LINE_COUNT)
 
+    val unifiedDiffHeaders = lines.filter { it.startsWith(HUNK_HEADER_PREFIX) }
+    val hunkBHeaders = unifiedDiffHeaders.map { it.split(CHAR_SPACE) }.map(::hunkBHeader)
+    val hunkLinesList = unifiedDiffHeaders.mapIndexed { index, unifiedDiffHeader ->
+      val unifiedDiffHeaderIndex = lines.indexOf(unifiedDiffHeader)
+      val nextUnifiedDiffHeaderIndex = if (index == unifiedDiffHeaders.lastIndex) {
+        lines.lastIndex
+      } else {
+        lines.indexOf(unifiedDiffHeaders[index + 1]) - 1
+      }
+      lines.subList(unifiedDiffHeaderIndex + 1, nextUnifiedDiffHeaderIndex)
+    }
+
+    return hunkBHeaders
+      .zip(hunkLinesList, ::affectedLinesForB)
+      .flatten()
+  }
+
+  private fun affectedLinesForB(
+    hunkBHeader: HunkHeader,
+    hunkLines: List<String>
+  ): List<Int> {
     val affectedLineNumbers = mutableListOf<Int>()
     var offset = 0
     hunkLines.foldIndexed(affectedLineNumbers) { index, lineNumbersAccumulator, line ->
-      if (line.startsWith("-") || line.startsWith("\\")) {
+      if (line.startsWith(CHAR_MINUS) || line.startsWith(CHAR_FORWARD_SLASH)) {
         offset--
       } else if (line.startsWith(CHAR_PLUS)) {
-        lineNumbersAccumulator.add(offset + index + hunkHeaderB.startLine)
+        lineNumbersAccumulator.add(offset + index + hunkBHeader.startLine)
       }
       lineNumbersAccumulator
     }
     return affectedLineNumbers.toList()
   }
+
+  private fun hunkBHeader(headerParts: List<String>): HunkHeader =
+    HunkHeader.from(headerParts[INDEX_PART_HUNK_B])
 }

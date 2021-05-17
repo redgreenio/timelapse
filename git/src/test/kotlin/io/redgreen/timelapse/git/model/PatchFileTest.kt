@@ -72,4 +72,27 @@ internal class PatchFileTest {
     assertThat(affectedLineNumbers)
       .containsExactly(3, 4, 5)
   }
+
+  @Test
+  fun `it should get affected line numbers for side B (multiple hunks)`() {
+    // given
+    val unifiedPatch = PatchFileTest::class.java.classLoader
+      .getResource("0001-docs-add-instructions-to-setup-dev-machine.patch")!!
+      .readText()
+    val patchFile = PatchFile.from(unifiedPatch)
+
+    // when
+    val affectedLineNumbers = patchFile.getAffectedLineNumbers()
+
+    // then
+    assertThat(affectedLineNumbers)
+      .containsExactly(
+        5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, // Hunk 1
+        76, 77, // Hunk 2
+        104, // Hunk 3
+        131, 133, 134, // Hunk 4
+        178, // Hunk 5
+        197, 198 // Hunk 6
+      )
+  }
 }
