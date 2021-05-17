@@ -90,7 +90,9 @@ class CreateBaseHtmlSubcommand : Runnable {
         debug("Retrieved file content at revision: $commitHash")
         debug("Writing file content to disk: ${outputFile.canonicalPath}")
 
-        val unifiedPatchExecutionResult = GetUnifiedPatch.command(commitHash, filePath).execute()
+        val getUnifiedPatchCommand = GetUnifiedPatch.command(commitHash, filePath)
+        getUnifiedPatchCommand.log()
+        val unifiedPatchExecutionResult = getUnifiedPatchCommand.execute()
         val affectedLineNumbers = if (unifiedPatchExecutionResult is Success) {
           debug("Getting affected line numbers from patch.")
           PatchFile.from(unifiedPatchExecutionResult.output).getAffectedLineNumbers()
