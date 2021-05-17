@@ -60,7 +60,7 @@ class CreateBaseHtmlSubcommand : Runnable {
     val lsFilesCommand = GitCommand.LsFiles.command(fileName)
     lsFilesCommand.log()
     val lsFilesResult = lsFilesCommand.execute()
-    val matchingFilePaths = lsFilesResult.output.split(CHAR_NEWLINE)
+    val matchingFilePaths = lsFilesResult.output.split(CHAR_NEWLINE).filter(String::isNotBlank)
     val filePathInRepository = matchingFilePaths.first()
     val fileFound = lsFilesResult is Success && filePathInRepository.isNotEmpty()
     if (fileFound) {
