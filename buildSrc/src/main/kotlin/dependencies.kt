@@ -76,7 +76,7 @@ object deps {
     }
 
     object mockito {
-      const val core = "org.mockito:mockito-core:3.8.0"
+      const val core = "org.mockito:mockito-core:3.10.0"
       const val kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     }
 
