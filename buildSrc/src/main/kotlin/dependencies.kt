@@ -6,7 +6,7 @@ object deps {
     const val javaFx = "15"
   }
 
-  const val jgit = "org.eclipse.jgit:org.eclipse.jgit:5.11.0.202103091610-r"
+  const val jgit = "org.eclipse.jgit:org.eclipse.jgit:5.11.1.202105131744-r"
   const val caffeine = "com.github.ben-manes.caffeine:caffeine:3.0.2"
   const val eventBus = "org.greenrobot:eventbus:3.2.0"
   const val commonsText = "org.apache.commons:commons-text:1.9"
