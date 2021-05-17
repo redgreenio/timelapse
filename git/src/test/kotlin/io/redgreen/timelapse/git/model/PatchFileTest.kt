@@ -101,4 +101,27 @@ internal class PatchFileTest {
         197, 198
       )
   }
+
+  @Test
+  fun `it should get affected line numbers of side B (new file)`() {
+    // given
+    val unifiedPatch = """
+      --- a.txt	2021-05-17 16:40:35.000000000 +0530
+      +++ b.txt	2021-05-17 05:27:15.000000000 +0530
+      @@ -0,0 +1,5 @@
+      +Two roads diverged in a yellow wood,
+      +And sorry I could not travel both
+      +And be one traveler, long I stood
+      +And looked down one as far as I could
+      +To where it bent in the undergrowth;
+      \ No newline at end of file
+    """.trimIndent()
+
+    // when
+    val affectedLineNumbers = PatchFile.from(unifiedPatch).getAffectedLineNumbers()
+
+    // then
+    assertThat(affectedLineNumbers)
+      .containsExactly(1, 2, 3, 4, 5)
+  }
 }
