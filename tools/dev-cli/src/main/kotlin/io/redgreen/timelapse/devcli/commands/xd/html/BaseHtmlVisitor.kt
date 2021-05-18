@@ -3,6 +3,7 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 import io.redgreen.design.text.LineStyle
 import io.redgreen.design.text.StyledTextVisitor
 import io.redgreen.design.text.TextStyle
+import io.redgreen.timelapse.devcli.commands.TOOL_VERSION
 import org.apache.commons.text.StringEscapeUtils
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -21,6 +22,7 @@ class BaseHtmlVisitor(
 
     private const val MARKER_TITLE = "{title}"
     private const val MARKER_TABLE_ROWS = "{table-rows}"
+    private const val MARKER_VERSION = "{tool-version}"
   }
 
   private val contentBuilder = StringBuilder()
@@ -40,6 +42,7 @@ class BaseHtmlVisitor(
       return template
         .replace(MARKER_TITLE, title)
         .replace(MARKER_TABLE_ROWS, indentedTableRows)
+        .replace(MARKER_VERSION, TOOL_VERSION)
     }
 
   override fun onText(text: String) {
