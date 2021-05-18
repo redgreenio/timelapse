@@ -159,6 +159,13 @@
     .const {
       color: #660E7A;
     }
+
+    .deleted-highlight {
+      background-color: #FFB4BC;
+      margin: 0;
+      padding: 0 0.18em 0 0.18em;
+      border-radius: 0.2em;
+    }
   </style>
   <script>
     $(document).ready(function () {
@@ -205,25 +212,25 @@
     <td class="line-number">8</td>
     <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">9</td>
-    <td>&nbsp;&nbsp;<span class="keyword">val</span> <span class="modified-highlight">isAdded</span><span class="predecessor">isFirstTest</span> = <span class="keyword">this is</span> HasChanges &amp;&amp; <span class="modified-highlight"><span class="keyword">this</span>.comparisonResults.first<span class="parentheses">()</span> <span class="keyword">is</span> Added</span></td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> isAdded = <span class="keyword">this is</span> HasChanges &amp;&amp; <span class="keyword">this</span>.<span class="property">comparisonResults</span>.first<span class="parentheses">()</span> <span class="keyword">is</span> Added</td>
   </tr>
   <tr class="deleted-line">
     <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td class="predecessor">this.text == &quot;&quot;&quot;</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> isFirstTest = <span class="keyword">this is</span> HasChanges &amp;&amp; <span class="keyword">this</span>.<span class="property">text</span> == <span class="string">&quot;&quot;&quot;</span></td>
   </tr>
   <tr class="deleted-line">
     <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">fun a() {}</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">fun a() {}</span></td>
   </tr>
   <tr class="deleted-line">
     <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">fun b() {}</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">fun b() {}</span></td>
   </tr>
   <tr class="deleted-line">
     <td class="no-line-number">&ZeroWidthSpace;</td>
-    <td>&nbsp;&nbsp;<span class="predecessor">&quot;&quot;&quot;.trimIndent()</span></td>
+    <td>&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span>.trimIndent<span class="parentheses">()</span></td>
   </tr>
   <tr>
     <td class="line-number">10</td>
@@ -235,11 +242,15 @@
   </tr>
   <tr>
     <td class="line-number">12</td>
-    <td class="muted">&nbsp;&nbsp;return when {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return when</span> <span class="curly">{</span></td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">13</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight">isAdded</span><span class="predecessor">isFirstTest</span> -&gt; <span class="curly">{</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isAdded -&gt; <span class="curly">{</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isFirstTest -&gt; <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">14</td>
@@ -703,7 +714,7 @@
   </tr>
   <tr>
     <td class="line-number">129</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">130</td>

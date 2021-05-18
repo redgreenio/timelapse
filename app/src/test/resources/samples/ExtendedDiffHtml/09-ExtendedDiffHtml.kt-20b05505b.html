@@ -171,6 +171,16 @@
     .reserved-symbol {
       color: #000080;
     }
+
+    .todo {
+      color: #1818E9;
+      font-style: italic;
+    }
+
+    .todo .parentheses {
+      color: #005043;
+      font-style: italic;
+    }
   </style>
   <script>
     $(document).ready(function () {
@@ -247,7 +257,7 @@
   </tr>
   <tr>
     <td class="line-number">16</td>
-    <td class="muted">&nbsp;&nbsp;return when {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return when</span> <span class="curly">{</span></td>
   </tr>
   <tr class="modified-line">
     <td class="line-number">17</td>
@@ -255,7 +265,7 @@
   </tr>
   <tr class="modified-line">
     <td class="line-number">18</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> added = (<span class="keyword">this as</span> HasChanges).comparisonResults.first<span class="parentheses">()</span> <span class="predecessor">as Added</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> added = (<span class="keyword">this as</span> HasChanges).comparisonResults.first<span class="parentheses">()</span><span class="predecessor"> as Added</span></td>
   </tr>
   <tr>
     <td class="line-number">19</td>
@@ -335,7 +345,7 @@
   </tr>
   <tr class="modified-line">
     <td class="line-number">38</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span><span class="modified-highlight">toRows</span><span class="predecessor">toAddedRows</span><span class="parentheses">(</span>sourceCode, added<span class="parentheses">)</span><span class="curly">}</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span><span class="predecessor">toAddedRows</span><span class="modified-highlight">toRows</span><span class="parentheses">(</span>sourceCode, added<span class="parentheses">)</span><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">39</td>
@@ -359,7 +369,7 @@
   </tr>
   <tr>
     <td class="line-number">44</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">45</td>
@@ -525,117 +535,121 @@
     <td class="line-number">85</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">86</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span> -&gt; <span class="modified-highlight">TODO()</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span> -&gt; <span class="todo">TODO<span class="parentheses">()</span></span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">{<span class="predecessor"> val modified = (this as HasChanges).comparisonResults.first() as Modified</span></span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span> -&gt; <span class="curly">{</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&quot;&quot;&quot;</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> modified = <span class="parentheses">(</span><span class="keyword">this as</span> HasChanges<span class="parentheses">)</span>.<span class="property">comparisonResults</span>.first<span class="parentheses">()</span> <span class="keyword">as</span> Modified</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;html lang=&quot;en-US&quot;&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;head&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;html lang=&quot;en-US&quot;&gt;</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;style&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;head&gt;</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">.added {</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;style&gt;</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">background-color: #e6ffed;</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.added {</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #e6ffed;</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">.modified {</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">background-color: #dbedff80;</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.modified {</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #dbedff80;</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">.deleted {</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">background-color: #ffdce0;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.deleted {</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: #ffdce0;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/style&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/head&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;body&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/head&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;table&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;tbody&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;${toModifiedRows(sourceCode, modified)}&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/tbody&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;${toModifiedRows(sourceCode, modified)}&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/table&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/body&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&lt;/html&gt;</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&quot;&quot;&quot;.trimIndent()</span></td>
+    <td class="no-line-number"></td>
+    <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;</td>
   </tr>
   <tr class="deleted-line">
-    <td class="line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">}</span></td>
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span>.trimIndent<span class="parentheses">()</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">87</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">88</td>
@@ -659,7 +673,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">93</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is</span> Deleted -&gt; TODO<span class="parentheses">()</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is</span> Deleted -&gt; <span class="todo">TODO<span class="parentheses">()</span></span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">94</td>
@@ -944,6 +958,10 @@
   <tr>
     <td class="line-number">164</td>
     <td class="muted">}</td>
+  </tr>
+  <tr>
+    <td class="line-number">165</td>
+    <td></td>
   </tr>
   </tbody>
 </table>
