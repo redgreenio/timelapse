@@ -1,11 +1,11 @@
-package io.redgreen.timelapse.devcli.commands.xd
+package io.redgreen.timelapse.devcli.commands.xd.sample
 
 import picocli.CommandLine.Command
 import picocli.CommandLine.Model.CommandSpec
 import picocli.CommandLine.Spec
 
 @Command(
-  name = "xd-sample",
+  name = "sample",
   mixinStandardHelpOptions = true,
   description = ["creates seed and patch files for Xd sample"],
   hidden = true
