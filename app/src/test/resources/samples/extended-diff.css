@@ -64,7 +64,7 @@ td:nth-child(2) {
 .modified-highlight {
   background-color: #3B9DFF4D;
   margin: 0;
-  padding: 0em 0.18em 0em 0.18em;
+  padding: 0 0.18em 0 0.18em;
   border-radius: 0.2em;
 }
 
@@ -74,6 +74,13 @@ td:nth-child(2) {
 
 .added-line .line-number {
   background-color: #C5FFD5;
+}
+
+.added-highlight {
+  background-color: #C5FFD5;
+  margin: 0;
+  padding: 0 0.18em 0 0.18em;
+  border-radius: 0.2em;
 }
 
 .string {
@@ -184,4 +191,14 @@ td:nth-child(2) {
   font-weight: bold;
   padding: 0 0.4em 0 0.4em;
   border-radius: 0.18em 0 0 0.18em;
+}
+
+.todo {
+  color: #1818E9;
+  font-style: italic;
+}
+
+.todo .parentheses {
+  color: #005043;
+  font-style: italic;
 }

@@ -87,6 +87,13 @@
       background-color: #C5FFD5;
     }
 
+    .added-highlight {
+      background-color: #C5FFD5;
+      margin: 0;
+      padding: 0 0.18em 0 0.18em;
+      border-radius: 0.2em;
+    }
+
     .string {
       color: #00733B;
     }
@@ -230,7 +237,7 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/5</span></td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/6</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
@@ -250,7 +257,7 @@
   </tr>
   <tr>
     <td class="line-number">15</td>
-    <td class="muted">&nbsp;&nbsp;return when {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return when</span> <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">16</td>
@@ -530,7 +537,7 @@
   </tr>
   <tr>
     <td class="line-number">85</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;else -&gt; {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span> -&gt; <span class="curly">{</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">86</td>
@@ -607,6 +614,10 @@
   <tr>
     <td class="line-number">104</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;</td>
+  </tr>
+  <tr class="added-line">
+    <td class="line-number">105</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span><span class="added-highlight">toModifiedRows<span class="parentheses">(</span>sourceCode, modified<span class="parentheses">)</span></span><span class="curly">}</span></td>
   </tr>
   <tr class="deleted-line">
     <td></td>
@@ -688,10 +699,6 @@
     <td></td>
     <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
   </tr>
-  <tr class="added-line">
-    <td class="line-number">105</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span>toModifiedRows<span class="parentheses">(</span>sourceCode, modified<span class="parentheses">)</span><span class="curly">}</span></td>
-  </tr>
   <tr>
     <td class="line-number">106</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;</td>
@@ -714,11 +721,11 @@
   </tr>
   <tr>
     <td class="line-number">111</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">112</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td class="muted">&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">113</td>
@@ -730,7 +737,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">115</td>
-    <td><span class="keyword">private fun</span> toModifiedRows<span class="parentheses">(</span>sourceCode: String, modified: Modified<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/5</span></td>
+    <td><span class="keyword">private fun</span> toModifiedRows<span class="parentheses">(</span>sourceCode: String, modified: Modified<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/6</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">116</td>
@@ -762,7 +769,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">123</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span>classAttribute<span class="parentheses">(</span>cssClassName<span class="parentheses">)</span><span class="curly">}</span><span class="string">&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span><span class="added-highlight">classAttribute<span class="parentheses">(</span>cssClassName<span class="parentheses">)</span></span><span class="curly">}</span><span class="string">&gt;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">124</td>
@@ -770,7 +777,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">125</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;<span class="reserved-symbol">$</span></span><span class="curly">{</span>padLeftWithNbsp<span class="parentheses">(</span>line<span class="parentheses">)</span><span class="curly">}</span>&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;<span class="reserved-symbol">$</span></span><span class="curly">{</span><span class="added-highlight">padLeftWithNbsp<span class="parentheses">(</span>line<span class="parentheses">)</span></span><span class="curly">}</span>&lt;/td&gt;</td>
   </tr>
   <tr class="added-line">
     <td class="line-number">126</td>
@@ -802,7 +809,7 @@
   </tr>
   <tr>
     <td class="line-number">133</td>
-    <td><span class="keyword">private fun</span> toRows<span class="parentheses">(</span> <span class="change-count">3/5</span></td>
+    <td><span class="keyword">private fun</span> toRows<span class="parentheses">(</span> <span class="change-count">3/6</span></td>
   </tr>
   <tr>
     <td class="line-number">134</td>
@@ -848,21 +855,25 @@
     <td class="line-number">144</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</td>
   </tr>
+  <tr class="added-line">
+    <td class="line-number">145</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span><span class="added-highlight">classAttribute<span class="parentheses">(</span>cssClassName<span class="parentheses">)</span></span><span class="curly">}</span><span class="string">&gt;</span></td>
+  </tr>
   <tr class="deleted-line">
     <td class="no-line-number"></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span>classAttribute<span class="parentheses">(</span><span class="deleted-highlight">lineNumber <span class="keyword">in</span> addedRange</span><span class="parentheses">)</span><span class="curly">}</span><span class="string">&gt;</span></td>
-  </tr>
-  <tr class="modified-line">
-    <td class="line-number">145</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span>classAttribute<span class="parentheses">(</span><span class="modified-highlight">cssClassName</span><span class="parentheses">)</span><span class="curly">}</span><span class="string">&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span><span class="deleted-highlight">classAttribute<span class="parentheses">(</span>lineNumber <span class="keyword">in</span> addedRange<span class="parentheses">)</span></span><span class="curly">}</span><span class="string">&gt;</span></td>
   </tr>
   <tr>
     <td class="line-number">146</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;$lineNumber&lt;/td&gt;</td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">147</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span><span class="reserved-symbol">$</span><span class="modified-highlight"><span class="curly">{</span>padLeftWithNbsp<span class="parentheses">(</span></span>line<span class="modified-highlight"><span class="parentheses">)</span><span class="curly">}</span></span><span class="string">&lt;/td&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span><span class="reserved-symbol">$</span><span class="curly">{</span><span class="added-highlight">padLeftWithNbsp<span class="parentheses">(</span>line<span class="parentheses">)</span></span><span class="curly">}</span><span class="string">&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="line-number">147</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span><span class="reserved-symbol">$</span>line<span class="string">&lt;/td&gt;</span></td>
   </tr>
   <tr>
     <td class="line-number">148</td>
@@ -892,44 +903,60 @@
     <td class="line-number">154</td>
     <td class="muted"></td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">155</td>
-    <td><span class="keyword">private fun</span> classAttribute<span class="parentheses">(</span><span class="modified-highlight">cssClassName: String = <span class="string">&quot;&quot;</span></span><span class="predecessor">added: Boolean</span><span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">4/5</span></td>
+    <td><span class="keyword">private fun</span> classAttribute<span class="parentheses">(</span>cssClassName: String = <span class="string">&quot;&quot;</span><span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">4/6</span></td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">156</td>
     <td>&nbsp;&nbsp;<span class="keyword">if</span> <span class="parentheses">(</span>cssClassName.isEmpty<span class="parentheses">(</span><span class="parentheses">)</span><span class="parentheses">)</span> <span class="curly">{</span></td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">157</td>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">&quot;&quot;</span></td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">158</td>
     <td>&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">159</td>
     <td>&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">&quot; class=</span><span class="escape-sequence">\&quot;$</span>cssClassName<span class="escape-sequence">\&quot;</span><span class="string">&quot;</span></td>
   </tr>
-  <tr class="deleted-line">
-    <td></td>
-    <td>&nbsp;&nbsp;<span class="predecessor">return if (added) {</span></td>
-  </tr>
-  <tr class="deleted-line">
-    <td></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&quot; class=\&quot;added\&quot;&quot;</span></td>
-  </tr>
-  <tr class="deleted-line">
-    <td></td>
-    <td>&nbsp;&nbsp;<span class="predecessor">} else {</span></td>
-  </tr>
-  <tr class="deleted-line">
-    <td></td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="predecessor">&quot;&quot;</span></td>
-  </tr>
-  <tr class="modified-line">
+  <tr class="added-line">
     <td class="line-number">160</td>
+    <td><span class="curly">}</span></td>
+  </tr>
+  <tr class="readability-line">
+    <td class="no-line-number">&ZeroWidthSpace;</td>
+    <td></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td><span class="keyword">private fun</span> classAttribute<span class="parentheses">(</span>added: Boolean<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">5/6</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">return if</span> <span class="parentheses">(</span>added<span class="parentheses">)</span> <span class="curly">{</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot; class=</span><span class="escape-sequence">\&quot;</span>added<span class="escape-sequence">\&quot;</span><span class="string">&quot;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span> <span class="keyword">else</span> <span class="curly">{</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td><span class="curly">&nbsp;&nbsp;}</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
     <td><span class="curly">}</span></td>
   </tr>
   <tr>
@@ -994,7 +1021,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">176</td>
-    <td><span class="keyword">private fun</span> padLeftWithNbsp<span class="parentheses">(</span>line: String<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">5/5</span></td>
+    <td><span class="keyword">private fun</span> padLeftWithNbsp<span class="parentheses">(</span>line: String<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">6/6</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">177</td>
@@ -1015,6 +1042,10 @@
   <tr class="added-line">
     <td class="line-number">181</td>
     <td><span class="curly">}</span></td>
+  </tr>
+  <tr>
+    <td class="line-number">182</td>
+    <td></td>
   </tr>
   </tbody>
 </table>

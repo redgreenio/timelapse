@@ -87,6 +87,13 @@
       background-color: #C5FFD5;
     }
 
+    .added-highlight {
+      background-color: #C5FFD5;
+      margin: 0;
+      padding: 0 0.18em 0 0.18em;
+      border-radius: 0.2em;
+    }
+
     .string {
       color: #00733B;
     }
@@ -260,15 +267,15 @@
   </tr>
   <tr>
     <td class="line-number">14</td>
-    <td class="muted">&nbsp;&nbsp;return when {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return when</span> <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">15</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;isAdded -&gt; {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isAdded -&gt; <span class="curly">{</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">16</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> added = <span class="parentheses">(</span><span class="keyword">this</span> <span class="keyword">as</span> HasChanges<span class="parentheses">)</span>.comparisonResults.first<span class="parentheses">()</span> <span class="keyword">as</span> Added</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> added = <span class="parentheses">(</span><span class="keyword">this</span> <span class="keyword">as</span> HasChanges<span class="parentheses">)</span>.<span class="property">comparisonResults</span>.first<span class="parentheses">()</span> <span class="keyword">as</span> Added</td>
   </tr>
   <tr>
     <td class="line-number">17</td>
@@ -346,6 +353,10 @@
     <td class="line-number">35</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;</td>
   </tr>
+  <tr class="added-line">
+    <td class="line-number">36</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span><span class="added-highlight"><span class="identifier">toRows</span><span class="parentheses">(</span>sourceCode, added<span class="parentheses">)</span></span><span class="curly">}</span></td>
+  </tr>
   <tr class="deleted-line">
     <td></td>
     <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;</td>
@@ -378,10 +389,6 @@
     <td></td>
     <td class="string">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
   </tr>
-  <tr class="modified-line">
-    <td class="line-number">36</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight"><span class="reserved-symbol">$</span><span class="curly">{</span><span class="identifier">toRows</span><span class="parentheses">(</span>sourceCode, added<span class="parentheses">)</span><span class="curly">}</span></span> <span class="xd-comment">Affected call site 1/1</span></td>
-  </tr>
   <tr>
     <td class="line-number">37</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;</td>
@@ -404,7 +411,7 @@
   </tr>
   <tr>
     <td class="line-number">42</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">43</td>
@@ -752,11 +759,11 @@
   </tr>
   <tr>
     <td class="line-number">129</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td class="muted">&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">130</td>
-    <td class="muted">}</td>
+    <td class="muted"><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">131</td>
@@ -776,11 +783,11 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">135</td>
-    <td><span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/4</span> <span class="xd-comment">Extract function, affects 1 call site</span></td>
+    <td><span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/4</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">136</td>
-    <td>&nbsp;&nbsp;<span class="keyword">val</span> lines = sourceCode.split<span class="parentheses">(</span><span class="const">NEWLINE_CHAR</span><span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> lines = sourceCode.split<span class="parentheses">(</span><span class="const"><span class="added-highlight">NEWLINE_CHAR</span></span><span class="parentheses">)</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">137</td>
@@ -808,7 +815,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">143</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span>classAttribute<span class="parentheses">(</span>lineNumber <span class="keyword">in</span> addedRange<span class="parentheses">)</span><span class="curly">}</span><span class="string">&gt;</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr</span><span class="reserved-symbol">$</span><span class="curly">{</span><span class="added-highlight">classAttribute<span class="parentheses">(</span>lineNumber <span class="keyword">in</span> addedRange<span class="parentheses">)</span></span><span class="curly">}</span><span class="string">&gt;</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">144</td>
@@ -836,7 +843,7 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">150</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return</span> offsetWithPadding<span class="parentheses">(</span>tableRows<span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;<span class="keyword">return</span> <span class="added-highlight">offsetWithPadding<span class="parentheses">(</span>tableRows<span class="parentheses">)</span></span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">151</td>
@@ -888,11 +895,11 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">163</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span><span class="reserved-symbol">$</span><span class="const">NEWLINE_CHAR</span><span class="string">&quot;</span><span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span><span class="reserved-symbol">$</span><span class="const"><span class="added-highlight">NEWLINE_CHAR</span></span><span class="string">&quot;</span><span class="parentheses">)</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">164</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.split<span class="parentheses">(</span><span class="const">NEWLINE_CHAR</span><span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.split<span class="parentheses">(</span><span class="const"><span class="added-highlight">NEWLINE_CHAR</span></span><span class="parentheses">)</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">165</td>
@@ -924,11 +931,15 @@
   </tr>
   <tr class="added-line">
     <td class="line-number">172</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span><span class="reserved-symbol">$</span><span class="const">NEWLINE_CHAR</span><span class="string">&quot;</span><span class="parentheses">)</span></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString<span class="parentheses">(</span><span class="string">&quot;</span><span class="reserved-symbol">$</span><span class="const"><span class="added-highlight">NEWLINE_CHAR</span></span><span class="string">&quot;</span><span class="parentheses">)</span></td>
   </tr>
   <tr class="added-line">
     <td class="line-number">173</td>
     <td><span class="curly">}</span></td>
+  </tr>
+  <tr>
+    <td class="line-number">174</td>
+    <td></td>
   </tr>
   </tbody>
 </table>
