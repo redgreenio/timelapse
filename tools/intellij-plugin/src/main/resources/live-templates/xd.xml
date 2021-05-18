@@ -1,0 +1,34 @@
+<templateSet group="Timelapse (XD HTML)">
+  <template name="curly" value="&lt;span class=&quot;curly&quot;&gt;$SELECTION$&lt;/span&gt;" shortcut="TAB" description="Surround with &lt;span class=&quot;curly&quot;&gt;&lt;/span&gt;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="HTML" value="true" />
+    </context>
+  </template>
+  <template name="keyword" value="&lt;span class=&quot;keyword&quot;&gt;$SELECTION$&lt;/span&gt;" shortcut="TAB" description="Surround with &lt;span class=&quot;keyword&quot;&gt;&lt;/span&gt;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="HTML" value="true" />
+    </context>
+  </template>
+  <template name="property" value="&lt;span class=&quot;property&quot;&gt;$SELECTION$&lt;/span&gt;" shortcut="TAB" description="Surround with &lt;span class=&quot;property&quot;&gt;&lt;/span&gt;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="HTML" value="true" />
+    </context>
+  </template>
+  <template name="parentheses" value="&lt;span class=&quot;parentheses&quot;&gt;$SELECTION$&lt;/span&gt;" shortcut="TAB" description="Surround with &lt;span class=&quot;parentheses&quot;&gt;&lt;/span&gt;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="HTML" value="true" />
+    </context>
+  </template>
+  <template name="string" value="&lt;span class=&quot;string&quot;&gt;$SELECTION$&lt;/span&gt;" shortcut="TAB" description="Surround with &lt;span class=&quot;string&quot;&gt;&lt;/span&gt;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="HTML" value="true" />
+      <option name="JSX_HTML" value="true" />
+    </context>
+  </template>
+  <template name="todo" value="&lt;span class=&quot;todo&quot;&gt;$SELECTION$&lt;/span&gt;" shortcut="TAB" description="Surround with &lt;span class=&quot;todo&quot;&gt;&lt;/span&gt;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="HTML" value="true" />
+      <option name="JSX_HTML" value="true" />
+    </context>
+  </template>
+</templateSet>

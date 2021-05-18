@@ -1,0 +1,36 @@
+<idea-plugin>
+  <id>io.redgreen.timelapse.dev</id>
+  <name>Timelapse Dev</name>
+  <version>0.0.1</version>
+  <vendor email="ragunath@redgreen.io" url="https://redgreen.io">Red Green, Inc.</vendor>
+  <depends>com.intellij.modules.platform</depends>
+
+  <description><![CDATA[
+    Dev tooling for Red Green's Timelapse project
+  ]]></description>
+
+  <change-notes><![CDATA[
+    <ul>
+      <li>Templates for XD HTML tags</li>
+    </ul>
+  ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="201"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+     on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <defaultLiveTemplatesProvider implementation="io.redgreen.timelapse.dev.templates.XdLiveTemplatesProvider"/>
+    <liveTemplateContext implementation="io.redgreen.timelapse.dev.templates.TimelapseDevTemplateContextType"/>
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+</idea-plugin>

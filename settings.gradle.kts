@@ -12,4 +12,5 @@ include(
   "functions",
   "languages",
   "tools:dev-cli",
+  "tools:intellij-plugin",
 )
