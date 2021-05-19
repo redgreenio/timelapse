@@ -7,7 +7,7 @@ dependencies {
   implementation(deps.log4j.core)
 
   antlr(deps.antlr.core)
-  implementation(deps.antlr.runtime)
+  api(deps.antlr.runtime)
 
   testImplementation(deps.test.junit.api)
   testRuntimeOnly(deps.test.junit.engine)

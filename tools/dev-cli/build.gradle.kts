@@ -12,6 +12,7 @@ application {
 dependencies {
   implementation(projects.design)
   implementation(projects.git)
+  implementation(projects.languages)
 
   implementation(deps.picocli)
   implementation(deps.commonsText)

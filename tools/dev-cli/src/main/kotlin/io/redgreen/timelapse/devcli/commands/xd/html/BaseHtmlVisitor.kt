@@ -75,19 +75,19 @@ class BaseHtmlVisitor(
   }
 
   override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
-    // no-p
+    // no-op
   }
 
   override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
-    // no-p
+    // no-op
   }
 
   override fun onBeginStyle(textStyle: TextStyle) {
-    // no-p
+    contentBuilder.append("""<span class="${textStyle.name}">""")
   }
 
   override fun onEndStyle(textStyle: TextStyle) {
-    // no-p
+    contentBuilder.append("</span>")
   }
 
   private fun toHtmlFriendly(line: String): String {
