@@ -50,6 +50,10 @@ install-dev-cli
 
 ## 4. Changelog
 
+### [0.0.12] - 2021-05-19
+
+- Add `-nsh` `--no-syntax-highlight` option to `html` subcommand.
+
 ### [0.0.11] - 2021-05-19
 
 - Add syntax highlighting to a few Kotlin keywords.
