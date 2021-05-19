@@ -187,21 +187,42 @@
       border-radius: 0.2em;
     }
 
-    .xd-comment {
+    .xd-extract-function {
       background-color: rgba(200, 200, 200, 0.4);
       color: rgba(0, 0, 0, 0.65);
       padding: 0 0.4em 0 0.2em;
       border-radius: 0.18em;
     }
 
-    .xd-comment::extract-function {
+    .xd-extract-function::before {
       content: "ef";
       font-size: 0.8em;
       color: white;
       margin-right: 0.4em;
       background-color: red;
       font-weight: bold;
-      padding: 0.15em 0.4em 0.15em 0.4em;
+      padding: 0.152em 0.4em 0.152em 0.4em;
+      border-radius: 0.18em 0 0 0.18em;
+      position: relative;
+      top: -0.1em;
+      left: -0.25em;
+    }
+
+    .xd-rename-function {
+      background-color: rgba(200, 200, 200, 0.4);
+      color: rgba(0, 0, 0, 0.65);
+      padding: 0 0.4em 0 0.2em;
+      border-radius: 0.18em;
+    }
+
+    .xd-rename-function::before {
+      content: "re";
+      font-size: 0.8em;
+      color: white;
+      margin-right: 0.4em;
+      background-color: red;
+      font-weight: bold;
+      padding: 0.152em 0.4em 0.152em 0.4em;
       border-radius: 0.18em 0 0 0.18em;
       position: relative;
       top: -0.1em;
@@ -269,11 +290,11 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td class="muted">@SuppressWarnings(&quot;LongMethod&quot;)</td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/6</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
-    <td class="muted">fun ExtendedDiff.toHtml(): String {</td>
+    <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">12</td>
@@ -293,7 +314,7 @@
   </tr>
   <tr>
     <td class="line-number">16</td>
-    <td class="muted">&nbsp;&nbsp;return when {</td>
+    <td class="muted">&nbsp;&nbsp;<span class="keyword">return when</span> <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">17</td>
@@ -409,11 +430,11 @@
   </tr>
   <tr>
     <td class="line-number">45</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;isDeletion -&gt; {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isDeletion -&gt; <span class="curly">{</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">46</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>sourceCode = (this <span class="keyword">as </span>HasChanges).sourceCode</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>sourceCode = <span class="parentheses">(</span><span class="keyword">this as </span>HasChanges<span class="parentheses">)</span>.<span class="property">sourceCode</span></td>
   </tr>
   <tr>
     <td class="line-number">47</td>
@@ -487,17 +508,21 @@
     <td class="line-number">64</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;table&gt;</td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">65</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tbody&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">66</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${toDeletedRows(sourceCode)}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span>toDeletedRows<span class="parentheses">(</span>sourceCode<span class="parentheses">)</span><span class="curly">}</span></td>
   </tr>
-  <tr>
+  <tr class="deleted-line">
+    <td class="line-number">66</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span>toDeletedRows<span class="parentheses">(<span class="parentheses">)</span><span class="curly">}</span></td>
+  </tr>
+  <tr class="added-line">
     <td class="line-number">67</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tbody&gt;</span></td>
   </tr>
   <tr>
     <td class="line-number">68</td>
@@ -517,7 +542,7 @@
   </tr>
   <tr>
     <td class="line-number">72</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">73</td>
@@ -525,11 +550,11 @@
   </tr>
   <tr>
     <td class="line-number">74</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">75</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">76</td>
@@ -567,105 +592,189 @@
     <td class="line-number">84</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">85</td>
-    <td><span class="keyword">private </span><span class="keyword">fun </span>toDeletedRows(sourceCode: String): String {</td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>toDeletedRows<span class="parentheses">(</span>sourceCode: String<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/6</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">86</td>
     <td>&nbsp;&nbsp;<span class="keyword">val </span>unmodifiedRowsNew = sourceCode</td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">87</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.split(NEWLINE_CHAR)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.<span class="property">split</span><span class="parentheses">(</span><span class="const">NEWLINE_CHAR</span><span class="parentheses">)</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">88</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.mapIndexed { index, line -&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.<span class="property">mapIndexed</span> <span class="curly">{</span> index, line -&gt;</td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">89</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>lineNumber = index + 1</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>lineNumber = index + <span class="number">1</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">90</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">91</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">92</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;$lineNumber&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span><span class="reserved-symbol">$</span>lineNumber<span class="string">&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">93</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;${padStartWithNbsp(line)}&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span><span class="reserved-symbol">$</span><span class="curly">{</span>padStartWithNbsp<span class="parentheses">(</span>line<span class="parentheses">)</span><span class="curly">}</span><span class="string">&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">94</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">95</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;.trimIndent()</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span>.trimIndent<span class="parentheses">()</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">96</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">97</td>
     <td></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">98</td>
-    <td>&nbsp;&nbsp;<span class="keyword">val </span>unmodifiedRows = offsetWithPadding(unmodifiedRowsNew)</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val </span>unmodifiedRows = offsetWithPadding<span class="parentheses">(</span>unmodifiedRowsNew<span class="parentheses">)</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">99</td>
     <td></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">100</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return </span>&quot;&quot;&quot;&lt;tr class=&quot;deleted&quot;&gt;</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return </span><span class="string">&quot;&quot;&quot;&lt;tr class=&quot;deleted&quot;&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">101</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">102</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;fun a() {&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;fun a() {&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">103</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">104</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;deleted&quot;&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">105</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">106</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;}&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;}&lt;/td&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">107</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">108</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$unmodifiedRows&quot;&quot;&quot;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span>unmodifiedRows<span class="string">&quot;&quot;&quot;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">109</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
+  </tr>
+  <tr class="readability-line">
+    <td class="no-line-number">&ZeroWidthSpace;</td>
+    <td></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>toDeletedRows<span class="parentheses">(</span>sourceCode: String<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">3/6</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">return </span><span class="string">&quot;&quot;&quot;&lt;tbody&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;fun a() {&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=&quot;deleted&quot;&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;}&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;1&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;fun b() {&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;2&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;}&lt;/td&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tr&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tbody&gt;&quot;&quot;&quot;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">110</td>
@@ -673,7 +782,7 @@
   </tr>
   <tr>
     <td class="line-number">111</td>
-    <td class="muted">private fun toModifiedRows(sourceCode: String, modified: Modified): String {</td>
+    <td>private fun toModifiedRows(sourceCode: String, modified: Modified): String { <span class="change-count">4/6</span></td>
   </tr>
   <tr>
     <td class="line-number">112</td>
@@ -689,7 +798,7 @@
   </tr>
   <tr>
     <td class="line-number">115</td>
-    <td class="muted">&nbsp;&nbsp;val tableRows = lines.mapIndexed { index, line -&gt;</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> tableRows = lines.<span class="property">mapIndexed</span> <span class="curly">{</span> index, line -&gt;</td>
   </tr>
   <tr>
     <td class="line-number">116</td>
@@ -711,9 +820,9 @@
     <td class="line-number">120</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;$lineNumber&lt;/td&gt;</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">121</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;${padStartWithNbsp(line)}&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span><span class="reserved-symbol">$</span><span class="curly">{</span>pad<span class="modified-highlight">Start</span><span class="predecessor">Left</span>WithNbsp<span class="parentheses">(</span>line<span class="parentheses">)</span><span class="curly">}</span><span class="string">&lt;/td&gt;</span></td>
   </tr>
   <tr>
     <td class="line-number">122</td>
@@ -725,7 +834,7 @@
   </tr>
   <tr>
     <td class="line-number">124</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">125</td>
@@ -737,7 +846,7 @@
   </tr>
   <tr>
     <td class="line-number">127</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">128</td>
@@ -745,19 +854,19 @@
   </tr>
   <tr>
     <td class="line-number">129</td>
-    <td class="muted">private fun toAddedRows(</td>
+    <td><span class="keyword">private fun</span> toAddedRows<span class="parentheses">(</span> <span class="change-count">5/6</span></td>
   </tr>
   <tr>
     <td class="line-number">130</td>
-    <td class="muted">&nbsp;&nbsp;sourceCode: String,</td>
+    <td>&nbsp;&nbsp;sourceCode: String,</td>
   </tr>
   <tr>
     <td class="line-number">131</td>
-    <td class="muted">&nbsp;&nbsp;added: Added</td>
+    <td>&nbsp;&nbsp;added: Added</td>
   </tr>
   <tr>
     <td class="line-number">132</td>
-    <td class="muted">): String {</td>
+    <td><span class="parentheses">)</span>: String <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">133</td>
@@ -773,11 +882,11 @@
   </tr>
   <tr>
     <td class="line-number">136</td>
-    <td class="muted">&nbsp;&nbsp;val tableRows = lines</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> tableRows = lines</td>
   </tr>
   <tr>
     <td class="line-number">137</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;.mapIndexed { index, line -&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="property">.mapIndexed</span> <span class="curly">{</span> index, line -&gt;</td>
   </tr>
   <tr>
     <td class="line-number">138</td>
@@ -801,7 +910,7 @@
   </tr>
   <tr>
     <td class="line-number">143</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;${padStartWithNbsp(line)}&lt;/td&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;td&gt;</span><span class="reserved-symbol">$</span><span class="curly">{</span>pad<span class="modified-highlight">Start</span><span class="predecessor">Left</span>WithNbsp<span class="parentheses">(</span>line<span class="parentheses">)</span><span class="curly">}</span><span class="string">&lt;/td&gt;</span></td>
   </tr>
   <tr>
     <td class="line-number">144</td>
@@ -813,7 +922,7 @@
   </tr>
   <tr>
     <td class="line-number">146</td>
-    <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">147</td>
@@ -825,7 +934,7 @@
   </tr>
   <tr>
     <td class="line-number">149</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">150</td>
@@ -915,9 +1024,13 @@
     <td class="line-number">171</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="readability-line">
+    <td class="no-line-number"></td>
+    <td><span class="xd-rename-function">Rename function, affects 2 call sites.</span></td>
+  </tr>
+  <tr class="modified-line">
     <td class="line-number">172</td>
-    <td><span class="keyword">private </span><span class="keyword">fun </span>padStartWithNbsp(line: String): String {</td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>pad<span class="modified-highlight">Start</span><span class="predecessor">Left</span>WithNbsp<span class="parentheses">(</span>line: String<span class="parentheses">)</span>: String <span class="muted">{</span> <span class="change-count">6/6</span></td>
   </tr>
   <tr>
     <td class="line-number">173</td>
