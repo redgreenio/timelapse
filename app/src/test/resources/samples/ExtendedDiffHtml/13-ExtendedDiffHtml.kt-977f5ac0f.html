@@ -269,23 +269,55 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td class="muted">@SuppressWarnings(&quot;LongMethod&quot;)</td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/1</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
-    <td class="muted">fun ExtendedDiff.toHtml(): String {</td>
+    <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">12</td>
-    <td>&nbsp;&nbsp;<span class="keyword">val </span>result = (this <span class="keyword">as </span>HasChanges).comparisonResults.first()</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val </span>result = <span class="parentheses">(</span><span class="keyword">this as </span>HasChanges<span class="parentheses">)</span>.<span class="property">comparisonResults</span>.<span class="property">first</span><span class="parentheses">()</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> isAdded = <span class="keyword">this is</span> HasChanges && <span class="keyword">this</span>.<span class="property">comparisonResults</span>.<span class="property">first</span><span class="parentheses">()</span> <span class="keyword">is</span> Added</td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> isDeletion = <span class="keyword">this is</span> HasChanges && <span class="keyword">this</span>.<span class="property">comparisonResults</span>.<span class="property">first</span><span class="parentheses">()</span> <span class="keyword">is</span> Deleted</td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> isModified = <span class="keyword">this is</span> HasChanges && <span class="keyword">this</span>.<span class="property">comparisonResults</span>.<span class="property">first</span><span class="parentheses">()</span> <span class="keyword">is</span> Modified</td>
   </tr>
   <tr>
     <td class="line-number">13</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">14</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return </span>&quot;&quot;&quot;</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return </span><span class="string">&quot;&quot;&quot;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">return when</span> <span class="curly">{</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isAdded || isModified -> <span class="curly">{</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> result = <span class="parentheses">(</span><span class="keyword">this as</span> HasChanges<span class="parentheses">)</span>.<span class="property">comparisonResults</span>.<span class="property">first</span><span class="parentheses">()</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number">&ZeroWidthSpace;</td>
+    <td></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</td>
   </tr>
   <tr>
     <td class="line-number">15</td>
@@ -377,11 +409,140 @@
   </tr>
   <tr>
     <td class="line-number">37</td>
-    <td>&nbsp;&nbsp;&quot;&quot;&quot;.trimIndent()</td>
+    <td class="muted">&nbsp;&nbsp;&quot;&quot;&quot;.trimIndent()</td>
   </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;isDeletion -> <span class="curly">{</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> sourceCode = <span class="parentheses">(</span><span class="keyword">this as</span> HasChanges<span class="parentheses">)</span>.<span class="property">sourceCode</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val</span> deleted = <span class="keyword">this</span>.<span class="property">comparisonResults</span>.<span class="property">first</span><span class="parentheses">()</span> <span class="keyword">as</span> Deleted</td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number">&ZeroWidthSpace;</td>
+    <td></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;html lang=&quot;en-US&quot;&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;head&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;style&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.added {</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #e6ffed;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.modified {</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #dbedff80;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">.deleted {</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">background-color: #ffdce0;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">}</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/style&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/head&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;body&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;table&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tbody&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span>toRows<span class="parentheses">(</span>sourceCode, deleted<span class="parentheses">)</span><span class="curly">}</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/tbody&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/table&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/body&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;/html&gt;</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&quot;&quot;&quot;</span>.trimIndent<span class="parentheses">()</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="curly">}</span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;else -> <span class="todo">TODO<span class="parentheses">()</span></span></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span></td>
+  </tr>
+
   <tr>
     <td class="line-number">38</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">39</td>
