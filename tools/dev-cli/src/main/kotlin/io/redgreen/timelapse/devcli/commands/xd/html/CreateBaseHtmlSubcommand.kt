@@ -64,6 +64,9 @@ class CreateBaseHtmlSubcommand : Runnable {
   @Option(names = ["-d", "--debug"], description = ["Print debug logs"])
   var debug: Boolean = false
 
+  @Option(names = ["-nsh", "--no-syntax-highlight"], description = ["No syntax highlight on unmuted lines"])
+  var noSyntaxHighlight: Boolean = false
+
   override fun run() {
     val statusCommand = GitCommand.Status.command()
     statusCommand.log()
@@ -158,8 +161,12 @@ class CreateBaseHtmlSubcommand : Runnable {
     affectedLineNumbers: List<Int>
   ): StyledText {
     val styledText = StyledText(content)
-    addStylesForTokens(styledText, affectedLineNumbers)
-    return styledText
+    return if (noSyntaxHighlight) {
+      styledText
+    } else {
+      addStylesForTokens(styledText, affectedLineNumbers)
+      styledText
+    }
   }
 
   private fun addStylesForTokens(
