@@ -187,27 +187,6 @@
       border-radius: 0.2em;
     }
 
-    .xd-comment {
-      background-color: rgba(200, 200, 200, 0.4);
-      color: rgba(0, 0, 0, 0.65);
-      padding: 0 0.4em 0 0.2em;
-      border-radius: 0.18em;
-    }
-
-    .xd-comment::before {
-      content: "ef";
-      font-size: 0.8em;
-      color: white;
-      margin-right: 0.4em;
-      background-color: red;
-      font-weight: bold;
-      padding: 0.15em 0.4em 0.15em 0.4em;
-      border-radius: 0.18em 0 0 0.18em;
-      position: relative;
-      top: -0.1em;
-      left: -0.25em;
-    }
-
     .todo {
       color: #1818E9;
       font-style: italic;
@@ -437,11 +416,11 @@
   </tr>
   <tr>
     <td class="line-number">52</td>
-    <td class="muted">private fun toDeletedRows(sourceCode: String, deleted: Deleted): String {</td>
+    <td><span class="keyword">private fun</span> toDeletedRows<span class="parentheses">(</span>sourceCode: String, deleted: Deleted<span class="parentheses">)</span>: String <span class="curly">{</span></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">53</td>
-    <td>&nbsp;&nbsp;<span class="keyword">val </span>unchangedRows = sourceCode</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val </span><span class="modified-highlight">unchangedRows</span><span class="predecessor">unmodifiedRowsNew</span> = sourceCode</td>
   </tr>
   <tr>
     <td class="line-number">54</td>
@@ -486,10 +465,14 @@
   <tr>
     <td class="line-number">64</td>
     <td class="muted"></td>
+  </tr><tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> unmodifiedRows = offsetWithPadding<span class="parentheses">(</span>unmodifiedRowsNew<span class="parentheses">)</span></td>
   </tr>
-  <tr>
+  </tr>
+  <tr class="modified-line">
     <td class="line-number">65</td>
-    <td>&nbsp;&nbsp;<span class="keyword">val </span>deletedRows = deleted.snippet.split(NEWLINE_CHAR).map { line -&gt;</td>
+    <td>&nbsp;&nbsp;<span class="keyword">val </span><span class="modified-highlight">deletedRows</span><span class="predecessor">newDeletedRowsWithoutOffset</span> = deleted.<span class="property">snippet</span>.<span class="property">split</span><span class="parentheses">(</span><span class="const">NEWLINE_CHAR</span><span class="parentheses">)</span>.<span class="property">map</span> <span class="curly">{</span> line -&gt;</td>
   </tr>
   <tr>
     <td class="line-number">66</td>
@@ -523,17 +506,33 @@
     <td class="line-number">73</td>
     <td class="muted"></td>
   </tr>
-  <tr>
-    <td class="line-number">74</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return </span>&quot;&quot;&quot;${offsetWithPadding(deletedRows)}</td>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">val</span> deletedRows = offsetWithPadding<span class="parentheses">(</span>newDeletedRowsWithoutOffset<span class="parentheses">)</span></td>
   </tr>
-  <tr>
+  <tr class="readability-line">
+    <td class="no-line-number">&ZeroWidthSpace;</td>
+    <td></td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;<span class="keyword">return</span> <span class="string">"""</span><span class="reserved-symbol">$</span>deletedRows</td>
+  </tr>
+  <tr class="deleted-line">
+    <td class="no-line-number"></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span>unmodifiedRows<span class="string">"""</span></td>
+  </tr>
+  <tr class="added-line">
+    <td class="line-number">74</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return </span><span class="string">&quot;&quot;&quot;</span><span class="reserved-symbol">$</span><span class="curly">{</span>offsetWithPadding<span class="parentheses">(</span>deletedRows<span class="parentheses">)</span><span class="curly">}</span></td>
+  </tr>
+  <tr class="added-line">
     <td class="line-number">75</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${offsetWithPadding(unchangedRows)}&quot;&quot;&quot;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="reserved-symbol">$</span><span class="curly">{</span>offsetWithPadding<span class="parentheses">(</span>unchangedRows<span class="parentheses">)</span><span class="curly">}</span><span class="string">&quot;&quot;&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">76</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">77</td>
