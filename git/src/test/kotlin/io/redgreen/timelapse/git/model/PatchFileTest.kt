@@ -1,6 +1,7 @@
 package io.redgreen.timelapse.git.model
 
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.timelapse.git.model.PatchFile.Side
 import org.junit.jupiter.api.Test
 
 internal class PatchFileTest {
@@ -17,7 +18,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.affectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers(Side.B)
 
     // then
     assertThat(affectedLineNumbers)
@@ -40,7 +41,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.affectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers(Side.B)
 
     // then
     assertThat(affectedLineNumbers)
@@ -66,7 +67,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.affectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers(Side.B)
 
     // then
     assertThat(affectedLineNumbers)
@@ -82,7 +83,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.affectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers(Side.B)
 
     // then
     assertThat(affectedLineNumbers)
@@ -118,7 +119,7 @@ internal class PatchFileTest {
     """.trimIndent()
 
     // when
-    val affectedLineNumbers = PatchFile.from(unifiedPatch).affectedLineNumbers()
+    val affectedLineNumbers = PatchFile.from(unifiedPatch).affectedLineNumbers(Side.B)
 
     // then
     assertThat(affectedLineNumbers)
