@@ -184,7 +184,7 @@ class CreateBaseHtmlSubcommand : Runnable {
       .onEach {
         if (isKeyword(it.type)) {
           val startIndex = it.charPositionInLine
-          val stopIndex = startIndex + it.text.length
+          val stopIndex = startIndex + it.text.length - 1
           outStyledText.addStyle(TextStyle("keyword", it.line, startIndex..stopIndex))
         }
       }
