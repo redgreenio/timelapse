@@ -53,29 +53,28 @@ class PatchFile(private val unifiedPatch: String) {
     hunkHeader: HunkHeader,
     hunkLines: List<String>
   ): List<Int> {
-    val affectedLineNumbers = mutableListOf<Int>()
-    var offset = 0
-    hunkLines.foldIndexed(affectedLineNumbers) { index, lineNumbersAccumulator, line ->
-      if (line.startsWith(CHAR_PLUS) || line.startsWith(CHAR_FORWARD_SLASH)) {
-        offset--
-      } else if (line.startsWith(CHAR_MINUS) && line != END_OF_PATCH) {
-        lineNumbersAccumulator.add(offset + index + hunkHeader.startLine)
-      }
-      lineNumbersAccumulator
-    }
-    return affectedLineNumbers.toList()
+    return affectedLines(hunkLines, hunkHeader, CHAR_PLUS) { it.startsWith(CHAR_MINUS) && it != END_OF_PATCH }
   }
 
   private fun affectedLinesForB(
     hunkHeader: HunkHeader,
     hunkLines: List<String>
   ): List<Int> {
+    return affectedLines(hunkLines, hunkHeader, CHAR_MINUS) { it.startsWith(CHAR_PLUS) }
+  }
+
+  private fun affectedLines(
+    hunkLines: List<String>,
+    hunkHeader: HunkHeader,
+    modificationChar: String,
+    modificationCheck: (line: String) -> Boolean
+  ): List<Int> {
     val affectedLineNumbers = mutableListOf<Int>()
     var offset = 0
     hunkLines.foldIndexed(affectedLineNumbers) { index, lineNumbersAccumulator, line ->
-      if (line.startsWith(CHAR_MINUS) || line.startsWith(CHAR_FORWARD_SLASH)) {
+      if (line.startsWith(modificationChar) || line.startsWith(CHAR_FORWARD_SLASH)) {
         offset--
-      } else if (line.startsWith(CHAR_PLUS)) {
+      } else if (modificationCheck(line)) {
         lineNumbersAccumulator.add(offset + index + hunkHeader.startLine)
       }
       lineNumbersAccumulator
