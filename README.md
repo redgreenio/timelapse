@@ -75,38 +75,7 @@ gradlew installGitHooks
 
 ### 1. dev-cli
 
-`dev-cli` is an internal tool that can help with the following dev related tasks.
-
-- Create a base HTML file to create samples for the XD feature.
-
-#### Installation (Linux & macOS)
-
-```shell
-./install-dev-cli.sh
-```
-
-#### Installation (Windows)
-
-```shell
-install-dev-cli
-```
-
-On installation, the script will print a path to add to your environment variable. Add this path to your local (not
-system) environment variable.
-
-```shell
-'dev-cli' installed. Please add 'C:\Users\varsh\.dev-cli' to your 'Path' variable.
-```
-
-#### Usage
-
-```shell
-dev-cli html [-o=<outputDirectoryPath>] <fileName> <commitHash>
-```
-
-By default, HTML files are written to the **xd-base-html** directory under the user's home directory.
-
-- [WIP] Create seed and patch files to be used with the **Extended Diff (Prototype)** application.
+See [dev-cli's README](/tools/dev-cli/README.md).
 
 ### 2. Diff (macOS)
 
