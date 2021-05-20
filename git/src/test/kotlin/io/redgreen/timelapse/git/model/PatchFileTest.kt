@@ -223,5 +223,28 @@ internal class PatchFileTest {
       assertThat(affectedLineNumbers)
         .isEmpty()
     }
+
+    @Test
+    fun `it should get affected line numbers for side A (multiple hunks)`() {
+      // given
+      val unifiedPatch = PatchFileTest::class.java.classLoader
+        .getResource("0001-docs-add-instructions-to-setup-dev-machine.patch")!!
+        .readText()
+      val patchFile = PatchFile.from(unifiedPatch)
+
+      // when
+      val affectedLineNumbers = patchFile.affectedLineNumbers(Side.A)
+
+      // then
+      assertThat(affectedLineNumbers)
+        .containsExactly(
+          // Hunk 1
+          58,
+          // Hunk 2
+          112,
+          // Hunk 3
+          174,
+        )
+    }
   }
 }
