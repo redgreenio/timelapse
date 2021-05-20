@@ -187,21 +187,21 @@
       border-radius: 0.2em;
     }
 
-    .xd-comment {
+    .xd-extract-variable {
       background-color: rgba(200, 200, 200, 0.4);
       color: rgba(0, 0, 0, 0.65);
       padding: 0 0.4em 0 0.2em;
       border-radius: 0.18em;
     }
 
-    .xd-comment::before {
-      content: "ef";
+    .xd-extract-variable::before {
+      content: "ev";
       font-size: 0.8em;
       color: white;
       margin-right: 0.4em;
       background-color: red;
       font-weight: bold;
-      padding: 0.15em 0.4em 0.15em 0.4em;
+      padding: 0.152em 0.4em 0.152em 0.4em;
       border-radius: 0.18em 0 0 0.18em;
       position: relative;
       top: -0.1em;
@@ -261,51 +261,51 @@
   </tr>
   <tr>
     <td class="line-number">8</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>NEWLINE_CHAR = &quot;\n&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span> <span class="property">NEWLINE_CHAR</span> = <span class="modified-highlight"><span class="string">&quot;\n&quot;</span></span><span class="predecessor">'\n'</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">9</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>EMPTY_STRING = &quot;&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>EMPTY_STRING = <span class="string">&quot;&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">10</td>
     <td></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">11</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_COLOR_ADDED = &quot;#e6ffed&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_COLOR_ADDED = <span class="string">&quot;#e6ffed&quot;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">12</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_COLOR_MODIFIED = &quot;#dbedff80&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_COLOR_MODIFIED = <span class="string">&quot;#dbedff80&quot;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">13</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_COLOR_DELETED = &quot;#ffdce0&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_COLOR_DELETED = <span class="string">&quot;#ffdce0&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">14</td>
     <td></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">15</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_CLASS_ADDED = &quot;added&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_CLASS_ADDED = <span class="string">&quot;added&quot;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">16</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_CLASS_MODIFIED = &quot;modified&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_CLASS_MODIFIED = <span class="string">&quot;modified&quot;</span></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">17</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_CLASS_DELETED = &quot;deleted&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>CSS_CLASS_DELETED = <span class="string">&quot;deleted&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">18</td>
     <td></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">19</td>
-    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>HTML_NBSP = &quot;&amp;nbsp;&quot;</td>
+    <td><span class="keyword">private </span><span class="keyword">const </span><span class="keyword">val </span>HTML_NBSP = <span class="string">&quot;&amp;nbsp;&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">20</td>
@@ -341,7 +341,7 @@
   </tr>
   <tr>
     <td class="line-number">28</td>
-    <td class="muted">private fun htmlTemplate(tableRows: List&lt;String&gt;): String {</td>
+    <td><span class="keyword">private fun</span> htmlTemplate<span class="parentheses">(</span>tableRows: List&lt;String&gt;<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">1/7</span></td>
   </tr>
   <tr>
     <td class="line-number">29</td>
@@ -363,9 +363,9 @@
     <td class="line-number">33</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.added {</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">34</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: $CSS_COLOR_ADDED;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: <span class="modified-highlight"><span class="reserved-symbol">$</span><span class="const">CSS_COLOR_ADDED;</span></span><span class="predecessor">#e6ffed;</span></td>
   </tr>
   <tr>
     <td class="line-number">35</td>
@@ -375,9 +375,9 @@
     <td class="line-number">36</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.modified {</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">37</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: $CSS_COLOR_MODIFIED;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: <span class="modified-highlight"><span class="reserved-symbol">$</span><span class="const">CSS_COLOR_MODIFIED;</span></span><span class="predecessor">#dbedff80;</span></td>
   </tr>
   <tr>
     <td class="line-number">38</td>
@@ -387,9 +387,9 @@
     <td class="line-number">39</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.deleted {</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">40</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: $CSS_COLOR_DELETED;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background-color: <span class="modified-highlight"><span class="reserved-symbol">$</span><span class="const">CSS_COLOR_DELETED;</span></span><span class="predecessor">#ffdce0;</span></td>
   </tr>
   <tr>
     <td class="line-number">41</td>
@@ -441,7 +441,7 @@
   </tr>
   <tr>
     <td class="line-number">53</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">54</td>
@@ -481,7 +481,7 @@
   </tr>
   <tr>
     <td class="line-number">63</td>
-    <td class="muted">private fun toDeletedRows(deleted: Deleted): List&lt;String&gt; {</td>
+    <td><span class="keyword">private fun</span> toDeletedRows<span class="parentheses">(</span>deleted: Deleted<span class="parentheses">)</span>: List&lt;String&gt; <span class="curly">{</span> <span class="change-count">2/7</span></td>
   </tr>
   <tr>
     <td class="line-number">64</td>
@@ -491,9 +491,9 @@
     <td class="line-number">65</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">66</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr class=&quot;$CSS_CLASS_DELETED&quot;&gt;</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">&lt;tr class=</span><span class="modified-highlight"><span class="string">&quot;</span><span class="reserved-symbol">$</span><span class="const">CSS_CLASS_DELETED</span><span class="string">&quot;</span></span><span class="predecessor">"deleted"</span><span class="string">&gt;</span></td>
   </tr>
   <tr>
     <td class="line-number">67</td>
@@ -517,7 +517,7 @@
   </tr>
   <tr>
     <td class="line-number">72</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">73</td>
@@ -581,19 +581,19 @@
   </tr>
   <tr>
     <td class="line-number">88</td>
-    <td class="muted">private fun toModifiedRows(</td>
+    <td><span class="keyword">private fun</span> toModifiedRows<span class="parentheses">(</span> <span class="change-count">3/7</span></td>
   </tr>
   <tr>
     <td class="line-number">89</td>
-    <td class="muted">&nbsp;&nbsp;sourceCode: String,</td>
+    <td>&nbsp;&nbsp;sourceCode: String,</td>
   </tr>
   <tr>
     <td class="line-number">90</td>
-    <td class="muted">&nbsp;&nbsp;modified: Modified</td>
+    <td>&nbsp;&nbsp;modified: Modified</td>
   </tr>
   <tr>
     <td class="line-number">91</td>
-    <td class="muted">): List&lt;String&gt; {</td>
+    <td><span class="parentheses">)</span>: List&lt;String&gt; <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">92</td>
@@ -615,9 +615,9 @@
     <td class="line-number">96</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;val lineNumber = index + 1</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">97</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>cssClassName = <span class="keyword">if </span>(lineNumber <span class="keyword">in </span>modifiedFunctionRange) CSS_CLASS_MODIFIED <span class="keyword">else </span>EMPTY_STRING</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>cssClassName = <span class="keyword">if </span>(lineNumber <span class="keyword">in </span>modifiedFunctionRange) <span class="modified-highlight"><span class="const">CSS_CLASS_MODIFIED</span></span><span class="predecessor">&quot;modified&quot;</span> <span class="keyword">else </span><span class="modified-highlight"><span class="const">EMPTY_STRING</span></span><span class="predecessor">&quot;&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">98</td>
@@ -649,7 +649,7 @@
   </tr>
   <tr>
     <td class="line-number">105</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">106</td>
@@ -657,19 +657,19 @@
   </tr>
   <tr>
     <td class="line-number">107</td>
-    <td class="muted">private fun toAddedRows(</td>
+    <td><span class="keyword">private fun</span> toAddedRows<span class="parentheses">(</span> <span class="change-count">4/7</span></td>
   </tr>
   <tr>
     <td class="line-number">108</td>
-    <td class="muted">&nbsp;&nbsp;sourceCode: String,</td>
+    <td>&nbsp;&nbsp;sourceCode: String,</td>
   </tr>
   <tr>
     <td class="line-number">109</td>
-    <td class="muted">&nbsp;&nbsp;added: Added</td>
+    <td>&nbsp;&nbsp;added: Added</td>
   </tr>
   <tr>
     <td class="line-number">110</td>
-    <td class="muted">): List&lt;String&gt; {</td>
+    <td><span class="parentheses">)</span>: List&lt;String&gt; <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">111</td>
@@ -695,9 +695,9 @@
     <td class="line-number">116</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;val lineNumber = index + 1</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">117</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>cssClassName = <span class="keyword">if </span>(lineNumber <span class="keyword">in </span>addedRange) CSS_CLASS_ADDED <span class="keyword">else </span>EMPTY_STRING</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>cssClassName = <span class="keyword">if </span>(lineNumber <span class="keyword">in </span>addedRange) <span class="modified-highlight"><span class="const">CSS_CLASS_ADDED</span></span><span class="predecessor">&quot;added&quot;</span> <span class="keyword">else</span> <span class="modified-highlight"><span class="const">EMPTY_STRING</span></span><span class="predecessor">&quot;&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">118</td>
@@ -729,23 +729,23 @@
   </tr>
   <tr>
     <td class="line-number">125</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">126</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">127</td>
-    <td><span class="keyword">private </span><span class="keyword">fun </span>classAttribute(cssClassName: String): String {</td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>classAttribute<span class="parentheses">(</span>cssClassName: String <span class="predecessor">= &quot;&quot;</span><span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">5/7</span></td>
   </tr>
   <tr>
     <td class="line-number">128</td>
     <td class="muted">&nbsp;&nbsp;if (cssClassName.isEmpty()) {</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">129</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return </span>EMPTY_STRING</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return </span><span class="modified-highlight"><span class="const">EMPTY_STRING</span></span><span class="predecessor">&quot;&quot;</span></td>
   </tr>
   <tr>
     <td class="line-number">130</td>
@@ -757,29 +757,29 @@
   </tr>
   <tr>
     <td class="line-number">132</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">133</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">134</td>
-    <td><span class="keyword">private </span><span class="keyword">fun </span>offsetWithPadding(tableRowBlocks: List&lt;String&gt;): String {</td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>offsetWithPadding<span class="parentheses">(</span><span class="modified-highlight">tableRowBlocks</span><span class="predecessor">Section</span>: List&lt;String&gt;<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">6/7</span></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">135</td>
-    <td>&nbsp;&nbsp;<span class="keyword">val </span>tableRowsSection = tableRowBlocks</td>
+    <td>&nbsp;&nbsp;<span class="modified-highlight"><span class="keyword">val </span>tableRowsSection =</span> <span class="predecessor">return</span> tableRowBlocks</td>
   </tr>
   <tr>
     <td class="line-number">136</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString(NEWLINE_CHAR)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.<span class="property">joinToString</span><span class="parentheses">(</span><span class="predecessor">&quot;</span><span class="const">NEWLINE_CHAR</span><span class="predecessor">&quot;</span><span class="parentheses">)</span></td>
   </tr>
   <tr>
     <td class="line-number">137</td>
     <td></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">138</td>
     <td>&nbsp;&nbsp;<span class="keyword">return </span>tableRowsSection</td>
   </tr>
@@ -791,13 +791,13 @@
     <td class="line-number">140</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;.mapIndexed { index, line -&gt;</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">141</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>firstLine = index == 0</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">val </span>firstLine = index == <span class="number">0</span> <span class="xd-extract-variable">Extracted variable, affects 1 call site</span></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">142</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if </span>(firstLine) {</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if </span>(<span class="modified-highlight">firstLine</span>) { <span class="xd-extract-variable">Affected call site 1/1</span></td>
   </tr>
   <tr>
     <td class="line-number">143</td>
@@ -819,13 +819,13 @@
     <td class="line-number">147</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;}</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">148</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString(NEWLINE_CHAR)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.<span class="property">joinToString</span><span class="parentheses">(</span><span class="predecessor">&quot;</span><span class="const">NEWLINE_CHAR</span><span class="predecessor">&quot;</span><span class="parentheses">)</span></td>
   </tr>
   <tr>
     <td class="line-number">149</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">150</td>
@@ -833,19 +833,19 @@
   </tr>
   <tr>
     <td class="line-number">151</td>
-    <td class="muted">private fun padStartWithNbsp(line: String): String {</td>
+    <td><span class="keyword">private fun</span> padStartWithNbsp<span class="parentheses">(</span>line: String<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">7/7</span></td>
   </tr>
   <tr>
     <td class="line-number">152</td>
     <td class="muted">&nbsp;&nbsp;val prefix = line.takeWhile { it.isWhitespace() }</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">153</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.map { HTML_NBSP }</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.<span class="property">map</span> <span class="curly">{</span> <span class="const"><span class="modified-highlight">HTML_NBSP</span></span><span class="predecessor">&quot;&amp;nbsp;&quot;</span> <span class="curly">}</span></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">154</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;.joinToString(EMPTY_STRING)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;.<span class="property">joinToString</span><span class="parentheses">(</span><span class="modified-highlight">EMPTY_STRING</span><span class="predecessor">&quot;&quot;</span><span class="parentheses">)</span></td>
   </tr>
   <tr>
     <td class="line-number">155</td>
@@ -853,7 +853,7 @@
   </tr>
   <tr>
     <td class="line-number">156</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">157</td>
