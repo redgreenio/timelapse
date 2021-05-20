@@ -13,21 +13,24 @@ class PatchFile(private val unifiedPatch: String) {
     private const val CHAR_FORWARD_SLASH = "\\"
     private const val HUNK_HEADER_PREFIX = "@@"
 
-    private const val INDEX_PART_SIDE_B = 2
+    private const val INDEX_SIDE_A = 1
+    private const val INDEX_SIDE_B = 2
 
     fun from(unifiedPatch: String): PatchFile =
       PatchFile(unifiedPatch)
   }
 
   fun affectedLineNumbers(side: Side): List<Int> {
-    if (side == Side.A) {
-      return emptyList()
-    }
-
     val lines = unifiedPatch.split(CHAR_NEWLINE)
 
     val unifiedDiffHeaders = lines.filter { it.startsWith(HUNK_HEADER_PREFIX) }
-    val hunkBHeaders = unifiedDiffHeaders.map { it.split(CHAR_SPACE) }.map(::hunkBHeader)
+    val hunkHeaders = unifiedDiffHeaders
+      .map { it.split(CHAR_SPACE) }
+      .map {
+        val indexSide = if (side == Side.A) INDEX_SIDE_A else INDEX_SIDE_B
+        hunkHeader(it, indexSide)
+      }
+
     val hunkLinesList = unifiedDiffHeaders.mapIndexed { index, unifiedDiffHeader ->
       val unifiedDiffHeaderIndex = lines.indexOf(unifiedDiffHeader)
       val nextUnifiedDiffHeaderIndex = if (index == unifiedDiffHeaders.lastIndex) {
@@ -38,13 +41,32 @@ class PatchFile(private val unifiedPatch: String) {
       lines.subList(unifiedDiffHeaderIndex + 1, nextUnifiedDiffHeaderIndex)
     }
 
-    return hunkBHeaders
-      .zip(hunkLinesList, ::affectedLinesForB)
+    val getAffectedLinesFunction = if (side == Side.A) ::affectedLinesForA else ::affectedLinesForB
+
+    return hunkHeaders
+      .zip(hunkLinesList, getAffectedLinesFunction)
       .flatten()
   }
 
+  private fun affectedLinesForA(
+    hunkHeader: HunkHeader,
+    hunkLines: List<String>
+  ): List<Int> {
+    val affectedLineNumbers = mutableListOf<Int>()
+    var offset = 0
+    hunkLines.foldIndexed(affectedLineNumbers) { index, lineNumbersAccumulator, line ->
+      if (line.startsWith(CHAR_PLUS) || line.startsWith(CHAR_FORWARD_SLASH)) {
+        offset--
+      } else if (line.startsWith(CHAR_MINUS)) {
+        lineNumbersAccumulator.add(offset + index + hunkHeader.startLine)
+      }
+      lineNumbersAccumulator
+    }
+    return affectedLineNumbers.toList()
+  }
+
   private fun affectedLinesForB(
-    hunkBHeader: HunkHeader,
+    hunkHeader: HunkHeader,
     hunkLines: List<String>
   ): List<Int> {
     val affectedLineNumbers = mutableListOf<Int>()
@@ -53,13 +75,13 @@ class PatchFile(private val unifiedPatch: String) {
       if (line.startsWith(CHAR_MINUS) || line.startsWith(CHAR_FORWARD_SLASH)) {
         offset--
       } else if (line.startsWith(CHAR_PLUS)) {
-        lineNumbersAccumulator.add(offset + index + hunkBHeader.startLine)
+        lineNumbersAccumulator.add(offset + index + hunkHeader.startLine)
       }
       lineNumbersAccumulator
     }
     return affectedLineNumbers.toList()
   }
 
-  private fun hunkBHeader(headerParts: List<String>): HunkHeader =
-    HunkHeader.from(headerParts[INDEX_PART_SIDE_B])
+  private fun hunkHeader(headerParts: List<String>, sideIndex: Int): HunkHeader =
+    HunkHeader.from(headerParts[sideIndex])
 }
