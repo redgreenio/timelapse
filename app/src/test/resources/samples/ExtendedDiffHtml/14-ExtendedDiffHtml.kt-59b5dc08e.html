@@ -187,21 +187,21 @@
       border-radius: 0.2em;
     }
 
-    .xd-comment {
+    .xd-extract-function {
       background-color: rgba(200, 200, 200, 0.4);
       color: rgba(0, 0, 0, 0.65);
       padding: 0 0.4em 0 0.2em;
       border-radius: 0.18em;
     }
 
-    .xd-comment::before {
+    .xd-extract-function::before {
       content: "ef";
       font-size: 0.8em;
       color: white;
       margin-right: 0.4em;
       background-color: red;
       font-weight: bold;
-      padding: 0.15em 0.4em 0.15em 0.4em;
+      padding: 0.152em 0.4em 0.152em 0.4em;
       border-radius: 0.18em 0 0 0.18em;
       position: relative;
       top: -0.1em;
@@ -269,11 +269,11 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td class="muted">@SuppressWarnings(&quot;LongMethod&quot;)</td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/2</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
-    <td class="muted">fun ExtendedDiff.toHtml(): String {</td>
+    <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">12</td>
@@ -283,21 +283,21 @@
     <td class="line-number">13</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">14</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return </span>htmlTemplate(toRows(sourceCode, result))</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return </span>htmlTemplate<span class="parentheses">(</span>toRows<span class="parentheses">(</span>sourceCode, result<span class="parentheses">)</span><span class="parentheses">)</span> <span class="xd-extract-function">Affected call site 1/1</span></td>
   </tr>
   <tr>
     <td class="line-number">15</td>
-    <td>}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">16</td>
     <td></td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">17</td>
-    <td><span class="keyword">private </span><span class="keyword">fun </span>htmlTemplate(tableRows: String): String {</td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>htmlTemplate<span class="parentheses">(</span>tableRows: String<span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/2</span> <span class="xd-extract-function">Extracted function, affects 1 call site</span></td>
   </tr>
   <tr>
     <td class="line-number">18</td>
@@ -371,9 +371,9 @@
     <td class="line-number">35</td>
     <td class="muted">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;</td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">36</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$tableRows</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight"><span class="reserved-symbol">$</span>tableRows</span><span class="predecessor">${toRows(sourceCode, result)}</span></td>
   </tr>
   <tr>
     <td class="line-number">37</td>
@@ -395,9 +395,9 @@
     <td class="line-number">41</td>
     <td class="muted">&nbsp;&nbsp;&quot;&quot;&quot;.trimIndent()</td>
   </tr>
-  <tr>
+  <tr class="added-line">
     <td class="line-number">42</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">43</td>
