@@ -26,11 +26,7 @@ class PatchFile(private val unifiedPatch: String) {
 
     val unifiedDiffHeaders = lines.filter { it.startsWith(HUNK_HEADER_PREFIX) }
     val hunkHeaders = unifiedDiffHeaders
-      .map { it.split(CHAR_SPACE) }
-      .map {
-        val indexSide = if (side == Side.A) INDEX_SIDE_A else INDEX_SIDE_B
-        hunkHeader(it, indexSide)
-      }
+      .map { diffHeader -> hunkHeader(diffHeader, side) }
 
     val hunkLinesList = unifiedDiffHeaders.mapIndexed { index, unifiedDiffHeader ->
       val unifiedDiffHeaderIndex = lines.indexOf(unifiedDiffHeader)
@@ -82,6 +78,12 @@ class PatchFile(private val unifiedPatch: String) {
     return affectedLineNumbers.toList()
   }
 
-  private fun hunkHeader(headerParts: List<String>, sideIndex: Int): HunkHeader =
-    HunkHeader.from(headerParts[sideIndex])
+  private fun hunkHeader(
+    diffHeader: String,
+    side: Side
+  ): HunkHeader {
+    val diffHeaderParts = diffHeader.split(CHAR_SPACE)
+    val indexSide = if (side == Side.A) INDEX_SIDE_A else INDEX_SIDE_B
+    return HunkHeader.from(diffHeaderParts[indexSide])
+  }
 }
