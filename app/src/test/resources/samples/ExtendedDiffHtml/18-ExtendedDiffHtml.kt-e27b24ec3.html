@@ -269,11 +269,11 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td class="muted">@SuppressWarnings(&quot;LongMethod&quot;)</td>
+    <td><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/2</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
-    <td class="muted">fun ExtendedDiff.toHtml(): String {</td>
+    <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">12</td>
@@ -283,21 +283,21 @@
     <td class="line-number">13</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">14</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return </span>htmlTemplate(toRows(sourceCode, result))</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return </span>htmlTemplate(<span class="predecessor">offsetWithPadding(</span>toRows(sourceCode, result))<span class="predecessor">)</span></td>
   </tr>
   <tr>
     <td class="line-number">15</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">16</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">17</td>
-    <td><span class="keyword">private </span><span class="keyword">fun </span>htmlTemplate(tableRows: List&lt;String&gt;): String {</td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>htmlTemplate<span class="parentheses">(</span>tableRows: <span class="modified-highlight">List&lt;</span>String<span class="modified-highlight">&gt;</span><span class="parentheses">)</span>: String <span class="curly">{</span> <span class="change-count">2/2</span></td>
   </tr>
   <tr>
     <td class="line-number">18</td>
@@ -373,7 +373,7 @@
   </tr>
   <tr>
     <td class="line-number">36</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${offsetWithPadding(tableRows)}</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="modified-highlight"><span class="reserved-symbol">$</span><span class="curly">{</span>offsetWithPadding<span class="parentheses">(</span></span>tableRows<span class="modified-highlight"><span class="parentheses">)</span><span class="curly">}</span></span></td>
   </tr>
   <tr>
     <td class="line-number">37</td>
@@ -397,7 +397,7 @@
   </tr>
   <tr>
     <td class="line-number">42</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">43</td>
