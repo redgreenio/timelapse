@@ -75,9 +75,14 @@ gradlew installGitHooks
 
 ### 1. dev-cli
 
-See [dev-cli's README](/tools/dev-cli/README.md).
+Install dev-cli command line tool. See [dev-cli's README](/tools/dev-cli/README.md) for installation and usage.
 
-### 2. Diff (macOS)
+### 2. IntelliJ Plugin
+
+Install the Timelapse Dev IntelliJ Plugin. See [IntelliJ Plugin's README](/tools/intellij-plugin/README.md) for installation and
+usage.
+
+### 3. Diff (macOS)
 
 To generate unified diffs for reproducing bugs or handling new use cases, make use of the `diff` utility.
 
@@ -85,13 +90,14 @@ To generate unified diffs for reproducing bugs or handling new use cases, make u
 diff -u a.txt b.txt
 ```
 
-### 3. ProGuard
+### 4. ProGuard
 
 ProGuard can come in handy to de-obfuscate stack traces from production.
 
 The runnable jars are placed inside the `/tools/proguard` directory.
 
 ## More documentation
+
 * [🚀 Creating a release](./docs/RELEASING.md)
 
 ## License
