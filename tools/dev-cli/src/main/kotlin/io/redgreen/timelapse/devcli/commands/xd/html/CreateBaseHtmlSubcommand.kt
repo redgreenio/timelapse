@@ -124,7 +124,7 @@ class CreateBaseHtmlSubcommand : Runnable {
         val unifiedPatchExecutionResult = getUnifiedPatchCommand.execute()
         val affectedLineNumbers = if (unifiedPatchExecutionResult is Success) {
           debug("Getting affected line numbers from patch.")
-          PatchFile.from(unifiedPatchExecutionResult.output).getAffectedLineNumbers()
+          PatchFile.from(unifiedPatchExecutionResult.output).affectedLineNumbers()
         } else {
           debug("Unable to get affected line numbers from patch.")
           emptyList()
