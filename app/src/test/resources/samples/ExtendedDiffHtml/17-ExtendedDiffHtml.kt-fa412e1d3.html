@@ -269,11 +269,11 @@
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td class="muted">@SuppressWarnings(&quot;LongMethod&quot;)</td>
+    <td class="muted"><span class="annotation">@SuppressWarnings</span><span class="parentheses">(</span><span class="string">&quot;LongMethod&quot;</span><span class="parentheses">)</span> <span class="change-count">1/2</span></td>
   </tr>
   <tr>
     <td class="line-number">11</td>
-    <td class="muted">fun ExtendedDiff.toHtml(): String {</td>
+    <td><span class="keyword">fun</span> ExtendedDiff.toHtml<span class="parentheses">()</span>: String <span class="curly">{</span></td>
   </tr>
   <tr>
     <td class="line-number">12</td>
@@ -283,13 +283,13 @@
     <td class="line-number">13</td>
     <td class="muted"></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">14</td>
-    <td>&nbsp;&nbsp;<span class="keyword">return </span>htmlTemplate(offsetWithPadding(toRows(sourceCode, result)))</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return </span>htmlTemplate(<span class="modified-highlight">offsetWithPadding(</span>toRows(sourceCode, result)<span class="modified-highlight">)</span>)</td>
   </tr>
   <tr>
     <td class="line-number">15</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">16</td>
@@ -405,31 +405,31 @@
   </tr>
   <tr>
     <td class="line-number">44</td>
-    <td><span class="keyword">private </span><span class="keyword">fun </span>toRows(sourceCode: String, result: ComparisonResult): List&lt;String&gt; {</td>
+    <td><span class="keyword">private </span><span class="keyword">fun </span>toRows<span class="parentheses">(</span>sourceCode: String, result: ComparisonResult<span class="parentheses">)</span>: List&lt;String&gt; <span class="curly">{</span> <span class="change-count">2/2</span></td>
   </tr>
   <tr>
     <td class="line-number">45</td>
-    <td class="muted">&nbsp;&nbsp;return when (result) {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">return when</span> <span class="parentheses">(</span>result<span class="parentheses">)</span> <span class="curly">{</span></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">46</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is </span>Added -&gt; toAddedRows(sourceCode, result)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is </span>Added -&gt; <span class="predecessor">offsetWithPadding(</span>toAddedRows(sourceCode, result)<span class="predecessor">)</span></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">47</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is </span>Deleted -&gt; toDeletedRows(result) + toUnchangedRows(sourceCode)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is </span>Deleted -&gt; <span class="predecessor">offsetWithPadding(</span>toDeletedRows(result) + toUnchangedRows(sourceCode)<span class="predecessor">)</span></td>
   </tr>
-  <tr>
+  <tr class="modified-line">
     <td class="line-number">48</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is </span>Modified -&gt; toModifiedRows(sourceCode, result)</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">is </span>Modified -&gt; <span class="predecessor">offsetWithPadding(</span>toModifiedRows(sourceCode, result)<span class="predecessor">)</span></td>
   </tr>
   <tr>
     <td class="line-number">49</td>
-    <td class="muted">&nbsp;&nbsp;}</td>
+    <td>&nbsp;&nbsp;<span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">50</td>
-    <td class="muted">}</td>
+    <td><span class="curly">}</span></td>
   </tr>
   <tr>
     <td class="line-number">51</td>
