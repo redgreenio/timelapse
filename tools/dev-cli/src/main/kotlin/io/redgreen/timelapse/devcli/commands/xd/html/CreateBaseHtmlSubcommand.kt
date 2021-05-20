@@ -29,6 +29,7 @@ import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Failure
 import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Success
 import io.redgreen.timelapse.devcli.commands.xd.html.GitCommand.GetUnifiedPatch
 import io.redgreen.timelapse.git.model.PatchFile
+import io.redgreen.timelapse.git.model.PatchFile.Side
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.fusesource.jansi.Ansi.ansi
@@ -124,7 +125,7 @@ class CreateBaseHtmlSubcommand : Runnable {
         val unifiedPatchExecutionResult = getUnifiedPatchCommand.execute()
         val affectedLineNumbers = if (unifiedPatchExecutionResult is Success) {
           debug("Getting affected line numbers from patch.")
-          PatchFile.from(unifiedPatchExecutionResult.output).affectedLineNumbers()
+          PatchFile.from(unifiedPatchExecutionResult.output).affectedLineNumbers(Side.B)
         } else {
           debug("Unable to get affected line numbers from patch.")
           emptyList()

@@ -1,6 +1,10 @@
 package io.redgreen.timelapse.git.model
 
 class PatchFile(private val unifiedPatch: String) {
+  enum class Side {
+    B
+  }
+
   companion object {
     private const val CHAR_NEWLINE = "\n"
     private const val CHAR_SPACE = " "
@@ -9,13 +13,17 @@ class PatchFile(private val unifiedPatch: String) {
     private const val CHAR_FORWARD_SLASH = "\\"
     private const val HUNK_HEADER_PREFIX = "@@"
 
-    private const val INDEX_PART_HUNK_B = 2
+    private const val INDEX_PART_SIDE_B = 2
 
     fun from(unifiedPatch: String): PatchFile =
       PatchFile(unifiedPatch)
   }
 
-  fun affectedLineNumbers(): List<Int> {
+  fun affectedLineNumbers(side: Side): List<Int> {
+    if (side != Side.B) {
+      TODO()
+    }
+
     val lines = unifiedPatch.split(CHAR_NEWLINE)
 
     val unifiedDiffHeaders = lines.filter { it.startsWith(HUNK_HEADER_PREFIX) }
@@ -53,5 +61,5 @@ class PatchFile(private val unifiedPatch: String) {
   }
 
   private fun hunkBHeader(headerParts: List<String>): HunkHeader =
-    HunkHeader.from(headerParts[INDEX_PART_HUNK_B])
+    HunkHeader.from(headerParts[INDEX_PART_SIDE_B])
 }
