@@ -59,6 +59,8 @@ dev-cli html -h
 4. Push tag to remote.
 5. Update the local installation by following the steps described in section **1. Installation & upgrade**.
 
+## License
+
 ```
 Copyright 2021 Red Green, Inc.
 ```
