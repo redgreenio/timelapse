@@ -17,7 +17,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.getAffectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers()
 
     // then
     assertThat(affectedLineNumbers)
@@ -40,7 +40,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.getAffectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers()
 
     // then
     assertThat(affectedLineNumbers)
@@ -66,7 +66,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.getAffectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers()
 
     // then
     assertThat(affectedLineNumbers)
@@ -82,7 +82,7 @@ internal class PatchFileTest {
     val patchFile = PatchFile.from(unifiedPatch)
 
     // when
-    val affectedLineNumbers = patchFile.getAffectedLineNumbers()
+    val affectedLineNumbers = patchFile.affectedLineNumbers()
 
     // then
     assertThat(affectedLineNumbers)
@@ -118,7 +118,7 @@ internal class PatchFileTest {
     """.trimIndent()
 
     // when
-    val affectedLineNumbers = PatchFile.from(unifiedPatch).getAffectedLineNumbers()
+    val affectedLineNumbers = PatchFile.from(unifiedPatch).affectedLineNumbers()
 
     // then
     assertThat(affectedLineNumbers)

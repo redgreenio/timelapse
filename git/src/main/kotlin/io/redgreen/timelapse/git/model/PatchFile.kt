@@ -15,7 +15,7 @@ class PatchFile(private val unifiedPatch: String) {
       PatchFile(unifiedPatch)
   }
 
-  fun getAffectedLineNumbers(): List<Int> {
+  fun affectedLineNumbers(): List<Int> {
     val lines = unifiedPatch.split(CHAR_NEWLINE)
 
     val unifiedDiffHeaders = lines.filter { it.startsWith(HUNK_HEADER_PREFIX) }
