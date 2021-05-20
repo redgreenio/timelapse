@@ -2,7 +2,7 @@ package io.redgreen.timelapse.git.model
 
 class PatchFile(private val unifiedPatch: String) {
   enum class Side {
-    B
+    A, B
   }
 
   companion object {
@@ -20,8 +20,8 @@ class PatchFile(private val unifiedPatch: String) {
   }
 
   fun affectedLineNumbers(side: Side): List<Int> {
-    if (side != Side.B) {
-      TODO()
+    if (side == Side.A) {
+      return emptyList()
     }
 
     val lines = unifiedPatch.split(CHAR_NEWLINE)

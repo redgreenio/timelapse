@@ -129,4 +129,27 @@ internal class PatchFileTest {
         .containsExactly(1, 2, 3, 4, 5)
     }
   }
+
+  @Nested
+  inner class SideA {
+    @Test
+    fun `it should get no affected line numbers when side A has no contents`() {
+      // given
+      val unifiedPatch = """
+        --- a.txt	2021-05-17 04:54:53.000000000 +0530
+        +++ b.txt	2021-05-17 04:55:00.000000000 +0530
+        @@ -0,0 +1 @@
+        +Hello, world!
+        \ No newline at end of file
+      """.trimIndent()
+      val patchFile = PatchFile.from(unifiedPatch)
+
+      // when
+      val affectedLineNumbers = patchFile.affectedLineNumbers(Side.A)
+
+      // then
+      assertThat(affectedLineNumbers)
+        .isEmpty()
+    }
+  }
 }
