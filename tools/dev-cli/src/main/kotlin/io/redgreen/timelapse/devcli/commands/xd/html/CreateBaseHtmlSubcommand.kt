@@ -28,6 +28,7 @@ import io.redgreen.design.text.TextStyle
 import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Failure
 import io.redgreen.timelapse.devcli.commands.xd.html.ExecutionResult.Success
 import io.redgreen.timelapse.devcli.commands.xd.html.GitCommand.GetUnifiedPatch
+import io.redgreen.timelapse.devcli.commands.xd.html.visitors.BaseHtmlVisitor
 import io.redgreen.timelapse.git.model.PatchFile
 import io.redgreen.timelapse.git.model.PatchFile.Side
 import org.antlr.v4.runtime.CharStreams
