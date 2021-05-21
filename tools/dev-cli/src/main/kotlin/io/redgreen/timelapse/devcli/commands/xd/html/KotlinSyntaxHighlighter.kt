@@ -13,6 +13,7 @@ import KotlinLexer.IF
 import KotlinLexer.IMPORT
 import KotlinLexer.IN
 import KotlinLexer.IS
+import KotlinLexer.LCURL
 import KotlinLexer.LPAREN
 import KotlinLexer.NullLiteral
 import KotlinLexer.OBJECT
@@ -21,6 +22,7 @@ import KotlinLexer.PACKAGE
 import KotlinLexer.PRIVATE
 import KotlinLexer.QUOTE_CLOSE
 import KotlinLexer.QUOTE_OPEN
+import KotlinLexer.RCURL
 import KotlinLexer.RETURN
 import KotlinLexer.RPAREN
 import KotlinLexer.SEALED
@@ -71,6 +73,8 @@ object KotlinSyntaxHighlighter {
   private fun highlightBrackets(token: Token, outStyledText: StyledText) {
     if (token.type == LPAREN || token.type == RPAREN) {
       outStyledText.addStyle(TextStyle("parentheses", token.line, token.charPositionInLine))
+    } else if (token.type == LCURL || token.type == RCURL) {
+      outStyledText.addStyle(TextStyle("curly", token.line, token.charPositionInLine))
     }
   }
 
