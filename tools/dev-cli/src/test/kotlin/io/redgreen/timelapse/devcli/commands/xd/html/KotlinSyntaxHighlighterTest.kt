@@ -13,6 +13,7 @@ class KotlinSyntaxHighlighterTest {
       .getResourceAsStream("syntax-highlighting-01.kotlin")!!
       .reader()
       .readText()
+      .replaceLineEndingOnWindows()
 
     val styledText = StyledText(sourceCode)
 
@@ -25,5 +26,14 @@ class KotlinSyntaxHighlighterTest {
 
     // then
     Approvals.verifyHtml(visitor.content)
+  }
+}
+
+private fun String.replaceLineEndingOnWindows(): String {
+  val isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+  return if (isWindows) {
+    this.replace("\r\n", "\n")
+  } else {
+    this
   }
 }
