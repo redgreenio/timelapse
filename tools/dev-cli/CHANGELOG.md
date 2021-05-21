@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.0.14] - 2021-05-21
+
 - Syntax highlight single and multi-line string literals.
 - Syntax highlight parentheses, curly, square, and angled brackets.
 - Syntax highlight integer, character, and boolean literals.
