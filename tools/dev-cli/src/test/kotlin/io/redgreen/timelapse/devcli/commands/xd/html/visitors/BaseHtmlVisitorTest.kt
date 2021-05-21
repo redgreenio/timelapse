@@ -1,7 +1,6 @@
-package io.redgreen.timelapse.devcli.commands.xd
+package io.redgreen.timelapse.devcli.commands.xd.html.visitors
 
 import io.redgreen.design.text.StyledText
-import io.redgreen.timelapse.devcli.commands.xd.html.visitors.BaseHtmlVisitor
 import org.approvaltests.Approvals
 import org.approvaltests.core.Options
 import org.approvaltests.scrubbers.RegExScrubber
