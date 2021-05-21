@@ -13,6 +13,7 @@ import KotlinLexer.IF
 import KotlinLexer.IMPORT
 import KotlinLexer.IN
 import KotlinLexer.IS
+import KotlinLexer.LPAREN
 import KotlinLexer.NullLiteral
 import KotlinLexer.OBJECT
 import KotlinLexer.OVERRIDE
@@ -21,6 +22,7 @@ import KotlinLexer.PRIVATE
 import KotlinLexer.QUOTE_CLOSE
 import KotlinLexer.QUOTE_OPEN
 import KotlinLexer.RETURN
+import KotlinLexer.RPAREN
 import KotlinLexer.SEALED
 import KotlinLexer.THIS
 import KotlinLexer.VAL
@@ -42,20 +44,32 @@ object KotlinSyntaxHighlighter {
     commonTokenStream
       .tokens
       .filter { it.line in affectedLineNumbers }
-      .onEach { token ->
-        if (token.type == QUOTE_OPEN) {
-          outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
-        } else if (token.type == QUOTE_CLOSE) {
-          outStyledText.addStyle(TextStyle("end_string", token.line, token.charPositionInLine))
+      .onEach { highlightStringLiterals(it, outStyledText) }
+      .onEach {
+        if (it.type == LPAREN || it.type == RPAREN) {
+          outStyledText.addStyle(TextStyle("parentheses", it.line, it.charPositionInLine))
         }
       }
-      .onEach<Token, List<Token>> {
-        if (isKeyword(it.type)) {
-          val startIndex = it.charPositionInLine
-          val stopIndex = startIndex + it.text.length - 1
-          outStyledText.addStyle(TextStyle("keyword", it.line, startIndex..stopIndex))
-        }
-      }
+      .onEach<Token, List<Token>> { highlightKeywords(it, outStyledText) }
+  }
+
+  private fun highlightKeywords(it: Token, outStyledText: StyledText) {
+    if (isKeyword(it.type)) {
+      val startIndex = it.charPositionInLine
+      val stopIndex = startIndex + it.text.length - 1
+      outStyledText.addStyle(TextStyle("keyword", it.line, startIndex..stopIndex))
+    }
+  }
+
+  private fun highlightStringLiterals(
+    token: Token,
+    outStyledText: StyledText
+  ) {
+    if (token.type == QUOTE_OPEN) {
+      outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
+    } else if (token.type == QUOTE_CLOSE) {
+      outStyledText.addStyle(TextStyle("end_string", token.line, token.charPositionInLine))
+    }
   }
 
   private fun isKeyword(tokenType: Int): Boolean {

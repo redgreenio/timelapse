@@ -245,15 +245,15 @@
   </tr>
   <tr>
     <td class="line-number">4</td>
-    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;LsFiles : GitCommand() {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;LsFiles : GitCommand<span class="parentheses">(</span><span class="parentheses">)</span>&nbsp;{</td>
   </tr>
   <tr>
     <td class="line-number">5</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command(fileName: String): ShellCommand =</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command<span class="parentheses">(</span>fileName: String<span class="parentheses">)</span>: ShellCommand =</td>
   </tr>
   <tr>
     <td class="line-number">6</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand(arrayOf(<span class="string">&quot;git&quot;</span>, <span class="string">&quot;ls-files&quot;</span>, fileName, <span class="string">&quot;**/$fileName&quot;</span>))</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand<span class="parentheses">(</span>arrayOf<span class="parentheses">(</span><span class="string">&quot;git&quot;</span>, <span class="string">&quot;ls-files&quot;</span>, fileName, <span class="string">&quot;**/$fileName&quot;</span><span class="parentheses">)</span><span class="parentheses">)</span></td>
   </tr>
   <tr>
     <td class="line-number">7</td>
@@ -265,15 +265,15 @@
   </tr>
   <tr>
     <td class="line-number">9</td>
-    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;Show : GitCommand() {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;Show : GitCommand<span class="parentheses">(</span><span class="parentheses">)</span>&nbsp;{</td>
   </tr>
   <tr>
     <td class="line-number">10</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command(commitHash: String, filePath: String): ShellCommand =</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command<span class="parentheses">(</span>commitHash: String, filePath: String<span class="parentheses">)</span>: ShellCommand =</td>
   </tr>
   <tr>
     <td class="line-number">11</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand(arrayOf(<span class="string">&quot;git&quot;</span>, <span class="string">&quot;show&quot;</span>, <span class="string">&quot;$commitHash:$filePath&quot;</span>))</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand<span class="parentheses">(</span>arrayOf<span class="parentheses">(</span><span class="string">&quot;git&quot;</span>, <span class="string">&quot;show&quot;</span>, <span class="string">&quot;$commitHash:$filePath&quot;</span><span class="parentheses">)</span><span class="parentheses">)</span></td>
   </tr>
   <tr>
     <td class="line-number">12</td>
@@ -285,15 +285,15 @@
   </tr>
   <tr>
     <td class="line-number">14</td>
-    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;Status : GitCommand() {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;Status : GitCommand<span class="parentheses">(</span><span class="parentheses">)</span>&nbsp;{</td>
   </tr>
   <tr>
     <td class="line-number">15</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command(): ShellCommand =</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command<span class="parentheses">(</span><span class="parentheses">)</span>: ShellCommand =</td>
   </tr>
   <tr>
     <td class="line-number">16</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand(arrayOf(<span class="string">&quot;git&quot;</span>, <span class="string">&quot;status&quot;</span>))</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand<span class="parentheses">(</span>arrayOf<span class="parentheses">(</span><span class="string">&quot;git&quot;</span>, <span class="string">&quot;status&quot;</span><span class="parentheses">)</span><span class="parentheses">)</span></td>
   </tr>
   <tr>
     <td class="line-number">17</td>
@@ -305,15 +305,15 @@
   </tr>
   <tr>
     <td class="line-number">19</td>
-    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;GetUnifiedPatch : GitCommand() {</td>
+    <td>&nbsp;&nbsp;<span class="keyword">object</span>&nbsp;GetUnifiedPatch : GitCommand<span class="parentheses">(</span><span class="parentheses">)</span>&nbsp;{</td>
   </tr>
   <tr>
     <td class="line-number">20</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command(commitHash: String, filePath: String): ShellCommand =</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">fun</span>&nbsp;command<span class="parentheses">(</span>commitHash: String, filePath: String<span class="parentheses">)</span>: ShellCommand =</td>
   </tr>
   <tr>
     <td class="line-number">21</td>
-    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand(arrayOf(<span class="string">&quot;git&quot;</span>, <span class="string">&quot;diff&quot;</span>, <span class="string">&quot;-u&quot;</span>, <span class="string">&quot;$commitHash^1&quot;</span>, commitHash, <span class="string">&quot;--&quot;</span>, filePath))</td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ShellCommand<span class="parentheses">(</span>arrayOf<span class="parentheses">(</span><span class="string">&quot;git&quot;</span>, <span class="string">&quot;diff&quot;</span>, <span class="string">&quot;-u&quot;</span>, <span class="string">&quot;$commitHash^1&quot;</span>, commitHash, <span class="string">&quot;--&quot;</span>, filePath<span class="parentheses">)</span><span class="parentheses">)</span></td>
   </tr>
   <tr>
     <td class="line-number">22</td>
