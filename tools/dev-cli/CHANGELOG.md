@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Syntax highlight simple string literals.
+- Syntax highlight parentheses.
 
 ## [0.0.13] - 2021-05-20
 
