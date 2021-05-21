@@ -3,6 +3,7 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 import KotlinLexer
 import KotlinLexer.ABSTRACT
 import KotlinLexer.AS
+import KotlinLexer.BooleanLiteral
 import KotlinLexer.CLASS
 import KotlinLexer.COMMA
 import KotlinLexer.CONST
@@ -55,7 +56,7 @@ object KotlinSyntaxHighlighter {
       .filter { it.line in affectedLineNumbers }
       .onEach { highlightStringLiterals(it, outStyledText) }
       .onEach { highlightBrackets(it, outStyledText) }
-      .onEach { highlightNumbers(it, outStyledText) }
+      .onEach { highlightLiterals(it, outStyledText) }
       .onEach { highlightKeywords(it, outStyledText) }
       .onEach { highlightCommas(it, outStyledText) }
       .toList()
@@ -67,9 +68,13 @@ object KotlinSyntaxHighlighter {
     }
   }
 
-  private fun highlightNumbers(token: Token, outStyledText: StyledText) {
+  private fun highlightLiterals(token: Token, outStyledText: StyledText) {
     if (token.type == IntegerLiteral) {
       outStyledText.addStyle(TextStyle("integer", token.line, token.charPositionInLine))
+    } else if (token.type == BooleanLiteral) {
+      val startIndex = token.charPositionInLine
+      val stopIndex = startIndex + token.text.length - 1
+      outStyledText.addStyle(TextStyle("boolean", token.line, startIndex..stopIndex))
     }
   }
 

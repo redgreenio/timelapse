@@ -259,3 +259,7 @@ td:nth-child(2) {
 .comma {
   color: #2B2B2B;
 }
+
+.boolean {
+  color: #06068E;
+}
