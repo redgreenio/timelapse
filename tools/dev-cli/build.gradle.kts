@@ -41,6 +41,47 @@ tasks {
   }
 }
 
+tasks.register("generateTemplateHtml", DefaultTask::class) {
+  description = "Creates template HTML from `extended-diff.css` and `extended-diff.js`."
+
+  inputs.files(rootDir.resolve("app/src/test/resources/samples/extended-diff.css"))
+  inputs.files(rootDir.resolve("app/src/test/resources/samples/extended-diff.js"))
+  inputs.files(projectDir.resolve("src/main/resources/template-skeleton.html"))
+
+  outputs.file(projectDir.resolve("src/main/resources/template.html"))
+
+  doLast {
+    val allInputFiles = inputs.files.files.toList()
+    val extendedDiffCss = allInputFiles[0]
+    val extendedDiffJs = allInputFiles[1]
+    val templateSkeletonHtml = allInputFiles[2]
+
+    val templateHtml = templateSkeletonHtml
+      .readText()
+      .replace("/*{css}*/", padLeft(extendedDiffCss.readText()))
+      .replace("/*{js}*/", padLeft(extendedDiffJs.readText()))
+
+    val templateHtmlFile = outputs.files.singleFile
+    templateHtmlFile.outputStream().use {
+      it.write(templateHtml.toByteArray())
+    }
+  }
+}
+
+fun padLeft(fileContents: String): String {
+  val isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+  val newlineChar = if (isWindows) "\r\n" else "\n"
+
+  return fileContents
+    .trim()
+    .split(newlineChar)
+    .joinToString(newlineChar) { if (it.isNotBlank()) "    $it" else it }
+}
+
+tasks
+  .findByName("compileKotlin")
+  ?.dependsOn(tasks.findByName("generateTemplateHtml"))
+
 tasks.register("executable", DefaultTask::class) {
   description = "Creates self-executable file, that runs generated shadow jar"
   group = "Distribution"
