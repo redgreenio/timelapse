@@ -13,6 +13,7 @@ import KotlinLexer.IF
 import KotlinLexer.IMPORT
 import KotlinLexer.IN
 import KotlinLexer.IS
+import KotlinLexer.IntegerLiteral
 import KotlinLexer.LANGLE
 import KotlinLexer.LCURL
 import KotlinLexer.LPAREN
@@ -49,10 +50,19 @@ object KotlinSyntaxHighlighter {
     val commonTokenStream = CommonTokenStream(kotlinLexer).apply { numberOfOnChannelTokens }
     commonTokenStream
       .tokens
+      .asSequence()
       .filter { it.line in affectedLineNumbers }
       .onEach { highlightStringLiterals(it, outStyledText) }
       .onEach { highlightBrackets(it, outStyledText) }
-      .onEach<Token, List<Token>> { highlightKeywords(it, outStyledText) }
+      .onEach { highlightNumbers(it, outStyledText) }
+      .onEach { highlightKeywords(it, outStyledText) }
+      .toList()
+  }
+
+  private fun highlightNumbers(token: Token, outStyledText: StyledText) {
+    if (token.type == IntegerLiteral) {
+      outStyledText.addStyle(TextStyle("integer", token.line, token.charPositionInLine))
+    }
   }
 
   private fun highlightStringLiterals(

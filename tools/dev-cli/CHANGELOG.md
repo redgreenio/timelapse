@@ -4,6 +4,7 @@
 
 - Syntax highlight simple string literals.
 - Syntax highlight parentheses, curly, square, and angled brackets.
+- Syntax highlight simple integer literals.
 
 ## [0.0.13] - 2021-05-20
 
