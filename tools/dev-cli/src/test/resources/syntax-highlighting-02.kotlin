@@ -1,3 +1,11 @@
 fun first(toys: NonEmptyList<Toy>): Toy {
   return toys[0]
 }
+
+fun silly(a: Int): Boolean {
+  return if (a % 2 == 0) {
+    true
+  } else {
+    false
+  }
+}
