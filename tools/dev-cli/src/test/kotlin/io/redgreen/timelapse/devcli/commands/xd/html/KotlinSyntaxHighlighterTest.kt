@@ -27,6 +27,28 @@ class KotlinSyntaxHighlighterTest {
     // then
     Approvals.verifyHtml(visitor.content)
   }
+
+  @Test
+  fun `it should highlight all kinds of brackets`() {
+    // given
+    val sourceCode = KotlinSyntaxHighlighterTest::class.java.classLoader
+      .getResourceAsStream("syntax-highlighting-02.kotlin")!!
+      .reader()
+      .readText()
+      .replaceLineEndingOnWindows()
+
+    val styledText = StyledText(sourceCode)
+
+    val affectedLineNumbers = (1..4).toList()
+
+    // when
+    KotlinSyntaxHighlighter.addStylesForTokens(styledText, affectedLineNumbers)
+    val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
+    styledText.visit(visitor)
+
+    // then
+    Approvals.verifyHtml(visitor.content)
+  }
 }
 
 private fun String.replaceLineEndingOnWindows(): String {
