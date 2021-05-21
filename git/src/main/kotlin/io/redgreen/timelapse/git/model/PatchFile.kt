@@ -12,7 +12,6 @@ class PatchFile(private val unifiedPatch: String) {
     private const val CHAR_MINUS = "-"
     private const val CHAR_FORWARD_SLASH = "\\"
     private const val HUNK_HEADER_PREFIX = "@@"
-    private const val END_OF_PATCH = "-- "
 
     private const val INDEX_SIDE_A = 1
     private const val INDEX_SIDE_B = 2
@@ -49,7 +48,7 @@ class PatchFile(private val unifiedPatch: String) {
     hunkHeader: HunkHeader,
     hunkLines: List<String>
   ): List<Int> {
-    return affectedLines(hunkLines, hunkHeader, CHAR_PLUS) { it.startsWith(CHAR_MINUS) && it != END_OF_PATCH }
+    return affectedLines(hunkLines, hunkHeader, CHAR_PLUS) { it.startsWith(CHAR_MINUS) }
   }
 
   private fun affectedLinesForB(
@@ -71,7 +70,10 @@ class PatchFile(private val unifiedPatch: String) {
       if (line.startsWith(modificationChar) || line.startsWith(CHAR_FORWARD_SLASH)) {
         offset--
       } else if (modificationCheck(line)) {
-        lineNumbersAccumulator.add(offset + index + hunkHeader.startLine)
+        val lineNumber = offset + index + hunkHeader.startLine
+        if (lineNumber <= hunkHeader.extendsTill) {
+          lineNumbersAccumulator.add(lineNumber)
+        }
       }
       lineNumbersAccumulator
     }
