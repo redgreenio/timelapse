@@ -45,20 +45,8 @@ object KotlinSyntaxHighlighter {
       .tokens
       .filter { it.line in affectedLineNumbers }
       .onEach { highlightStringLiterals(it, outStyledText) }
-      .onEach {
-        if (it.type == LPAREN || it.type == RPAREN) {
-          outStyledText.addStyle(TextStyle("parentheses", it.line, it.charPositionInLine))
-        }
-      }
+      .onEach { highlightBrackets(it, outStyledText) }
       .onEach<Token, List<Token>> { highlightKeywords(it, outStyledText) }
-  }
-
-  private fun highlightKeywords(it: Token, outStyledText: StyledText) {
-    if (isKeyword(it.type)) {
-      val startIndex = it.charPositionInLine
-      val stopIndex = startIndex + it.text.length - 1
-      outStyledText.addStyle(TextStyle("keyword", it.line, startIndex..stopIndex))
-    }
   }
 
   private fun highlightStringLiterals(
@@ -69,6 +57,20 @@ object KotlinSyntaxHighlighter {
       outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
     } else if (token.type == QUOTE_CLOSE) {
       outStyledText.addStyle(TextStyle("end_string", token.line, token.charPositionInLine))
+    }
+  }
+
+  private fun highlightKeywords(token: Token, outStyledText: StyledText) {
+    if (isKeyword(token.type)) {
+      val startIndex = token.charPositionInLine
+      val stopIndex = startIndex + token.text.length - 1
+      outStyledText.addStyle(TextStyle("keyword", token.line, startIndex..stopIndex))
+    }
+  }
+
+  private fun highlightBrackets(token: Token, outStyledText: StyledText) {
+    if (token.type == LPAREN || token.type == RPAREN) {
+      outStyledText.addStyle(TextStyle("parentheses", token.line, token.charPositionInLine))
     }
   }
 
