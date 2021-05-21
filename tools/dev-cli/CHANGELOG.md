@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-- Syntax highlight simple string literals.
+- Syntax highlight single and multi-line string literals.
 - Syntax highlight parentheses, curly, square, and angled brackets.
 - Syntax highlight integer and boolean literals.
 - Syntax highlight commas.

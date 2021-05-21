@@ -34,6 +34,8 @@ import KotlinLexer.RPAREN
 import KotlinLexer.RSQUARE
 import KotlinLexer.SEALED
 import KotlinLexer.THIS
+import KotlinLexer.TRIPLE_QUOTE_CLOSE
+import KotlinLexer.TRIPLE_QUOTE_OPEN
 import KotlinLexer.VAL
 import KotlinLexer.WHEN
 import io.redgreen.design.text.StyledText
@@ -85,7 +87,15 @@ object KotlinSyntaxHighlighter {
     if (token.type == QUOTE_OPEN) {
       outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
     } else if (token.type == QUOTE_CLOSE) {
-      outStyledText.addStyle(TextStyle("end_string", token.line, token.charPositionInLine))
+      outStyledText.addStyle(TextStyle("end-string", token.line, token.charPositionInLine))
+    } else if (token.type == TRIPLE_QUOTE_OPEN) {
+      val startIndex = token.charPositionInLine
+      val stopIndex = startIndex + token.text.length - 1
+      outStyledText.addStyle(TextStyle("open-multiline-string", token.line, startIndex..stopIndex))
+    } else if (token.type == TRIPLE_QUOTE_CLOSE) {
+      val startIndex = token.charPositionInLine
+      val stopIndex = startIndex + token.text.length - 1
+      outStyledText.addStyle(TextStyle("close-multiline-string", token.line, startIndex..stopIndex))
     }
   }
 

@@ -64,10 +64,17 @@ class BaseHtmlVisitor(
       contentBuilder.append("""$INDENT<td class="muted">""")
     } else {
       contentBuilder.append("""$INDENT<td>""")
+      if (isInsideMultilineString) {
+        contentBuilder.append("<span class=\"string\">")
+      }
     }
   }
 
   override fun onExitLine(lineNumber: Int) {
+    if (isInsideMultilineString) {
+      contentBuilder.append("</span>")
+    }
+
     contentBuilder
       .append("</td>")
       .append(NEWLINE)
@@ -75,21 +82,41 @@ class BaseHtmlVisitor(
   }
 
   override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
-    // no-op
+    if (isInsideMultilineString) {
+      contentBuilder.append("<span class=\"string\">")
+    }
   }
 
   override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
-    // no-op
+    if (isInsideMultilineString) {
+      contentBuilder.append("</span>")
+    }
   }
 
+  private var isInsideMultilineString = false
+
   override fun onBeginStyle(textStyle: TextStyle) {
-    if (textStyle.name != "end_string") {
+    if (textStyle.name == "open-multiline-string") {
+      isInsideMultilineString = true
+    }
+
+    if (textStyle.name == "close-multiline-string") {
+      isInsideMultilineString = false
+    }
+
+    if (textStyle.name != "end-string") {
       contentBuilder.append("""<span class="${textStyle.name}">""")
     }
   }
 
   override fun onEndStyle(textStyle: TextStyle) {
     if (textStyle.name != "string") {
+      contentBuilder.append("</span>")
+    }
+
+    if (textStyle.name == "open-multiline-string" && isInsideMultilineString) {
+      contentBuilder.append("<span class=\"string\">")
+    } else if (textStyle.name == "close-multiline-string") {
       contentBuilder.append("</span>")
     }
   }
