@@ -4,6 +4,7 @@ import KotlinLexer
 import KotlinLexer.ABSTRACT
 import KotlinLexer.AS
 import KotlinLexer.CLASS
+import KotlinLexer.COMMA
 import KotlinLexer.CONST
 import KotlinLexer.DATA
 import KotlinLexer.ELSE
@@ -56,7 +57,14 @@ object KotlinSyntaxHighlighter {
       .onEach { highlightBrackets(it, outStyledText) }
       .onEach { highlightNumbers(it, outStyledText) }
       .onEach { highlightKeywords(it, outStyledText) }
+      .onEach { highlightCommas(it, outStyledText) }
       .toList()
+  }
+
+  private fun highlightCommas(token: Token, outStyledText: StyledText) {
+    if (token.type == COMMA) {
+      outStyledText.addStyle(TextStyle("comma", token.line, token.charPositionInLine))
+    }
   }
 
   private fun highlightNumbers(token: Token, outStyledText: StyledText) {

@@ -255,3 +255,7 @@ td:nth-child(2) {
 .integer {
   color: #007EE9;
 }
+
+.comma {
+  color: #2B2B2B;
+}
