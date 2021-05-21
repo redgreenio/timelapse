@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.devcli.commands.xd.html
+package io.redgreen.timelapse.devcli.commands.xd.html.visitors
 
 import io.redgreen.design.text.LineStyle
 import io.redgreen.design.text.StyledTextVisitor
