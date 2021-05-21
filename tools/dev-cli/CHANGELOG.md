@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+- Syntax highlight simple string literals.
+
 ## [0.0.13] - 2021-05-20
 
 - Fix keyword spans enclosing a space character for every keyword in generated HTML.
