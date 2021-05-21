@@ -83,11 +83,15 @@ class BaseHtmlVisitor(
   }
 
   override fun onBeginStyle(textStyle: TextStyle) {
-    contentBuilder.append("""<span class="${textStyle.name}">""")
+    if (textStyle.name != "end_string") {
+      contentBuilder.append("""<span class="${textStyle.name}">""")
+    }
   }
 
   override fun onEndStyle(textStyle: TextStyle) {
-    contentBuilder.append("</span>")
+    if (textStyle.name != "string") {
+      contentBuilder.append("</span>")
+    }
   }
 
   private fun toHtmlFriendly(line: String): String {

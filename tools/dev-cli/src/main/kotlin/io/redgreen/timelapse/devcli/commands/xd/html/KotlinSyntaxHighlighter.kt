@@ -18,6 +18,8 @@ import KotlinLexer.OBJECT
 import KotlinLexer.OVERRIDE
 import KotlinLexer.PACKAGE
 import KotlinLexer.PRIVATE
+import KotlinLexer.QUOTE_CLOSE
+import KotlinLexer.QUOTE_OPEN
 import KotlinLexer.RETURN
 import KotlinLexer.SEALED
 import KotlinLexer.THIS
@@ -40,7 +42,13 @@ object KotlinSyntaxHighlighter {
     commonTokenStream
       .tokens
       .filter { it.line in affectedLineNumbers }
-      .filter { isKeyword(it.type) }
+      .onEach { token ->
+        if (token.type == QUOTE_OPEN) {
+          outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
+        } else if (token.type == QUOTE_CLOSE) {
+          outStyledText.addStyle(TextStyle("end_string", token.line, token.charPositionInLine))
+        }
+      }
       .onEach<Token, List<Token>> {
         if (isKeyword(it.type)) {
           val startIndex = it.charPositionInLine
