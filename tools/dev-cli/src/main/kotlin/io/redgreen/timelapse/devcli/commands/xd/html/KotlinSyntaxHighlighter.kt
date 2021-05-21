@@ -16,6 +16,7 @@ import KotlinLexer.IS
 import KotlinLexer.LANGLE
 import KotlinLexer.LCURL
 import KotlinLexer.LPAREN
+import KotlinLexer.LSQUARE
 import KotlinLexer.NullLiteral
 import KotlinLexer.OBJECT
 import KotlinLexer.OVERRIDE
@@ -27,6 +28,7 @@ import KotlinLexer.RANGLE
 import KotlinLexer.RCURL
 import KotlinLexer.RETURN
 import KotlinLexer.RPAREN
+import KotlinLexer.RSQUARE
 import KotlinLexer.SEALED
 import KotlinLexer.THIS
 import KotlinLexer.VAL
@@ -79,6 +81,8 @@ object KotlinSyntaxHighlighter {
       outStyledText.addStyle(TextStyle("curly", token.line, token.charPositionInLine))
     } else if (token.type == LANGLE || token.type == RANGLE) {
       outStyledText.addStyle(TextStyle("angled", token.line, token.charPositionInLine))
+    } else if (token.type == LSQUARE || token.type == RSQUARE) {
+      outStyledText.addStyle(TextStyle("squared", token.line, token.charPositionInLine))
     }
   }
 
