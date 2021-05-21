@@ -25,7 +25,7 @@ class KotlinSyntaxHighlighterTest {
     styledText.visit(visitor)
 
     // then
-    Approvals.verifyHtml(visitor.content)
+    Approvals.verifyHtml(visitor.content, scrubberOptions)
   }
 
   @Test
@@ -47,7 +47,7 @@ class KotlinSyntaxHighlighterTest {
     styledText.visit(visitor)
 
     // then
-    Approvals.verifyHtml(visitor.content)
+    Approvals.verifyHtml(visitor.content, scrubberOptions)
   }
 }
 
