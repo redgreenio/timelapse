@@ -4,7 +4,7 @@
 
 - Syntax highlight single and multi-line string literals.
 - Syntax highlight parentheses, curly, square, and angled brackets.
-- Syntax highlight integer and boolean literals.
+- Syntax highlight integer, character, and boolean literals.
 - Syntax highlight commas.
 
 ## [0.0.13] - 2021-05-20
