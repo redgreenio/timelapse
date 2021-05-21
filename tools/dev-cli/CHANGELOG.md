@@ -3,8 +3,7 @@
 ## [Unreleased]
 
 - Syntax highlight simple string literals.
-- Syntax highlight parentheses.
-- Syntax highlight curly brackets.
+- Syntax highlight parentheses, curly, and angled brackets.
 
 ## [0.0.13] - 2021-05-20
 

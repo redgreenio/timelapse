@@ -13,6 +13,7 @@ import KotlinLexer.IF
 import KotlinLexer.IMPORT
 import KotlinLexer.IN
 import KotlinLexer.IS
+import KotlinLexer.LANGLE
 import KotlinLexer.LCURL
 import KotlinLexer.LPAREN
 import KotlinLexer.NullLiteral
@@ -22,6 +23,7 @@ import KotlinLexer.PACKAGE
 import KotlinLexer.PRIVATE
 import KotlinLexer.QUOTE_CLOSE
 import KotlinLexer.QUOTE_OPEN
+import KotlinLexer.RANGLE
 import KotlinLexer.RCURL
 import KotlinLexer.RETURN
 import KotlinLexer.RPAREN
@@ -75,6 +77,8 @@ object KotlinSyntaxHighlighter {
       outStyledText.addStyle(TextStyle("parentheses", token.line, token.charPositionInLine))
     } else if (token.type == LCURL || token.type == RCURL) {
       outStyledText.addStyle(TextStyle("curly", token.line, token.charPositionInLine))
+    } else if (token.type == LANGLE || token.type == RANGLE) {
+      outStyledText.addStyle(TextStyle("angled", token.line, token.charPositionInLine))
     }
   }
 
