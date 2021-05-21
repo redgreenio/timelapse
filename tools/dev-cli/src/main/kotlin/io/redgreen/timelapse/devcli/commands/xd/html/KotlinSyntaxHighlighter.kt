@@ -7,6 +7,7 @@ import KotlinLexer.BooleanLiteral
 import KotlinLexer.CLASS
 import KotlinLexer.COMMA
 import KotlinLexer.CONST
+import KotlinLexer.CharacterLiteral
 import KotlinLexer.DATA
 import KotlinLexer.ELSE
 import KotlinLexer.FUN
@@ -77,6 +78,10 @@ object KotlinSyntaxHighlighter {
       val startIndex = token.charPositionInLine
       val stopIndex = startIndex + token.text.length - 1
       outStyledText.addStyle(TextStyle("boolean", token.line, startIndex..stopIndex))
+    } else if (token.type == CharacterLiteral) {
+      val startIndex = token.charPositionInLine
+      val stopIndex = startIndex + token.text.length - 1
+      outStyledText.addStyle(TextStyle("char", token.line, startIndex..stopIndex))
     }
   }
 

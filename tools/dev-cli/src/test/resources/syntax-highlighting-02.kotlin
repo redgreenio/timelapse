@@ -19,3 +19,7 @@ fun roadNotTaken(): String {
     To where it bent in the undergrowth;
   """.trimIndent()
 }
+
+fun firstThreeAlphabets(): List<Char> {
+  return listOf('a', 'b', 'c')
+}

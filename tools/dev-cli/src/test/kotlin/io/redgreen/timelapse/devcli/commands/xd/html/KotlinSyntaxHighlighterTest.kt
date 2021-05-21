@@ -39,7 +39,7 @@ class KotlinSyntaxHighlighterTest {
 
     val styledText = StyledText(sourceCode)
 
-    val affectedLineNumbers = (1..21).toList()
+    val affectedLineNumbers = (1..26).toList()
 
     // when
     KotlinSyntaxHighlighter.addStylesForTokens(styledText, affectedLineNumbers)
