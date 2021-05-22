@@ -43,6 +43,12 @@ class CreateBaseHtmlSubcommand : Runnable {
   @Option(names = ["-n", "--no-syntax-highlight"], description = ["No syntax highlight on unmuted lines"])
   var noSyntaxHighlight: Boolean = false
 
+  @Option(
+    names = ["-f", "--syntax-highlight-file"],
+    description = ["Syntax highlight the entire file, regardless of affected lines"]
+  )
+  var syntaxHighlightEntireFile: Boolean = false
+
   override fun run() {
     val statusCommand = GitCommand.Status.command()
     statusCommand.log()
@@ -126,23 +132,30 @@ class CreateBaseHtmlSubcommand : Runnable {
     content: String,
     affectedLineNumbers: List<Int>
   ): String {
-    val visitor = BaseHtmlVisitor(title, affectedLineNumbers)
-    val styledText = addSyntaxHighlighting(content, affectedLineNumbers)
+    val lineNumbersToHighlight = if (syntaxHighlightEntireFile) {
+      debug("Syntax highlighting (all line numbers)....")
+      (1..content.split(CHAR_NEWLINE).size).toList()
+    } else {
+      debug("Syntax highlighting (affected line numbers)....")
+      affectedLineNumbers
+    }
+
+    val visitor = BaseHtmlVisitor(title, lineNumbersToHighlight)
+    val styledText = addSyntaxHighlighting(content, lineNumbersToHighlight)
     styledText.visit(visitor)
     return visitor.content
   }
 
   private fun addSyntaxHighlighting(
     content: String,
-    affectedLineNumbers: List<Int>
+    lineNumbers: List<Int>
   ): StyledText {
     val styledText = StyledText(content)
     return if (noSyntaxHighlight) {
       debug("Syntax highlighting turned off. Skipping...")
       styledText
     } else {
-      debug("Performing syntax highlighting....")
-      KotlinSyntaxHighlighter.addStylesForTokens(styledText, affectedLineNumbers)
+      KotlinSyntaxHighlighter.addStylesForTokens(styledText, lineNumbers)
       styledText
     }
   }
