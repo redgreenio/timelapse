@@ -40,7 +40,7 @@ class CreateBaseHtmlSubcommand : Runnable {
   @Option(names = ["-d", "--debug"], description = ["Print debug logs"])
   var debug: Boolean = false
 
-  @Option(names = ["-nsh", "--no-syntax-highlight"], description = ["No syntax highlight on unmuted lines"])
+  @Option(names = ["-n", "--no-syntax-highlight"], description = ["No syntax highlight on unmuted lines"])
   var noSyntaxHighlight: Boolean = false
 
   override fun run() {
@@ -138,8 +138,10 @@ class CreateBaseHtmlSubcommand : Runnable {
   ): StyledText {
     val styledText = StyledText(content)
     return if (noSyntaxHighlight) {
+      debug("Syntax highlighting turned off. Skipping...")
       styledText
     } else {
+      debug("Performing syntax highlighting....")
       KotlinSyntaxHighlighter.addStylesForTokens(styledText, affectedLineNumbers)
       styledText
     }
