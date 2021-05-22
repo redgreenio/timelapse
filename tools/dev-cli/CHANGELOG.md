@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Change `-nsh` option to `-n`.
+- Add `-f` (syntax highlight entire file) option.
+
 ## [0.0.14] - 2021-05-21
 
 - Syntax highlight single and multi-line string literals.
