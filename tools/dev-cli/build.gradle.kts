@@ -44,8 +44,8 @@ tasks {
 tasks.register("generateTemplateHtml", DefaultTask::class) {
   description = "Creates template HTML from `extended-diff.css` and `extended-diff.js`."
 
-  inputs.files(rootDir.resolve("app/src/test/resources/samples/extended-diff.css"))
-  inputs.files(rootDir.resolve("app/src/test/resources/samples/extended-diff.js"))
+  inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.css"))
+  inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.js"))
   inputs.files(projectDir.resolve("src/main/resources/template-skeleton.html"))
 
   outputs.file(projectDir.resolve("src/main/resources/template.html"))
