@@ -4,6 +4,7 @@
 
 - Change `-nsh` option to `-n`.
 - Add `-f` (syntax highlight entire file) option.
+- Add syntax highlight support for more keywords.
 
 ## [0.0.14] - 2021-05-21
 
