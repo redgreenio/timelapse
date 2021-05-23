@@ -275,3 +275,8 @@ td:nth-child(2) {
 .char {
   color: #00733B;
 }
+
+.mutable {
+  text-decoration: underline;
+  text-decoration-color: black;
+}
