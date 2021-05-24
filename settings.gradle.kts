@@ -13,4 +13,5 @@ include(
   "languages",
   "tools:dev-cli",
   "tools:intellij-plugin",
+  "xd-js",
 )
