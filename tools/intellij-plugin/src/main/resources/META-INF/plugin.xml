@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>io.redgreen.timelapse.dev</id>
   <name>Timelapse Dev</name>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <vendor email="ragunath@redgreen.io" url="https://redgreen.io">Red Green, Inc.</vendor>
   <depends>com.intellij.modules.platform</depends>
 
@@ -11,7 +11,8 @@
 
   <change-notes><![CDATA[
     <ul>
-      <li>Templates for XD HTML tags</li>
+      <li>XD live template for identifier.</li>
+      <li>Templates for XD HTML tags.</li>
     </ul>
   ]]>
   </change-notes>
