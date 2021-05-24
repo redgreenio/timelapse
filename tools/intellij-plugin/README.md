@@ -6,7 +6,7 @@ The **Timelapse Dev** IntelliJ Plugin makes hard tasks easier for working on Tim
 
 ### Requirement
 
-You should have at least IntelliJ IDEA **2021.1** installed (Community/Ultimate).
+You should have at least IntelliJ IDEA **2021.1.1** installed (Community/Ultimate).
 
 ### Instructions
 
