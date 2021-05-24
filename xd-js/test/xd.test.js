@@ -1,4 +1,6 @@
-const assert = require("assert");
+const chai = require('chai');
+const should = chai.should;
+should()
 
 const {JSDOM} = require("jsdom");
 const { selectOccurrences } = require("../src/xd");
@@ -14,7 +16,7 @@ describe("selectOccurrences", () => {
     const occurrences = selectOccurrences(window, "a")
 
     // then
-    assert.strictEqual(occurrences.length, 2)
+    occurrences.should.have.length(2)
   })
 
   it("should select all elements with identifier 'b'", () => {
@@ -22,6 +24,6 @@ describe("selectOccurrences", () => {
     const occurrences = selectOccurrences(window, "b")
 
     // then
-    assert.strictEqual(occurrences.length, 2)
+    occurrences.should.have.length(2)
   })
 });

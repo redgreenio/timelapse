@@ -9,7 +9,8 @@
   "license": "Proprietary",
   "devDependencies": {
     "mocha": "^8.4.0",
-    "jsdom": "^16.6.0"
+    "jsdom": "^16.6.0",
+    "chai": "^4.3.4"
   },
   "dependencies": {
     "jquery": "^3.6.0"
