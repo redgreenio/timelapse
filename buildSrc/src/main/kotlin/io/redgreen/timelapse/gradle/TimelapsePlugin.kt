@@ -19,6 +19,10 @@ class TimelapsePlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
     target.subprojects {
+      if (this.name.endsWith("-js")) {
+        return@subprojects
+      }
+
       configureRepositories()
       configureKotlin()
       configureJacoco()
