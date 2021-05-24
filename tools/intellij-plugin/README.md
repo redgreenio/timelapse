@@ -42,9 +42,18 @@ the desired one.
 1. Increment the plugin version inside the `/src/main/resources/META-INF/plugin.xml` file. It is nested within
    the `<version>` tag.
 2. Describe the changes to the plugin (new features, enhancements, bug fixes) inside the `<change-notes>` tag.
-3. Commit these changes to the repository.
+3. Update changes in [CHANGELOG.md](CHANGELOG.md).
+4. Commit changes to the repository.
 
-### 3. Build plugin for distribution
+### 3. Get the changes merged to `main`
+
+- Raise a PR with the changes and get it merged to the `main` branch.
+
+### 4. Build plugin for distribution
+
+- Pull merged changes from remote (`origin`).
+
+- Build plugin for distribution.
 
 ```shell
 ./gradlew tools:intellij-plugin:buildPlugin
@@ -57,13 +66,7 @@ the desired one.
 
 - Rename **intellij-plugin.zip** to **intellij-plugin-&lt;version&gt;.zip**.
 
-### 4. Get the changes merged to `main`
-
-- Raise a PR with the changes and get it merged to the `main` branch.
-
 ### 5. Upload the binary to GitHub
-
-- Pull merged changes from remote (`origin`).
 
 - Tag the release commit with `intellij-plugin/<version>`.
 
