@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>io.redgreen.timelapse.dev</id>
   <name>Timelapse Dev</name>
-  <version>0.0.2</version>
+  <version>0.0.3-dev</version>
   <vendor email="ragunath@redgreen.io" url="https://redgreen.io">Red Green, Inc.</vendor>
   <depends>com.intellij.modules.platform</depends>
 
