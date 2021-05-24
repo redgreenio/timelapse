@@ -5,7 +5,7 @@ plugins {
 }
 
 intellij {
-  version = "2020.1"
+  version = "211.7142.45"
 }
 
 tasks.withType<KotlinCompile>().all {
