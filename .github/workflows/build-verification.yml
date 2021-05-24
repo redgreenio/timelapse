@@ -32,6 +32,9 @@ jobs:
       - name: Run Detekt
         run: ./gradlew detekt
 
+      - name: Run JS tests
+        run: ./gradlew testJs
+
       - name: Run Unit Tests with Coverage
         run: ./gradlew test jacocoTestReport
 
