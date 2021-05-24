@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # run all verifications
-./gradlew check
+./gradlew check testJs
 
 RESULT=$?
 
