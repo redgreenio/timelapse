@@ -31,4 +31,9 @@
       <option name="JSX_HTML" value="true" />
     </context>
   </template>
+  <template name="identifier" value="&lt;span class=&quot;identifier&quot; data-identifier=&quot;$SELECTION$&quot;&gt;$SELECTION$&lt;/span&gt;" shortcut="TAB" description="Surround with &lt;span class=&quot;identifier&quot;&gt;&lt;/span&gt;" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="HTML" value="true" />
+    </context>
+  </template>
 </templateSet>
