@@ -53,7 +53,7 @@ describe('getIdentifier', () => {
     const spanHtmlElement = window.document.querySelector('span');
 
     // when
-    const identifier = getIdentifier(window, spanHtmlElement);
+    const identifier = getIdentifier(spanHtmlElement);
 
     // then
     identifier.should.equal('name');
