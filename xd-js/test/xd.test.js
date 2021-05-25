@@ -3,6 +3,10 @@ const chai = require('chai');
 const { should } = chai;
 should();
 
+const sinon = require('sinon');
+
+const $ = require('jquery');
+
 const { JSDOM } = require('jsdom');
 
 const fs = require('fs');
@@ -14,6 +18,8 @@ const { selectOccurrences, getIdentifier } = xd;
 describe('selectOccurrences', () => {
   const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
   const { window } = new JSDOM(addFunctionHtml);
+
+  sinon.stub(xd, 'jQueryProxy').returns(() => $(window));
 
   it("should select all elements with identifier 'a'", () => {
     // when
