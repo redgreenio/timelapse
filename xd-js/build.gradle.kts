@@ -10,8 +10,8 @@ node {
 }
 
 registerNpmTask("testJs", "test")
-registerNpmTask("lintCheck", "run", "lintCheck")
-registerNpmTask("lintFix", "run", "lintFix")
+registerNpmTask("eslintCheck", "run", "eslintCheck")
+registerNpmTask("eslintFix", "run", "eslintFix")
 
 fun registerNpmTask(name: String, command: String, vararg commandArgs: String) {
   tasks.register(name, NpmTask::class) {
