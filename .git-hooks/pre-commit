@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # run linters
-./gradlew ktlintCheck detekt
+./gradlew ktlintCheck detekt eslintCheck
 
 RESULT=$?
 
