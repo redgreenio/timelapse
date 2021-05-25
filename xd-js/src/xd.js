@@ -1,7 +1,7 @@
-const jquery = require('jquery');
+const $ = require('jquery');
 
 module.exports = {
-  jQueryProxy: () => jquery,
+  jQueryProxy: () => $,
 
   selectOccurrences: (identifier) => module.exports.jQueryProxy()().find(`[data-identifier='${identifier}']`),
 
