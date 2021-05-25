@@ -9,7 +9,13 @@ node {
   version.set("14.17.0")
 }
 
-tasks.register("testJs", NpmTask::class) {
-  dependsOn(tasks.findByName("npmInstall"))
-  args.set(listOf("test"))
+registerNpmTask("testJs", "test")
+registerNpmTask("lintCheck", "run", "lintCheck")
+registerNpmTask("lintFix", "run", "lintFix")
+
+fun registerNpmTask(name: String, command: String, vararg commandArgs: String) {
+  tasks.register(name, NpmTask::class) {
+    dependsOn(tasks.findByName("npmInstall"))
+    args.set(listOf(command, *commandArgs))
+  }
 }
