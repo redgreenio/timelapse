@@ -5,7 +5,7 @@ should();
 
 const { JSDOM } = require('jsdom');
 const fs = require('fs');
-const { selectOccurrences } = require('../src/xd');
+const { selectOccurrences, getIdentifier } = require('../src/xd');
 
 describe('selectOccurrences', () => {
   const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
@@ -33,5 +33,19 @@ describe('selectOccurrences', () => {
 
     // then
     occurrences.should.have.length(0);
+  });
+});
+
+describe('getIdentifier', () => {
+  it('should get the identifier from the data attribute', () => {
+    // given
+    const { window } = new JSDOM(('<span data-identifier=\'name\'>name</span>'));
+    const spanHtmlElement = window.document.querySelector('span');
+
+    // when
+    const identifier = getIdentifier(window, spanHtmlElement);
+
+    // then
+    identifier.should.equal('name');
   });
 });
