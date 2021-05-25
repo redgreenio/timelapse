@@ -1,7 +1,5 @@
-const $ = require('jquery')
+const $ = require('jquery');
 
 module.exports = {
-  selectOccurrences: (window, identifier) => {
-    return $(window).find(`[data-identifier='${identifier}']`);
-  },
+  selectOccurrences: (window, identifier) => $(window).find(`[data-identifier='${identifier}']`),
 };
