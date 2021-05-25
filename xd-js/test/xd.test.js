@@ -23,7 +23,7 @@ describe('selectOccurrences', () => {
 
   it("should select all elements with identifier 'a'", () => {
     // when
-    const occurrences = selectOccurrences(window, 'a');
+    const occurrences = selectOccurrences('a');
 
     // then
     occurrences.should.have.length(2);
@@ -31,7 +31,7 @@ describe('selectOccurrences', () => {
 
   it("should select all elements with identifier 'b'", () => {
     // when
-    const occurrences = selectOccurrences(window, 'b');
+    const occurrences = selectOccurrences('b');
 
     // then
     occurrences.should.have.length(2);
@@ -39,7 +39,7 @@ describe('selectOccurrences', () => {
 
   it('should return an empty list if the identifier does not exist', () => {
     // when
-    const occurrences = selectOccurrences(window, 'z');
+    const occurrences = selectOccurrences('z');
 
     // then
     occurrences.should.have.length(0);
