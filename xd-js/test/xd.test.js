@@ -4,8 +4,12 @@ const { should } = chai;
 should();
 
 const { JSDOM } = require('jsdom');
+
 const fs = require('fs');
-const { selectOccurrences, getIdentifier } = require('../src/xd');
+
+const xd = require('../src/xd');
+
+const { selectOccurrences, getIdentifier } = xd;
 
 describe('selectOccurrences', () => {
   const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
