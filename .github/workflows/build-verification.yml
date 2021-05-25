@@ -26,14 +26,17 @@ jobs:
         with:
           java-version: 15
 
+      - name: Run eslint
+        run: ./gradlew xd-js:eslintCheck
+
+      - name: Run JS tests
+        run: ./gradlew xd-js:testJs
+
       - name: Run Ktlint
         run: ./gradlew ktlintCheck
 
       - name: Run Detekt
         run: ./gradlew detekt
-
-      - name: Run JS tests
-        run: ./gradlew testJs
 
       - name: Run Unit Tests with Coverage
         run: ./gradlew test jacocoTestReport
