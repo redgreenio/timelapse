@@ -4,7 +4,9 @@
   "description": "XD interaction logic",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lintCheck": "eslint src test",
+    "lintFix": "eslint src test --fix"
   },
   "license": "Proprietary",
   "devDependencies": {
