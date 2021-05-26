@@ -11,7 +11,9 @@ const fs = require('fs');
 
 const xd = require('../src/xd');
 
-const { selectOccurrences, getIdentifier, selectSpansWithClass } = xd;
+const {
+  selectOccurrences, getIdentifier, selectSpansWithClass, selectMatchingIdentifierSpans,
+} = xd;
 
 describe('selectOccurrences', () => {
   const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
@@ -77,5 +79,25 @@ describe('selectSpansWithClass', () => {
 
     // then
     spansWithClass.should.be.length(4);
+  });
+});
+
+describe('selectMatchingIdentifierSpans', () => {
+  it('should return spans with matching identifier', () => {
+    // given
+    const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
+    const { window } = new JSDOM(addFunctionHtml);
+    const jquery = $(window);
+
+    const spanIdentifierElement = new JSDOM(('<span class="identifier" data-identifier="a">a</span>'))
+      .window
+      .document
+      .querySelector('span');
+
+    // when
+    const identifierSpans = selectMatchingIdentifierSpans(spanIdentifierElement, jquery);
+
+    // then
+    identifierSpans.should.be.length(2);
   });
 });
