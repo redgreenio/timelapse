@@ -11,10 +11,12 @@ function selectMatchingIdentifierSpans(spanElement, _$ = $) {
 }
 
 function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslint-disable-line no-unused-vars
-  identifierSpanElements.forEach((span) => {
-    _$(span).mouseenter(() => selectMatchingIdentifierSpans(span).addClass('highlight'));
-    _$(span).mouseleave(() => selectMatchingIdentifierSpans(span).removeClass('highlight'));
-  });
+  identifierSpanElements
+    .map((spanElement) => _$(spanElement))
+    .forEach((span) => {
+      span.mouseenter(() => selectMatchingIdentifierSpans(span).addClass('highlight'));
+      span.mouseleave(() => selectMatchingIdentifierSpans(span).removeClass('highlight'));
+    });
 }
 
 module.exports = {
