@@ -8,8 +8,17 @@
       font-family: monospace;
       font-size: small;
     }
+
+    .highlight {
+      background-color: #F5D63B;
+    }
   </style>
   <script src="../../src/xd.js"></script>
+  <script>
+    $(document).ready(function() {
+      setupListenersForIdentifiers(selectSpansWithClass('identifier'));
+    });
+  </script>
   <title>Add function</title>
 </head>
 <body>
