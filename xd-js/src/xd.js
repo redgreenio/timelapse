@@ -21,4 +21,5 @@ module.exports = {
   selectOccurrences,
   getIdentifier,
   selectSpansWithClass,
+  selectMatchingIdentifierSpans,
 };
