@@ -1,8 +1,14 @@
-function selectOccurrences(identifier, _$ = $) { return _$.find(`[data-identifier='${identifier}']`); }
+function selectOccurrences(identifier, _$ = $) {
+  return _$.find(`[data-identifier='${identifier}']`);
+}
 
-function getIdentifier(htmlElement, _$ = $) { return _$(htmlElement).data('identifier'); }
+function getIdentifier(htmlElement, _$ = $) {
+  return _$(htmlElement).data('identifier');
+}
 
-function selectSpansWithClass(cssClassName, _$ = $) { return _$(`span.${cssClassName}`); }
+function selectSpansWithClass(cssClassName, _$ = $) {
+  return _$(`span.${cssClassName}`);
+}
 
 function selectMatchingIdentifierSpans(spanElement, _$ = $) {
   const identifier = getIdentifier(spanElement, _$);
