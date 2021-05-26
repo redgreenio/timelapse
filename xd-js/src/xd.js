@@ -17,30 +17,30 @@ function selectMatchingIdentifierSpans(spanElement, _$ = $) {
 }
 
 function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslint-disable-line no-unused-vars
+  function handleIdentifierSelections(span) {
+    const matchingIdentifierSpans = selectMatchingIdentifierSpans(span);
+
+    const spanClasses = span.attr('class');
+    if (spanClasses.includes('selected') || (spanClasses.includes('selected') && spanClasses.includes('highlight'))) {
+      matchingIdentifierSpans.removeClass('selected');
+      matchingIdentifierSpans.removeClass('highlight');
+      return;
+    }
+
+    const previouslySelectedSpans = _$(selectSpansWithClass('selected'));
+    previouslySelectedSpans.removeClass('selected');
+
+    matchingIdentifierSpans.removeClass('highlight');
+    matchingIdentifierSpans.addClass('selected');
+  }
+
   identifierSpanElements
     .toArray()
     .map((spanElement) => _$(spanElement))
     .forEach((span) => {
       span.mouseenter(() => selectMatchingIdentifierSpans(span).addClass('highlight'));
       span.mouseleave(() => selectMatchingIdentifierSpans(span).removeClass('highlight'));
-
-      span.click(() => {
-        const matchingIdentifierSpans = selectMatchingIdentifierSpans(span);
-
-        const spanClasses = span.attr('class');
-        if (spanClasses.includes('selected')
-          || (spanClasses.includes('selected') && spanClasses.includes('highlight'))) {
-          matchingIdentifierSpans.removeClass('selected');
-          matchingIdentifierSpans.removeClass('highlight');
-          return;
-        }
-
-        const previouslySelectedSpans = _$(selectSpansWithClass('selected'));
-        previouslySelectedSpans.removeClass('selected');
-
-        matchingIdentifierSpans.removeClass('highlight');
-        matchingIdentifierSpans.addClass('selected');
-      });
+      span.click(() => handleIdentifierSelections(span));
     });
 }
 
