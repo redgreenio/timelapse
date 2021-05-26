@@ -1,5 +1,8 @@
-function selectOccurrences(identifier, _$ = $) {
-  return _$.find(`[data-identifier='${identifier}']`);
+function selectOccurrences(identifier, enclosedElement = null, _$ = $) {
+  if (enclosedElement == null) {
+    return _$.find(`[data-identifier='${identifier}']`);
+  }
+  return _$(enclosedElement).closest('tbody').find(`[data-identifier='${identifier}']`);
 }
 
 function getIdentifier(htmlElement, _$ = $) {
@@ -12,7 +15,7 @@ function selectSpansWithClass(cssClassName, _$ = $) {
 
 function selectMatchingIdentifierSpans(spanElement, _$ = $) {
   const identifier = getIdentifier(spanElement, _$);
-  const occurrences = selectOccurrences(identifier, _$);
+  const occurrences = selectOccurrences(identifier, spanElement, _$);
   return _$(occurrences);
 }
 

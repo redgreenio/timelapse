@@ -22,7 +22,7 @@ describe('selectOccurrences', () => {
 
   it("should select all elements with identifier 'a'", () => {
     // when
-    const occurrences = selectOccurrences('a', jquery);
+    const occurrences = selectOccurrences('a', null, jquery);
 
     // then
     occurrences.should.have.length(2);
@@ -30,7 +30,7 @@ describe('selectOccurrences', () => {
 
   it("should select all elements with identifier 'b'", () => {
     // when
-    const occurrences = selectOccurrences('b', jquery);
+    const occurrences = selectOccurrences('b', null, jquery);
 
     // then
     occurrences.should.have.length(2);
@@ -38,7 +38,7 @@ describe('selectOccurrences', () => {
 
   it('should return an empty list if the identifier does not exist', () => {
     // when
-    const occurrences = selectOccurrences('z', jquery);
+    const occurrences = selectOccurrences('z', null, jquery);
 
     // then
     occurrences.should.have.length(0);
@@ -86,18 +86,34 @@ describe('selectMatchingIdentifierSpans', () => {
   it('should return spans with matching identifier', () => {
     // given
     const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
-    const { window } = new JSDOM(addFunctionHtml);
+    const jsdom = new JSDOM(addFunctionHtml);
+    const { window } = jsdom;
     const jquery = $(window);
 
-    const spanIdentifierElement = new JSDOM(('<span class="identifier" data-identifier="a">a</span>'))
-      .window
-      .document
-      .querySelector('span');
+    const spanIdentifierElement = jsdom.window.document.querySelector('span');
 
     // when
     const identifierSpans = selectMatchingIdentifierSpans(spanIdentifierElement, jquery);
 
     // then
     identifierSpans.should.be.length(2);
+  });
+});
+
+describe('multiple functions', () => {
+  describe('selectMatchingIdentifierSpans', () => {
+    it('should select spans within a given scope', () => {
+      // given
+      const multipleFunctionsHtml = fs.readFileSync('./test/assets/multiple-functions.html');
+      const { window } = new JSDOM(multipleFunctionsHtml);
+      const jquery = $(window);
+      const firstSpan = window.document.querySelector('span.identifier');
+
+      // when
+      const identifierSpans = selectMatchingIdentifierSpans(firstSpan, jquery);
+
+      // then
+      identifierSpans.should.be.length(2);
+    });
   });
 });
