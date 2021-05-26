@@ -16,7 +16,8 @@
     "eslint-plugin-import": "^2.23.3",
     "jsdom": "^16.6.0",
     "mocha": "^8.4.0",
-    "approvals": "^4.0.0-beta.1"
+    "approvals": "^4.0.0-beta.1",
+    "marked": ">=0.3.18"
   },
   "dependencies": {
     "jquery": "^3.6.0"
