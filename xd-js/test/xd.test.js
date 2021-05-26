@@ -16,7 +16,7 @@ const {
 } = xd;
 
 describe('selectOccurrences', () => {
-  const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
+  const addFunctionHtml = fs.readFileSync('./test/assets/single-function.html');
   const { window } = new JSDOM(addFunctionHtml);
   const jquery = $(window);
 
@@ -61,7 +61,7 @@ describe('getIdentifier', () => {
 });
 
 describe('selectSpansWithClass', () => {
-  const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
+  const addFunctionHtml = fs.readFileSync('./test/assets/single-function.html');
   const { window } = new JSDOM(addFunctionHtml);
   const jquery = $(window);
 
@@ -85,7 +85,7 @@ describe('selectSpansWithClass', () => {
 describe('selectMatchingIdentifierSpans', () => {
   it('should return spans with matching identifier', () => {
     // given
-    const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
+    const addFunctionHtml = fs.readFileSync('./test/assets/single-function.html');
     const jsdom = new JSDOM(addFunctionHtml);
     const { window } = jsdom;
     const jquery = $(window);
