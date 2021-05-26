@@ -11,7 +11,7 @@ const fs = require('fs');
 
 const xd = require('../src/xd');
 
-const { selectOccurrences, getIdentifier } = xd;
+const { selectOccurrences, getIdentifier, selectSpansWithClass } = xd;
 
 describe('selectOccurrences', () => {
   const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
@@ -55,5 +55,27 @@ describe('getIdentifier', () => {
 
     // then
     identifier.should.equal('name');
+  });
+});
+
+describe('selectSpansWithClass', () => {
+  const addFunctionHtml = fs.readFileSync('./test/assets/add-function.html');
+  const { window } = new JSDOM(addFunctionHtml);
+  const jquery = $(window);
+
+  it('should return empty if no spans with class is found', () => {
+    // when
+    const spansWithClass = selectSpansWithClass('css-class-404', jquery);
+
+    // then
+    spansWithClass.should.be.length(0);
+  });
+
+  it('should return spans with matching css classes', () => {
+    // when
+    const spansWithClass = selectSpansWithClass('identifier', jquery);
+
+    // then
+    spansWithClass.should.be.length(4);
   });
 });
