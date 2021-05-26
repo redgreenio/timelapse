@@ -80,7 +80,7 @@ object deps {
       const val kotlin = "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     }
 
-    const val truth = "com.google.truth:truth:1.1.2"
+    const val truth = "com.google.truth:truth:1.1.3"
     const val approvalTests = "com.approvaltests:approvaltests:11.4.0"
   }
 }
