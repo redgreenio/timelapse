@@ -30,8 +30,7 @@ function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslin
     const previouslySelectedSpans = _$(selectSpansWithClass('selected'));
     previouslySelectedSpans.removeClass('selected');
 
-    matchingIdentifierSpans.removeClass('highlight');
-    matchingIdentifierSpans.addClass('selected');
+    matchingIdentifierSpans.addClass('highlight selected');
   }
 
   identifierSpanElements
