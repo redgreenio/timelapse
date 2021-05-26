@@ -26,6 +26,16 @@ jobs:
         with:
           java-version: 15
 
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Run eslint
         run: ./gradlew xd-js:eslintCheck
 
@@ -40,6 +50,13 @@ jobs:
 
       - name: Run Unit Tests with Coverage
         run: ./gradlew test jacocoTestReport
+
+      - name: Cleanup Gradle Cache
+        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
+        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
 
       - name: Publish Test Report (only during failures)
         uses: mikepenz/action-junit-report@v2
