@@ -9,17 +9,12 @@ charset = utf-8
 indent_style = space
 indent_size = 2
 
-[*.fxml]
+[*.{fxml,html}]
 charset = utf-8
 indent_style = space
 indent_size = 2
 
-[*.html]
-charset = utf-8
-indent_style = space
-indent_size = 2
-
-[*.json]
+[*.{js,json}]
 charset = utf-8
 indent_style = space
 indent_size = 2
