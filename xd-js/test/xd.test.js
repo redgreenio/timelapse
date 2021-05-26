@@ -15,10 +15,16 @@ const {
   selectOccurrences, getIdentifier, selectSpansWithClass, selectMatchingIdentifierSpans,
 } = xd;
 
+function jsdomForHtmlAsset(fileName) {
+  return new JSDOM(fs.readFileSync(`./test/assets/${fileName}`));
+}
+
+function jQueryForHtmlAsset(fileName) {
+  return $(jsdomForHtmlAsset(fileName).window);
+}
+
 describe('selectOccurrences', () => {
-  const addFunctionHtml = fs.readFileSync('./test/assets/single-function.html');
-  const { window } = new JSDOM(addFunctionHtml);
-  const jquery = $(window);
+  const jquery = jQueryForHtmlAsset('single-function.html');
 
   it("should select all elements with identifier 'a'", () => {
     // when
@@ -61,9 +67,7 @@ describe('getIdentifier', () => {
 });
 
 describe('selectSpansWithClass', () => {
-  const addFunctionHtml = fs.readFileSync('./test/assets/single-function.html');
-  const { window } = new JSDOM(addFunctionHtml);
-  const jquery = $(window);
+  const jquery = jQueryForHtmlAsset('single-function.html');
 
   it('should return empty if no spans with class is found', () => {
     // when
@@ -85,12 +89,10 @@ describe('selectSpansWithClass', () => {
 describe('selectMatchingIdentifierSpans', () => {
   it('should return spans with matching identifier', () => {
     // given
-    const addFunctionHtml = fs.readFileSync('./test/assets/single-function.html');
-    const jsdom = new JSDOM(addFunctionHtml);
-    const { window } = jsdom;
+    const { window } = jsdomForHtmlAsset('single-function.html');
     const jquery = $(window);
 
-    const spanIdentifierElement = jsdom.window.document.querySelector('span');
+    const spanIdentifierElement = window.document.querySelector('span');
 
     // when
     const identifierSpans = selectMatchingIdentifierSpans(spanIdentifierElement, jquery);
@@ -104,8 +106,7 @@ describe('multiple functions', () => {
   describe('selectMatchingIdentifierSpans', () => {
     it('should select spans within a given scope', () => {
       // given
-      const multipleFunctionsHtml = fs.readFileSync('./test/assets/multiple-functions.html');
-      const { window } = new JSDOM(multipleFunctionsHtml);
+      const { window } = jsdomForHtmlAsset('multiple-functions.html');
       const jquery = $(window);
       const firstSpan = window.document.querySelector('span.identifier');
 
