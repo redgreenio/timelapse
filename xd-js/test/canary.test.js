@@ -2,11 +2,13 @@ const { should } = require('chai');
 
 should();
 
-const { JSDOM } = require('jsdom');
 const approvals = require('approvals');
 
 const approvalsDir = 'test/approved/canary';
+const { JSDOM } = require('jsdom');
+
 const { window } = new JSDOM('<!DOCTYPE html><p>Hello world</p>');
+
 const $ = require('jquery')(window);
 
 describe('a test environment', () => {
@@ -18,7 +20,7 @@ describe('a test environment', () => {
     $('p').text().should.equal('Hello world');
   });
 
-  it('should have approvals setup', () => {
-    approvals.verify(approvalsDir, 'should have approvals setup', 'Hello, world!');
+  it('should have approvals setup', function () {
+    approvals.verify(approvalsDir, this.test.title, 'Hello, world!');
   });
 });
