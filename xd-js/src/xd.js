@@ -4,19 +4,16 @@ function getIdentifier(htmlElement, jquery = $) { return jquery(htmlElement).dat
 
 function selectSpansWithClass(cssClassName, jquery = $) { return jquery(`span.${cssClassName}`).toArray(); }
 
+function selectMatchingIdentifierSpans(spanElement, jquery = $) {
+  const identifier = getIdentifier(spanElement, jquery);
+  const occurrences = selectOccurrences(identifier, jquery);
+  return jquery(occurrences);
+}
+
 function setupListenersForIdentifiers(identifierSpanElements, jquery = $) { // eslint-disable-line no-unused-vars
   identifierSpanElements.forEach((span) => {
-    jquery(span).mouseenter(() => {
-      const identifier = getIdentifier(span, jquery);
-      const occurrences = selectOccurrences(identifier, jquery);
-      jquery(occurrences).addClass('highlight');
-    });
-
-    jquery(span).mouseleave(() => {
-      const identifier = getIdentifier(span, jquery);
-      const occurrences = selectOccurrences(identifier, jquery);
-      jquery(occurrences).removeClass('highlight');
-    });
+    jquery(span).mouseenter(() => selectMatchingIdentifierSpans(span).addClass('highlight'));
+    jquery(span).mouseleave(() => selectMatchingIdentifierSpans(span).removeClass('highlight'));
   });
 }
 
