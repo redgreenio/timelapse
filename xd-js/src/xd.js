@@ -25,10 +25,19 @@ function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslin
       span.mouseleave(() => selectMatchingIdentifierSpans(span).removeClass('highlight'));
 
       span.click(() => {
+        const matchingIdentifierSpans = selectMatchingIdentifierSpans(span);
+
+        const spanClasses = span.attr('class');
+        if (spanClasses.includes('selected')
+          || (spanClasses.includes('selected') && spanClasses.includes('highlight'))) {
+          matchingIdentifierSpans.removeClass('selected');
+          matchingIdentifierSpans.removeClass('highlight');
+          return;
+        }
+
         const previouslySelectedSpans = _$(selectSpansWithClass('selected'));
         previouslySelectedSpans.removeClass('selected');
 
-        const matchingIdentifierSpans = selectMatchingIdentifierSpans(span);
         matchingIdentifierSpans.removeClass('highlight');
         matchingIdentifierSpans.addClass('selected');
       });
