@@ -14,13 +14,20 @@ const xd = require('../src/xd');
 
 const { mouseEntersIdentifier, mouseLeavesIdentifier, identifierClick } = xd;
 
+const platformLineEnding = process.platform === 'win32' ? '\r\n' : '\n';
+
+const approvalOverrides = {
+  appendEOL: true,
+  normalizeLineEndingsTo: platformLineEnding,
+};
+
 function jsdomForHtmlAsset(fileName) {
   return new JSDOM(fs.readFileSync(`./test/assets/interactions/${fileName}`));
 }
 
 function verifyHtml(test, htmlElement) {
   const getHtmlString = (element) => element.closest('html').outerHTML.toString();
-  approvals.verify(approvalsDir, test.title, getHtmlString(htmlElement));
+  approvals.verify(approvalsDir, test.title, getHtmlString(htmlElement), approvalOverrides);
 }
 
 describe('XD interactions', () => {
