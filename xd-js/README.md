@@ -4,13 +4,19 @@ The **xd-js** module is responsible for user interaction in the XD feature.
 
 ## Development
 
-### Tests
+### 1. Install dependencies
+
+```shell
+./gradlew npmInstall
+```
+
+### 2. Tests
 
 ```shell
 ./gradlew testJs
 ```
 
-### Lint
+### 3. Lint
 
 #### Check
 
@@ -24,17 +30,9 @@ The **xd-js** module is responsible for user interaction in the XD feature.
 ./gradlew eslintFix
 ```
 
-### Quirks
+## Quirks
 
-#### 1. npm install
-
-Executing `npm install` on the command line upgrades `package-lock.json` to version 2. So please use,
-
-```shell
-./gradlew npmInstall
-```
-
-#### 2. Approvals on Windows
+### 1. Approvals on Windows
 
 [Approvals.NodeJS](https://github.com/approvals/Approvals.NodeJS) pulls in Window's specific dependencies after
 a `npm install`. The `install` command makes changes to `package-lock.json` which will be reversed when building on
@@ -53,7 +51,7 @@ In case, if you want to make changes to the file, you can reverse the effect usi
 git update-index --no-assume-unchanged xd-js/package-lock.json
 ```
 
-#### 3. Approval tests
+### 2. Writing approval tests
 
 Approvals.NodeJS requires the title of the test to create matching approved/received files. Mocha has a `test` property
 that provides this information.
