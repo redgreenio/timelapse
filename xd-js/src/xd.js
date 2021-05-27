@@ -19,6 +19,10 @@ function selectMatchingIdentifierSpans(spanElement, _$ = $) {
   return _$(occurrences);
 }
 
+function highlight(span, _$ = $) {
+  return selectMatchingIdentifierSpans(span, _$).addClass('highlight');
+}
+
 function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslint-disable-line no-unused-vars
   function handleIdentifierSelections(span) {
     const matchingIdentifierSpans = selectMatchingIdentifierSpans(span);
@@ -40,7 +44,7 @@ function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslin
     .toArray()
     .map((spanElement) => _$(spanElement))
     .forEach((span) => {
-      span.mouseenter(() => selectMatchingIdentifierSpans(span).addClass('highlight'));
+      span.mouseenter(() => highlight(span));
       span.mouseleave(() => selectMatchingIdentifierSpans(span).removeClass('highlight'));
       span.click(() => handleIdentifierSelections(span));
     });
@@ -51,4 +55,5 @@ module.exports = {
   getIdentifier,
   selectSpansWithClass,
   selectMatchingIdentifierSpans,
+  highlight,
 };
