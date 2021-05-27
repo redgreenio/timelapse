@@ -4,17 +4,23 @@ Timelapse onboards developers onto codebases before you make that cup of instant
 
 ## 1. System setup
 
-### Step 1 of 3 - IntelliJ IDEA
-
-Download and install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
-
-### Setup 2 of 3 - JDK 15
+### Step 1 of 5 - JDK 15
 
 Download and install JDK 15 for your OS.
 
-### Setup 3 of 3 - Rune CLI
+### Step 2 of 5 - Node.js
 
-Install [Node.js](https://nodejs.org/en/) and then run the following command on your machine.
+Download and install Node.js [14.17.0](https://nodejs.org/dist/v14.7.0/) for your platform.
+
+### Step 3 of 5 - IntelliJ IDEA
+
+Download and install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/).
+
+### Step 4 of 5 - IntelliJ Plugin
+
+See [IntelliJ Plugin's README](/tools/intellij-plugin/README.md) for installation and usage.
+
+### Step 5 of 5 - Rune CLI
 
 ```shell
 npm install -g rune-cli
@@ -22,7 +28,7 @@ npm install -g rune-cli
 
 ## 2. Project setup
 
-### Step 1 of 3 - Clone
+### Step 1 of 4 - Clone
 
 The repository has submodules. If you haven't cloned the repository already, run:
 
@@ -37,7 +43,7 @@ then run,
 git submodule update --init --recursive
 ```
 
-### Step 2 of 3 - Verify & run
+### Step 2 of 4 - Verify & run
 
 `cd` into the project directory and run the following Gradle tasks.
 
@@ -57,7 +63,7 @@ If the build succeeds, you should be able to see this screen!
 
 ![Verified](docs/images/verified.png)
 
-### Step 3 of 3 - Install Git hooks
+### Step 3 of 4 - Install Git hooks
 
 **Windows**
 
@@ -71,18 +77,13 @@ gradlew installGitHooks
 ./gradlew installGitHooks
 ```
 
-## 3. Tools
+### Step 4 of 4 - Install dev-cli
 
-### 1. dev-cli
+See [dev-cli's README](/tools/dev-cli/README.md) for installation and usage.
 
-Install dev-cli command line tool. See [dev-cli's README](/tools/dev-cli/README.md) for installation and usage.
+## 3. Other tools
 
-### 2. IntelliJ Plugin
-
-Install the Timelapse Dev IntelliJ Plugin. See [IntelliJ Plugin's README](/tools/intellij-plugin/README.md) for installation and
-usage.
-
-### 3. Diff (macOS)
+### 1. Diff (macOS)
 
 To generate unified diffs for reproducing bugs or handling new use cases, make use of the `diff` utility.
 
@@ -90,7 +91,7 @@ To generate unified diffs for reproducing bugs or handling new use cases, make u
 diff -u a.txt b.txt
 ```
 
-### 4. ProGuard
+### 2. ProGuard
 
 ProGuard can come in handy to de-obfuscate stack traces from production.
 
