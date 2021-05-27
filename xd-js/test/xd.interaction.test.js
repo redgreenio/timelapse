@@ -78,5 +78,18 @@ describe('XD interactions', () => {
       // then
       verifyHtml(this.test, jsdom.window.document.documentElement);
     });
+
+    it('selected-focused to selected-unfocused', function () {
+      // given
+      const jsdom = jsdomForHtmlAsset('selected-focused.html');
+      const htmlSpanElement = jsdom.window.document.querySelector('span');
+
+      // when
+      const unfocusedSpans = removeHighlight(htmlSpanElement, $(jsdom.window));
+      const spanElement = unfocusedSpans.toArray()[0];
+
+      // then
+      verifyHtml(this.test, spanElement);
+    });
   });
 });
