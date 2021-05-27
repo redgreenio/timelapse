@@ -12,7 +12,7 @@ const fs = require('fs');
 
 const xd = require('../src/xd');
 
-const { highlight } = xd;
+const { highlight, removeHighlight } = xd;
 
 function jsdomForHtmlAsset(fileName) {
   return new JSDOM(fs.readFileSync(`./test/assets/interactions/${fileName}`));
@@ -33,8 +33,23 @@ describe('XD interactions', () => {
       const highlightedSpans = highlight(htmlSpanElement, $(unselectedHtmlJsdom.window));
 
       // then
-      const aSpanElement = highlightedSpans.toArray()[0];
-      approvals.verify(approvalsDir, this.test.title, htmlString(aSpanElement));
+      const spanElement = highlightedSpans.toArray()[0];
+      approvals.verify(approvalsDir, this.test.title, htmlString(spanElement));
+    });
+  });
+
+  describe('highlight', () => {
+    it('highlight to unselected', function () {
+      // given
+      const highlightedHtmlJsdom = jsdomForHtmlAsset('highlighted.html');
+      const htmlSpanElement = highlightedHtmlJsdom.window.document.querySelector('span');
+
+      // when
+      const unselectedSpans = removeHighlight(htmlSpanElement, $(highlightedHtmlJsdom.window));
+
+      // then
+      const spanElement = unselectedSpans.toArray()[0];
+      approvals.verify(approvalsDir, this.test.title, htmlString(spanElement));
     });
   });
 });
