@@ -12,7 +12,7 @@ const fs = require('fs');
 
 const xd = require('../src/xd');
 
-const { highlight, removeHighlight } = xd;
+const { highlight, removeHighlight, handleIdentifierClick } = xd;
 
 function jsdomForHtmlAsset(fileName) {
   return new JSDOM(fs.readFileSync(`./test/assets/interactions/${fileName}`));
@@ -51,6 +51,18 @@ describe('XD interactions', () => {
 
       // then
       verifyHtml(this.test, spanElement);
+    });
+
+    it('highlight to selected-focused', function () {
+      // given
+      const jsdom = jsdomForHtmlAsset('highlighted.html');
+      const htmlSpanElement = jsdom.window.document.querySelector('span');
+
+      // when
+      handleIdentifierClick(htmlSpanElement, $(jsdom.window));
+
+      // then
+      verifyHtml(this.test, jsdom.window.document.documentElement);
     });
   });
 });
