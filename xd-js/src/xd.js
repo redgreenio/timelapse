@@ -61,5 +61,5 @@ module.exports = {
   selectMatchingIdentifierSpans,
   mouseEntersIdentifier: highlight,
   mouseLeavesIdentifier: removeHighlight,
-  handleIdentifierClick,
+  identifierClick: handleIdentifierClick,
 };
