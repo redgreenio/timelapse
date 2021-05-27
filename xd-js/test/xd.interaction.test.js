@@ -1,4 +1,4 @@
-require('chai');
+require('mocha');
 
 const approvals = require('approvals');
 
@@ -18,8 +18,9 @@ function jsdomForHtmlAsset(fileName) {
   return new JSDOM(fs.readFileSync(`./test/assets/interactions/${fileName}`));
 }
 
-function htmlString(htmlElement) {
-  return htmlElement.closest('html').outerHTML.toString();
+function verifyHtml(test, htmlElement) {
+  const getHtmlString = (element) => element.closest('html').outerHTML.toString();
+  approvals.verify(approvalsDir, test.title, getHtmlString(htmlElement));
 }
 
 describe('XD interactions', () => {
@@ -31,10 +32,10 @@ describe('XD interactions', () => {
 
       // when
       const highlightedSpans = highlight(htmlSpanElement, $(unselectedHtmlJsdom.window));
+      const spanElement = highlightedSpans.toArray()[0];
 
       // then
-      const spanElement = highlightedSpans.toArray()[0];
-      approvals.verify(approvalsDir, this.test.title, htmlString(spanElement));
+      verifyHtml(this.test, spanElement);
     });
   });
 
@@ -46,10 +47,10 @@ describe('XD interactions', () => {
 
       // when
       const unselectedSpans = removeHighlight(htmlSpanElement, $(highlightedHtmlJsdom.window));
+      const spanElement = unselectedSpans.toArray()[0];
 
       // then
-      const spanElement = unselectedSpans.toArray()[0];
-      approvals.verify(approvalsDir, this.test.title, htmlString(spanElement));
+      verifyHtml(this.test, spanElement);
     });
   });
 });
