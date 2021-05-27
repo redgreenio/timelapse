@@ -12,7 +12,7 @@ const fs = require('fs');
 
 const xd = require('../src/xd');
 
-const { mouseEntersIdentifier, mouseLeavesIdentifier, handleIdentifierClick } = xd;
+const { mouseEntersIdentifier, mouseLeavesIdentifier, identifierClick } = xd;
 
 function jsdomForHtmlAsset(fileName) {
   return new JSDOM(fs.readFileSync(`./test/assets/interactions/${fileName}`));
@@ -59,7 +59,7 @@ describe('XD interactions', () => {
       const htmlSpanElement = jsdom.window.document.querySelector('span');
 
       // when
-      handleIdentifierClick(htmlSpanElement, $(jsdom.window));
+      identifierClick(htmlSpanElement, $(jsdom.window));
 
       // then
       verifyHtml(this.test, jsdom.window.document.documentElement);
@@ -73,7 +73,7 @@ describe('XD interactions', () => {
       const htmlSpanElement = jsdom.window.document.querySelector('span');
 
       // when
-      handleIdentifierClick(htmlSpanElement, $(jsdom.window));
+      identifierClick(htmlSpanElement, $(jsdom.window));
 
       // then
       verifyHtml(this.test, jsdom.window.document.documentElement);
