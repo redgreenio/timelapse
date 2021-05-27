@@ -16,7 +16,7 @@ const {
 } = xd;
 
 function jsdomForHtmlAsset(fileName) {
-  return new JSDOM(fs.readFileSync(`./test/assets/${fileName}`));
+  return new JSDOM(fs.readFileSync(`./test/assets/selections/${fileName}`));
 }
 
 function jQueryForHtmlAsset(fileName) {
