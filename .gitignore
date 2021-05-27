@@ -17,3 +17,6 @@ proguard-lab/
 
 # HProf files
 *.hprof
+
+# Approvals
+*.received.*
