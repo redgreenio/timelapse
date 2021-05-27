@@ -113,16 +113,20 @@ object KotlinSyntaxHighlighter {
   }
 
   private fun highlightLiterals(token: Token, outStyledText: StyledText) {
-    if (token.type == IntegerLiteral) {
-      outStyledText.addStyle(TextStyle("integer", token.line, token.charPositionInLine))
-    } else if (token.type == BooleanLiteral) {
-      val startIndex = token.charPositionInLine
-      val stopIndex = startIndex + token.text.length - 1
-      outStyledText.addStyle(TextStyle("boolean", token.line, startIndex..stopIndex))
-    } else if (token.type == CharacterLiteral) {
-      val startIndex = token.charPositionInLine
-      val stopIndex = startIndex + token.text.length - 1
-      outStyledText.addStyle(TextStyle("char", token.line, startIndex..stopIndex))
+    when (token.type) {
+      IntegerLiteral -> {
+        outStyledText.addStyle(TextStyle("integer", token.line, token.charPositionInLine))
+      }
+      BooleanLiteral -> {
+        val startIndex = token.charPositionInLine
+        val stopIndex = startIndex + token.text.length - 1
+        outStyledText.addStyle(TextStyle("boolean", token.line, startIndex..stopIndex))
+      }
+      CharacterLiteral -> {
+        val startIndex = token.charPositionInLine
+        val stopIndex = startIndex + token.text.length - 1
+        outStyledText.addStyle(TextStyle("char", token.line, startIndex..stopIndex))
+      }
     }
   }
 
@@ -130,18 +134,23 @@ object KotlinSyntaxHighlighter {
     token: Token,
     outStyledText: StyledText
   ) {
-    if (token.type == QUOTE_OPEN) {
-      outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
-    } else if (token.type == QUOTE_CLOSE) {
-      outStyledText.addStyle(TextStyle("end-string", token.line, token.charPositionInLine))
-    } else if (token.type == TRIPLE_QUOTE_OPEN) {
-      val startIndex = token.charPositionInLine
-      val stopIndex = startIndex + token.text.length - 1
-      outStyledText.addStyle(TextStyle("open-multiline-string", token.line, startIndex..stopIndex))
-    } else if (token.type == TRIPLE_QUOTE_CLOSE) {
-      val startIndex = token.charPositionInLine
-      val stopIndex = startIndex + token.text.length - 1
-      outStyledText.addStyle(TextStyle("close-multiline-string", token.line, startIndex..stopIndex))
+    when (token.type) {
+      QUOTE_OPEN -> {
+        outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
+      }
+      QUOTE_CLOSE -> {
+        outStyledText.addStyle(TextStyle("end-string", token.line, token.charPositionInLine))
+      }
+      TRIPLE_QUOTE_OPEN -> {
+        val startIndex = token.charPositionInLine
+        val stopIndex = startIndex + token.text.length - 1
+        outStyledText.addStyle(TextStyle("open-multiline-string", token.line, startIndex..stopIndex))
+      }
+      TRIPLE_QUOTE_CLOSE -> {
+        val startIndex = token.charPositionInLine
+        val stopIndex = startIndex + token.text.length - 1
+        outStyledText.addStyle(TextStyle("close-multiline-string", token.line, startIndex..stopIndex))
+      }
     }
   }
 
