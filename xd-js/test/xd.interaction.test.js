@@ -65,4 +65,18 @@ describe('XD interactions', () => {
       verifyHtml(this.test, jsdom.window.document.documentElement);
     });
   });
+
+  describe('selected-focused', () => {
+    it('selected-focused to unselected', function () {
+      // given
+      const jsdom = jsdomForHtmlAsset('selected-focused.html');
+      const htmlSpanElement = jsdom.window.document.querySelector('span');
+
+      // when
+      handleIdentifierClick(htmlSpanElement, $(jsdom.window));
+
+      // then
+      verifyHtml(this.test, jsdom.window.document.documentElement);
+    });
+  });
 });
