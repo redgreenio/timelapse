@@ -59,7 +59,7 @@ module.exports = {
   getIdentifier,
   selectSpansWithClass,
   selectMatchingIdentifierSpans,
-  highlight,
+  mouseEntersIdentifier: highlight,
   removeHighlight,
   handleIdentifierClick,
 };
