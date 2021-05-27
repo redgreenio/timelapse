@@ -60,6 +60,6 @@ module.exports = {
   selectSpansWithClass,
   selectMatchingIdentifierSpans,
   mouseEntersIdentifier: highlight,
-  removeHighlight,
+  mouseLeavesIdentifier: removeHighlight,
   handleIdentifierClick,
 };
