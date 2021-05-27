@@ -40,14 +40,14 @@ describe('XD interactions', () => {
   });
 
   describe('highlight', () => {
-    it('highlight to unselected', function () {
+    it('highlight to unselected-unfocused', function () {
       // given
       const highlightedHtmlJsdom = jsdomForHtmlAsset('highlighted.html');
       const htmlSpanElement = highlightedHtmlJsdom.window.document.querySelector('span');
 
       // when
-      const unselectedSpans = mouseLeavesIdentifier(htmlSpanElement, $(highlightedHtmlJsdom.window));
-      const spanElement = unselectedSpans.toArray()[0];
+      const unselectedUnfocusedSpans = mouseLeavesIdentifier(htmlSpanElement, $(highlightedHtmlJsdom.window));
+      const spanElement = unselectedUnfocusedSpans.toArray()[0];
 
       // then
       verifyHtml(this.test, spanElement);
