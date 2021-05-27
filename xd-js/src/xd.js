@@ -27,30 +27,30 @@ function removeHighlight(span, _$ = $) {
   return selectMatchingIdentifierSpans(span, _$).removeClass('highlight');
 }
 
-function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslint-disable-line no-unused-vars
-  function handleIdentifierSelections(span) {
-    const matchingIdentifierSpans = selectMatchingIdentifierSpans(span);
+function handleIdentifierClick(span, _$ = $) {
+  const matchingIdentifierSpans = selectMatchingIdentifierSpans(span, _$);
 
-    const spanClasses = span.attr('class');
-    if (spanClasses.includes('selected') || (spanClasses.includes('selected') && spanClasses.includes('highlight'))) {
-      matchingIdentifierSpans.removeClass('selected');
-      matchingIdentifierSpans.removeClass('highlight');
-      return;
-    }
-
-    const previouslySelectedSpans = _$(selectSpansWithClass('selected'));
-    previouslySelectedSpans.removeClass('selected');
-
-    matchingIdentifierSpans.addClass('highlight selected');
+  const spanClasses = _$(span).attr('class');
+  if (spanClasses.includes('selected') || (spanClasses.includes('selected') && spanClasses.includes('highlight'))) {
+    matchingIdentifierSpans.removeClass('selected');
+    matchingIdentifierSpans.removeClass('highlight');
+    return;
   }
 
+  const previouslySelectedSpans = _$(selectSpansWithClass('selected', _$));
+  previouslySelectedSpans.removeClass('selected');
+
+  matchingIdentifierSpans.addClass('highlight selected');
+}
+
+function setupListenersForIdentifiers(identifierSpanElements, _$ = $) { // eslint-disable-line no-unused-vars
   identifierSpanElements
     .toArray()
     .map((spanElement) => _$(spanElement))
     .forEach((span) => {
       span.mouseenter(() => highlight(span));
       span.mouseleave(() => removeHighlight(span));
-      span.click(() => handleIdentifierSelections(span));
+      span.click(() => handleIdentifierClick(span));
     });
 }
 
@@ -61,4 +61,5 @@ module.exports = {
   selectMatchingIdentifierSpans,
   highlight,
   removeHighlight,
+  handleIdentifierClick,
 };
