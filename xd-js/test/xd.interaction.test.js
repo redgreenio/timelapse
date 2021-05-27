@@ -24,10 +24,10 @@ function verifyHtml(test, htmlElement) {
 }
 
 describe('XD interactions', () => {
-  describe('unselected', () => {
-    it('unselected to highlight', function () {
+  describe('unselected-unfocused', () => {
+    it('unselected-unfocused to highlight', function () {
       // given
-      const unselectedHtmlJsdom = jsdomForHtmlAsset('unselected.html');
+      const unselectedHtmlJsdom = jsdomForHtmlAsset('unselected-unfocused.html');
       const htmlSpanElement = unselectedHtmlJsdom.window.document.querySelector('span');
 
       // when
