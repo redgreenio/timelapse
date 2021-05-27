@@ -67,7 +67,7 @@ describe('XD interactions', () => {
   });
 
   describe('selected-focused', () => {
-    it('selected-focused to unselected', function () {
+    it('selected-focused to unselected-focused', function () {
       // given
       const jsdom = jsdomForHtmlAsset('selected-focused.html');
       const htmlSpanElement = jsdom.window.document.querySelector('span');
