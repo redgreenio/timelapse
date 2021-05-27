@@ -1,0 +1,53 @@
+<html lang="en-US"><head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <style>
+    body {
+      font-family: monospace;
+      font-size: small;
+    }
+
+    .highlight {
+      background-color: #F5D63B;
+    }
+
+    .highlight .declaration {
+      background-color: #F5C357;
+    }
+
+    .selected.highlight {
+      background-color: #D2D3FF;
+    }
+
+    .selected.highlight .declaration {
+      background-color: #FFD3FF;
+    }
+
+    .selected {
+      background-color: #E7E8FF;
+    }
+
+    .selected .declaration {
+      background-color: #FFE8FF;
+    }
+  </style>
+  <title>XD Interaction</title>
+</head>
+<body>
+<table>
+  <tbody>
+  <tr>
+    <td>fun add(<span class="identifier selected highlight" data-identifier="a"><span class="declaration">a</span></span>: Int, <span class="identifier" data-identifier="b"><span class="declaration">b</span></span>: Int): Int {</td>
+  </tr>
+  <tr>
+    <td>&nbsp;&nbsp;return <span class="identifier selected highlight" data-identifier="a">a</span> + <span class="identifier" data-identifier="b">b</span></td>
+  </tr>
+  <tr>
+    <td>}</td>
+  </tr>
+  </tbody>
+</table>
+
+
+
+
+</body></html>
