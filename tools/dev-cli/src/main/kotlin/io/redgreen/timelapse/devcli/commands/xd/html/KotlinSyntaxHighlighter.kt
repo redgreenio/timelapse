@@ -87,7 +87,7 @@ import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.Token
 
 object KotlinSyntaxHighlighter {
-  fun addStylesForTokens(
+  fun highlight(
     outStyledText: StyledText,
     affectedLineNumbers: List<Int>
   ) {

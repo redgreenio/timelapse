@@ -20,7 +20,7 @@ class KotlinSyntaxHighlighterTest {
     val affectedLineNumbers = (1..23).toList()
 
     // when
-    KotlinSyntaxHighlighter.addStylesForTokens(styledText, affectedLineNumbers)
+    KotlinSyntaxHighlighter.highlight(styledText, affectedLineNumbers)
     val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
     styledText.visit(visitor)
 
@@ -42,7 +42,7 @@ class KotlinSyntaxHighlighterTest {
     val affectedLineNumbers = (1..26).toList()
 
     // when
-    KotlinSyntaxHighlighter.addStylesForTokens(styledText, affectedLineNumbers)
+    KotlinSyntaxHighlighter.highlight(styledText, affectedLineNumbers)
     val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
     styledText.visit(visitor)
 
