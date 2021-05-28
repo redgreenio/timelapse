@@ -155,6 +155,7 @@ class CreateBaseHtmlSubcommand : Runnable {
       debug("Syntax highlighting turned off. Skipping...")
       styledText
     } else {
+      KotlinStyler.addLanguageSemantics(styledText)
       KotlinStyler.syntaxHighlight(styledText, lineNumbers)
       styledText
     }
