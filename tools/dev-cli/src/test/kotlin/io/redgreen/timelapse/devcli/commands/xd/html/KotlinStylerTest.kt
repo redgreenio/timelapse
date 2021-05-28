@@ -3,51 +3,55 @@ package io.redgreen.timelapse.devcli.commands.xd.html
 import io.redgreen.design.text.StyledText
 import io.redgreen.timelapse.devcli.commands.xd.html.visitors.BaseHtmlVisitor
 import org.approvaltests.Approvals
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 class KotlinStylerTest {
-  @Test
-  fun `it should highlight Kotlin source code`() {
-    // given
-    val sourceCode = KotlinStylerTest::class.java.classLoader
-      .getResourceAsStream("syntax-highlighting-01.kotlin")!!
-      .reader()
-      .readText()
-      .replaceLineEndingOnWindows()
+  @Nested
+  inner class SyntaxHighlight {
+    @Test
+    fun `it should highlight Kotlin source code`() {
+      // given
+      val sourceCode = KotlinStylerTest::class.java.classLoader
+        .getResourceAsStream("syntax-highlighting-01.kotlin")!!
+        .reader()
+        .readText()
+        .replaceLineEndingOnWindows()
 
-    val styledText = StyledText(sourceCode)
+      val styledText = StyledText(sourceCode)
 
-    val affectedLineNumbers = (1..23).toList()
+      val affectedLineNumbers = (1..23).toList()
 
-    // when
-    KotlinStyler.syntaxHighlight(styledText, affectedLineNumbers)
-    val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
-    styledText.visit(visitor)
+      // when
+      KotlinStyler.syntaxHighlight(styledText, affectedLineNumbers)
+      val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
+      styledText.visit(visitor)
 
-    // then
-    Approvals.verifyHtml(visitor.content, scrubberOptions)
-  }
+      // then
+      Approvals.verifyHtml(visitor.content, scrubberOptions)
+    }
 
-  @Test
-  fun `it should highlight all kinds of brackets`() {
-    // given
-    val sourceCode = KotlinStylerTest::class.java.classLoader
-      .getResourceAsStream("syntax-highlighting-02.kotlin")!!
-      .reader()
-      .readText()
-      .replaceLineEndingOnWindows()
+    @Test
+    fun `it should highlight all kinds of brackets`() {
+      // given
+      val sourceCode = KotlinStylerTest::class.java.classLoader
+        .getResourceAsStream("syntax-highlighting-02.kotlin")!!
+        .reader()
+        .readText()
+        .replaceLineEndingOnWindows()
 
-    val styledText = StyledText(sourceCode)
+      val styledText = StyledText(sourceCode)
 
-    val affectedLineNumbers = (1..26).toList()
+      val affectedLineNumbers = (1..26).toList()
 
-    // when
-    KotlinStyler.syntaxHighlight(styledText, affectedLineNumbers)
-    val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
-    styledText.visit(visitor)
+      // when
+      KotlinStyler.syntaxHighlight(styledText, affectedLineNumbers)
+      val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
+      styledText.visit(visitor)
 
-    // then
-    Approvals.verifyHtml(visitor.content, scrubberOptions)
+      // then
+      Approvals.verifyHtml(visitor.content, scrubberOptions)
+    }
   }
 }
 
