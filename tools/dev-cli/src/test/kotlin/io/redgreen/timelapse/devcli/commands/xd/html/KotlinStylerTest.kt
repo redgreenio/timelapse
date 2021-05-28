@@ -53,6 +53,34 @@ class KotlinStylerTest {
       Approvals.verifyHtml(visitor.content, scrubberOptions)
     }
   }
+
+  @Nested
+  inner class LanguageSemantics {
+    @Test
+    fun `it should mark function boundaries`() {
+      // given
+      val singleFunction = """
+        fun add(a: Int, b: Int): Int {
+          return a + b
+        }
+
+        fun multiply(a: Int, b: Int): Int {
+          return a * b
+        }
+        
+      """.trimIndent()
+
+      val styledText = StyledText(singleFunction)
+
+      // when
+      KotlinStyler.addLanguageSemantics(styledText)
+      val visitor = BaseHtmlVisitor("Kotlin Source", emptyList())
+      styledText.visit(visitor)
+
+      // then
+      Approvals.verifyHtml(visitor.content, scrubberOptions)
+    }
+  }
 }
 
 private fun String.replaceLineEndingOnWindows(): String {
