@@ -89,6 +89,8 @@ import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.Token
 
 object KotlinStyler {
+  private const val DEBUG = false
+
   fun syntaxHighlight(
     outStyledText: StyledText,
     affectedLineNumbers: List<Int>
@@ -191,6 +193,9 @@ object KotlinStyler {
   fun addLanguageSemantics(outStyledText: StyledText) {
     val lexer = KotlinLexer(CharStreams.fromString(outStyledText.text))
     val parser = KotlinParser(CommonTokenStream(lexer))
+    if (!DEBUG) {
+      parser.removeErrorListeners()
+    }
     val visitor = KotlinLanguageElementVisitor().apply { visit(parser.kotlinFile()) }
     visitor.functions.onEach { function ->
       outStyledText.addStyle(LineStyle("begin-function", function.startLine))
