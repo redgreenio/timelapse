@@ -81,6 +81,6 @@ object deps {
     }
 
     const val truth = "com.google.truth:truth:1.1.3"
-    const val approvalTests = "com.approvaltests:approvaltests:11.4.0"
+    const val approvalTests = "com.approvaltests:approvaltests:11.5.0"
   }
 }
