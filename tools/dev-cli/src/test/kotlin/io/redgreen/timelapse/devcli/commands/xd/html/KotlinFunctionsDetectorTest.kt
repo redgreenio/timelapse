@@ -51,6 +51,24 @@ class KotlinFunctionsDetectorTest {
           Function(5, 7, "multiply"),
         )
     }
+
+    @Test
+    fun `annotated function`() {
+      // given
+      val twoFunctions = """
+        package io.redgreen.math
+        
+        @Redundant
+        fun add(a: Int, b: Int) = a + b
+      """.trimIndent()
+
+      // when
+      val visitor = visitedVisitor(twoFunctions)
+
+      // then
+      assertThat(visitor.functions)
+        .containsExactly(Function(3, 4, "add"))
+    }
   }
 
   private fun visitedVisitor(
