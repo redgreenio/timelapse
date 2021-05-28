@@ -27,6 +27,30 @@ class KotlinFunctionsDetectorTest {
       assertThat(visitor.functions)
         .containsExactly(Function(1, 3, "isThisFun"))
     }
+
+    @Test
+    fun `function with parameters and return type`() {
+      // given
+      val twoFunctions = """
+        package io.redgreen.math
+        
+        fun add(a: Int, b: Int) = a + b
+        
+        fun multiply(a: Int, b: Int): Int {
+          return a * b
+        }
+      """.trimIndent()
+
+      // when
+      val visitor = visitedVisitor(twoFunctions)
+
+      // then
+      assertThat(visitor.functions)
+        .containsExactly(
+          Function(3, 3, "add"),
+          Function(5, 7, "multiply"),
+        )
+    }
   }
 
   private fun visitedVisitor(
