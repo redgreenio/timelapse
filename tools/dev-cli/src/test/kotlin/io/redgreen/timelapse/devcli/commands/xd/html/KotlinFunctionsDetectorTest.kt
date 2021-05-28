@@ -12,7 +12,7 @@ class KotlinFunctionsDetectorTest {
   @Nested
   inner class TopLevel {
     @Test
-    fun `single function no package name or imports`() {
+    fun `single function no parameters or return type`() {
       // given
       val singleTopLevelFunction = """
         fun isThisFun(): Boolean {
@@ -20,16 +20,20 @@ class KotlinFunctionsDetectorTest {
         }
       """.trimIndent()
 
-      val lexer = KotlinLexer(CharStreams.fromString(singleTopLevelFunction))
-      val parser = KotlinParser(CommonTokenStream(lexer))
-      val visitor = KotlinLanguageElementVisitor()
-
       // when
-      visitor.visit(parser.kotlinFile())
+      val visitor = visitedVisitor(singleTopLevelFunction)
 
       // then
       assertThat(visitor.functions)
         .containsExactly(Function(1, 3, "isThisFun"))
     }
+  }
+
+  private fun visitedVisitor(
+    source: String
+  ): KotlinLanguageElementVisitor {
+    val lexer = KotlinLexer(CharStreams.fromString(source))
+    val parser = KotlinParser(CommonTokenStream(lexer))
+    return KotlinLanguageElementVisitor().apply { visit(parser.kotlinFile()) }
   }
 }
