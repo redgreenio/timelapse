@@ -5,11 +5,11 @@ import io.redgreen.timelapse.devcli.commands.xd.html.visitors.BaseHtmlVisitor
 import org.approvaltests.Approvals
 import org.junit.jupiter.api.Test
 
-class KotlinSyntaxHighlighterTest {
+class KotlinStylerTest {
   @Test
   fun `it should highlight Kotlin source code`() {
     // given
-    val sourceCode = KotlinSyntaxHighlighterTest::class.java.classLoader
+    val sourceCode = KotlinStylerTest::class.java.classLoader
       .getResourceAsStream("syntax-highlighting-01.kotlin")!!
       .reader()
       .readText()
@@ -20,7 +20,7 @@ class KotlinSyntaxHighlighterTest {
     val affectedLineNumbers = (1..23).toList()
 
     // when
-    KotlinSyntaxHighlighter.highlight(styledText, affectedLineNumbers)
+    KotlinStyler.syntaxHighlight(styledText, affectedLineNumbers)
     val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
     styledText.visit(visitor)
 
@@ -31,7 +31,7 @@ class KotlinSyntaxHighlighterTest {
   @Test
   fun `it should highlight all kinds of brackets`() {
     // given
-    val sourceCode = KotlinSyntaxHighlighterTest::class.java.classLoader
+    val sourceCode = KotlinStylerTest::class.java.classLoader
       .getResourceAsStream("syntax-highlighting-02.kotlin")!!
       .reader()
       .readText()
@@ -42,7 +42,7 @@ class KotlinSyntaxHighlighterTest {
     val affectedLineNumbers = (1..26).toList()
 
     // when
-    KotlinSyntaxHighlighter.highlight(styledText, affectedLineNumbers)
+    KotlinStyler.syntaxHighlight(styledText, affectedLineNumbers)
     val visitor = BaseHtmlVisitor("Kotlin Source", affectedLineNumbers)
     styledText.visit(visitor)
 
