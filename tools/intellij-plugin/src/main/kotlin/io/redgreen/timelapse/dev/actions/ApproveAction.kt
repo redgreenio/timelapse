@@ -3,6 +3,7 @@ package io.redgreen.timelapse.dev.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.command.WriteCommandAction
 
 class ApproveAction : AnAction() {
   companion object {
@@ -25,7 +26,10 @@ class ApproveAction : AnAction() {
     val approvedFileName = receivedFileName.replace(RECEIVED_SLUG, APPROVED_SLUG)
     val existingApprovedVirtualFile = receivedVirtualFile.parent.findChild(approvedFileName)
 
-    existingApprovedVirtualFile?.delete(this)
-    receivedVirtualFile.rename(this, approvedFileName)
+    val approveRunnable = {
+      existingApprovedVirtualFile?.delete(this)
+      receivedVirtualFile.rename(this, approvedFileName)
+    }
+    WriteCommandAction.runWriteCommandAction(e.project, approveRunnable)
   }
 }
