@@ -32,6 +32,13 @@
   </extensions>
 
   <actions>
-    <!-- Add your actions here -->
+    <group id="io.redgreen.timelapse.dev.ApprovalTests">
+      <separator/>
+      <action id="io.redgreen.timelapse.dev.actions.ApproveAction"
+              class="io.redgreen.timelapse.dev.actions.ApproveAction" text="Approve File"
+              description="Promotes a received.* file to approved.*">
+        <add-to-group group-id="ProjectViewPopupMenu"/>
+      </action>
+    </group>
   </actions>
 </idea-plugin>
