@@ -4,6 +4,8 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.vfs.VirtualFile
 
 class ApproveAction : AnAction() {
   companion object {
@@ -26,10 +28,26 @@ class ApproveAction : AnAction() {
     val approvedFileName = receivedFileName.replace(RECEIVED_SLUG, APPROVED_SLUG)
     val existingApprovedVirtualFile = receivedVirtualFile.parent.findChild(approvedFileName)
 
-    val approveRunnable = {
-      existingApprovedVirtualFile?.delete(this)
+    val approve = { approve(existingApprovedVirtualFile, approvedFileName, receivedVirtualFile) }
+    WriteCommandAction.runWriteCommandAction(e.project, approve)
+  }
+
+  private fun approve(
+    approvedVirtualFile: VirtualFile?,
+    approvedFileName: String,
+    receivedVirtualFile: VirtualFile
+  ) {
+    if (approvedVirtualFile == null) {
       receivedVirtualFile.rename(this, approvedFileName)
+    } else {
+      val receivedFileContent = receivedVirtualFile.inputStream.reader().readText()
+
+      val fileDocumentManager = FileDocumentManager.getInstance()
+      val document = fileDocumentManager.getDocument(approvedVirtualFile)
+      if (document != null && document.isWritable) {
+        document.setText(receivedFileContent)
+        receivedVirtualFile.delete(this)
+      }
     }
-    WriteCommandAction.runWriteCommandAction(e.project, approveRunnable)
   }
 }
