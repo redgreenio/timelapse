@@ -80,6 +80,8 @@ import KotlinLexer.VAR
 import KotlinLexer.VARARG
 import KotlinLexer.WHEN
 import KotlinLexer.WHILE
+import KotlinParser
+import io.redgreen.design.text.LineStyle
 import io.redgreen.design.text.StyledText
 import io.redgreen.design.text.TextStyle
 import org.antlr.v4.runtime.CharStreams
@@ -184,5 +186,15 @@ object KotlinStyler {
       SUSPEND, FINAL, OPEN, LATEINIT, VARARG, NOINLINE, CROSSINLINE
     )
     return tokenType in keywords
+  }
+
+  fun addLanguageSemantics(outStyledText: StyledText) {
+    val lexer = KotlinLexer(CharStreams.fromString(outStyledText.text))
+    val parser = KotlinParser(CommonTokenStream(lexer))
+    val visitor = KotlinLanguageElementVisitor().apply { visit(parser.kotlinFile()) }
+    visitor.functions.onEach { function ->
+      outStyledText.addStyle(LineStyle("begin-function", function.startLine))
+      outStyledText.addStyle(LineStyle("end-function", function.endLine))
+    }
   }
 }

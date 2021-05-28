@@ -82,14 +82,48 @@ class BaseHtmlVisitor(
   }
 
   override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
+    if (lineNumber != 1) {
+      contentBuilder.append(NEWLINE)
+    }
     if (isInsideMultilineString) {
       contentBuilder.append("<span class=\"string\">")
+    }
+
+    if (lineStyle.name == "begin-function") {
+      contentBuilder.append("<tbody>").append("\n")
+    }
+
+    contentBuilder
+      .append("<tr>")
+      .append(NEWLINE)
+      .append("""$INDENT<td class="line-number">$lineNumber</td>""")
+      .append(NEWLINE)
+
+    val muted = lineNumber !in affectedLineNumbers
+    if (muted) {
+      contentBuilder.append("""$INDENT<td class="muted">""")
+    } else {
+      contentBuilder.append("""$INDENT<td>""")
+      if (isInsideMultilineString) {
+        contentBuilder.append("<span class=\"string\">")
+      }
     }
   }
 
   override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
     if (isInsideMultilineString) {
       contentBuilder.append("</span>")
+    }
+
+    contentBuilder
+      .append("</td>")
+      .append(NEWLINE)
+      .append("</tr>")
+
+    if (lineStyle.name == "end-function") {
+      contentBuilder
+        .append(NEWLINE)
+        .append("</tbody>")
     }
   }
 
