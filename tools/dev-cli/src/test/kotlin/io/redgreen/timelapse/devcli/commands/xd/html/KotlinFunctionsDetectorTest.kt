@@ -24,8 +24,9 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(singleTopLevelFunction)
 
       // then
+      val isThisFunIdentifier = Identifier("isThisFun", 1, 4)
       assertThat(visitor.functions)
-        .containsExactly(Function(1, 3, Identifier("isThisFun", 1, 4)))
+        .containsExactly(Function(1, 3, Signature(isThisFunIdentifier)))
     }
 
     @Test
@@ -45,10 +46,12 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(twoFunctions)
 
       // then
+      val addIdentifier = Identifier("add", 3, 4)
+      val multiplyIdentifier = Identifier("multiply", 5, 4)
       assertThat(visitor.functions)
         .containsExactly(
-          Function(3, 3, Identifier("add", 3, 4)),
-          Function(5, 7, Identifier("multiply", 5, 4)),
+          Function(3, 3, Signature(addIdentifier)),
+          Function(5, 7, Signature(multiplyIdentifier)),
         )
     }
 
@@ -66,8 +69,9 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(twoFunctions)
 
       // then
+      val addIdentifier = Identifier("add", 4, 4)
       assertThat(visitor.functions)
-        .containsExactly(Function(3, 4, Identifier("add", 4, 4)))
+        .containsExactly(Function(3, 4, Signature(addIdentifier)))
     }
 
     @Test
@@ -83,10 +87,12 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(twoFunctions)
 
       // then
+      val addIdentifier = Identifier("add", 3, 4)
+      val multiplyIdentifier = Identifier("multiply", 3, 37)
       assertThat(visitor.functions)
         .containsExactly(
-          Function(3, 3, Identifier("add", 3, 4)),
-          Function(3, 3, Identifier("multiply", 3, 37))
+          Function(3, 3, Signature(addIdentifier)),
+          Function(3, 3, Signature(multiplyIdentifier))
         )
     }
   }
