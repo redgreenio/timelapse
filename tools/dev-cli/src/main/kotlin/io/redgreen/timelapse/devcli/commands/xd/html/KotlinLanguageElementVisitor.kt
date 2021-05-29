@@ -855,7 +855,8 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
     val endLine = ctx.stop.line
     val simpleIdentifier = ctx.simpleIdentifier()
     val functionName = simpleIdentifier.text
-    return Function(startLine, endLine, Identifier(functionName, simpleIdentifier.start.line))
+    val identifier = Identifier(functionName, simpleIdentifier.start.line, simpleIdentifier.start.charPositionInLine)
+    return Function(startLine, endLine, identifier)
   }
 
   private fun debug(message: String) {
