@@ -850,8 +850,13 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
     return super.visitFunctionDeclaration(ctx)
   }
 
-  private fun toFunction(ctx: KotlinParser.FunctionDeclarationContext): Function =
-    Function(ctx.start.line, ctx.stop.line, Identifier(ctx.simpleIdentifier().text))
+  private fun toFunction(ctx: KotlinParser.FunctionDeclarationContext): Function {
+    val startLine = ctx.start.line
+    val endLine = ctx.stop.line
+    val simpleIdentifier = ctx.simpleIdentifier()
+    val functionName = simpleIdentifier.text
+    return Function(startLine, endLine, Identifier(functionName, simpleIdentifier.start.line))
+  }
 
   private fun debug(message: String) {
     if (DEBUG) println(message)
