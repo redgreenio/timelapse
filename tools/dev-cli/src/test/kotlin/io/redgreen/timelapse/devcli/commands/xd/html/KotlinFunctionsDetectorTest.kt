@@ -25,7 +25,7 @@ class KotlinFunctionsDetectorTest {
 
       // then
       assertThat(visitor.functions)
-        .containsExactly(Function(1, 3, "isThisFun"))
+        .containsExactly(Function(1, 3, Identifier("isThisFun")))
     }
 
     @Test
@@ -47,8 +47,8 @@ class KotlinFunctionsDetectorTest {
       // then
       assertThat(visitor.functions)
         .containsExactly(
-          Function(3, 3, "add"),
-          Function(5, 7, "multiply"),
+          Function(3, 3, Identifier("add")),
+          Function(5, 7, Identifier("multiply")),
         )
     }
 
@@ -67,7 +67,7 @@ class KotlinFunctionsDetectorTest {
 
       // then
       assertThat(visitor.functions)
-        .containsExactly(Function(3, 4, "add"))
+        .containsExactly(Function(3, 4, Identifier("add")))
     }
 
     @Test
@@ -85,8 +85,8 @@ class KotlinFunctionsDetectorTest {
       // then
       assertThat(visitor.functions)
         .containsExactly(
-          Function(3, 3, "add"),
-          Function(3, 3, "multiply")
+          Function(3, 3, Identifier("add")),
+          Function(3, 3, Identifier("multiply"))
         )
     }
   }
