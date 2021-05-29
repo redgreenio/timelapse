@@ -843,12 +843,15 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
 
   override fun visitFunctionDeclaration(ctx: KotlinParser.FunctionDeclarationContext?): LanguageElement? {
     debug("visitFunctionDeclaration")
-    val function = ctx?.let { Function(ctx.start.line, ctx.stop.line, ctx.simpleIdentifier().text) }
+    val function = ctx?.let(::toFunction)
     if (function != null) {
       mutableFunctions.add(function)
     }
     return super.visitFunctionDeclaration(ctx)
   }
+
+  private fun toFunction(ctx: KotlinParser.FunctionDeclarationContext): Function =
+    Function(ctx.start.line, ctx.stop.line, Identifier(ctx.simpleIdentifier().text))
 
   private fun debug(message: String) {
     if (DEBUG) println(message)
