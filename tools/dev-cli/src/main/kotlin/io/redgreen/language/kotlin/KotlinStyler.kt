@@ -200,6 +200,14 @@ object KotlinStyler {
     val visitor = KotlinLanguageElementVisitor().apply { visit(parser.kotlinFile()) }
     visitor.functions.onEach { function -> addFunctionDelimiters(outStyledText, function) }
     markFunctionParameterDeclarations(outStyledText, visitor.functions)
+
+    visitor.identifiers.onEach { identifier ->
+      val startIndex = identifier.startIndex
+      val endIndex = identifier.startIndex + identifier.text.length - 1
+      val textRange = startIndex..endIndex
+
+      outStyledText.addStyle(TextStyle("identifier", identifier.lineNumber, textRange, Optional.of(identifier.text)))
+    }
   }
 
   private fun markFunctionParameterDeclarations(
@@ -215,9 +223,9 @@ object KotlinStyler {
           val startIndex = identifier.startIndex
           val endIndex = identifier.startIndex + identifier.text.length - 1
 
-          val charIndexRange = startIndex..endIndex
-          addStyle(TextStyle("identifier", identifier.lineNumber, charIndexRange, Optional.of(identifier.text)))
-          addStyle(TextStyle("declaration", identifier.lineNumber, charIndexRange))
+          val textRange = startIndex..endIndex
+          addStyle(TextStyle("identifier", identifier.lineNumber, textRange, Optional.of(identifier.text)))
+          addStyle(TextStyle("declaration", identifier.lineNumber, textRange))
         }
       }
   }
