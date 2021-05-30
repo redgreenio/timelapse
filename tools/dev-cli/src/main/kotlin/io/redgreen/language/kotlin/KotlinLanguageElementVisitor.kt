@@ -853,14 +853,17 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
   private fun toFunction(ctx: KotlinParser.FunctionDeclarationContext): Function {
     val startLine = ctx.start.line
     val endLine = ctx.stop.line
-    val simpleIdentifier = ctx.simpleIdentifier()
-    val functionName = simpleIdentifier.text
-    val identifier = Identifier(functionName, simpleIdentifier.start.line, simpleIdentifier.start.charPositionInLine)
+    val functionSimpleIdentifier = ctx.simpleIdentifier()
+    val functionName = functionSimpleIdentifier.text
+    val lineNumber = functionSimpleIdentifier.start.line
+    val functionNameStartIndex = functionSimpleIdentifier.start.charPositionInLine
+    val identifier = Identifier(functionName, lineNumber, functionNameStartIndex)
 
     val parameters = ctx.functionValueParameters().functionValueParameter()
       .map {
-        val (name, _) = it.text.split(":")
-        Identifier(name, it.start.line, it.start.charPositionInLine)
+        val parameterSimpleIdentifier = it.parameter().simpleIdentifier()
+        val name = parameterSimpleIdentifier.text
+        Identifier(name, parameterSimpleIdentifier.start.line, parameterSimpleIdentifier.start.charPositionInLine)
       }
       .map(::Parameter)
 
