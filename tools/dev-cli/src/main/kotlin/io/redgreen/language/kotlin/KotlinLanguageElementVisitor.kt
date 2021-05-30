@@ -857,17 +857,28 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
     val functionName = functionSimpleIdentifier.text
     val lineNumber = functionSimpleIdentifier.start.line
     val functionNameStartIndex = functionSimpleIdentifier.start.charPositionInLine
-    val identifier = Identifier(functionName, lineNumber, functionNameStartIndex)
+    val functionIdentifier = Identifier(functionName, lineNumber, functionNameStartIndex)
 
     val parameters = ctx.functionValueParameters().functionValueParameter()
-      .map {
-        val parameterSimpleIdentifier = it.parameter().simpleIdentifier()
-        val name = parameterSimpleIdentifier.text
-        Identifier(name, parameterSimpleIdentifier.start.line, parameterSimpleIdentifier.start.charPositionInLine)
-      }
-      .map(::Parameter)
+      .map { functionValueParameterContext -> identifierAndType(functionValueParameterContext) }
+      .map { (identifier, type) -> Parameter(identifier, type) }
 
-    return Function(startLine, endLine, Signature(identifier, parameters))
+    return Function(startLine, endLine, Signature(functionIdentifier, parameters))
+  }
+
+  private fun identifierAndType(
+    context: KotlinParser.FunctionValueParameterContext
+  ): Pair<Identifier, Type> {
+    val parameter = context.parameter()
+
+    val parameterSimpleIdentifier = parameter.simpleIdentifier()
+    val identifier = Identifier(
+      parameterSimpleIdentifier.text,
+      parameterSimpleIdentifier.start.line,
+      parameterSimpleIdentifier.start.charPositionInLine
+    )
+
+    return identifier to Type(parameter.type_().text)
   }
 
   private fun debug(message: String) {
