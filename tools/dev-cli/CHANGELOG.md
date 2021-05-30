@@ -6,6 +6,7 @@
 - Add `-f` (syntax highlight entire file) option.
 - Add syntax highlight support for more keywords.
 - Enclose functions within `<tbody>` tags. 
+- Enclose function parameters and usage sites with a `identifer` span.
 
 ## [0.0.14] - 2021-05-21
 
