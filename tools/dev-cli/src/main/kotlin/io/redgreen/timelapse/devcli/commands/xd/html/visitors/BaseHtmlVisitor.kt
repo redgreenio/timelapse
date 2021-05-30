@@ -138,7 +138,10 @@ class BaseHtmlVisitor(
       isInsideMultilineString = false
     }
 
-    if (textStyle.name != "end-string") {
+    if (textStyle.name == "identifier") {
+      val dataIdentifier = textStyle.extra.get()
+      contentBuilder.append("""<span class="${textStyle.name}" data-identifier="$dataIdentifier">""")
+    } else if (textStyle.name != "end-string") {
       contentBuilder.append("""<span class="${textStyle.name}">""")
     }
   }
