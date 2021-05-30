@@ -118,6 +118,95 @@ class KotlinFunctionsDetectorTest {
           Function(3, 3, multiplySignature)
         )
     }
+
+    @Nested
+    inner class ParameterUsageWithinFunctionBody {
+      @Test
+      fun `single function no parameters has no usages`() {
+        // given
+        val singleTopLevelFunction = """
+          fun isThisFun(): Boolean {
+            return true
+          }
+        """.trimIndent()
+
+        // when
+        val visitor = visitedVisitor(singleTopLevelFunction)
+
+        // then
+        assertThat(visitor.identifiers)
+          .isEmpty()
+      }
+
+      @Test
+      fun `function with parameters with two parameters`() {
+        // given
+        val twoFunctions = """
+          package io.redgreen.math
+          
+          fun add(a: Int, b: Int) = a + b
+          
+          fun multiply(a: Int, b: Int): Int {
+            return a * b
+          }
+        """.trimIndent()
+
+        // when
+        val visitor = visitedVisitor(twoFunctions)
+
+        // then
+        assertThat(visitor.identifiers)
+          .containsExactly(
+            Identifier("a", 3, 26),
+            Identifier("b", 3, 30),
+            Identifier("a", 6, 9),
+            Identifier("b", 6, 13)
+          )
+      }
+
+      @Test
+      fun `annotated function`() {
+        // given
+        val twoFunctions = """
+          package io.redgreen.math
+          
+          @Redundant
+          fun add(a: Int, b: Int) = a + b
+        """.trimIndent()
+
+        // when
+        val visitor = visitedVisitor(twoFunctions)
+
+        // then
+        assertThat(visitor.identifiers)
+          .containsExactly(
+            Identifier("a", 4, 26),
+            Identifier("b", 4, 30)
+          )
+      }
+
+      @Test
+      fun `two function, same line`() {
+        // given
+        val twoFunctions = """
+          package io.redgreen.math
+          
+          fun add(a: Int, b: Int) = a + b; fun multiply(a: Int, b: Int) = a * b
+        """.trimIndent()
+
+        // when
+        val visitor = visitedVisitor(twoFunctions)
+
+        // then
+        assertThat(visitor.identifiers)
+          .containsExactly(
+            Identifier("a", 3, 26),
+            Identifier("b", 3, 30),
+            Identifier("a", 3, 64),
+            Identifier("b", 3, 68)
+          )
+      }
+    }
   }
 
   private fun visitedVisitor(
