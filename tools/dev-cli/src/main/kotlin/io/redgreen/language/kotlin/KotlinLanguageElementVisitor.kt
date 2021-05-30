@@ -851,8 +851,6 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
   }
 
   private fun toFunction(ctx: KotlinParser.FunctionDeclarationContext): Function {
-    val startLine = ctx.start.line
-    val endLine = ctx.stop.line
     val functionSimpleIdentifier = ctx.simpleIdentifier()
     val functionName = functionSimpleIdentifier.text
     val lineNumber = functionSimpleIdentifier.start.line
@@ -863,6 +861,8 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
       .map { functionValueParameterContext -> identifierAndType(functionValueParameterContext) }
       .map { (identifier, type) -> Parameter(identifier, type) }
 
+    val startLine = ctx.start.line
+    val endLine = ctx.stop.line
     return Function(startLine, endLine, Signature(functionIdentifier, parameters))
   }
 

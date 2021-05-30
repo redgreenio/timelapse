@@ -87,6 +87,7 @@ import io.redgreen.design.text.TextStyle
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.Token
+import java.util.Optional
 
 object KotlinStyler {
   private const val DEBUG = false
@@ -197,9 +198,37 @@ object KotlinStyler {
       parser.removeErrorListeners()
     }
     val visitor = KotlinLanguageElementVisitor().apply { visit(parser.kotlinFile()) }
-    visitor.functions.onEach { function ->
-      outStyledText.addStyle(LineStyle("begin-function", function.startLine))
-      outStyledText.addStyle(LineStyle("end-function", function.endLine))
+    visitor.functions.onEach { function -> addFunctionDelimiters(outStyledText, function) }
+    markFunctionParameterDeclarations(outStyledText, visitor.functions)
+  }
+
+  private fun markFunctionParameterDeclarations(
+    outStyledText: StyledText,
+    parameters: List<Function>
+  ) {
+    parameters
+      .map(Function::signature)
+      .flatMap(Signature::parameters)
+      .map(Parameter::identifier)
+      .onEach { identifier ->
+        with(outStyledText) {
+          val startIndex = identifier.startIndex
+          val endIndex = identifier.startIndex + identifier.text.length - 1
+
+          val charIndexRange = startIndex..endIndex
+          addStyle(TextStyle("identifier", identifier.lineNumber, charIndexRange, Optional.of(identifier.text)))
+          addStyle(TextStyle("declaration", identifier.lineNumber, charIndexRange))
+        }
+      }
+  }
+
+  private fun addFunctionDelimiters(
+    outStyledText: StyledText,
+    function: Function
+  ) {
+    with(outStyledText) {
+      addStyle(LineStyle("begin-function", function.startLine))
+      addStyle(LineStyle("end-function", function.endLine))
     }
   }
 }
