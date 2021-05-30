@@ -48,14 +48,14 @@ class KotlinFunctionsDetectorTest {
       // then
       val addSignature = Signature(
         Identifier("add", 3, 4),
-        Parameter(Identifier("a", 3, 8), Type("Int")),
-        Parameter(Identifier("b", 3, 16), Type("Int"))
+        Parameter(Identifier("a", 3, 8), Type("Int", 3, 11)),
+        Parameter(Identifier("b", 3, 16), Type("Int", 3, 19))
       )
 
       val multiplySignature = Signature(
         Identifier("multiply", 5, 4),
-        Parameter(Identifier("a", 5, 13), Type("Int")),
-        Parameter(Identifier("b", 5, 21), Type("Int"))
+        Parameter(Identifier("a", 5, 13), Type("Int", 5, 16)),
+        Parameter(Identifier("b", 5, 21), Type("Int", 5, 24))
       )
 
       assertThat(visitor.functions)
@@ -81,8 +81,8 @@ class KotlinFunctionsDetectorTest {
       // then
       val addSignature = Signature(
         Identifier("add", 4, 4),
-        Parameter(Identifier("a", 4, 8), Type("Int")),
-        Parameter(Identifier("b", 4, 16), Type("Int")),
+        Parameter(Identifier("a", 4, 8), Type("Int", 4, 11)),
+        Parameter(Identifier("b", 4, 16), Type("Int", 4, 19)),
       )
       assertThat(visitor.functions)
         .containsExactly(Function(3, 4, addSignature))
@@ -103,13 +103,13 @@ class KotlinFunctionsDetectorTest {
       // then
       val addSignature = Signature(
         Identifier("add", 3, 4),
-        Parameter(Identifier("a", 3, 8), Type("Int")),
-        Parameter(Identifier("b", 3, 16), Type("Int"))
+        Parameter(Identifier("a", 3, 8), Type("Int", 3, 11)),
+        Parameter(Identifier("b", 3, 16), Type("Int", 3, 19))
       )
       val multiplySignature = Signature(
         Identifier("multiply", 3, 37),
-        Parameter(Identifier("a", 3, 46), Type("Int")),
-        Parameter(Identifier("b", 3, 54), Type("Int"))
+        Parameter(Identifier("a", 3, 46), Type("Int", 3, 49)),
+        Parameter(Identifier("b", 3, 54), Type("Int", 3, 57))
       )
 
       assertThat(visitor.functions)
