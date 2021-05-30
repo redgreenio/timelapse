@@ -10,9 +10,13 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
   }
 
   private val mutableFunctions = mutableListOf<Function>()
+  private val mutableIdentifiers = mutableListOf<Identifier>()
 
   val functions: List<Function>
     get() = mutableFunctions.toList()
+
+  val identifiers: List<Identifier>
+    get() = mutableIdentifiers.toList()
 
   override fun visitKotlinFile(ctx: KotlinParser.KotlinFileContext?): LanguageElement? {
     debug("visitKotlinFile")
@@ -797,7 +801,26 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
   }
 
   override fun visitSimpleIdentifier(ctx: KotlinParser.SimpleIdentifierContext?): LanguageElement? {
-    debug("visitSimpleIdentifier")
+    if (ctx == null) {
+      return null
+    }
+
+    val occursWithinFunctionBody = functions
+      .map { it.startLine..it.endLine }
+      .find { ctx.start.line in it } != null
+
+    val isFunctionParameter = functions
+      .flatMap { it.signature.parameters }
+      .any { ctx.text == it.identifier.text }
+
+    val isNotFunctionDeclaration = functions
+      .flatMap { it.signature.parameters }
+      .none { it.identifier.startIndex == ctx.start.charPositionInLine && it.identifier.lineNumber == ctx.start.line }
+
+    if (occursWithinFunctionBody && isFunctionParameter && isNotFunctionDeclaration) {
+      mutableIdentifiers.add(Identifier(ctx.text, ctx.start.line, ctx.start.charPositionInLine))
+    }
+
     return super.visitSimpleIdentifier(ctx)
   }
 
