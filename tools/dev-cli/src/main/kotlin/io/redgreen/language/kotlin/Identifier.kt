@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.devcli.commands.xd.html
+package io.redgreen.language.kotlin
 
 data class Identifier(
   val text: String,
