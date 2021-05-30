@@ -24,9 +24,9 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(singleTopLevelFunction)
 
       // then
-      val isThisFunIdentifier = Identifier("isThisFun", 1, 4)
+      val isThisFunSignature = Signature(Identifier("isThisFun", 1, 4))
       assertThat(visitor.functions)
-        .containsExactly(Function(1, 3, Signature(isThisFunIdentifier)))
+        .containsExactly(Function(1, 3, isThisFunSignature))
     }
 
     @Test
@@ -46,12 +46,22 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(twoFunctions)
 
       // then
-      val addIdentifier = Identifier("add", 3, 4)
-      val multiplyIdentifier = Identifier("multiply", 5, 4)
+      val addSignature = Signature(
+        Identifier("add", 3, 4),
+        Parameter(Identifier("a", 3, 8)),
+        Parameter(Identifier("b", 3, 16))
+      )
+
+      val multiplySignature = Signature(
+        Identifier("multiply", 5, 4),
+        Parameter(Identifier("a", 5, 13)),
+        Parameter(Identifier("b", 5, 21))
+      )
+
       assertThat(visitor.functions)
         .containsExactly(
-          Function(3, 3, Signature(addIdentifier)),
-          Function(5, 7, Signature(multiplyIdentifier)),
+          Function(3, 3, addSignature),
+          Function(5, 7, multiplySignature),
         )
     }
 
@@ -69,9 +79,13 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(twoFunctions)
 
       // then
-      val addIdentifier = Identifier("add", 4, 4)
+      val addSignature = Signature(
+        Identifier("add", 4, 4),
+        Parameter(Identifier("a", 4, 8)),
+        Parameter(Identifier("b", 4, 16)),
+      )
       assertThat(visitor.functions)
-        .containsExactly(Function(3, 4, Signature(addIdentifier)))
+        .containsExactly(Function(3, 4, addSignature))
     }
 
     @Test
@@ -87,12 +101,21 @@ class KotlinFunctionsDetectorTest {
       val visitor = visitedVisitor(twoFunctions)
 
       // then
-      val addIdentifier = Identifier("add", 3, 4)
-      val multiplyIdentifier = Identifier("multiply", 3, 37)
+      val addSignature = Signature(
+        Identifier("add", 3, 4),
+        Parameter(Identifier("a", 3, 8)),
+        Parameter(Identifier("b", 3, 16))
+      )
+      val multiplySignature = Signature(
+        Identifier("multiply", 3, 37),
+        Parameter(Identifier("a", 3, 46)),
+        Parameter(Identifier("b", 3, 54))
+      )
+
       assertThat(visitor.functions)
         .containsExactly(
-          Function(3, 3, Signature(addIdentifier)),
-          Function(3, 3, Signature(multiplyIdentifier))
+          Function(3, 3, addSignature),
+          Function(3, 3, multiplySignature)
         )
     }
   }
