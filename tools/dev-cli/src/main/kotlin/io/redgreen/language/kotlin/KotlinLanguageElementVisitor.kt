@@ -878,7 +878,8 @@ class KotlinLanguageElementVisitor : KotlinParserBaseVisitor<LanguageElement>() 
       parameterSimpleIdentifier.start.charPositionInLine
     )
 
-    return identifier to Type(parameter.type_().text)
+    val type = parameter.type_()
+    return identifier to Type(type.text, type.start.line, type.start.charPositionInLine)
   }
 
   private fun debug(message: String) {
