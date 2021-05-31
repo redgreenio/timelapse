@@ -11,6 +11,9 @@ class ApproveAction : AnAction() {
   companion object {
     const val APPROVED_SLUG = ".approved."
     const val RECEIVED_SLUG = ".received."
+
+    const val WINDOWS_NEWLINE = "\r\n"
+    const val POSIX_NEWLINE = "\n"
   }
 
   override fun update(e: AnActionEvent) {
@@ -40,7 +43,10 @@ class ApproveAction : AnAction() {
     if (approvedVirtualFile == null) {
       receivedVirtualFile.rename(this, approvedFileName)
     } else {
-      val receivedFileContent = receivedVirtualFile.inputStream.reader().readText()
+      val receivedFileContent = receivedVirtualFile.inputStream
+        .reader()
+        .readText()
+        .replace(WINDOWS_NEWLINE, POSIX_NEWLINE)
 
       val fileDocumentManager = FileDocumentManager.getInstance()
       val document = fileDocumentManager.getDocument(approvedVirtualFile)
