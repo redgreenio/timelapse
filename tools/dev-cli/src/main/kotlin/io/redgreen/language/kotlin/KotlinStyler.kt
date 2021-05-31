@@ -175,16 +175,16 @@ object KotlinStyler {
       .map(Function::signature)
       .flatMap(Signature::parameters)
       .map(Parameter::identifier)
-      .onEach { identifier ->
-        with(outStyledText) {
-          val startIndex = identifier.startIndex
-          val endIndex = identifier.startIndex + identifier.text.length - 1
-          val textRange = startIndex..endIndex
+      .onEach { identifier -> outStyledText.addFunctionParameterStyles(identifier) }
+  }
 
-          addStyle(TextStyle("identifier", identifier.lineNumber, textRange, Optional.of(identifier.text)))
-          addStyle(TextStyle("declaration", identifier.lineNumber, textRange))
-        }
-      }
+  private fun StyledText.addFunctionParameterStyles(identifier: Identifier) {
+    val startIndex = identifier.startIndex
+    val endIndex = identifier.startIndex + identifier.text.length - 1
+    val textRange = startIndex..endIndex
+
+    addStyle(TextStyle("identifier", identifier.lineNumber, textRange, Optional.of(identifier.text)))
+    addStyle(TextStyle("declaration", identifier.lineNumber, textRange))
   }
 
   private fun addFunctionDelimiters(
