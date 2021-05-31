@@ -18,7 +18,6 @@ const platformLineEnding = process.platform === 'win32' ? '\r\n' : '\n';
 
 const approvalOverrides = {
   appendEOL: true,
-  normalizeLineEndingsTo: platformLineEnding,
 };
 
 function jsdomForHtmlAsset(fileName) {
