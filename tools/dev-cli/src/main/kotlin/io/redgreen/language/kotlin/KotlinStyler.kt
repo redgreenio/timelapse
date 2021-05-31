@@ -89,6 +89,7 @@ import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.Token
 import java.util.Optional
 
+@SuppressWarnings("TooManyFunctions")
 object KotlinStyler {
   private const val DEBUG = false
 
@@ -113,70 +114,53 @@ object KotlinStyler {
 
   private fun highlightCommas(token: Token, outStyledText: StyledText) {
     if (token.type == COMMA) {
-      outStyledText.addStyle(TextStyle("comma", token.line, token.charPositionInLine))
+      outStyledText.addStyle(token.toTextStyle("comma"))
     }
   }
 
   private fun highlightLiterals(token: Token, outStyledText: StyledText) {
-    when (token.type) {
-      IntegerLiteral -> {
-        outStyledText.addStyle(TextStyle("integer", token.line, token.charPositionInLine))
-      }
-      BooleanLiteral -> {
-        val startIndex = token.charPositionInLine
-        val stopIndex = startIndex + token.text.length - 1
-        outStyledText.addStyle(TextStyle("boolean", token.line, startIndex..stopIndex))
-      }
-      CharacterLiteral -> {
-        val startIndex = token.charPositionInLine
-        val stopIndex = startIndex + token.text.length - 1
-        outStyledText.addStyle(TextStyle("char", token.line, startIndex..stopIndex))
-      }
+    val textStyle = when (token.type) {
+      IntegerLiteral -> token.toTextStyle("integer")
+      BooleanLiteral -> token.toTextStyle("boolean")
+      CharacterLiteral -> token.toTextStyle("char")
+      else -> null
     }
+    textStyle?.let { outStyledText.addStyle(it) }
   }
 
   private fun highlightStringLiterals(
     token: Token,
     outStyledText: StyledText
   ) {
-    when (token.type) {
-      QUOTE_OPEN -> {
-        outStyledText.addStyle(TextStyle("string", token.line, token.charPositionInLine))
-      }
-      QUOTE_CLOSE -> {
-        outStyledText.addStyle(TextStyle("end-string", token.line, token.charPositionInLine))
-      }
-      TRIPLE_QUOTE_OPEN -> {
-        val startIndex = token.charPositionInLine
-        val stopIndex = startIndex + token.text.length - 1
-        outStyledText.addStyle(TextStyle("open-multiline-string", token.line, startIndex..stopIndex))
-      }
-      TRIPLE_QUOTE_CLOSE -> {
-        val startIndex = token.charPositionInLine
-        val stopIndex = startIndex + token.text.length - 1
-        outStyledText.addStyle(TextStyle("close-multiline-string", token.line, startIndex..stopIndex))
-      }
+    val textStyle = when (token.type) {
+      QUOTE_OPEN -> token.toTextStyle("string")
+      QUOTE_CLOSE -> token.toTextStyle("end-string")
+      TRIPLE_QUOTE_OPEN -> token.toTextStyle("open-multiline-string")
+      TRIPLE_QUOTE_CLOSE -> token.toTextStyle("close-multiline-string")
+      else -> null
     }
+    textStyle?.let { outStyledText.addStyle(it) }
   }
 
   private fun highlightKeywords(token: Token, outStyledText: StyledText) {
     if (isKeyword(token.type)) {
-      val startIndex = token.charPositionInLine
-      val stopIndex = startIndex + token.text.length - 1
-      outStyledText.addStyle(TextStyle("keyword", token.line, startIndex..stopIndex))
+      outStyledText.addStyle(token.toTextStyle("keyword"))
     }
   }
 
   private fun highlightBrackets(token: Token, outStyledText: StyledText) {
-    if (token.type == LPAREN || token.type == RPAREN) {
-      outStyledText.addStyle(TextStyle("parentheses", token.line, token.charPositionInLine))
+    val textStyle = if (token.type == LPAREN || token.type == RPAREN) {
+      token.toTextStyle("parentheses")
     } else if (token.type == LCURL || token.type == RCURL) {
-      outStyledText.addStyle(TextStyle("curly", token.line, token.charPositionInLine))
+      token.toTextStyle("curly")
     } else if (token.type == LANGLE || token.type == RANGLE) {
-      outStyledText.addStyle(TextStyle("angled", token.line, token.charPositionInLine))
+      token.toTextStyle("angled")
     } else if (token.type == LSQUARE || token.type == RSQUARE) {
-      outStyledText.addStyle(TextStyle("squared", token.line, token.charPositionInLine))
+      token.toTextStyle("squared")
+    } else {
+      null
     }
+    textStyle?.let { outStyledText.addStyle(it) }
   }
 
   private fun isKeyword(tokenType: Int): Boolean {
@@ -238,5 +222,12 @@ object KotlinStyler {
       addStyle(LineStyle("begin-function", function.startLine))
       addStyle(LineStyle("end-function", function.endLine))
     }
+  }
+
+  private fun Token.toTextStyle(name: String): TextStyle {
+    val lineNumber = this.line
+    val startIndex = this.charPositionInLine
+    val endIndex = startIndex + this.text.length - 1
+    return TextStyle(name, lineNumber, startIndex..endIndex)
   }
 }
