@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- macOS shortcuts for "Approve File" and "Compare With Approved/Received File" actions.
 - Add an "Approve File" action to Project View popup menu.
 - Add a "Compare with ..." action to Project View popup menu.
 
