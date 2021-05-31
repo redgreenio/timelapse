@@ -4,48 +4,60 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.vfs.VirtualFile
+import io.redgreen.timelapse.dev.model.ApprovalFile
+import io.redgreen.timelapse.dev.model.ApprovalFile.Approved
+import io.redgreen.timelapse.dev.model.ApprovalFile.Received
 
 class ApproveAction : AnAction() {
-  companion object {
-    const val APPROVED_SLUG = ".approved."
-    const val RECEIVED_SLUG = ".received."
-  }
-
   override fun update(e: AnActionEvent) {
     val projectPresent = e.project != null
     val virtualFile = e.dataContext.getData(PlatformDataKeys.VIRTUAL_FILE)
-    val selectedReceivedFile = virtualFile != null && virtualFile.name.contains(RECEIVED_SLUG)
+    val selectedReceivedFile = virtualFile != null && ApprovalFile.from(virtualFile) is Received
 
     e.presentation.isVisible = projectPresent && selectedReceivedFile
   }
 
   override fun actionPerformed(e: AnActionEvent) {
-    val receivedVirtualFile = e.dataContext.getData(PlatformDataKeys.VIRTUAL_FILE) ?: return
+    val receivedVirtualFile = e.dataContext.getData(PlatformDataKeys.VIRTUAL_FILE)
+    receivedVirtualFile ?: return
 
-    val receivedFileName = receivedVirtualFile.name
-    val approvedFileName = receivedFileName.replace(RECEIVED_SLUG, APPROVED_SLUG)
-    val existingApprovedVirtualFile = receivedVirtualFile.parent.findChild(approvedFileName)
+    val received = Received(receivedVirtualFile)
+    val approved = received.counterpart() as? Approved
 
-    val approve = { approve(existingApprovedVirtualFile, approvedFileName, receivedVirtualFile) }
-    WriteCommandAction.runWriteCommandAction(e.project, approve)
+    WriteCommandAction.runWriteCommandAction(e.project) { approve(received, approved) }
   }
 
   private fun approve(
-    approvedVirtualFile: VirtualFile?,
-    approvedFileName: String,
-    receivedVirtualFile: VirtualFile
+    received: Received,
+    existingApproved: Approved?
   ) {
-    if (approvedVirtualFile == null) {
-      receivedVirtualFile.rename(this, approvedFileName)
+    if (existingApproved == null) {
+      received.virtualFile.rename(this, received.approvedFileName)
     } else {
       val fileDocumentManager = FileDocumentManager.getInstance()
-      val document = fileDocumentManager.getDocument(approvedVirtualFile)
+      val document = fileDocumentManager.getDocument(existingApproved.virtualFile)
       if (document != null && document.isWritable) {
-        document.setText(receivedVirtualFile.readText())
-        receivedVirtualFile.delete(this)
+        copyReceivedContentToApproved(fileDocumentManager, received, document)
+        deleteReceived(received)
       }
     }
+  }
+
+  private fun copyReceivedContentToApproved(
+    fileDocumentManager: FileDocumentManager,
+    received: Received,
+    approvedDocument: Document
+  ) {
+    // Save latest changes in the 'received' file
+    fileDocumentManager.getDocument(received.virtualFile)?.let { fileDocumentManager.saveDocument(it) }
+
+    approvedDocument.setText(received.virtualFile.readText())
+    fileDocumentManager.saveDocument(approvedDocument)
+  }
+
+  private fun deleteReceived(received: Received) {
+    received.virtualFile.delete(this)
   }
 }

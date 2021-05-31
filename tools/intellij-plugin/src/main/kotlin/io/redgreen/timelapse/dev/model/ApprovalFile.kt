@@ -29,6 +29,9 @@ sealed class ApprovalFile {
   }
 
   data class Received(override val virtualFile: VirtualFile) : ApprovalFile() {
+    val approvedFileName: String
+      get() = virtualFile.name.replace(RECEIVED_SLUG, APPROVED_SLUG)
+
     override fun counterpart(): ApprovalFile? {
       val approvedFileName = virtualFile.name.replace(RECEIVED_SLUG, APPROVED_SLUG)
       val approvedVirtualFile = virtualFile.parent.findChild(approvedFileName) ?: return null
