@@ -12,6 +12,7 @@
   <change-notes><![CDATA[
     <ul>
       <li>Add an "Approve File" action to Project View popup menu.</li>
+      <li>Add a "Compare With" action to Project View popup menu.</li>
       <li>XD live template for identifier.</li>
       <li>Templates for XD HTML tags.</li>
     </ul>
