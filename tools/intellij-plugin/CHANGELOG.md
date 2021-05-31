@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Add an "Approve File" action to Project View popup menu.
+- Add a "Compare with ..." action to Project View popup menu.
 
 ## [0.0.2] - 2021-05-25
 
