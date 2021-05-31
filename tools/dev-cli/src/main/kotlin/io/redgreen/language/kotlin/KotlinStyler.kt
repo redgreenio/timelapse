@@ -89,7 +89,6 @@ import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.Token
 import java.util.Optional
 
-@SuppressWarnings("TooManyFunctions")
 object KotlinStyler {
   private const val DEBUG = false
 
@@ -111,6 +110,8 @@ object KotlinStyler {
     RANGLE to "angled",
     LSQUARE to "squared",
     RSQUARE to "squared",
+
+    COMMA to "comma",
   )
 
   fun syntaxHighlight(
@@ -124,18 +125,9 @@ object KotlinStyler {
       .tokens
       .asSequence()
       .filter { it.line in affectedLineNumbers }
-      .onEach {
-        checkAndAddStyle(it, outStyledText)
-      }
+      .onEach { checkAndAddStyle(it, outStyledText) }
       .onEach { highlightKeywords(it, outStyledText) }
-      .onEach { highlightCommas(it, outStyledText) }
       .toList()
-  }
-
-  private fun highlightCommas(token: Token, outStyledText: StyledText) {
-    if (token.type == COMMA) {
-      outStyledText.addStyle(token.toTextStyle("comma"))
-    }
   }
 
   private fun highlightKeywords(token: Token, outStyledText: StyledText) {
@@ -187,8 +179,8 @@ object KotlinStyler {
         with(outStyledText) {
           val startIndex = identifier.startIndex
           val endIndex = identifier.startIndex + identifier.text.length - 1
-
           val textRange = startIndex..endIndex
+
           addStyle(TextStyle("identifier", identifier.lineNumber, textRange, Optional.of(identifier.text)))
           addStyle(TextStyle("declaration", identifier.lineNumber, textRange))
         }
