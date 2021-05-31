@@ -17,7 +17,8 @@
     "jsdom": "^16.6.0",
     "mocha": "^8.4.0",
     "approvals": "^4.0.0-beta.1",
-    "marked": ">=0.3.18"
+    "marked": ">=0.3.18",
+    "ws": ">=7.4.6"
   },
   "dependencies": {
     "jquery": "^3.6.0"
