@@ -48,6 +48,7 @@ tasks.register("generateTemplateHtml", DefaultTask::class) {
   inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.css"))
   inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.js"))
   inputs.files(rootDir.resolve("xd-js/src/static/css/xd-interaction.css"))
+  inputs.files(rootDir.resolve("xd-js/src/xd.js"))
   inputs.files(projectDir.resolve("src/main/resources/template-skeleton.html"))
 
   outputs.file(projectDir.resolve("src/main/resources/template.html"))
@@ -57,13 +58,15 @@ tasks.register("generateTemplateHtml", DefaultTask::class) {
     val extendedDiffCss = allInputFiles[0]
     val extendedDiffJs = allInputFiles[1]
     val extendedDiffInteractionCss = allInputFiles[2]
-    val templateSkeletonHtml = allInputFiles[3]
+    val extendedDiffInteractionJs = allInputFiles[3]
+    val templateSkeletonHtml = allInputFiles[4]
 
     val combinedCss = extendedDiffCss.readText() + extendedDiffInteractionCss.readText()
+    val combinedJs = extendedDiffJs.readText() + cleanupNodeJsCode(extendedDiffInteractionJs)
     val templateHtml = templateSkeletonHtml
       .readText()
       .replace("/*{css}*/", padLeft(combinedCss))
-      .replace("/*{js}*/", padLeft(extendedDiffJs.readText()))
+      .replace("/*{js}*/", padLeft(combinedJs))
 
     val templateHtmlFile = outputs.files.singleFile
     templateHtmlFile.outputStream().use {
@@ -101,4 +104,10 @@ tasks.register("executable", DefaultTask::class) {
       it.write(inputs.files.singleFile.readBytes())
     }
   }
+}
+
+fun cleanupNodeJsCode(jsFile: File): String {
+  val jsWithNode = jsFile.readText()
+  val nodeJsCodeStartIndex = jsWithNode.indexOf("module.exports")
+  return jsWithNode.substring(0, nodeJsCodeStartIndex)
 }
