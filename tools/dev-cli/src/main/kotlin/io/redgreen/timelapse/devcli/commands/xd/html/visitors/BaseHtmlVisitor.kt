@@ -7,6 +7,7 @@ import io.redgreen.timelapse.devcli.commands.TOOL_VERSION
 import org.apache.commons.text.StringEscapeUtils
 import kotlin.LazyThreadSafetyMode.NONE
 
+@SuppressWarnings("TooManyFunctions")
 class BaseHtmlVisitor(
   private val title: String,
   private val affectedLineNumbers: List<Int> = emptyList()
@@ -54,12 +55,8 @@ class BaseHtmlVisitor(
     if (lineNumber != 1) {
       contentBuilder.append(NEWLINE)
     }
-    contentBuilder
-      .append("<tr>")
-      .append(NEWLINE)
-      .append("""$INDENT<td class="line-number">$lineNumber</td>""")
-      .append(NEWLINE)
 
+    addLineNumberRow(lineNumber)
     muteOrUnmuteLine(lineNumber)
   }
 
@@ -67,6 +64,7 @@ class BaseHtmlVisitor(
     if (lineNumber != 1) {
       contentBuilder.append(NEWLINE)
     }
+
     if (isInsideMultilineString) {
       contentBuilder.append("<span class=\"string\">")
     }
@@ -75,12 +73,7 @@ class BaseHtmlVisitor(
       contentBuilder.append("<tbody>").append("\n")
     }
 
-    contentBuilder
-      .append("<tr>")
-      .append(NEWLINE)
-      .append("""$INDENT<td class="line-number">$lineNumber</td>""")
-      .append(NEWLINE)
-
+    addLineNumberRow(lineNumber)
     muteOrUnmuteLine(lineNumber)
   }
 
@@ -125,6 +118,14 @@ class BaseHtmlVisitor(
     } else if (textStyle.name == "close-multiline-string") {
       contentBuilder.append("</span>")
     }
+  }
+
+  private fun addLineNumberRow(lineNumber: Int) {
+    contentBuilder
+      .append("<tr>")
+      .append(NEWLINE)
+      .append("""$INDENT<td class="line-number">$lineNumber</td>""")
+      .append(NEWLINE)
   }
 
   private fun muteOrUnmuteLine(lineNumber: Int) {
