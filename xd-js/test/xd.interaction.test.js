@@ -14,8 +14,6 @@ const xd = require('../src/xd');
 
 const { mouseEntersIdentifier, mouseLeavesIdentifier, identifierClick } = xd;
 
-const platformLineEnding = process.platform === 'win32' ? '\r\n' : '\n';
-
 const approvalOverrides = {
   appendEOL: true,
 };
