@@ -60,15 +60,7 @@ class BaseHtmlVisitor(
       .append("""$INDENT<td class="line-number">$lineNumber</td>""")
       .append(NEWLINE)
 
-    val muted = lineNumber !in affectedLineNumbers
-    if (muted) {
-      contentBuilder.append("""$INDENT<td class="muted">""")
-    } else {
-      contentBuilder.append("""$INDENT<td>""")
-      if (isInsideMultilineString) {
-        contentBuilder.append("<span class=\"string\">")
-      }
-    }
+    muteOrUnmuteLine(lineNumber)
   }
 
   override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
@@ -89,15 +81,7 @@ class BaseHtmlVisitor(
       .append("""$INDENT<td class="line-number">$lineNumber</td>""")
       .append(NEWLINE)
 
-    val muted = lineNumber !in affectedLineNumbers
-    if (muted) {
-      contentBuilder.append("""$INDENT<td class="muted">""")
-    } else {
-      contentBuilder.append("""$INDENT<td>""")
-      if (isInsideMultilineString) {
-        contentBuilder.append("<span class=\"string\">")
-      }
-    }
+    muteOrUnmuteLine(lineNumber)
   }
 
   override fun onExitLine(lineNumber: Int) {
@@ -112,17 +96,6 @@ class BaseHtmlVisitor(
         .append(NEWLINE)
         .append("</tbody>")
     }
-  }
-
-  private fun closeTags() {
-    if (isInsideMultilineString) {
-      contentBuilder.append("</span>")
-    }
-
-    contentBuilder
-      .append("</td>")
-      .append(NEWLINE)
-      .append("</tr>")
   }
 
   override fun onBeginStyle(textStyle: TextStyle) {
@@ -152,6 +125,29 @@ class BaseHtmlVisitor(
     } else if (textStyle.name == "close-multiline-string") {
       contentBuilder.append("</span>")
     }
+  }
+
+  private fun muteOrUnmuteLine(lineNumber: Int) {
+    val muted = lineNumber !in affectedLineNumbers
+    if (muted) {
+      contentBuilder.append("""$INDENT<td class="muted">""")
+    } else {
+      contentBuilder.append("""$INDENT<td>""")
+      if (isInsideMultilineString) {
+        contentBuilder.append("<span class=\"string\">")
+      }
+    }
+  }
+
+  private fun closeTags() {
+    if (isInsideMultilineString) {
+      contentBuilder.append("</span>")
+    }
+
+    contentBuilder
+      .append("</td>")
+      .append(NEWLINE)
+      .append("</tr>")
   }
 
   private fun toHtmlFriendly(line: String): String {
