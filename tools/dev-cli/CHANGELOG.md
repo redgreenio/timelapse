@@ -2,10 +2,13 @@
 
 ## [Unreleased]
 
+## [0.0.15] - 2021-06-01
+
+- Add highlight function parameters interaction to generated HTML files.
 - Change `-nsh` option to `-n`.
 - Add `-f` (syntax highlight entire file) option.
 - Add syntax highlight support for more keywords.
-- Enclose functions within `<tbody>` tags. 
+- Enclose functions within `<tbody>` tags.
 - Enclose function parameters and usage sites with a `identifer` span.
 
 ## [0.0.14] - 2021-05-21
@@ -29,7 +32,7 @@
 
 ## [0.0.10] - 2021-05-18
 
-- Generated HTML contains the tool  version used to generate the file.
+- Generated HTML contains the tool version used to generate the file.
 - Tweaks to CSS styles.
 
 ## [0.0.9] - 2021-05-17
@@ -75,4 +78,5 @@
 - Mute all lines in the generated file by default.
 
 ## [0.0.1] - 2021-05-08
+
 - Generate base HTML file (content in black, no support for newline at end of file)
