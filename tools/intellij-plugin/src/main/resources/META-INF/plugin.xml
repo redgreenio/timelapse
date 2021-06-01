@@ -11,7 +11,7 @@
 
   <change-notes><![CDATA[
     <ul>
-      <li>macOS shortcuts for "Approve File" and "Compare With Approved/Received File" actions.</li>
+      <li>macOS and Windows shortcuts for "Approve File" and "Compare With Approved/Received File" actions.</li>
       <li>Add a "Compare With Approved/Received File" action to Project View popup menu.</li>
       <li>Add an "Approve File" action to Project View popup menu.</li>
       <li>XD live template for identifier.</li>
@@ -41,6 +41,7 @@
               class="io.redgreen.timelapse.dev.actions.CompareWithAction"
               text="Compare With Approved/Received File">
         <add-to-group group-id="ProjectViewPopupMenu"/>
+        <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt COMMA"/>
         <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl meta c"/>
       </action>
 
@@ -49,6 +50,7 @@
               text="Approve File"
               description="Promotes a received.* file to approved.*">
         <add-to-group group-id="ProjectViewPopupMenu"/>
+        <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt r"/>
         <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl meta o"/>
       </action>
     </group>
