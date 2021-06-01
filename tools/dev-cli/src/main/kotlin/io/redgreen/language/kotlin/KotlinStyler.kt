@@ -169,9 +169,9 @@ object KotlinStyler {
 
   private fun markFunctionParameterDeclarations(
     outStyledText: StyledText,
-    parameters: List<Function>
+    functions: List<Function>
   ) {
-    parameters
+    functions
       .map(Function::signature)
       .flatMap(Signature::parameters)
       .map(Parameter::identifier)
