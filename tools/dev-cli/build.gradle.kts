@@ -44,11 +44,12 @@ tasks {
 
 tasks.register("generateTemplateHtml", DefaultTask::class) {
   description = "Creates template HTML from `extended-diff.css` and `extended-diff.js`."
+  dependsOn(":xd-js:build")
 
   inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.css"))
   inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.js"))
   inputs.files(rootDir.resolve("xd-js/src/static/css/xd-interaction.css"))
-  inputs.files(rootDir.resolve("xd-js/src/xd.js"))
+  inputs.files(rootDir.resolve("xd-js/build/xd-browser.js"))
   inputs.files(projectDir.resolve("src/main/resources/template-skeleton.html"))
 
   outputs.file(projectDir.resolve("src/main/resources/template.html"))
@@ -62,7 +63,7 @@ tasks.register("generateTemplateHtml", DefaultTask::class) {
     val templateSkeletonHtml = allInputFiles[4]
 
     val combinedCss = extendedDiffCss.readText() + extendedDiffInteractionCss.readText()
-    val combinedJs = extendedDiffJs.readText() + cleanupNodeJsCode(extendedDiffInteractionJs)
+    val combinedJs = extendedDiffJs.readText() + extendedDiffInteractionJs.readText()
     val templateHtml = templateSkeletonHtml
       .readText()
       .replace("/*{css}*/", padLeft(combinedCss))
@@ -104,10 +105,4 @@ tasks.register("executable", DefaultTask::class) {
       it.write(inputs.files.singleFile.readBytes())
     }
   }
-}
-
-fun cleanupNodeJsCode(jsFile: File): String {
-  val jsWithNode = jsFile.readText()
-  val nodeJsCodeStartIndex = jsWithNode.indexOf("module.exports")
-  return jsWithNode.substring(0, nodeJsCodeStartIndex)
 }
