@@ -26,6 +26,7 @@ class BaseHtmlVisitor(
   }
 
   private val contentBuilder = StringBuilder()
+  private var isInsideMultilineString = false
 
   private val template by lazy(NONE) {
     BaseHtmlVisitor::class.java.classLoader
@@ -70,17 +71,6 @@ class BaseHtmlVisitor(
     }
   }
 
-  override fun onExitLine(lineNumber: Int) {
-    if (isInsideMultilineString) {
-      contentBuilder.append("</span>")
-    }
-
-    contentBuilder
-      .append("</td>")
-      .append(NEWLINE)
-      .append("</tr>")
-  }
-
   override fun onEnterLine(lineNumber: Int, lineStyle: LineStyle) {
     if (lineNumber != 1) {
       contentBuilder.append(NEWLINE)
@@ -110,15 +100,12 @@ class BaseHtmlVisitor(
     }
   }
 
-  override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
-    if (isInsideMultilineString) {
-      contentBuilder.append("</span>")
-    }
+  override fun onExitLine(lineNumber: Int) {
+    closeTags()
+  }
 
-    contentBuilder
-      .append("</td>")
-      .append(NEWLINE)
-      .append("</tr>")
+  override fun onExitLine(lineNumber: Int, lineStyle: LineStyle) {
+    closeTags()
 
     if (lineStyle.name == "end-function") {
       contentBuilder
@@ -127,7 +114,16 @@ class BaseHtmlVisitor(
     }
   }
 
-  private var isInsideMultilineString = false
+  private fun closeTags() {
+    if (isInsideMultilineString) {
+      contentBuilder.append("</span>")
+    }
+
+    contentBuilder
+      .append("</td>")
+      .append(NEWLINE)
+      .append("</tr>")
+  }
 
   override fun onBeginStyle(textStyle: TextStyle) {
     if (textStyle.name == "open-multiline-string") {
