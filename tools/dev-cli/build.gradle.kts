@@ -47,6 +47,7 @@ tasks.register("generateTemplateHtml", DefaultTask::class) {
 
   inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.css"))
   inputs.files(rootDir.resolve("app/src/main/resources/xd/xd.js"))
+  inputs.files(rootDir.resolve("xd-js/src/static/css/xd-interaction.css"))
   inputs.files(projectDir.resolve("src/main/resources/template-skeleton.html"))
 
   outputs.file(projectDir.resolve("src/main/resources/template.html"))
@@ -55,11 +56,13 @@ tasks.register("generateTemplateHtml", DefaultTask::class) {
     val allInputFiles = inputs.files.files.toList()
     val extendedDiffCss = allInputFiles[0]
     val extendedDiffJs = allInputFiles[1]
-    val templateSkeletonHtml = allInputFiles[2]
+    val extendedDiffInteractionCss = allInputFiles[2]
+    val templateSkeletonHtml = allInputFiles[3]
 
+    val combinedCss = extendedDiffCss.readText() + extendedDiffInteractionCss.readText()
     val templateHtml = templateSkeletonHtml
       .readText()
-      .replace("/*{css}*/", padLeft(extendedDiffCss.readText()))
+      .replace("/*{css}*/", padLeft(combinedCss))
       .replace("/*{js}*/", padLeft(extendedDiffJs.readText()))
 
     val templateHtmlFile = outputs.files.singleFile
