@@ -4,7 +4,7 @@ import io.redgreen.timelapse.devcli.commands.xd.html.CreateBaseHtmlSubcommand
 import io.redgreen.timelapse.devcli.commands.xd.sample.CreateXdSampleSubcommand
 import picocli.CommandLine.Command
 
-internal const val TOOL_VERSION = "0.0.15"
+internal const val TOOL_VERSION = "0.0.16-dev"
 
 @Command(
   name = "dev-cli",
