@@ -14,7 +14,7 @@ sealed class ApprovalFile {
     }
   }
 
-  enum class Slug {
+  internal enum class Slug {
     RECEIVED {
       override val text: String = ".received."
       override val counterpart: Slug by lazy { valueOf("APPROVED") }
