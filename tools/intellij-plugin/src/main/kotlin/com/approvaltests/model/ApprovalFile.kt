@@ -39,12 +39,12 @@ sealed class ApprovalFile {
     return counterpartCreator(counterpartVirtualFile)
   }
 
-  data class Approved(override val virtualFile: VirtualFile) : ApprovalFile() {
+  class Approved(override val virtualFile: VirtualFile) : ApprovalFile() {
     override val slug = Slug.APPROVED
     override val counterpartCreator: (VirtualFile) -> ApprovalFile = { Received(it) }
   }
 
-  data class Received(override val virtualFile: VirtualFile) : ApprovalFile() {
+  class Received(override val virtualFile: VirtualFile) : ApprovalFile() {
     override val slug: Slug = Slug.RECEIVED
     override val counterpartCreator: (VirtualFile) -> ApprovalFile = { Approved(it) }
 
