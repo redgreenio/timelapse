@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.dev.model
+package com.approvaltests.model
 
 import com.intellij.openapi.vfs.VirtualFile
 
