@@ -39,8 +39,8 @@
         <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt COMMA"/>
       </action>
 
-      <action id="io.redgreen.timelapse.dev.actions.ApproveAction"
-              class="io.redgreen.timelapse.dev.actions.ApproveAction"
+      <action id="com.approvaltests.actions.ApproveAction"
+              class="com.approvaltests.actions.ApproveAction"
               text="Approve File"
               description="Promotes a received.* file to approved.*">
         <add-to-group group-id="ProjectViewPopupMenu"/>

@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.dev.actions
+package com.approvaltests.actions
 
 import com.approvaltests.model.ApprovalFile
 import com.approvaltests.model.ApprovalFile.Approved
@@ -9,6 +9,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import io.redgreen.timelapse.dev.actions.readText
 
 class ApproveAction : AnAction() {
   override fun update(e: AnActionEvent) {
