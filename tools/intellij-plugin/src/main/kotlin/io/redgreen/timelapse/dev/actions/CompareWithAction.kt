@@ -1,5 +1,8 @@
 package io.redgreen.timelapse.dev.actions
 
+import com.approvaltests.model.ApprovalFile
+import com.approvaltests.model.ApprovalFile.Approved
+import com.approvaltests.model.ApprovalFile.Received
 import com.intellij.diff.DiffContentFactory
 import com.intellij.diff.DiffManager
 import com.intellij.diff.requests.SimpleDiffRequest
@@ -9,9 +12,6 @@ import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import io.redgreen.timelapse.dev.model.ApprovalFile
-import io.redgreen.timelapse.dev.model.ApprovalFile.Approved
-import io.redgreen.timelapse.dev.model.ApprovalFile.Received
 
 class CompareWithAction : AnAction() {
   companion object {
