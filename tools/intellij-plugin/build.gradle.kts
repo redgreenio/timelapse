@@ -19,6 +19,7 @@ dependencies {
   // JUnit 5
   testImplementation(deps.test.junit.api)
   testRuntimeOnly(deps.test.junit.engine)
+  testRuntimeOnly(deps.test.junit.vintageEngine)
 
   // Truth
   testImplementation(deps.test.truth)
