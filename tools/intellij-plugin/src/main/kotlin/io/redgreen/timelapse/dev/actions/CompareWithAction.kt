@@ -20,12 +20,13 @@ class CompareWithAction : AnAction() {
   }
 
   override fun update(e: AnActionEvent) {
-    val showAction = showAction(e.project, e.dataContext)
-    e.presentation.isVisible = showAction
+    val isActionRelevant = isActionRelevantToContext(e.project, e.dataContext)
+    val presentation = e.presentation
 
-    if (showAction) {
-      e.presentation.text = getActionText(e.dataContext)
+    if (isActionRelevant) {
+      presentation.text = getActionText(e.dataContext)
     }
+    presentation.isEnabledAndVisible = isActionRelevant
   }
 
   override fun actionPerformed(e: AnActionEvent) {
@@ -37,12 +38,13 @@ class CompareWithAction : AnAction() {
     DiffManager.getInstance().showDiff(e.project, createDiffRequest(e.project!!, received, approved))
   }
 
-  private fun showAction(project: Project?, dataContext: DataContext): Boolean {
-    val projectPresent = project != null
+  private fun isActionRelevantToContext(project: Project?, dataContext: DataContext): Boolean {
+    project ?: return false
+
     val virtualFile = getVirtualFile(dataContext)
     val approvalFile = virtualFile?.let { ApprovalFile.from(virtualFile) }
     val approvalFileCounterpart = approvalFile?.counterpart()
-    return projectPresent && approvalFileCounterpart != null
+    return approvalFile != null && approvalFileCounterpart != null
   }
 
   private fun getActionText(dataContext: DataContext): String {
