@@ -71,8 +71,10 @@ class CompareWithAction : AnAction() {
     received: Received,
     approved: Approved
   ): SimpleDiffRequest {
-    val sideA = DiffContentFactory.getInstance().create(project, received.virtualFile)
-    val sideB = DiffContentFactory.getInstance().create(project, approved.virtualFile)
+    val diffContentFactory = DiffContentFactory.getInstance()
+    val sideA = diffContentFactory.create(project, received.virtualFile)
+    val sideB = diffContentFactory.create(project, approved.virtualFile)
+
     return SimpleDiffRequest(title(received, approved), sideA, sideB, subtitle(received), subtitle(approved))
   }
 
