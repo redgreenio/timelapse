@@ -16,7 +16,7 @@ class ApproveAction : AnAction() {
     val virtualFile = e.dataContext.getData(PlatformDataKeys.VIRTUAL_FILE)
     val selectedReceivedFile = virtualFile != null && ApprovalFile.from(virtualFile) is Received
 
-    e.presentation.isVisible = projectPresent && selectedReceivedFile
+    e.presentation.isEnabledAndVisible = projectPresent && selectedReceivedFile
   }
 
   override fun actionPerformed(e: AnActionEvent) {
