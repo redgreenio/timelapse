@@ -11,9 +11,9 @@
 
   <change-notes><![CDATA[
     <ul>
+      <li>Add a "Compare With Approved/Received File" action to Project View and Editor popup menus.</li>
+      <li>Add an "Approve File" action to Project View and Editor popup menus.</li>
       <li>macOS and Windows shortcuts for "Approve File" and "Compare With Approved/Received File" actions.</li>
-      <li>Add a "Compare With Approved/Received File" action to Project View popup menu.</li>
-      <li>Add an "Approve File" action to Project View popup menu.</li>
     </ul>
   ]]>
   </change-notes>
@@ -39,8 +39,9 @@
               class="io.redgreen.timelapse.dev.actions.CompareWithAction"
               text="Compare With Approved/Received File">
         <add-to-group group-id="ProjectViewPopupMenu"/>
-        <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt COMMA"/>
+        <add-to-group group-id="EditorPopupMenu"/>
         <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl meta c"/>
+        <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt COMMA"/>
       </action>
 
       <action id="io.redgreen.timelapse.dev.actions.ApproveAction"
@@ -48,8 +49,9 @@
               text="Approve File"
               description="Promotes a received.* file to approved.*">
         <add-to-group group-id="ProjectViewPopupMenu"/>
-        <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt r"/>
+        <add-to-group group-id="EditorPopupMenu"/>
         <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl meta o"/>
+        <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt r"/>
       </action>
     </group>
   </actions>
