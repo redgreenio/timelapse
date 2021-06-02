@@ -5,7 +5,10 @@ import com.intellij.openapi.vfs.VirtualFileSystem
 import java.io.InputStream
 import java.io.OutputStream
 
-class TestVirtualFile(private val name: String) : VirtualFile() {
+class FakeVirtualFile(
+  private val name: String,
+  private val otherFilesInDirectory: List<String> = emptyList()
+) : VirtualFile() {
   override fun getName(): String =
     name
 
@@ -29,12 +32,13 @@ class TestVirtualFile(private val name: String) : VirtualFile() {
     TODO("Not required yet :)")
   }
 
-  override fun getParent(): VirtualFile {
-    TODO("Not required yet :)")
-  }
+  override fun getParent(): VirtualFile =
+    FakeVirtualFile("", otherFilesInDirectory)
 
   override fun getChildren(): Array<VirtualFile> {
-    TODO("Not required yet :)")
+    return otherFilesInDirectory
+      .map { FakeVirtualFile(it) }
+      .toTypedArray()
   }
 
   override fun getOutputStream(requestor: Any?, newModificationStamp: Long, newTimeStamp: Long): OutputStream {
