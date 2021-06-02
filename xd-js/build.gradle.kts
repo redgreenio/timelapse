@@ -44,6 +44,12 @@ tasks.register("build", DefaultTask::class) {
   }
 }
 
+tasks.register("clean", DefaultTask::class) {
+  doFirst {
+    delete("build")
+  }
+}
+
 fun cleanupNodeJsCode(nodeJsSource: String): String {
   val nodeJsCodeStartIndex = nodeJsSource.indexOf("module.exports")
   return nodeJsSource.substring(0, nodeJsCodeStartIndex)
