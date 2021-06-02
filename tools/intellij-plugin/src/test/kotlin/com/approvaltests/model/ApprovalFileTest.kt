@@ -34,7 +34,7 @@ class ApprovalFileTest {
     @Test
     fun `return a Received file if it exists`() {
       // given
-      val approved = Approved(FakeVirtualFile("my.approved.txt", listOf("my.received.txt")))
+      val approved = ApprovalFile.from(FakeVirtualFile("my.approved.txt", listOf("my.received.txt")))!!
 
       // when
       val counterpart = approved.counterpart()
@@ -49,7 +49,7 @@ class ApprovalFileTest {
     @Test
     fun `return null if the received file does not exist`() {
       // given
-      val approved = Approved(FakeVirtualFile("my.approved.txt"))
+      val approved = ApprovalFile.from(FakeVirtualFile("my.approved.txt"))!!
 
       // when
       val counterpart = approved.counterpart()
@@ -57,6 +57,47 @@ class ApprovalFileTest {
       // then
       assertThat(counterpart)
         .isNull()
+    }
+  }
+
+  @Nested
+  inner class ReceivedType {
+    @Test
+    fun `return a Approved file if it exists`() {
+      // given
+      val received = ApprovalFile.from(FakeVirtualFile("my.received.txt", listOf("my.approved.txt")))!!
+
+      // when
+      val counterpart = received.counterpart()
+
+      // then
+      assertThat(counterpart)
+        .isInstanceOf(Approved::class.java)
+      assertThat((counterpart as Approved).virtualFile.name)
+        .isEqualTo("my.approved.txt")
+    }
+
+    @Test
+    fun `return null if the approved file does not exist`() {
+      // given
+      val received = ApprovalFile.from(FakeVirtualFile("my.received.txt"))!!
+
+      // when
+      val counterpart = received.counterpart()
+
+      // then
+      assertThat(counterpart)
+        .isNull()
+    }
+
+    @Test
+    fun `file name of the approved file`() {
+      // given
+      val received = ApprovalFile.from(FakeVirtualFile("my.fancy.received.file.txt"))!! as Received
+
+      // when & then
+      assertThat(received.approvedFileName)
+        .isEqualTo("my.fancy.approved.file.txt")
     }
   }
 }
