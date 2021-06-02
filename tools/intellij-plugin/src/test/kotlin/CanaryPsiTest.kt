@@ -2,6 +2,7 @@ import com.google.common.truth.Truth.assertThat
 import com.intellij.psi.PsiFileFactory
 import com.intellij.testFramework.LightIdeaTestCase
 import org.jetbrains.kotlin.idea.KotlinLanguage
+import org.jetbrains.kotlin.psi.KtFile
 
 class CanaryPsiTest : LightIdeaTestCase() {
   fun testCreatePsiFromPlainText() {
@@ -20,6 +21,6 @@ class CanaryPsiTest : LightIdeaTestCase() {
 
     // then
     assertThat(psiFile)
-      .isNotNull()
+      .isInstanceOf(KtFile::class.java)
   }
 }
