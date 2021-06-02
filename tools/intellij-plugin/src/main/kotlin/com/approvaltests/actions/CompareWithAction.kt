@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.dev.actions
+package com.approvaltests.actions
 
 import com.approvaltests.model.ApprovalFile
 import com.approvaltests.model.ApprovalFile.Approved

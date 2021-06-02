@@ -30,8 +30,8 @@
   <actions>
     <group id="io.redgreen.timelapse.dev.ApprovalTests">
       <separator/>
-      <action id="io.redgreen.timelapse.dev.actions.CompareWithAction"
-              class="io.redgreen.timelapse.dev.actions.CompareWithAction"
+      <action id="com.approvaltests.actions.CompareWithAction"
+              class="com.approvaltests.actions.CompareWithAction"
               text="Compare With Approved/Received File">
         <add-to-group group-id="ProjectViewPopupMenu"/>
         <add-to-group group-id="EditorPopupMenu"/>
