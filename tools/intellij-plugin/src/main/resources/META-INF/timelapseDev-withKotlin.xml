@@ -1,0 +1,7 @@
+<idea-plugin>
+  <extensions defaultExtensionNs="com.intellij">
+    <codeInsight.lineMarkerProvider
+      language="kotlin"
+      implementationClass="io.redgreen.timelapse.dev.ui.ApprovalsKotlinLineMarkersProvider"/>
+  </extensions>
+</idea-plugin>
