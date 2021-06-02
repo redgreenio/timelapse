@@ -73,6 +73,7 @@ object deps {
       const val api = "org.junit.jupiter:junit-jupiter-api:$version"
       const val params = "org.junit.jupiter:junit-jupiter-params:$version"
       const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
+      const val vintageEngine = "org.junit.vintage:junit-vintage-engine:$version"
     }
 
     object mockito {
