@@ -14,3 +14,16 @@ tasks.withType<KotlinCompile>().all {
     jvmTarget = "11"
   }
 }
+
+dependencies {
+  // JUnit 5
+  testImplementation(deps.test.junit.api)
+  testRuntimeOnly(deps.test.junit.engine)
+
+  // Truth
+  testImplementation(deps.test.truth)
+
+  // Mockito
+  testImplementation(deps.test.mockito.core)
+  testImplementation(deps.test.mockito.kotlin)
+}
