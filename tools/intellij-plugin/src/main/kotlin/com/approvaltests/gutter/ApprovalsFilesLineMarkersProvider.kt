@@ -6,6 +6,7 @@ import com.intellij.lang.Language
 import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.RIGHT
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtNamedFunction
 
 class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
   private val revealFeature = false
@@ -17,7 +18,7 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
     }
 
     val isKotlin = element.language.isKindOf(Language.findLanguageByID("kotlin"))
-    return if (isKotlin && element.node.text == "fun") {
+    return if (isKotlin && element is KtNamedFunction) {
       LineMarkerInfo(element, element.textRange, icon, null, null, RIGHT) { "Approvals test" }
     } else {
       null
