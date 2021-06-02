@@ -3,45 +3,52 @@ package io.redgreen.timelapse.dev.model
 import com.intellij.openapi.vfs.VirtualFile
 
 sealed class ApprovalFile {
-  abstract val virtualFile: VirtualFile
-
-  abstract fun counterpart(): ApprovalFile?
-
   companion object {
     fun from(virtualFile: VirtualFile): ApprovalFile? {
       val fileName = virtualFile.name
       return when {
-        fileName.contains(Approved.SLUG) -> Approved(virtualFile)
-        fileName.contains(Received.SLUG) -> Received(virtualFile)
+        fileName.contains(Slug.APPROVED.text) -> Approved(virtualFile)
+        fileName.contains(Slug.RECEIVED.text) -> Received(virtualFile)
         else -> null
       }
     }
   }
 
-  data class Approved(override val virtualFile: VirtualFile) : ApprovalFile() {
-    companion object {
-      internal const val SLUG = ".approved."
-    }
+  enum class Slug {
+    RECEIVED {
+      override val text: String = ".received."
+      override val counterpart: Slug by lazy { valueOf("APPROVED") }
+    },
 
-    override fun counterpart(): ApprovalFile? {
-      val receivedFileName = virtualFile.name.replace(SLUG, Received.SLUG)
-      val receivedVirtualFile = virtualFile.parent.findChild(receivedFileName) ?: return null
-      return Received(receivedVirtualFile)
-    }
+    APPROVED {
+      override val text: String = ".approved."
+      override val counterpart: Slug by lazy { RECEIVED }
+    };
+
+    abstract val text: String
+    abstract val counterpart: Slug
+  }
+
+  abstract val virtualFile: VirtualFile
+  internal abstract val slug: Slug
+  internal abstract val counterpartCreator: (VirtualFile) -> ApprovalFile
+
+  fun counterpart(): ApprovalFile? {
+    val counterpartFileName = virtualFile.name.replace(slug.text, slug.counterpart.text)
+    val counterpartVirtualFile = virtualFile.parent.findChild(counterpartFileName) ?: return null
+    return counterpartCreator(counterpartVirtualFile)
+  }
+
+  data class Approved(override val virtualFile: VirtualFile) : ApprovalFile() {
+    override val slug = Slug.APPROVED
+    override val counterpartCreator: (VirtualFile) -> ApprovalFile = { Received(it) }
   }
 
   data class Received(override val virtualFile: VirtualFile) : ApprovalFile() {
-    companion object {
-      internal const val SLUG = ".received."
-    }
+    override val slug: Slug = Slug.RECEIVED
+    override val counterpartCreator: (VirtualFile) -> ApprovalFile = { Approved(it) }
 
     val approvedFileName: String
-      get() = virtualFile.name.replace(SLUG, Approved.SLUG)
-
-    override fun counterpart(): ApprovalFile? {
-      val approvedFileName = virtualFile.name.replace(SLUG, Approved.SLUG)
-      val approvedVirtualFile = virtualFile.parent.findChild(approvedFileName) ?: return null
-      return Approved(approvedVirtualFile)
-    }
+      get() = virtualFile.name.replace(slug.text, slug.counterpart.text)
   }
 }
