@@ -8,32 +8,38 @@ sealed class ApprovalFile {
   abstract fun counterpart(): ApprovalFile?
 
   companion object {
-    private const val APPROVED_SLUG = ".approved."
-    private const val RECEIVED_SLUG = ".received."
-
     fun from(virtualFile: VirtualFile): ApprovalFile? {
+      val fileName = virtualFile.name
       return when {
-        virtualFile.name.contains(APPROVED_SLUG) -> Approved(virtualFile)
-        virtualFile.name.contains(RECEIVED_SLUG) -> Received(virtualFile)
+        fileName.contains(Approved.SLUG) -> Approved(virtualFile)
+        fileName.contains(Received.SLUG) -> Received(virtualFile)
         else -> null
       }
     }
   }
 
   data class Approved(override val virtualFile: VirtualFile) : ApprovalFile() {
+    companion object {
+      internal const val SLUG = ".approved."
+    }
+
     override fun counterpart(): ApprovalFile? {
-      val receivedFileName = virtualFile.name.replace(APPROVED_SLUG, RECEIVED_SLUG)
+      val receivedFileName = virtualFile.name.replace(SLUG, Received.SLUG)
       val receivedVirtualFile = virtualFile.parent.findChild(receivedFileName) ?: return null
       return Received(receivedVirtualFile)
     }
   }
 
   data class Received(override val virtualFile: VirtualFile) : ApprovalFile() {
+    companion object {
+      internal const val SLUG = ".received."
+    }
+
     val approvedFileName: String
-      get() = virtualFile.name.replace(RECEIVED_SLUG, APPROVED_SLUG)
+      get() = virtualFile.name.replace(SLUG, Approved.SLUG)
 
     override fun counterpart(): ApprovalFile? {
-      val approvedFileName = virtualFile.name.replace(RECEIVED_SLUG, APPROVED_SLUG)
+      val approvedFileName = virtualFile.name.replace(SLUG, Approved.SLUG)
       val approvedVirtualFile = virtualFile.parent.findChild(approvedFileName) ?: return null
       return Approved(approvedVirtualFile)
     }
