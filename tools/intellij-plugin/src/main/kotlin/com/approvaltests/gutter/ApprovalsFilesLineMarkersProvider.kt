@@ -1,4 +1,4 @@
-package io.redgreen.timelapse.dev.ui
+package com.approvaltests.gutter
 
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
@@ -7,7 +7,7 @@ import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.LEFT
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
 
-class ApprovalsKotlinLineMarkersProvider : LineMarkerProvider {
+class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
   private val revealFeature = false
   private val icon = IconLoader.getIcon("icons/nonExistent-nonEmpty.svg", this::class.java)
 
