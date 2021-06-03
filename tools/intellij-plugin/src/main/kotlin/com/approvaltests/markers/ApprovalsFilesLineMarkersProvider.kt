@@ -5,9 +5,7 @@ import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.RIGHT
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
-import org.jetbrains.kotlin.psi.KtNamedFunction
 import kotlin.random.Random
 
 class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
@@ -22,18 +20,15 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
   )
 
   override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
-    if (!revealFeature || element !is KtNamedFunction) {
+    if (!revealFeature || element !is KtDotQualifiedExpression) {
       return null
     }
 
-    val expression = PsiTreeUtil.findChildOfType(element, KtDotQualifiedExpression::class.java)
-    return if (expression != null && isApprovalsVerifyCall(expression)) {
+    return if (isApprovalsVerifyCall(element)) {
       val randomIconName = allIcons[Random.nextInt(allIcons.size)]
       val icon = IconLoader.getIcon("icons/$randomIconName.svg", this::class.java)
 
-      val funKeyword = getFunKeyword(element)
-      val textRange = funKeyword.textRange
-      LineMarkerInfo(element, textRange, icon, null, null, RIGHT) { "Approvals test" }
+      LineMarkerInfo(element, (element as PsiElement).textRange, icon, null, null, RIGHT) { "Approvals test" }
     } else {
       null
     }
