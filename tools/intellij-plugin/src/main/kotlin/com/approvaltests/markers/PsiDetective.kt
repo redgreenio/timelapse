@@ -6,6 +6,9 @@ import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.debugText.getDebugText
 
+private const val APPROVALS = "Approvals"
+private const val VERIFY = "verify"
+
 fun getKtNamedFunction(childElement: PsiElement): KtNamedFunction? {
   var parent = childElement.parent
   while (parent != null) {
@@ -23,7 +26,7 @@ fun getFunKeyword(namedFunction: KtNamedFunction): PsiElement {
 }
 
 fun isApprovalsVerifyCall(expression: KtDotQualifiedExpression): Boolean {
-  val receiverIsApprovals = expression.receiverExpression.getDebugText() == "Approvals"
-  val callerIsVerify = expression.calleeName == "verify"
-  return receiverIsApprovals && callerIsVerify
+  val receiverIsApprovals = expression.receiverExpression.getDebugText() == APPROVALS
+  val calleeIsVerify = expression.calleeName?.startsWith(VERIFY) == true
+  return receiverIsApprovals && calleeIsVerify
 }
