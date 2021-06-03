@@ -4,8 +4,10 @@ import com.google.common.truth.Truth.assertThat
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.testFramework.LightIdeaTestCase
 import org.jetbrains.kotlin.idea.KotlinLanguage
+import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 
 class PsiDetectiveTest : LightIdeaTestCase() {
@@ -69,6 +71,34 @@ class PsiDetectiveTest : LightIdeaTestCase() {
     // then
     assertThat(funKeyword.textRange)
       .isEqualTo(TextRange(47, 50))
+  }
+
+  fun testIsApprovalsVerifyCallReturnsFalse() {
+    val source = """
+      fun hello() {
+        System.out.println("Hello, world!")
+      }
+    """.trimIndent()
+    val psiFile = psiFile(source)
+    val dotQualifiedExpression = PsiTreeUtil.findChildOfType(psiFile, KtDotQualifiedExpression::class.java)!!
+
+    // when & then
+    assertThat(isApprovalsVerifyCall(dotQualifiedExpression))
+      .isFalse()
+  }
+
+  fun testIsApprovalsVerifyCallReturnsTrue() {
+    val source = """
+      fun approvalsTest() {
+        Approvals.verify("Hello, world!")
+      }
+    """.trimIndent()
+    val psiFile = psiFile(source)
+    val dotQualifiedExpression = PsiTreeUtil.findChildOfType(psiFile, KtDotQualifiedExpression::class.java)!!
+
+    // when & then
+    assertThat(isApprovalsVerifyCall(dotQualifiedExpression))
+      .isTrue()
   }
 
   private fun psiFile(kotlinSource: String): PsiFile {
