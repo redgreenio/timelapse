@@ -14,3 +14,7 @@ fun getKtNamedFunction(childElement: PsiElement): KtNamedFunction? {
   }
   return null
 }
+
+fun getFunKeyword(namedFunction: KtNamedFunction): PsiElement {
+  return namedFunction.funKeyword!!
+}
