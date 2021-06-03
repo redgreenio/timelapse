@@ -1,7 +1,6 @@
 package com.approvaltests.markers
 
 import com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.idea.intentions.callExpression
 import org.jetbrains.kotlin.idea.intentions.calleeName
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
