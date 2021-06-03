@@ -26,8 +26,8 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
       return null
     }
 
-    val expression = PsiTreeUtil.findChildOfType(element, KtDotQualifiedExpression::class.java)
-    return if (expression != null && isApprovalsVerifyCall(expression)) {
+    val expressions = PsiTreeUtil.findChildrenOfType(element, KtDotQualifiedExpression::class.java)
+    return if (hasApprovalsVerifyCall(expressions)) {
       val randomIconName = allIcons[Random.nextInt(allIcons.size)]
       val icon = IconLoader.getIcon("icons/$randomIconName.svg", this::class.java)
 

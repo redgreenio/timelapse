@@ -25,6 +25,11 @@ fun getFunKeyword(namedFunction: KtNamedFunction): PsiElement {
   return namedFunction.funKeyword!!
 }
 
+fun hasApprovalsVerifyCall(
+  expressions: Collection<KtDotQualifiedExpression>
+): Boolean =
+  expressions.any(::isApprovalsVerifyCall)
+
 fun isApprovalsVerifyCall(expression: KtDotQualifiedExpression): Boolean {
   val receiverIsApprovals = expression.receiverExpression.getDebugText() == APPROVALS
   val calleeIsVerify = expression.calleeName?.startsWith(VERIFY) == true
