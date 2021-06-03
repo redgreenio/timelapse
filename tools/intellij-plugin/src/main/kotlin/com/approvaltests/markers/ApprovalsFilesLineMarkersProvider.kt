@@ -17,7 +17,8 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
     }
 
     return if (element is KtNamedFunction) {
-      val textRange = (element as PsiElement).textRange
+      val funKeyword = getFunKeyword(element)
+      val textRange = funKeyword.textRange
       LineMarkerInfo(element, textRange, icon, null, null, RIGHT) { "Approvals test" }
     } else {
       null
