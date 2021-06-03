@@ -12,7 +12,7 @@ class PsiDetectiveTest : LightIdeaTestCase() {
     private const val KT_FILE = "PsiTest.kt"
   }
 
-  fun testAcquireKtNamedFunctionFromChildElement() {
+  fun testGetKtNamedFunctionReturnsInstanceFromChildElement() {
     // given
     val source = """
       fun hello() {
@@ -30,7 +30,7 @@ class PsiDetectiveTest : LightIdeaTestCase() {
       .isInstanceOf(KtNamedFunction::class.java)
   }
 
-  fun testReturnNullIfElementIsNotKtNamedFunctionChild() {
+  fun testGetKtNamedFunctionReturnsNullIfElementIsNotChild() {
     // given
     val source = """
       private const val GREETING = "Good, morning!"
