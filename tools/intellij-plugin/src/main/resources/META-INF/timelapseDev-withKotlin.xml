@@ -2,6 +2,6 @@
   <extensions defaultExtensionNs="com.intellij">
     <codeInsight.lineMarkerProvider
       language="kotlin"
-      implementationClass="com.approvaltests.gutter.ApprovalsFilesLineMarkersProvider"/>
+      implementationClass="com.approvaltests.markers.ApprovalsFilesLineMarkersProvider"/>
   </extensions>
 </idea-plugin>
