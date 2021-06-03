@@ -42,7 +42,7 @@
       <action id="com.approvaltests.actions.ApproveAction"
               class="com.approvaltests.actions.ApproveAction"
               text="Approve File"
-              description="Promotes a received.* file to approved.*">
+              description="Promote this received file to approved">
         <add-to-group group-id="ProjectViewPopupMenu"/>
         <add-to-group group-id="EditorPopupMenu"/>
         <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="ctrl meta o"/>
