@@ -1,4 +1,4 @@
-package com.approvaltests.gutter
+package com.approvaltests.markers
 
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
