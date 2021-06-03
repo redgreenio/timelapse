@@ -101,6 +101,20 @@ class PsiDetectiveTest : LightIdeaTestCase() {
       .isTrue()
   }
 
+  fun testIsApprovalsVerifyXCallReturnsTrue() {
+    val source = """
+      fun approvalsTest() {
+        Approvals.verifyHtml("<html>Hello, world!</html>")
+      }
+    """.trimIndent()
+    val psiFile = psiFile(source)
+    val dotQualifiedExpression = PsiTreeUtil.findChildOfType(psiFile, KtDotQualifiedExpression::class.java)!!
+
+    // when & then
+    assertThat(isApprovalsVerifyCall(dotQualifiedExpression))
+      .isTrue()
+  }
+
   private fun psiFile(kotlinSource: String): PsiFile {
     return PsiFileFactory
       .getInstance(project)
