@@ -24,7 +24,9 @@ class CompareWithAction : AnAction() {
     val presentation = e.presentation
 
     if (isActionRelevant) {
-      presentation.text = getActionText(e.dataContext)
+      val approvalFile = ApprovalFile.from(getVirtualFile(e.dataContext)!!)!!
+      presentation.text = getText(approvalFile)
+      presentation.description = getDescription(approvalFile)
     }
     presentation.isEnabledAndVisible = isActionRelevant
   }
@@ -47,8 +49,7 @@ class CompareWithAction : AnAction() {
     return approvalFile != null && approvalFileCounterpart != null
   }
 
-  private fun getActionText(dataContext: DataContext): String {
-    val approvalFile = ApprovalFile.from(getVirtualFile(dataContext)!!)!!
+  private fun getText(approvalFile: ApprovalFile): String {
     val counterpart = approvalFile.counterpart()!!
 
     return if (counterpart is Received) {
@@ -56,6 +57,11 @@ class CompareWithAction : AnAction() {
     } else {
       TEXT_COMPARE_WITH_APPROVED
     }
+  }
+
+  private fun getDescription(approvalFile: ApprovalFile): String {
+    val counterpartFileName = approvalFile.counterpart()!!.virtualFile.name
+    return "Compare with '$counterpartFileName'"
   }
 
   private fun receivedAndApproved(selectedFile: ApprovalFile): Pair<Received, Approved> {
