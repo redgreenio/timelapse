@@ -2,7 +2,7 @@ package com.approvaltests.markers
 
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
-import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.RIGHT
+import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment.CENTER
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
@@ -31,7 +31,7 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
       val randomIconName = allIcons[Random.nextInt(allIcons.size)]
       val icon = IconLoader.getIcon("icons/$randomIconName.svg", this::class.java)
 
-      LineMarkerInfo(element, (element as PsiElement).textRange, icon, null, null, RIGHT) { "Approvals test" }
+      LineMarkerInfo(element, (element as PsiElement).textRange, icon, null, null, CENTER) { "Approvals test" }
     } else {
       null
     }
