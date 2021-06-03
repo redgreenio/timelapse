@@ -23,11 +23,31 @@ class PsiDetectiveTest : LightIdeaTestCase() {
     val printlnIdentifier = psiFile.findElementAt(16)!!
 
     // when
-    val ktNamedFunction = getNamedFunction(printlnIdentifier)
+    val ktNamedFunction = getKtNamedFunction(printlnIdentifier)
 
     // then
     assertThat(ktNamedFunction)
       .isInstanceOf(KtNamedFunction::class.java)
+  }
+
+  fun testReturnNullIfElementIsNotKtNamedFunctionChild() {
+    // given
+    val source = """
+      private const val GREETING = "Good, morning!"
+
+      fun greet() {
+        println(GREETING)
+      }
+    """.trimIndent()
+    val psiFile = psiFile(source)
+    val greetingConstIdentifier = psiFile.findElementAt(18)!!
+
+    // when
+    val ktNamedFunction = getKtNamedFunction(greetingConstIdentifier)
+
+    // then
+    assertThat(ktNamedFunction)
+      .isNull()
   }
 
   private fun psiFile(kotlinSource: String): PsiFile {
