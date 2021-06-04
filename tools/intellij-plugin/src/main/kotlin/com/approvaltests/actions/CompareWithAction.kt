@@ -18,8 +18,8 @@ import javax.swing.Icon
 
 class CompareWithAction : AnAction() {
   companion object {
-    private const val TEXT_COMPARE_WITH_APPROVED = "Compare With Approved File"
-    private const val TEXT_COMPARE_WITH_RECEIVED = "Compare With Received File"
+    private const val TEXT_COMPARE_WITH_APPROVED = "Compare with Approved File"
+    private const val TEXT_COMPARE_WITH_RECEIVED = "Compare with Received File"
 
     private val compareWithReceivedIcon = IconLoader.getIcon("icons/compareWithReceived.svg", ApproveAction::class.java)
     private val compareWithApprovedIcon = IconLoader.getIcon("icons/compareWithApproved.svg", ApproveAction::class.java)
