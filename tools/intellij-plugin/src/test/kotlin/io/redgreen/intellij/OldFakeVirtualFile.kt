@@ -5,7 +5,7 @@ import com.intellij.openapi.vfs.VirtualFileSystem
 import java.io.InputStream
 import java.io.OutputStream
 
-class FakeVirtualFile(
+class OldFakeVirtualFile(
   private val name: String,
   private val otherFilesInDirectory: List<String> = emptyList()
 ) : VirtualFile() {
@@ -33,11 +33,11 @@ class FakeVirtualFile(
   }
 
   override fun getParent(): VirtualFile =
-    FakeVirtualFile("", otherFilesInDirectory)
+    OldFakeVirtualFile("", otherFilesInDirectory)
 
   override fun getChildren(): Array<VirtualFile> {
     return otherFilesInDirectory
-      .map { FakeVirtualFile(it) }
+      .map { OldFakeVirtualFile(it) }
       .toTypedArray()
   }
 
