@@ -24,4 +24,31 @@ class FakeVirtualFileTest {
         .isEqualTo("FakeVirtualFile.kt")
     }
   }
+
+  @Nested
+  inner class Parent {
+    @Test
+    fun `it should return no parent for a file in the root directory`() {
+      val virtualFileInRoot = FakeVirtualFile.fileFromPath("Car.kt")
+
+      assertThat(virtualFileInRoot.parent)
+        .isNull()
+    }
+
+    @Test
+    fun `it should return the parent directory for a file in a subdirectory`() {
+      // given
+      val virtualFileInSubdirectory = FakeVirtualFile
+        .fileFromPath("io/redgreen/intellij/fs/FakeVirtualFile.kt")
+
+      // when
+      val directoryFromPath = FakeVirtualFile.directoryFromPath("io/redgreen/intellij/fs")
+
+      // then
+      assertThat(virtualFileInSubdirectory.parent?.isDirectory)
+        .isTrue()
+      assertThat(virtualFileInSubdirectory.parent?.path)
+        .isEqualTo(directoryFromPath.path)
+    }
+  }
 }
