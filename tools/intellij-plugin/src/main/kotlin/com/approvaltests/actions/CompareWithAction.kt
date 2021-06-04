@@ -10,13 +10,50 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.actionSystem.Presentation
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.IconLoader
 import com.intellij.openapi.vfs.VirtualFile
+import javax.swing.Icon
 
 class CompareWithAction : AnAction() {
   companion object {
     private const val TEXT_COMPARE_WITH_APPROVED = "Compare With Approved File"
     private const val TEXT_COMPARE_WITH_RECEIVED = "Compare With Received File"
+
+    private val compareWithReceivedIcon = IconLoader.getIcon("icons/compareWithReceived.svg", ApproveAction::class.java)
+    private val compareWithApprovedIcon = IconLoader.getIcon("icons/compareWithApproved.svg", ApproveAction::class.java)
+  }
+
+  sealed class PresentationAssets(
+    private val icon: Icon,
+    private val text: String,
+    private val description: String
+  ) {
+    companion object {
+      fun from(approvalFile: ApprovalFile): PresentationAssets {
+        val counterpart = approvalFile.counterpart()!!
+        val counterpartFileName = counterpart.virtualFile.name
+        val description = "Compare with '$counterpartFileName'"
+
+        return if (counterpart is Received) {
+          ReceivedAssets(compareWithReceivedIcon, TEXT_COMPARE_WITH_RECEIVED, description)
+        } else {
+          ApprovedAssets(compareWithApprovedIcon, TEXT_COMPARE_WITH_APPROVED, description)
+        }
+      }
+    }
+
+    fun bind(presentation: Presentation) {
+      with(presentation) {
+        icon = this@PresentationAssets.icon
+        text = this@PresentationAssets.text
+        description = this@PresentationAssets.description
+      }
+    }
+
+    class ApprovedAssets(icon: Icon, text: String, description: String) : PresentationAssets(icon, text, description)
+    class ReceivedAssets(icon: Icon, text: String, description: String) : PresentationAssets(icon, text, description)
   }
 
   override fun update(e: AnActionEvent) {
@@ -25,8 +62,7 @@ class CompareWithAction : AnAction() {
 
     if (isActionRelevant) {
       val approvalFile = ApprovalFile.from(getVirtualFile(e.dataContext)!!)!!
-      presentation.text = getText(approvalFile)
-      presentation.description = getDescription(approvalFile)
+      PresentationAssets.from(approvalFile).bind(e.presentation)
     }
     presentation.isEnabledAndVisible = isActionRelevant
   }
@@ -47,21 +83,6 @@ class CompareWithAction : AnAction() {
     val approvalFile = virtualFile?.let { ApprovalFile.from(virtualFile) }
     val approvalFileCounterpart = approvalFile?.counterpart()
     return approvalFile != null && approvalFileCounterpart != null
-  }
-
-  private fun getText(approvalFile: ApprovalFile): String {
-    val counterpart = approvalFile.counterpart()!!
-
-    return if (counterpart is Received) {
-      TEXT_COMPARE_WITH_RECEIVED
-    } else {
-      TEXT_COMPARE_WITH_APPROVED
-    }
-  }
-
-  private fun getDescription(approvalFile: ApprovalFile): String {
-    val counterpartFileName = approvalFile.counterpart()!!.virtualFile.name
-    return "Compare with '$counterpartFileName'"
   }
 
   private fun receivedAndApproved(selectedFile: ApprovalFile): Pair<Received, Approved> {
