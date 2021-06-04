@@ -7,7 +7,8 @@ import java.io.OutputStream
 
 class FakeVirtualFile private constructor(
   private val path: String,
-  private val isDirectory: Boolean = false
+  private val isDirectory: Boolean = false,
+  private val children: List<FakeVirtualFile> = emptyList()
 ) : VirtualFile() {
   companion object {
     private const val FILE_SEPARATOR = "/"
@@ -18,6 +19,11 @@ class FakeVirtualFile private constructor(
 
     fun directoryFromPath(directoryPath: String): FakeVirtualFile {
       return FakeVirtualFile(directoryPath, true)
+    }
+
+    fun directoryWithFiles(files: List<FakeVirtualFile>): VirtualFile {
+      val directoryPath = files.first().name.split(FILE_SEPARATOR).dropLast(1).joinToString(FILE_SEPARATOR)
+      return FakeVirtualFile(directoryPath, true, files)
     }
   }
 
@@ -55,7 +61,7 @@ class FakeVirtualFile private constructor(
   }
 
   override fun getChildren(): Array<VirtualFile> {
-    TODO("Not yet implemented")
+    return children.toTypedArray()
   }
 
   override fun getOutputStream(requestor: Any?, newModificationStamp: Long, newTimeStamp: Long): OutputStream {
