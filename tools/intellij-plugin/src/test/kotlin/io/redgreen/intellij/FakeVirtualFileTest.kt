@@ -1,6 +1,7 @@
 package io.redgreen.intellij
 
 import com.google.common.truth.Truth.assertThat
+import com.intellij.openapi.vfs.VirtualFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -49,6 +50,37 @@ class FakeVirtualFileTest {
         .isTrue()
       assertThat(virtualFileInSubdirectory.parent?.path)
         .isEqualTo(directoryFromPath.path)
+    }
+  }
+
+  @Nested
+  inner class DirectoryWithFilesChildren {
+    @Test
+    fun `root directory with files`() {
+      // given
+      val filesInDirectory = listOf(
+        FakeVirtualFile.fileFromPath("Car.kt"),
+        FakeVirtualFile.fileFromPath("Boat.kt"),
+      )
+      val rootDirectory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
+
+      // when & then
+      assertThat(rootDirectory.children.map(VirtualFile::getName))
+        .containsExactly("Car.kt", "Boat.kt")
+    }
+
+    @Test
+    fun `subdirectory with files`() {
+      // given
+      val filesInDirectory = listOf(
+        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Ship.kt"),
+        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Treasure.kt"),
+      )
+      val directory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
+
+      // when & then
+      assertThat(directory.children.map(VirtualFile::getName))
+        .containsExactly("Ship.kt", "Treasure.kt")
     }
   }
 }
