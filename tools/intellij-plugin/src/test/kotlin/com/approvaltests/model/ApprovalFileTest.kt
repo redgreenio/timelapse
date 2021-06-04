@@ -3,7 +3,7 @@ package com.approvaltests.model
 import com.approvaltests.model.ApprovalFile.Approved
 import com.approvaltests.model.ApprovalFile.Received
 import com.google.common.truth.Truth.assertThat
-import io.redgreen.intellij.FakeVirtualFile
+import io.redgreen.intellij.OldFakeVirtualFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -12,19 +12,19 @@ class ApprovalFileTest {
   inner class FactoryFunction {
     @Test
     fun `create an Approved instance`() {
-      assertThat(ApprovalFile.from(FakeVirtualFile("my.approved.txt")))
+      assertThat(ApprovalFile.from(OldFakeVirtualFile("my.approved.txt")))
         .isInstanceOf(Approved::class.java)
     }
 
     @Test
     fun `create a Received instance`() {
-      assertThat(ApprovalFile.from(FakeVirtualFile("my.received.txt")))
+      assertThat(ApprovalFile.from(OldFakeVirtualFile("my.received.txt")))
         .isInstanceOf(Received::class.java)
     }
 
     @Test
     fun `don't create an instance for files other than approved and received`() {
-      assertThat(ApprovalFile.from(FakeVirtualFile("my-file.txt")))
+      assertThat(ApprovalFile.from(OldFakeVirtualFile("my-file.txt")))
         .isNull()
     }
   }
@@ -34,7 +34,7 @@ class ApprovalFileTest {
     @Test
     fun `return a Received file if it exists`() {
       // given
-      val approved = ApprovalFile.from(FakeVirtualFile("my.approved.txt", listOf("my.received.txt")))!!
+      val approved = ApprovalFile.from(OldFakeVirtualFile("my.approved.txt", listOf("my.received.txt")))!!
 
       // when
       val counterpart = approved.counterpart()
@@ -49,7 +49,7 @@ class ApprovalFileTest {
     @Test
     fun `return null if the received file does not exist`() {
       // given
-      val approved = ApprovalFile.from(FakeVirtualFile("my.approved.txt"))!!
+      val approved = ApprovalFile.from(OldFakeVirtualFile("my.approved.txt"))!!
 
       // when
       val counterpart = approved.counterpart()
@@ -65,7 +65,7 @@ class ApprovalFileTest {
     @Test
     fun `return a Approved file if it exists`() {
       // given
-      val received = ApprovalFile.from(FakeVirtualFile("my.received.txt", listOf("my.approved.txt")))!!
+      val received = ApprovalFile.from(OldFakeVirtualFile("my.received.txt", listOf("my.approved.txt")))!!
 
       // when
       val counterpart = received.counterpart()
@@ -80,7 +80,7 @@ class ApprovalFileTest {
     @Test
     fun `return null if the approved file does not exist`() {
       // given
-      val received = ApprovalFile.from(FakeVirtualFile("my.received.txt"))!!
+      val received = ApprovalFile.from(OldFakeVirtualFile("my.received.txt"))!!
 
       // when
       val counterpart = received.counterpart()
@@ -93,7 +93,7 @@ class ApprovalFileTest {
     @Test
     fun `file name of the approved file`() {
       // given
-      val received = ApprovalFile.from(FakeVirtualFile("my.fancy.received.file.txt"))!! as Received
+      val received = ApprovalFile.from(OldFakeVirtualFile("my.fancy.received.file.txt"))!! as Received
 
       // when & then
       assertThat(received.approvedFileName)
