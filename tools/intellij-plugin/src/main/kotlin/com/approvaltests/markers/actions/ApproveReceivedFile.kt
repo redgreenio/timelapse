@@ -1,13 +1,18 @@
 package com.approvaltests.markers.actions
 
-import com.intellij.icons.AllIcons
+import com.approvaltests.actions.ApproveAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.util.IconLoader
 
 class ApproveReceivedFile : AnAction() {
+  companion object {
+    private val approveIcon = IconLoader.getIcon("icons/approve.svg", ApproveAction::class.java)
+  }
+
   override fun update(e: AnActionEvent) {
     with(e.presentation) {
-      icon = AllIcons.Actions.Commit
+      icon = approveIcon
       text = "Approve Received File"
     }
   }
