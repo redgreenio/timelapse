@@ -8,7 +8,8 @@ import java.io.OutputStream
 class FakeVirtualFile private constructor(
   private val path: String,
   private val isDirectory: Boolean = false,
-  private val children: List<FakeVirtualFile> = emptyList()
+  private val children: List<FakeVirtualFile> = emptyList(),
+  private var parent: FakeVirtualFile? = null
 ) : VirtualFile() {
   companion object {
     private const val FILE_SEPARATOR = "/"
@@ -22,13 +23,15 @@ class FakeVirtualFile private constructor(
     }
 
     fun directoryWithFiles(files: List<FakeVirtualFile>): VirtualFile {
-      val possiblyNonRootPath = files.first().path.split(FILE_SEPARATOR).dropLast(1).joinToString(FILE_SEPARATOR)
-      val directoryPath = if (possiblyNonRootPath.isEmpty()) {
-        FILE_SEPARATOR
-      } else {
-        possiblyNonRootPath
-      }
-      return FakeVirtualFile(directoryPath, true, files)
+      val directoryPath = getParentPath(files.first())
+      val directory = FakeVirtualFile(directoryPath, true, files)
+      files.onEach { it.parent = directory }
+      return directory
+    }
+
+    private fun getParentPath(virtualFile: FakeVirtualFile): String {
+      val possiblyNonRootPath = virtualFile.path.split(FILE_SEPARATOR).dropLast(1).joinToString(FILE_SEPARATOR)
+      return possiblyNonRootPath.ifEmpty { FILE_SEPARATOR }
     }
   }
 
@@ -57,6 +60,10 @@ class FakeVirtualFile private constructor(
   }
 
   override fun getParent(): VirtualFile? {
+    if (parent != null) {
+      return parent
+    }
+
     val pathSegments = path.split(FILE_SEPARATOR)
     return if (pathSegments.size == 1) {
       null
