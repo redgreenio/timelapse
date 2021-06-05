@@ -35,7 +35,7 @@ sealed class ApprovalFile {
 
   fun counterpart(): ApprovalFile? {
     val counterpartFileName = virtualFile.name.replace(slug.text, slug.counterpart.text)
-    val counterpartVirtualFile = virtualFile.parent.findChild(counterpartFileName) ?: return null
+    val counterpartVirtualFile = virtualFile.parent?.findChild(counterpartFileName) ?: return null
     return counterpartCreator(counterpartVirtualFile)
   }
 
