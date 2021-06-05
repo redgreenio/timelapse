@@ -83,4 +83,35 @@ class FakeVirtualFileTest {
         .containsExactly("Ship.kt", "Treasure.kt")
     }
   }
+
+  @Nested
+  inner class DirectoryWithFilesPath {
+    @Test
+    fun `root directory path`() {
+      // given
+      val filesInDirectory = listOf(
+        FakeVirtualFile.fileFromPath("Car.kt"),
+        FakeVirtualFile.fileFromPath("Boat.kt"),
+      )
+      val rootDirectory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
+
+      // when & then
+      assertThat(rootDirectory.path)
+        .isEqualTo("/")
+    }
+
+    @Test
+    fun `subdirectory path`() {
+      // given
+      val filesInDirectory = listOf(
+        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Ship.kt"),
+        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Treasure.kt"),
+      )
+      val directory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
+
+      // when & then
+      assertThat(directory.path)
+        .isEqualTo("/Users/jackSparrow")
+    }
+  }
 }
