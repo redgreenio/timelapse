@@ -3,6 +3,7 @@ package com.approvaltests.model
 import com.approvaltests.model.ApprovalFile.Approved
 import com.approvaltests.model.ApprovalFile.Received
 import com.google.common.truth.Truth.assertThat
+import io.redgreen.intellij.FakeVirtualFile
 import io.redgreen.intellij.OldFakeVirtualFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -12,19 +13,19 @@ class ApprovalFileTest {
   inner class FactoryFunction {
     @Test
     fun `create an Approved instance`() {
-      assertThat(ApprovalFile.from(OldFakeVirtualFile("my.approved.txt")))
+      assertThat(ApprovalFile.from(FakeVirtualFile.fileFromPath("my.approved.txt")))
         .isInstanceOf(Approved::class.java)
     }
 
     @Test
     fun `create a Received instance`() {
-      assertThat(ApprovalFile.from(OldFakeVirtualFile("my.received.txt")))
+      assertThat(ApprovalFile.from(FakeVirtualFile.fileFromPath("my.received.txt")))
         .isInstanceOf(Received::class.java)
     }
 
     @Test
     fun `don't create an instance for files other than approved and received`() {
-      assertThat(ApprovalFile.from(OldFakeVirtualFile("my-file.txt")))
+      assertThat(ApprovalFile.from(FakeVirtualFile.fileFromPath("my-file.txt")))
         .isNull()
     }
   }
@@ -93,7 +94,7 @@ class ApprovalFileTest {
     @Test
     fun `file name of the approved file`() {
       // given
-      val received = ApprovalFile.from(OldFakeVirtualFile("my.fancy.received.file.txt"))!! as Received
+      val received = ApprovalFile.from(FakeVirtualFile.fileFromPath("my.fancy.received.file.txt"))!! as Received
 
       // when & then
       assertThat(received.approvedFileName)
