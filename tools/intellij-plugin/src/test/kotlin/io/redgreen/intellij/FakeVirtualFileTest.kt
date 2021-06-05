@@ -43,13 +43,33 @@ class FakeVirtualFileTest {
         .fileFromPath("io/redgreen/intellij/fs/FakeVirtualFile.kt")
 
       // when
-      val directoryFromPath = FakeVirtualFile.directoryFromPath("io/redgreen/intellij/fs")
+      val virtualFile = virtualFileInSubdirectory.parent!!
 
       // then
-      assertThat(virtualFileInSubdirectory.parent?.isDirectory)
+      assertThat(virtualFile.isDirectory)
         .isTrue()
-      assertThat(virtualFileInSubdirectory.parent?.path)
-        .isEqualTo(directoryFromPath.path)
+      assertThat(virtualFile.path)
+        .isEqualTo("io/redgreen/intellij/fs")
+    }
+
+    @Test
+    fun `parent directories should return their children`() {
+      // given
+      val virtualFiles = listOf(
+        FakeVirtualFile.fileFromPath("io/redgreen/intellij/fs/AnotherVirtualFile.kt"),
+        FakeVirtualFile.fileFromPath("io/redgreen/intellij/fs/AnotherVirtualFileSystem.kt"),
+      )
+      val fakeVirtualDirectory = FakeVirtualFile.directoryWithFiles(virtualFiles)
+
+      // when
+      val parent = fakeVirtualDirectory.children.first().parent
+
+      // then
+      assertThat(parent.children.map(VirtualFile::getName))
+        .containsExactly(
+          "AnotherVirtualFile.kt",
+          "AnotherVirtualFileSystem.kt"
+        )
     }
   }
 
