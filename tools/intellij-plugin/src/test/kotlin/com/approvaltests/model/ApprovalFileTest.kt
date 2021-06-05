@@ -4,7 +4,6 @@ import com.approvaltests.model.ApprovalFile.Approved
 import com.approvaltests.model.ApprovalFile.Received
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.intellij.FakeVirtualFile
-import io.redgreen.intellij.OldFakeVirtualFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -35,7 +34,12 @@ class ApprovalFileTest {
     @Test
     fun `return a Received file if it exists`() {
       // given
-      val approved = ApprovalFile.from(OldFakeVirtualFile("my.approved.txt", listOf("my.received.txt")))!!
+      val files = listOf(
+        FakeVirtualFile.fileFromPath("my.approved.txt"),
+        FakeVirtualFile.fileFromPath("my.received.txt")
+      )
+      FakeVirtualFile.directoryWithFiles(files)
+      val approved = ApprovalFile.from(files.first())!!
 
       // when
       val counterpart = approved.counterpart()
@@ -66,7 +70,12 @@ class ApprovalFileTest {
     @Test
     fun `return a Approved file if it exists`() {
       // given
-      val received = ApprovalFile.from(OldFakeVirtualFile("my.received.txt", listOf("my.approved.txt")))!!
+      val files = listOf(
+        FakeVirtualFile.fileFromPath("my.approved.txt"),
+        FakeVirtualFile.fileFromPath("my.received.txt")
+      )
+      FakeVirtualFile.directoryWithFiles(files)
+      val received = ApprovalFile.from(files.last())!!
 
       // when
       val counterpart = received.counterpart()
