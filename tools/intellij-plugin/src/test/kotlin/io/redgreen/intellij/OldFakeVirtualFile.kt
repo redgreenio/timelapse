@@ -9,13 +9,6 @@ class OldFakeVirtualFile constructor(
   private val name: String,
   private val otherFilesInDirectory: List<String>
 ) : VirtualFile() {
-
-  @Deprecated(
-    "Use the newer, well tested `FakeVirtualFile` class instead.",
-    ReplaceWith("FakeVirtualFile.fileFromPath(name)")
-  )
-  constructor(name: String) : this(name, emptyList())
-
   override fun getName(): String =
     name
 
@@ -44,7 +37,7 @@ class OldFakeVirtualFile constructor(
 
   override fun getChildren(): Array<VirtualFile> {
     return otherFilesInDirectory
-      .map { OldFakeVirtualFile(it) }
+      .map { OldFakeVirtualFile(it, emptyList()) }
       .toTypedArray()
   }
 

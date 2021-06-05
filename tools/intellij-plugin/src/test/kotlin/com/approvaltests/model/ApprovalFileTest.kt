@@ -50,7 +50,7 @@ class ApprovalFileTest {
     @Test
     fun `return null if the received file does not exist`() {
       // given
-      val approved = ApprovalFile.from(OldFakeVirtualFile("my.approved.txt"))!!
+      val approved = ApprovalFile.from(FakeVirtualFile.fileFromPath("my.approved.txt"))!!
 
       // when
       val counterpart = approved.counterpart()
@@ -81,7 +81,7 @@ class ApprovalFileTest {
     @Test
     fun `return null if the approved file does not exist`() {
       // given
-      val received = ApprovalFile.from(OldFakeVirtualFile("my.received.txt"))!!
+      val received = ApprovalFile.from(FakeVirtualFile.fileFromPath("my.received.txt"))!!
 
       // when
       val counterpart = received.counterpart()
