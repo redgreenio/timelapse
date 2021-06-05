@@ -19,6 +19,19 @@ class FunctionCoordinatesTest {
       assertThat(guessedFileName)
         .isEqualTo("MathTest.two plus two is four.approved.txt")
     }
+
+    @Test
+    fun `it should return best guessed approved file name from a nested class`() {
+      // given
+      val functionCoordinates = FunctionCoordinates.from("two plus two is four", "AdditionTest", "ArithmeticTest")
+
+      // when
+      val guessedFileName = functionCoordinates.bestGuessApprovedFileName()
+
+      // then
+      assertThat(guessedFileName)
+        .isEqualTo("ArithmeticTest.AdditionTest.two plus two is four.approved.txt")
+    }
   }
 
   @Nested
@@ -34,6 +47,19 @@ class FunctionCoordinatesTest {
       // then
       assertThat(guessedFileName)
         .isEqualTo("MathTest.two plus two is four.received.txt")
+    }
+
+    @Test
+    fun `it should return best guessed approved file name from a nested class`() {
+      // given
+      val functionCoordinates = FunctionCoordinates.from("two plus two is four", "AdditionTest", "ArithmeticTest")
+
+      // when
+      val guessedFileName = functionCoordinates.bestGuessReceivedFileName()
+
+      // then
+      assertThat(guessedFileName)
+        .isEqualTo("ArithmeticTest.AdditionTest.two plus two is four.received.txt")
     }
   }
 }
