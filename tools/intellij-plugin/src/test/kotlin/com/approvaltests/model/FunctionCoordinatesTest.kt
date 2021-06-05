@@ -13,7 +13,7 @@ class FunctionCoordinatesTest {
       val functionCoordinates = FunctionCoordinates.from("two plus two is four", "MathTest")
 
       // when
-      val guessedFileName = functionCoordinates.bestGuessApprovedFileName()
+      val guessedFileName = functionCoordinates.bestGuessApprovedFileNamePrefix()
 
       // then
       assertThat(guessedFileName)
@@ -26,7 +26,7 @@ class FunctionCoordinatesTest {
       val functionCoordinates = FunctionCoordinates.from("two plus two is four", "AdditionTest", "ArithmeticTest")
 
       // when
-      val guessedFileName = functionCoordinates.bestGuessApprovedFileName()
+      val guessedFileName = functionCoordinates.bestGuessApprovedFileNamePrefix()
 
       // then
       assertThat(guessedFileName)
@@ -42,7 +42,7 @@ class FunctionCoordinatesTest {
       val functionCoordinates = FunctionCoordinates.from("two plus two is four", "MathTest")
 
       // when
-      val guessedFileName = functionCoordinates.bestGuessReceivedFileName()
+      val guessedFileName = functionCoordinates.bestGuessReceivedFileNamePrefix()
 
       // then
       assertThat(guessedFileName)
@@ -55,7 +55,7 @@ class FunctionCoordinatesTest {
       val functionCoordinates = FunctionCoordinates.from("two plus two is four", "AdditionTest", "ArithmeticTest")
 
       // when
-      val guessedFileName = functionCoordinates.bestGuessReceivedFileName()
+      val guessedFileName = functionCoordinates.bestGuessReceivedFileNamePrefix()
 
       // then
       assertThat(guessedFileName)

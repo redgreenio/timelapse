@@ -14,10 +14,10 @@ class FunctionCoordinates private constructor(
     }
   }
 
-  fun bestGuessApprovedFileName(): String =
+  fun bestGuessApprovedFileNamePrefix(): String =
     fileNameFor("approved")
 
-  fun bestGuessReceivedFileName(): String =
+  fun bestGuessReceivedFileNamePrefix(): String =
     fileNameFor("received")
 
   private fun fileNameFor(approvalFileType: String): String {
