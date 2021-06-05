@@ -5,10 +5,13 @@ import com.intellij.openapi.vfs.VirtualFileSystem
 import java.io.InputStream
 import java.io.OutputStream
 
-class OldFakeVirtualFile(
+class OldFakeVirtualFile constructor(
   private val name: String,
-  private val otherFilesInDirectory: List<String> = emptyList()
+  private val otherFilesInDirectory: List<String>
 ) : VirtualFile() {
+
+  constructor(name: String) : this(name, emptyList())
+
   override fun getName(): String =
     name
 
