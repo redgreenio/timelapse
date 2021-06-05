@@ -10,6 +10,10 @@ class OldFakeVirtualFile constructor(
   private val otherFilesInDirectory: List<String>
 ) : VirtualFile() {
 
+  @Deprecated(
+    "Use the newer, well tested `FakeVirtualFile` class instead.",
+    ReplaceWith("FakeVirtualFile.fileFromPath(name)")
+  )
   constructor(name: String) : this(name, emptyList())
 
   override fun getName(): String =
