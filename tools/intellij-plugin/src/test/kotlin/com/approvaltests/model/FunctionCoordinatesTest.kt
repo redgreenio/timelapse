@@ -17,7 +17,7 @@ class FunctionCoordinatesTest {
 
       // then
       assertThat(guessedFileName)
-        .isEqualTo("MathTest.two plus two is four.approved.txt")
+        .isEqualTo("MathTest.two plus two is four.approved.")
     }
 
     @Test
@@ -30,7 +30,7 @@ class FunctionCoordinatesTest {
 
       // then
       assertThat(guessedFileName)
-        .isEqualTo("ArithmeticTest.AdditionTest.two plus two is four.approved.txt")
+        .isEqualTo("ArithmeticTest.AdditionTest.two plus two is four.approved.")
     }
   }
 
@@ -46,7 +46,7 @@ class FunctionCoordinatesTest {
 
       // then
       assertThat(guessedFileName)
-        .isEqualTo("MathTest.two plus two is four.received.txt")
+        .isEqualTo("MathTest.two plus two is four.received.")
     }
 
     @Test
@@ -59,7 +59,7 @@ class FunctionCoordinatesTest {
 
       // then
       assertThat(guessedFileName)
-        .isEqualTo("ArithmeticTest.AdditionTest.two plus two is four.received.txt")
+        .isEqualTo("ArithmeticTest.AdditionTest.two plus two is four.received.")
     }
   }
 }
