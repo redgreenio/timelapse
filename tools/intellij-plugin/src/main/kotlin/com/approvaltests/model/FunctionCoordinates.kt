@@ -5,6 +5,10 @@ class FunctionCoordinates private constructor(
   private val containingClasses: List<String>
 ) {
   companion object {
+    private const val DOT = "."
+    private const val APPROVED = "approved"
+    private const val RECEIVED = "received"
+
     fun from(
       functionName: String,
       containingClass: String,
@@ -15,13 +19,13 @@ class FunctionCoordinates private constructor(
   }
 
   fun bestGuessApprovedFileNamePrefix(): String =
-    fileNameFor("approved")
+    fileNameFor(APPROVED)
 
   fun bestGuessReceivedFileNamePrefix(): String =
-    fileNameFor("received")
+    fileNameFor(RECEIVED)
 
   private fun fileNameFor(approvalFileType: String): String {
-    val listOf = containingClasses + listOf(identifier, approvalFileType, "txt")
-    return listOf.joinToString(".")
+    val listOf = containingClasses + listOf(identifier, approvalFileType)
+    return listOf.joinToString(DOT) + DOT
   }
 }
