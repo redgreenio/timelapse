@@ -22,7 +22,12 @@ class FakeVirtualFile private constructor(
     }
 
     fun directoryWithFiles(files: List<FakeVirtualFile>): VirtualFile {
-      val directoryPath = files.first().name.split(FILE_SEPARATOR).dropLast(1).joinToString(FILE_SEPARATOR)
+      val possiblyNonRootPath = files.first().path.split(FILE_SEPARATOR).dropLast(1).joinToString(FILE_SEPARATOR)
+      val directoryPath = if (possiblyNonRootPath.isEmpty()) {
+        FILE_SEPARATOR
+      } else {
+        possiblyNonRootPath
+      }
       return FakeVirtualFile(directoryPath, true, files)
     }
   }
