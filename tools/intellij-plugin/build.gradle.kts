@@ -27,4 +27,6 @@ dependencies {
   // Mockito
   testImplementation(deps.test.mockito.core)
   testImplementation(deps.test.mockito.kotlin)
+
+  testImplementation(deps.test.approvalTests)
 }
