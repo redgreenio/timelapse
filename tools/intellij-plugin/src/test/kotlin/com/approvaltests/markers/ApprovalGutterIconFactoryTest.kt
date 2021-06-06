@@ -4,6 +4,8 @@ import com.approvaltests.markers.GutterIcon.MISSING_MISSING
 import com.approvaltests.markers.GutterIcon.MISSING_PRESENT
 import com.approvaltests.markers.GutterIcon.PRESENT_EMPTY
 import com.approvaltests.markers.GutterIcon.PRESENT_MISSING
+import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_DIFFERENT
+import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_SAME
 import com.approvaltests.model.FunctionCoordinates
 import com.google.common.truth.Truth.assertThat
 import io.redgreen.intellij.FakeVirtualFile
@@ -28,9 +30,25 @@ class ApprovalGutterIconFactoryTest {
   }
 
   @Test
-  fun `received missing, approved present`() {
+  fun `received missing, approved present (empty)`() {
     // given
     FakeVirtualFile.directoryWithFiles(listOf(testFile, approvedFile))
+
+    // when
+    val gutterIcon = ApprovalGutterIconFactory
+      .iconFrom(testFile, functionCoordinates)
+
+    // then
+    assertThat(gutterIcon)
+      .isEqualTo(MISSING_PRESENT)
+  }
+
+  @Test
+  fun `received missing, approved present (non-empty)`() {
+    // given
+    val approved = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.approved.kt", "Have a blast!")
+    FakeVirtualFile.directoryWithFiles(listOf(testFile, approved))
 
     // when
     val gutterIcon = ApprovalGutterIconFactory
@@ -58,7 +76,11 @@ class ApprovalGutterIconFactoryTest {
   @Test
   fun `received present, approved empty`() {
     // given
-    FakeVirtualFile.directoryWithFiles(listOf(testFile, receivedFile, approvedFile))
+    val received = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.received.kt", "Hello, world!")
+    val approved = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.approved.kt")
+    FakeVirtualFile.directoryWithFiles(listOf(testFile, received, approved))
 
     // when
     val gutterIcon = ApprovalGutterIconFactory
@@ -67,5 +89,59 @@ class ApprovalGutterIconFactoryTest {
     // then
     assertThat(gutterIcon)
       .isEqualTo(PRESENT_EMPTY)
+  }
+
+  @Test
+  fun `received present, approved present (contents same)`() {
+    // given
+    val received = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.received.kt", "Hello, world!")
+    val approved = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.approved.kt", "Hello, world!")
+    FakeVirtualFile.directoryWithFiles(listOf(testFile, received, approved))
+
+    // when
+    val gutterIcon = ApprovalGutterIconFactory
+      .iconFrom(testFile, functionCoordinates)
+
+    // then
+    assertThat(gutterIcon)
+      .isEqualTo(PRESENT_PRESENT_SAME)
+  }
+
+  @Test
+  fun `received present, approved present (equal length, contents different)`() {
+    // given
+    val received = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.received.kt", "One")
+    val approved = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.approved.kt", "Two")
+    FakeVirtualFile.directoryWithFiles(listOf(testFile, received, approved))
+
+    // when
+    val gutterIcon = ApprovalGutterIconFactory
+      .iconFrom(testFile, functionCoordinates)
+
+    // then
+    assertThat(gutterIcon)
+      .isEqualTo(PRESENT_PRESENT_DIFFERENT)
+  }
+
+  @Test
+  fun `received present, approved present (unequal length)`() {
+    // given
+    val received = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.received.kt", "One")
+    val approved = FakeVirtualFile
+      .file("test/kotlin/CanaryTest.approvals is setup.approved.kt", "On")
+    FakeVirtualFile.directoryWithFiles(listOf(testFile, received, approved))
+
+    // when
+    val gutterIcon = ApprovalGutterIconFactory
+      .iconFrom(testFile, functionCoordinates)
+
+    // then
+    assertThat(gutterIcon)
+      .isEqualTo(PRESENT_PRESENT_DIFFERENT)
   }
 }
