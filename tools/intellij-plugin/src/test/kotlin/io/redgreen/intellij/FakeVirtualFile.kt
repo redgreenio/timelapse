@@ -2,6 +2,8 @@ package io.redgreen.intellij
 
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.VirtualFileSystem
+import java.io.BufferedInputStream
+import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -9,13 +11,14 @@ class FakeVirtualFile private constructor(
   private val path: String,
   private val isDirectory: Boolean = false,
   private val children: List<FakeVirtualFile> = emptyList(),
-  private var parent: FakeVirtualFile? = null
+  private var parent: FakeVirtualFile? = null,
+  private val content: String? = null
 ) : VirtualFile() {
   companion object {
     private const val FILE_SEPARATOR = "/"
 
-    fun fileFromPath(filePath: String): FakeVirtualFile {
-      return FakeVirtualFile(filePath)
+    fun file(filePath: String, content: String? = null): FakeVirtualFile {
+      return FakeVirtualFile(filePath, content = content)
     }
 
     fun directoryFromPath(directoryPath: String): FakeVirtualFile {
@@ -89,7 +92,7 @@ class FakeVirtualFile private constructor(
   }
 
   override fun getLength(): Long {
-    TODO("Not yet implemented")
+    return content?.length?.toLong() ?: 0
   }
 
   override fun refresh(asynchronous: Boolean, recursive: Boolean, postRunnable: Runnable?) {
@@ -97,6 +100,10 @@ class FakeVirtualFile private constructor(
   }
 
   override fun getInputStream(): InputStream {
-    TODO("Not yet implemented")
+    return if (content == null) {
+      BufferedInputStream(ByteArrayInputStream(ByteArray(0)))
+    } else {
+      BufferedInputStream(ByteArrayInputStream(content.toByteArray()))
+    }
   }
 }

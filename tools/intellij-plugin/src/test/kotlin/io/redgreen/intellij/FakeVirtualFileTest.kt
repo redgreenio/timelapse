@@ -10,7 +10,7 @@ class FakeVirtualFileTest {
   inner class FileName {
     @Test
     fun `it should return the name of a file in the root directory`() {
-      val virtualFileInRoot = FakeVirtualFile.fileFromPath("Car.kt")
+      val virtualFileInRoot = FakeVirtualFile.file("Car.kt")
 
       assertThat(virtualFileInRoot.name)
         .isEqualTo("Car.kt")
@@ -19,7 +19,7 @@ class FakeVirtualFileTest {
     @Test
     fun `it should return the name of a file from a subdirectory`() {
       val virtualFileInSubdirectory = FakeVirtualFile
-        .fileFromPath("io/redgreen/intellij/fs/FakeVirtualFile.kt")
+        .file("io/redgreen/intellij/fs/FakeVirtualFile.kt")
 
       assertThat(virtualFileInSubdirectory.name)
         .isEqualTo("FakeVirtualFile.kt")
@@ -30,7 +30,7 @@ class FakeVirtualFileTest {
   inner class Parent {
     @Test
     fun `it should return no parent for a file in the root directory`() {
-      val virtualFileInRoot = FakeVirtualFile.fileFromPath("Car.kt")
+      val virtualFileInRoot = FakeVirtualFile.file("Car.kt")
 
       assertThat(virtualFileInRoot.parent)
         .isNull()
@@ -40,7 +40,7 @@ class FakeVirtualFileTest {
     fun `it should return the parent directory for a file in a subdirectory`() {
       // given
       val virtualFileInSubdirectory = FakeVirtualFile
-        .fileFromPath("io/redgreen/intellij/fs/FakeVirtualFile.kt")
+        .file("io/redgreen/intellij/fs/FakeVirtualFile.kt")
 
       // when
       val virtualFile = virtualFileInSubdirectory.parent!!
@@ -56,8 +56,8 @@ class FakeVirtualFileTest {
     fun `parent directories should return their children`() {
       // given
       val virtualFiles = listOf(
-        FakeVirtualFile.fileFromPath("io/redgreen/intellij/fs/AnotherVirtualFile.kt"),
-        FakeVirtualFile.fileFromPath("io/redgreen/intellij/fs/AnotherVirtualFileSystem.kt"),
+        FakeVirtualFile.file("io/redgreen/intellij/fs/AnotherVirtualFile.kt"),
+        FakeVirtualFile.file("io/redgreen/intellij/fs/AnotherVirtualFileSystem.kt"),
       )
       val fakeVirtualDirectory = FakeVirtualFile.directoryWithFiles(virtualFiles)
 
@@ -79,8 +79,8 @@ class FakeVirtualFileTest {
     fun `root directory with files`() {
       // given
       val filesInDirectory = listOf(
-        FakeVirtualFile.fileFromPath("Car.kt"),
-        FakeVirtualFile.fileFromPath("Boat.kt"),
+        FakeVirtualFile.file("Car.kt"),
+        FakeVirtualFile.file("Boat.kt"),
       )
       val rootDirectory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
 
@@ -93,8 +93,8 @@ class FakeVirtualFileTest {
     fun `subdirectory with files`() {
       // given
       val filesInDirectory = listOf(
-        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Ship.kt"),
-        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Treasure.kt"),
+        FakeVirtualFile.file("/Users/jackSparrow/Ship.kt"),
+        FakeVirtualFile.file("/Users/jackSparrow/Treasure.kt"),
       )
       val directory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
 
@@ -110,8 +110,8 @@ class FakeVirtualFileTest {
     fun `root directory path`() {
       // given
       val filesInDirectory = listOf(
-        FakeVirtualFile.fileFromPath("Car.kt"),
-        FakeVirtualFile.fileFromPath("Boat.kt"),
+        FakeVirtualFile.file("Car.kt"),
+        FakeVirtualFile.file("Boat.kt"),
       )
       val rootDirectory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
 
@@ -124,14 +124,47 @@ class FakeVirtualFileTest {
     fun `subdirectory path`() {
       // given
       val filesInDirectory = listOf(
-        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Ship.kt"),
-        FakeVirtualFile.fileFromPath("/Users/jackSparrow/Treasure.kt"),
+        FakeVirtualFile.file("/Users/jackSparrow/Ship.kt"),
+        FakeVirtualFile.file("/Users/jackSparrow/Treasure.kt"),
       )
       val directory = FakeVirtualFile.directoryWithFiles(filesInDirectory)
 
       // when & then
       assertThat(directory.path)
         .isEqualTo("/Users/jackSparrow")
+    }
+  }
+
+  @Nested
+  inner class FileContent {
+    private val carFile = FakeVirtualFile.file("Car.txt", "I am a Volkswagen")
+
+    @Test
+    fun `content length for file with content`() {
+      assertThat(carFile.length)
+        .isEqualTo(17)
+    }
+
+    @Test
+    fun `input stream for file with content`() {
+      assertThat(carFile.inputStream.bufferedReader().readText())
+        .isEqualTo("I am a Volkswagen")
+    }
+
+    @Test
+    fun `content length for file without content`() {
+      val fileWithoutContent = FakeVirtualFile.file("Hello.txt")
+
+      assertThat(fileWithoutContent.length)
+        .isEqualTo(0)
+    }
+
+    @Test
+    fun `input stream for file without content`() {
+      val fileWithoutContent = FakeVirtualFile.file("Hello.txt")
+
+      assertThat(fileWithoutContent.inputStream.bufferedReader().readText())
+        .isEmpty()
     }
   }
 }

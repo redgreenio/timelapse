@@ -10,9 +10,9 @@ import io.redgreen.intellij.FakeVirtualFile
 import org.junit.jupiter.api.Test
 
 class ApprovalGutterIconFactoryTest {
-  private val testFile = FakeVirtualFile.fileFromPath("test/kotlin/CanaryTest.kt")
-  private val approvedFile = FakeVirtualFile.fileFromPath("test/kotlin/CanaryTest.approvals is setup.approved.txt")
-  private val receivedFile = FakeVirtualFile.fileFromPath("test/kotlin/CanaryTest.approvals is setup.received.txt")
+  private val testFile = FakeVirtualFile.file("test/kotlin/CanaryTest.kt")
+  private val approvedFile = FakeVirtualFile.file("test/kotlin/CanaryTest.approvals is setup.approved.txt")
+  private val receivedFile = FakeVirtualFile.file("test/kotlin/CanaryTest.approvals is setup.received.txt")
 
   private val functionCoordinates = FunctionCoordinates.from("approvals is setup", "CanaryTest")
 
