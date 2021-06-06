@@ -12,19 +12,19 @@ class ApprovalFileTest {
   inner class FactoryFunction {
     @Test
     fun `create an Approved instance`() {
-      assertThat(ApprovalFile.from(FakeVirtualFile.fileFromPath("my.approved.txt")))
+      assertThat(ApprovalFile.from(FakeVirtualFile.file("my.approved.txt")))
         .isInstanceOf(Approved::class.java)
     }
 
     @Test
     fun `create a Received instance`() {
-      assertThat(ApprovalFile.from(FakeVirtualFile.fileFromPath("my.received.txt")))
+      assertThat(ApprovalFile.from(FakeVirtualFile.file("my.received.txt")))
         .isInstanceOf(Received::class.java)
     }
 
     @Test
     fun `don't create an instance for files other than approved and received`() {
-      assertThat(ApprovalFile.from(FakeVirtualFile.fileFromPath("my-file.txt")))
+      assertThat(ApprovalFile.from(FakeVirtualFile.file("my-file.txt")))
         .isNull()
     }
   }
@@ -35,8 +35,8 @@ class ApprovalFileTest {
     fun `return a Received file if it exists`() {
       // given
       val files = listOf(
-        FakeVirtualFile.fileFromPath("my.approved.txt"),
-        FakeVirtualFile.fileFromPath("my.received.txt")
+        FakeVirtualFile.file("my.approved.txt"),
+        FakeVirtualFile.file("my.received.txt")
       )
       FakeVirtualFile.directoryWithFiles(files)
       val approved = ApprovalFile.from(files.first())!!
@@ -54,7 +54,7 @@ class ApprovalFileTest {
     @Test
     fun `return null if the received file does not exist`() {
       // given
-      val approved = ApprovalFile.from(FakeVirtualFile.fileFromPath("my.approved.txt"))!!
+      val approved = ApprovalFile.from(FakeVirtualFile.file("my.approved.txt"))!!
 
       // when
       val counterpart = approved.counterpart()
@@ -71,8 +71,8 @@ class ApprovalFileTest {
     fun `return a Approved file if it exists`() {
       // given
       val files = listOf(
-        FakeVirtualFile.fileFromPath("my.approved.txt"),
-        FakeVirtualFile.fileFromPath("my.received.txt")
+        FakeVirtualFile.file("my.approved.txt"),
+        FakeVirtualFile.file("my.received.txt")
       )
       FakeVirtualFile.directoryWithFiles(files)
       val received = ApprovalFile.from(files.last())!!
@@ -90,7 +90,7 @@ class ApprovalFileTest {
     @Test
     fun `return null if the approved file does not exist`() {
       // given
-      val received = ApprovalFile.from(FakeVirtualFile.fileFromPath("my.received.txt"))!!
+      val received = ApprovalFile.from(FakeVirtualFile.file("my.received.txt"))!!
 
       // when
       val counterpart = received.counterpart()
@@ -103,7 +103,7 @@ class ApprovalFileTest {
     @Test
     fun `file name of the approved file`() {
       // given
-      val received = ApprovalFile.from(FakeVirtualFile.fileFromPath("my.fancy.received.file.txt"))!! as Received
+      val received = ApprovalFile.from(FakeVirtualFile.file("my.fancy.received.file.txt"))!! as Received
 
       // when & then
       assertThat(received.approvedFileName)
