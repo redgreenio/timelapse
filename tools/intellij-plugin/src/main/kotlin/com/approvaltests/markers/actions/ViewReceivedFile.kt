@@ -4,13 +4,14 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.util.IconLoader
 
-class ViewReceivedFile : AnAction() {
+class ViewReceivedFile(private val isRelevant: Boolean) : AnAction() {
   private val actionIcon = IconLoader.getIcon("icons/view-received.svg", this::class.java)
 
   override fun update(e: AnActionEvent) {
     with(e.presentation) {
       icon = actionIcon
       text = "View Received File"
+      isEnabled = isRelevant
     }
   }
 
