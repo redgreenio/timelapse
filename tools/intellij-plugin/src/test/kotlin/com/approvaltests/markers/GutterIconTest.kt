@@ -6,7 +6,6 @@ import com.approvaltests.markers.GutterIcon.PRESENT_EMPTY
 import com.approvaltests.markers.GutterIcon.PRESENT_MISSING
 import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_DIFFERENT
 import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_SAME
-import com.approvaltests.markers.GutterIcon.values
 import com.approvaltests.markers.actions.ApproveReceivedFile
 import com.approvaltests.markers.actions.CompareReceivedWithApproved
 import com.approvaltests.markers.actions.ViewApprovedFile
@@ -28,7 +27,7 @@ class GutterIconTest {
     @Suppress("unused") // Used by parameterized tests
     @JvmStatic
     fun gutterIconEnumValues(): List<GutterIcon> =
-      values().toList()
+      GutterIcon.values().toList()
 
     @Suppress("unused") // Used by parameterized test
     @JvmStatic
@@ -40,7 +39,7 @@ class GutterIconTest {
         ApproveReceivedFile::class.java
       )
 
-      return listOf(
+      val testParameters = listOf(
         MISSING_MISSING to emptySet(),
         MISSING_PRESENT to setOf(ViewApprovedFile::class.java),
         PRESENT_MISSING to setOf(ViewReceivedFile::class.java, ApproveReceivedFile::class.java),
@@ -48,6 +47,14 @@ class GutterIconTest {
         PRESENT_PRESENT_SAME to allActions,
         PRESENT_PRESENT_DIFFERENT to allActions,
       )
+
+      require(testParameters.size == GutterIcon.values().size) {
+        val testParameterIcons = testParameters.map(Pair<GutterIcon, Set<Class<out AnAction>>>::first)
+        val missingIconParameters = GutterIcon.values().toSet() - testParameterIcons
+        "Please add enabled actions tests for $missingIconParameters"
+      }
+
+      return testParameters
     }
   }
 
