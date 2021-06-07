@@ -8,43 +8,34 @@ import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_DIFFERENT
 import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_SAME
 import org.approvaltests.Approvals
 import org.approvaltests.core.Options
+import org.approvaltests.namer.NamerFactory
+import org.approvaltests.writers.ApprovalTextWriter
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 
 class GutterIconTest {
   private val svgOptions = Options().forFile().withExtension(".svg")
 
-  @Nested
-  inner class RegularIcon {
-    @Test
-    fun `missing missing`() {
-      Approvals.verify(svgResource(MISSING_MISSING), svgOptions)
-    }
+  companion object {
+    @Suppress("unused") // Used by parameterized tests
+    @JvmStatic
+    fun gutterIconEnumValues(): List<GutterIcon> =
+      GutterIcon.values().toList()
+  }
 
-    @Test
-    fun `missing present`() {
-      Approvals.verify(svgResource(MISSING_PRESENT), svgOptions)
-    }
+  @AfterEach
+  fun tearDown() {
+    NamerFactory.additionalInformation = null
+  }
 
-    @Test
-    fun `present missing`() {
-      Approvals.verify(svgResource(PRESENT_MISSING), svgOptions)
-    }
-
-    @Test
-    fun `present empty`() {
-      Approvals.verify(svgResource(PRESENT_EMPTY), svgOptions)
-    }
-
-    @Test
-    fun `present present (same)`() {
-      Approvals.verify(svgResource(PRESENT_PRESENT_SAME), svgOptions)
-    }
-
-    @Test
-    fun `present present (different)`() {
-      Approvals.verify(svgResource(PRESENT_PRESENT_DIFFERENT), svgOptions)
-    }
+  @ParameterizedTest
+  @MethodSource("gutterIconEnumValues")
+  fun `light icon`(icon: GutterIcon) {
+    NamerFactory.additionalInformation = icon.name
+    Approvals.verify(ApprovalTextWriter(svgResource(icon), svgOptions))
   }
 
   @Nested
