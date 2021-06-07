@@ -41,7 +41,7 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
   ): DefaultActionGroup {
     val allActions = listOf(
       CompareReceivedWithApproved(CompareReceivedWithApproved::class.java in enabledActions),
-      ViewReceivedFile(ViewReceivedFile::class.java in enabledActions),
+      ViewReceivedFile(coordinates, ViewReceivedFile::class.java in enabledActions),
       ViewApprovedFile(coordinates, ViewApprovedFile::class.java in enabledActions),
       ApproveReceivedFile(ApproveReceivedFile::class.java in enabledActions)
     )
