@@ -1,5 +1,18 @@
 package com.approvaltests.markers
 
+import com.approvaltests.markers.GutterIcon.MISSING_MISSING
+import com.approvaltests.markers.GutterIcon.MISSING_PRESENT
+import com.approvaltests.markers.GutterIcon.PRESENT_EMPTY
+import com.approvaltests.markers.GutterIcon.PRESENT_MISSING
+import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_DIFFERENT
+import com.approvaltests.markers.GutterIcon.PRESENT_PRESENT_SAME
+import com.approvaltests.markers.GutterIcon.values
+import com.approvaltests.markers.actions.ApproveReceivedFile
+import com.approvaltests.markers.actions.CompareReceivedWithApproved
+import com.approvaltests.markers.actions.ViewApprovedFile
+import com.approvaltests.markers.actions.ViewReceivedFile
+import com.google.common.truth.Truth.assertThat
+import com.intellij.openapi.actionSystem.AnAction
 import org.approvaltests.Approvals
 import org.approvaltests.core.Options
 import org.approvaltests.namer.NamerFactory
@@ -15,7 +28,27 @@ class GutterIconTest {
     @Suppress("unused") // Used by parameterized tests
     @JvmStatic
     fun gutterIconEnumValues(): List<GutterIcon> =
-      GutterIcon.values().toList()
+      values().toList()
+
+    @Suppress("unused") // Used by parameterized test
+    @JvmStatic
+    fun iconsToEnabledActions(): List<Pair<GutterIcon, Set<Class<out AnAction>>>> {
+      val allActions = setOf(
+        CompareReceivedWithApproved::class.java,
+        ViewReceivedFile::class.java,
+        ViewApprovedFile::class.java,
+        ApproveReceivedFile::class.java
+      )
+
+      return listOf(
+        MISSING_MISSING to emptySet(),
+        MISSING_PRESENT to setOf(ViewApprovedFile::class.java),
+        PRESENT_MISSING to setOf(ViewReceivedFile::class.java, ApproveReceivedFile::class.java),
+        PRESENT_EMPTY to allActions,
+        PRESENT_PRESENT_SAME to allActions,
+        PRESENT_PRESENT_DIFFERENT to allActions,
+      )
+    }
   }
 
   @AfterEach
@@ -35,6 +68,14 @@ class GutterIconTest {
   fun `dark icon`(icon: GutterIcon) {
     NamerFactory.additionalInformation = icon.name
     Approvals.verify(ApprovalTextWriter(svgResourceDark(icon), svgOptions))
+  }
+
+  @ParameterizedTest
+  @MethodSource("iconsToEnabledActions")
+  fun `enabled actions`(iconToActions: Pair<GutterIcon, Set<Class<AnAction>>>) {
+    val (icon, actions) = iconToActions
+    assertThat(icon.enabledActions)
+      .isEqualTo(actions)
   }
 
   private fun svgResource(gutterIcon: GutterIcon): String {
