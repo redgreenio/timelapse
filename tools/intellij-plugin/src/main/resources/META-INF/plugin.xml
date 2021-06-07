@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>io.redgreen.timelapse.dev</id>
   <name>Timelapse Dev</name>
-  <version>0.0.3-dev</version>
+  <version>0.0.3</version>
   <vendor email="ragunath@redgreen.io" url="https://redgreen.io">Red Green, Inc.</vendor>
   <depends>com.intellij.modules.platform</depends>
 
@@ -14,6 +14,7 @@
       <li>Add a "Compare With Approved/Received File" action to Project View and Editor popup menus.</li>
       <li>Add an "Approve File" action to Project View and Editor popup menus.</li>
       <li>macOS and Windows shortcuts for "Approve File" and "Compare With Approved/Received File" actions.</li>
+      <li>Add gutter icon with "Compare", "View Approved", "View Received", and "Approve File" actions.</li>
     </ul>
   ]]>
   </change-notes>
