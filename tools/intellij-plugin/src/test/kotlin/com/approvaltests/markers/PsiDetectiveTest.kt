@@ -75,6 +75,7 @@ class PsiDetectiveTest : LightIdeaTestCase() {
   }
 
   fun testIsApprovalsVerifyCallReturnsFalse() {
+    // given
     val source = """
       fun hello() {
         System.out.println("Hello, world!")
@@ -89,6 +90,7 @@ class PsiDetectiveTest : LightIdeaTestCase() {
   }
 
   fun testIsApprovalsVerifyCallReturnsTrue() {
+    // given
     val source = """
       fun approvalsTest() {
         Approvals.verify("Hello, world!")
@@ -103,6 +105,7 @@ class PsiDetectiveTest : LightIdeaTestCase() {
   }
 
   fun testIsApprovalsVerifyXCallReturnsTrue() {
+    // given
     val source = """
       fun approvalsTest() {
         Approvals.verifyHtml("<html>Hello, world!</html>")
@@ -117,6 +120,7 @@ class PsiDetectiveTest : LightIdeaTestCase() {
   }
 
   fun testHasApprovalsVerifyXCallWithMultipleDotExpressionsReturnsTrue() {
+    // given
     val source = """
       fun approvalsTest() {
         val dog = Dog("Oreo")
