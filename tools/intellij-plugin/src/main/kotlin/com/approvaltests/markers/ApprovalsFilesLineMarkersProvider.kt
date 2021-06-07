@@ -43,7 +43,7 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
       CompareReceivedWithApproved(coordinates, CompareReceivedWithApproved::class.java in enabledActions),
       ViewReceivedFile(coordinates, ViewReceivedFile::class.java in enabledActions),
       ViewApprovedFile(coordinates, ViewApprovedFile::class.java in enabledActions),
-      ApproveReceivedFile(ApproveReceivedFile::class.java in enabledActions)
+      ApproveReceivedFile(coordinates, ApproveReceivedFile::class.java in enabledActions)
     )
 
     return DefaultActionGroup(allActions)
