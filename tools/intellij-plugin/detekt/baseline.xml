@@ -1,3 +1,7 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>SpreadOperator:PsiDetective.kt$(function.name!!, containingClasses.first(), *containingClasses.drop(1).toTypedArray())</ID>
+  </CurrentIssues>
 </SmellBaseline>

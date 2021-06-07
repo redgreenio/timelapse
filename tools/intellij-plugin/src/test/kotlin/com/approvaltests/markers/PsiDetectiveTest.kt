@@ -151,6 +151,34 @@ class PsiDetectiveTest : LightIdeaTestCase() {
       .isEqualTo(FunctionCoordinates.from("add", "Math"))
   }
 
+  fun testFunctionCoordinatesNestedClassFunction() {
+    // given
+    val source = """
+      class ComplexStuff {
+        class Math {
+          fun add(a: Int, b: Int): Int = a + b
+        }
+      }
+    """.trimIndent()
+    val psiFile = psiFile(source)
+    val addNamedFunction = getKtNamedFunction(psiFile.findElementAt(42)!!)!!
+
+    // when & then
+    assertThat(getFunctionCoordinates(addNamedFunction))
+      .isEqualTo(FunctionCoordinates.from("add", "Math", "ComplexStuff"))
+  }
+
+  fun testFunctionCoordinatesTopLevelFunction() {
+    // given
+    val source = "fun add(a: Int, b: Int): Int = a + b"
+    val psiFile = psiFile(source)
+    val addNamedFunction = getKtNamedFunction(psiFile.findElementAt(0)!!)!!
+
+    // when & then
+    assertThat(getFunctionCoordinates(addNamedFunction))
+      .isEqualTo(FunctionCoordinates.from("add"))
+  }
+
   private fun psiFile(kotlinSource: String): PsiFile {
     return PsiFileFactory
       .getInstance(project)

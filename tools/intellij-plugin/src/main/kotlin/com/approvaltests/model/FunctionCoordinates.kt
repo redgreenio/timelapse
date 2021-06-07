@@ -16,6 +16,12 @@ data class FunctionCoordinates private constructor(
     ): FunctionCoordinates {
       return FunctionCoordinates(functionName, listOf(*containingClasses, containingClass))
     }
+
+    fun from(
+      functionName: String
+    ): FunctionCoordinates {
+      return FunctionCoordinates(functionName, emptyList())
+    }
   }
 
   fun bestGuessApprovedFileNamePrefix(): String =
