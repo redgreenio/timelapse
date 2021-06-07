@@ -2,8 +2,8 @@ package com.approvaltests.markers
 
 import com.approvaltests.markers.actions.ApproveReceivedFile
 import com.approvaltests.markers.actions.CompareReceivedWithApproved
-import com.approvaltests.markers.actions.ViewApprovedFileAction
-import com.approvaltests.markers.actions.ViewReceivedFileAction
+import com.approvaltests.markers.actions.ViewApprovedFile
+import com.approvaltests.markers.actions.ViewReceivedFile
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.actionSystem.DefaultActionGroup
@@ -43,8 +43,8 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
   private fun getApprovalTestActionGroup(): DefaultActionGroup {
     return DefaultActionGroup().apply {
       addAction(CompareReceivedWithApproved())
-      addAction(ViewReceivedFileAction())
-      addAction(ViewApprovedFileAction())
+      addAction(ViewReceivedFile())
+      addAction(ViewApprovedFile())
       addAction(ApproveReceivedFile())
     }
   }

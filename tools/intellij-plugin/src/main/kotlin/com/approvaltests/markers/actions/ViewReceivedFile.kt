@@ -4,7 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.util.IconLoader
 
-class ViewReceivedFileAction : AnAction() {
+class ViewReceivedFile : AnAction() {
   private val actionIcon = IconLoader.getIcon("icons/view-received.svg", this::class.java)
 
   override fun update(e: AnActionEvent) {
