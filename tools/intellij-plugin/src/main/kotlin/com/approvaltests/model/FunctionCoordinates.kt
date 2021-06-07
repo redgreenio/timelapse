@@ -1,6 +1,6 @@
 package com.approvaltests.model
 
-class FunctionCoordinates private constructor(
+data class FunctionCoordinates private constructor(
   private val identifier: String,
   private val containingClasses: List<String>
 ) {
