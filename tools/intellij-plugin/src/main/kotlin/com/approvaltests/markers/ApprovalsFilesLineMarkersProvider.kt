@@ -4,6 +4,7 @@ import com.approvaltests.markers.actions.ApproveReceivedFile
 import com.approvaltests.markers.actions.CompareReceivedWithApproved
 import com.approvaltests.markers.actions.ViewApprovedFile
 import com.approvaltests.markers.actions.ViewReceivedFile
+import com.approvaltests.model.FunctionCoordinates
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.actionSystem.AnAction
@@ -30,17 +31,18 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
       val coordinates = getFunctionCoordinates(element)
       val selectedIcon = ApprovalGutterIconFactory.iconFrom(psiFile.virtualFile, coordinates)
       val icon = IconLoader.getIcon("icons/${selectedIcon.iconResourceName}.svg", this::class.java)
-      ApprovalTestLinerMarkerInfo(element, icon, getApprovalTestActionGroup(selectedIcon.enabledActions))
+      ApprovalTestLinerMarkerInfo(element, icon, getApprovalTestActionGroup(coordinates, selectedIcon.enabledActions))
     }
   }
 
   private fun getApprovalTestActionGroup(
+    coordinates: FunctionCoordinates,
     enabledActions: Set<Class<out AnAction>>
   ): DefaultActionGroup {
     val allActions = listOf(
       CompareReceivedWithApproved(CompareReceivedWithApproved::class.java in enabledActions),
       ViewReceivedFile(ViewReceivedFile::class.java in enabledActions),
-      ViewApprovedFile(ViewApprovedFile::class.java in enabledActions),
+      ViewApprovedFile(coordinates, ViewApprovedFile::class.java in enabledActions),
       ApproveReceivedFile(ApproveReceivedFile::class.java in enabledActions)
     )
 
