@@ -39,13 +39,19 @@ fun isApprovalsVerifyCall(expression: KtDotQualifiedExpression): Boolean {
 }
 
 fun getFunctionCoordinates(function: KtNamedFunction): FunctionCoordinates {
+  val containingClasses = mutableListOf<String>()
+
   var currentPsiElement = (function as PsiElement).parent
   while (currentPsiElement != null) {
     if (currentPsiElement is KtClass) {
-      return FunctionCoordinates.from(function.name!!, currentPsiElement.name!!)
-    } else {
-      currentPsiElement = currentPsiElement.parent
+      containingClasses.add(currentPsiElement.name!!)
     }
+    currentPsiElement = currentPsiElement.parent
   }
-  TODO()
+
+  return if (containingClasses.isEmpty()) {
+    FunctionCoordinates.from(function.name!!)
+  } else {
+    FunctionCoordinates.from(function.name!!, containingClasses.first(), *containingClasses.drop(1).toTypedArray())
+  }
 }
