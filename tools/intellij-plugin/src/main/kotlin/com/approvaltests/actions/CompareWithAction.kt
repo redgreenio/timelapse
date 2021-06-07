@@ -1,11 +1,9 @@
 package com.approvaltests.actions
 
+import com.approvaltests.intellij.compare
 import com.approvaltests.model.ApprovalFile
 import com.approvaltests.model.ApprovalFile.Approved
 import com.approvaltests.model.ApprovalFile.Received
-import com.intellij.diff.DiffContentFactory
-import com.intellij.diff.DiffManager
-import com.intellij.diff.requests.SimpleDiffRequest
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DataContext
@@ -73,7 +71,7 @@ class CompareWithAction : AnAction() {
 
     val selectedFile = ApprovalFile.from(virtualFile)!!
     val (received, approved) = receivedAndApproved(selectedFile)
-    DiffManager.getInstance().showDiff(e.project, createDiffRequest(e.project!!, received, approved))
+    compare(e.project!!, received, approved)
   }
 
   private fun isActionRelevantToContext(project: Project?, dataContext: DataContext): Boolean {
@@ -91,26 +89,6 @@ class CompareWithAction : AnAction() {
     } else {
       selectedFile as Received to selectedFile.counterpart()!! as Approved
     }
-  }
-
-  private fun createDiffRequest(
-    project: Project,
-    received: Received,
-    approved: Approved
-  ): SimpleDiffRequest {
-    val diffContentFactory = DiffContentFactory.getInstance()
-    val sideA = diffContentFactory.create(project, received.virtualFile)
-    val sideB = diffContentFactory.create(project, approved.virtualFile)
-
-    return SimpleDiffRequest(title(received, approved), sideA, sideB, subtitle(received), subtitle(approved))
-  }
-
-  private fun title(received: Received, approved: Approved): String {
-    return "${received.virtualFile.name} - ${approved.virtualFile.name} (${received.virtualFile.parent.path})"
-  }
-
-  private fun subtitle(approvalFile: ApprovalFile): String {
-    return "${approvalFile.virtualFile.name} (${approvalFile.virtualFile.parent.path})"
   }
 
   private fun getVirtualFile(dataContext: DataContext): VirtualFile? =
