@@ -10,16 +10,15 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.PsiUtilBase
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
-import kotlin.random.Random
 
 class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
-  private val revealFeature = false
-
   override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
-    if (!revealFeature || element !is KtNamedFunction) {
+    if (element !is KtNamedFunction) {
       return null
     }
 
@@ -27,10 +26,10 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
     return if (!hasApprovalsVerifyCall(expressions)) {
       null
     } else {
-      val allIcons = GutterIcon.values()
-      val selectedIcon = allIcons[Random.nextInt(allIcons.size)]
-      val randomIconName = selectedIcon.iconResourceName
-      val icon = IconLoader.getIcon("icons/$randomIconName.svg", this::class.java)
+      val psiFile = PsiUtilBase.getRoot(element.node).psi as PsiFile
+      val coordinates = getFunctionCoordinates(element)
+      val selectedIcon = ApprovalGutterIconFactory.iconFrom(psiFile.virtualFile, coordinates)
+      val icon = IconLoader.getIcon("icons/${selectedIcon.iconResourceName}.svg", this::class.java)
       ApprovalTestLinerMarkerInfo(element, icon, getApprovalTestActionGroup(selectedIcon.enabledActions))
     }
   }

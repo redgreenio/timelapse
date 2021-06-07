@@ -1,5 +1,6 @@
 package com.approvaltests.markers
 
+import com.approvaltests.model.FunctionCoordinates
 import com.google.common.truth.Truth.assertThat
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiFile
@@ -129,6 +130,21 @@ class PsiDetectiveTest : LightIdeaTestCase() {
     // when & then
     assertThat(hasApprovalsVerifyCall(dotQualifiedExpression))
       .isTrue()
+  }
+
+  fun testFunctionCoordinatesClassFunction() {
+    // given
+    val source = """
+      class Math {
+        fun add(a: Int, b: Int): Int = a + b
+      }
+    """.trimIndent()
+    val psiFile = psiFile(source)
+    val addNamedFunction = getKtNamedFunction(psiFile.findElementAt(16)!!)!!
+
+    // when & then
+    assertThat(getFunctionCoordinates(addNamedFunction))
+      .isEqualTo(FunctionCoordinates.from("add", "Math"))
   }
 
   private fun psiFile(kotlinSource: String): PsiFile {
