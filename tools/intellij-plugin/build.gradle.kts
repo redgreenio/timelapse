@@ -18,6 +18,7 @@ tasks.withType<KotlinCompile>().all {
 dependencies {
   // JUnit 5
   testImplementation(deps.test.junit.api)
+  testImplementation(deps.test.junit.params)
   testRuntimeOnly(deps.test.junit.engine)
   testRuntimeOnly(deps.test.junit.vintageEngine)
 
