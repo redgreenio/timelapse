@@ -5,7 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.util.IconLoader
 
-class ApproveReceivedFile : AnAction() {
+class ApproveReceivedFile(private val isRelevant: Boolean) : AnAction() {
   companion object {
     private val approveIcon = IconLoader.getIcon("icons/approve.svg", ApproveAction::class.java)
   }
@@ -14,6 +14,7 @@ class ApproveReceivedFile : AnAction() {
     with(e.presentation) {
       icon = approveIcon
       text = "Approve Received File"
+      isEnabled = isRelevant
     }
   }
 

@@ -6,6 +6,7 @@ import com.approvaltests.markers.actions.ViewApprovedFile
 import com.approvaltests.markers.actions.ViewReceivedFile
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
+import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.PsiElement
@@ -17,14 +18,6 @@ import kotlin.random.Random
 class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
   private val revealFeature = false
 
-  private val allIcons = listOf(
-    "nonEmpty-empty",
-    "nonEmpty-nonEmpty",
-    "nonEmpty-nonExistent",
-    "nonExistent-nonEmpty",
-    "nonExistent-nonExistent"
-  )
-
   override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
     if (!revealFeature || element !is KtNamedFunction) {
       return null
@@ -34,18 +27,24 @@ class ApprovalsFilesLineMarkersProvider : LineMarkerProvider {
     return if (!hasApprovalsVerifyCall(expressions)) {
       null
     } else {
-      val randomIconName = allIcons[Random.nextInt(allIcons.size)]
+      val allIcons = GutterIcon.values()
+      val selectedIcon = allIcons[Random.nextInt(allIcons.size)]
+      val randomIconName = selectedIcon.iconResourceName
       val icon = IconLoader.getIcon("icons/$randomIconName.svg", this::class.java)
-      ApprovalTestLinerMarkerInfo(element, icon, getApprovalTestActionGroup())
+      ApprovalTestLinerMarkerInfo(element, icon, getApprovalTestActionGroup(selectedIcon.enabledActions))
     }
   }
 
-  private fun getApprovalTestActionGroup(): DefaultActionGroup {
-    return DefaultActionGroup().apply {
-      addAction(CompareReceivedWithApproved())
-      addAction(ViewReceivedFile())
-      addAction(ViewApprovedFile())
-      addAction(ApproveReceivedFile())
-    }
+  private fun getApprovalTestActionGroup(
+    enabledActions: Set<Class<out AnAction>>
+  ): DefaultActionGroup {
+    val allActions = listOf(
+      CompareReceivedWithApproved(CompareReceivedWithApproved::class.java in enabledActions),
+      ViewReceivedFile(ViewReceivedFile::class.java in enabledActions),
+      ViewApprovedFile(ViewApprovedFile::class.java in enabledActions),
+      ApproveReceivedFile(ApproveReceivedFile::class.java in enabledActions)
+    )
+
+    return DefaultActionGroup(allActions)
   }
 }

@@ -4,7 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.util.IconLoader
 
-class CompareReceivedWithApproved : AnAction() {
+class CompareReceivedWithApproved(private val isRelevant: Boolean) : AnAction() {
   companion object {
     private val compareIcon = IconLoader.getIcon("icons/compareReceivedApproved.svg", this::class.java)
   }
@@ -13,6 +13,7 @@ class CompareReceivedWithApproved : AnAction() {
     with(e.presentation) {
       icon = compareIcon
       text = "Compare Received <> Approved"
+      isEnabled = isRelevant
     }
   }
 
