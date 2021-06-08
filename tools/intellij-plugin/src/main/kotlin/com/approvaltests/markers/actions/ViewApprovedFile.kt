@@ -1,10 +1,10 @@
 package com.approvaltests.markers.actions
 
 import com.approvaltests.model.FunctionCoordinates
+import com.approvaltests.settings.ApprovalTestsSettings
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
-import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.util.IconLoader
 
 class ViewApprovedFile(
@@ -26,8 +26,8 @@ class ViewApprovedFile(
     val approvedFile = testFileDirectory.children
       .find { it.name.startsWith(coordinates.bestGuessApprovedFileNamePrefix()) }
 
-    approvedFile?.let {
-      FileEditorManager.getInstance(e.project!!).openFile(it, true)
-    }
+    val project = e.project ?: return
+    val viewInFile = ApprovalTestsSettings.getInstance(project).viewFileIn
+    viewInFile.open(project, approvedFile!!)
   }
 }
