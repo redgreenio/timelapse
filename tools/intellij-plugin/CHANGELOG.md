@@ -4,6 +4,10 @@
 
 ### Added
 
+- Setting to view received/approved files in right split, pop-up or new window.
+
+### Added
+
 - Add approval tests gutter icon with compare, view (approved/received), and approve actions. 
 - macOS and Windows shortcuts for "Approve File" and "Compare With Approved/Received File" actions.
 - Add an "Approve File" action to Project View popup menu.
