@@ -27,6 +27,8 @@
   <extensions defaultExtensionNs="com.intellij">
     <defaultLiveTemplatesProvider implementation="io.redgreen.timelapse.dev.templates.XdLiveTemplatesProvider"/>
     <liveTemplateContext implementation="io.redgreen.timelapse.dev.templates.TimelapseDevTemplateContextType"/>
+    <projectConfigurable instance="com.approvaltests.settings.ApprovalTestsConfigurable"/>
+    <projectService serviceImplementation="com.approvaltests.settings.ApprovalTestsSettings"/>
   </extensions>
 
   <actions>
