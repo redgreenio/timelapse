@@ -6,7 +6,7 @@ plugins {
 
 intellij {
   version = "211.7142.45"
-  setPlugins("java", "org.jetbrains.kotlin")
+  setPlugins("com.intellij.java", "org.jetbrains.kotlin")
 }
 
 tasks.withType<KotlinCompile>().all {
