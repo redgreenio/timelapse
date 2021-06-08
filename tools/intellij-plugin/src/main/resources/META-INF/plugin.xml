@@ -10,11 +10,27 @@
   ]]></description>
 
   <change-notes><![CDATA[
+    <b>0.0.4-dev</b>
+    <ul>
+      <li>Add a setting to view received/approved files in right split, pop-up or new window.</li>
+    </ul>
+
+    <b>0.0.3</b>
     <ul>
       <li>Add a "Compare With Approved/Received File" action to Project View and Editor popup menus.</li>
       <li>Add an "Approve File" action to Project View and Editor popup menus.</li>
       <li>macOS and Windows shortcuts for "Approve File" and "Compare With Approved/Received File" actions.</li>
       <li>Add gutter icon with "Compare", "View Approved", "View Received", and "Approve File" actions.</li>
+    </ul>
+
+    <b>0.0.2</b>
+    <ul>
+      <li>Add a live template to deal with identifiers.</li>
+    </ul>
+
+    <b>0.0.1</b>
+    <ul>
+      <li>Add the first set of live templates for XD.</li>
     </ul>
   ]]>
   </change-notes>
