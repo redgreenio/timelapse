@@ -1,3 +1,4 @@
+@file:SuppressWarnings("TooManyFunctions")
 package toys
 
 import io.redgreen.timelapse.do_not_rename.UserSettingsNode
@@ -6,6 +7,7 @@ import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.treewalk.TreeWalk
+import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import toys.metrics.CognitiveComplexityVisitor
 import toys.metrics.CyclomaticComplexityVisitor
@@ -28,25 +30,7 @@ fun main() {
   val timeInMillis = measureTimeMillis {
     val commitHashesAndLoc = getCommitHashesAndLoc()
     commitHashesAndLoc
-      .map { commitHashLocPair ->
-        val commitHash = commitHashLocPair.first
-        val revCommit = REPO.parseCommit(ObjectId.fromString(commitHash))
-        val content = getContent(revCommit)!!
-        val ktFile = PSI_FACTORY.createFile("FileUnderAnalysis.kt", content)
-
-        val cognitiveComplexityVisitor = CognitiveComplexityVisitor()
-        ktFile.accept(cognitiveComplexityVisitor)
-
-        val cyclomaticComplexityVisitor = CyclomaticComplexityVisitor()
-        ktFile.accept(cyclomaticComplexityVisitor)
-
-        val metrics = Triple(
-          commitHashLocPair.second,
-          cognitiveComplexityVisitor.complexity,
-          cyclomaticComplexityVisitor.complexity
-        )
-        commitHash to metrics
-      }
+      .map(::computeMetrics)
       .onEach { (commitHash, metrics) ->
         val (loc, cc, mcc) = metrics
         val paddedLoc = loc.toString().padStart(PADDING)
@@ -56,6 +40,38 @@ fun main() {
       }
   }
   println("\nTook ${timeInMillis}ms.")
+}
+
+private fun computeMetrics(commitHashLocPair: Pair<String, Int>): Pair<String, Triple<Int, Int, Int>> {
+  val (commitHash, loc) = commitHashLocPair
+
+  val content = getContentAtRevision(commitHash)
+  val ktFile = createKtFile(content)
+  val cognitiveComplexity = computeCognitiveComplexity(ktFile)
+  val cyclomaticComplexity = computeCyclomaticComplexity(ktFile)
+
+  val metrics = Triple(loc, cognitiveComplexity, cyclomaticComplexity)
+  return commitHash to metrics
+}
+
+private fun computeCyclomaticComplexity(ktFile: KtFile): Int {
+  val cyclomaticComplexityVisitor = CyclomaticComplexityVisitor()
+  ktFile.accept(cyclomaticComplexityVisitor)
+  return cyclomaticComplexityVisitor.complexity
+}
+
+private fun computeCognitiveComplexity(ktFile: KtFile): Int {
+  val cognitiveComplexityVisitor = CognitiveComplexityVisitor()
+  ktFile.accept(cognitiveComplexityVisitor)
+  return cognitiveComplexityVisitor.complexity
+}
+
+private fun createKtFile(content: String): KtFile =
+  PSI_FACTORY.createFile("FileUnderAnalysis.kt", content)
+
+private fun getContentAtRevision(commitHash: String): String {
+  val revCommit = REPO.parseCommit(ObjectId.fromString(commitHash))
+  return getContent(revCommit)!!
 }
 
 @SuppressWarnings("MagicNumber")
