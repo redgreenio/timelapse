@@ -1,0 +1,519 @@
+package com.gojek.driver.ulysses.booking
+
+import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
+import androidx.annotation.MainThread
+import androidx.annotation.VisibleForTesting
+import com.gojek.driver.common.extension.doOn
+import com.gojek.driver.common.utils.Optional
+import com.gojek.driver.deps.TogglesModule.Booking.KEY_ABS_CHAINING_RETRY_ENABLED
+import com.gojek.driver.deps.TogglesModule.Booking.KEY_CHAINING_ENABLED
+import com.gojek.driver.deps.TogglesModule.Booking.KEY_IS_BID_STATE_MACHINE_ENABLED
+import com.gojek.driver.deps.TogglesModule.Booking.KEY_PATCH_BID_MANAGER
+import com.gojek.driver.network.transformer.ServerConnectionState
+import com.gojek.driver.ulysses.activeBooking.BookingType.Companion.getBookingType
+import com.gojek.driver.ulysses.activeBooking.MultiActiveBookingUsecase
+import com.gojek.driver.ulysses.activeBooking.entity.ActiveBooking
+import com.gojek.driver.ulysses.booking.AcceptBookingResult.AcceptBookingFailure
+import com.gojek.driver.ulysses.booking.AcceptBookingResult.AcceptBookingSuccess
+import com.gojek.driver.ulysses.booking.bookingMonitor.bookingReminder.BookingReminderModel
+import com.gojek.driver.ulysses.booking.domain.BidStateMachine
+import com.gojek.driver.ulysses.booking.entity.ParticipantEntity
+import com.gojek.driver.ulysses.booking.event.AbsFetchFailedEvent
+import com.gojek.driver.ulysses.booking.event.AbsNoOrderBookingEvent
+import com.gojek.driver.ulysses.booking.event.AutoBidAcceptFailureEvent
+import com.gojek.driver.ulysses.booking.model.BookingDetailsModel
+import com.gojek.driver.ulysses.booking.model.BookingDetailsModel.AllocationStrategy
+import com.gojek.driver.ulysses.booking.modification.BookingModifiedModel
+import com.gojek.driver.ulysses.booking.modification.Data
+import com.gojek.driver.ulysses.booking.modification.Data.LocationModified
+import com.gojek.driver.ulysses.booking.modification.Target
+import com.gojek.driver.ulysses.driverPreferences.autobid.domain.AutobidUsecase
+import com.gojek.driver.ulysses.toggle.FeatureToggles
+import com.gojek.driver.ulysses.util.AnalyticsHelper
+import com.google.android.gms.maps.model.LatLng
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
+import java.util.*
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
+
+const val EVENT_PARTICIPANT_HANDLED = "Participant Processing Started"
+
+const val EVENT_BID_ACCEPT_INITIATED = "Bid Accept Initiated"
+const val EVENT_BID_ACCEPT_SUCCESS = "Bid Accept Success"
+const val EVENT_BID_ACCEPT_FAILURE = "Bid Accept Failure"
+
+const val EVENT_BID_FETCHING_INITIATED = "Bid Fetching Initiated"
+const val EVENT_BID_FETCHING_SUCCESS = "Bid Fetching Success"
+const val EVENT_BID_FETCHING_FAILURE = "Bid Fetching Failure"
+const val EVENT_BID_LOST = "Bid Lost"
+
+internal class ReadyBookingManager(
+  private val bookingUsecase: BookingUsecase,
+  private val multiActiveBookingUsecase: MultiActiveBookingUsecase,
+  private val analyticsHelper: AnalyticsHelper,
+  private val listener: ReadyBookingListener,
+  private val featureToggles: FeatureToggles,
+  private val bidStateMachine: BidStateMachine,
+  private val autobidUsecase: AutobidUsecase
+) {
+
+  @VisibleForTesting
+  internal val participantsList: LinkedList<ParticipantEntity> = LinkedList()
+  private val handler = Handler(Looper.getMainLooper())
+  private var state: State = State.DISPATCH
+  private var bookingDetailsModel: BookingDetailsModel? = null
+
+  fun getState(): State = this.state
+
+  @Synchronized
+  fun setState(state: State) {
+    if (this.state != state) {
+      this.state = state
+    }
+    processBids()
+  }
+
+  fun getLastProcessedBookingDetails(): BookingDetailsModel? = bookingDetailsModel
+
+  fun handleParticipant(participantEntity: ParticipantEntity) {
+    trackReadyBookingEvent(EVENT_PARTICIPANT_HANDLED, participantEntity.uuid)
+    if (addParticipant(participantEntity)) {
+      processBids()
+    }
+  }
+
+  fun cancelBooking(scrapBookingModel: ScrapBookingModel) {
+    listener.onCancelled(scrapBookingModel.orderNumber, scrapBookingModel.message)
+  }
+
+  fun onBookingReminderReceived(bookingReminderModel: BookingReminderModel) {
+    listener.onBookingReminderReceived(bookingReminderModel)
+  }
+
+  fun modifyBooking(model: BookingModifiedModel) {
+    when (val data = model.data) {
+      is LocationModified -> {
+        val location = LatLng(data.latitude, data.longitude)
+        listener.onLocationModified(data.message, location, model.target)
+      }
+      is Data.PaymentMethodModified -> {
+        listener.onPaymentMethodEdited(data.message)
+      }
+    }
+    analyticsHelper.trackBookingModifiedEvent(model.orderNumber)
+  }
+
+  fun clear() = participantsList.clear()
+
+  fun isBookingEnqueue() = state == State.ENQUEUE
+
+  @VisibleForTesting
+  fun processBids() {
+    if (this.state != State.DISPATCH || participantsList.isEmpty()) {
+      return
+    }
+    val participant = participantsList.poll()
+    processBid(participant)
+  }
+
+  @MainThread
+  internal fun onProcess(orderNumber: BookingDetailsModel) {
+    ReadyBookingState.reset()
+  }
+
+  private fun addParticipant(participant: ParticipantEntity): Boolean {
+    return if (!participantsList.contains(participant)) {
+      participantsList.add(participant)
+    } else {
+      false
+    }
+  }
+
+  @SuppressLint("CheckResult")
+  private fun processBid(participantEntity: ParticipantEntity) {
+    bookingUsecase
+      .getBookingDetails(participantEntity)
+      .doOnDispose { setState(State.DISPATCH) }
+      .doOnError {
+        setState(State.DISPATCH)
+        trackBidAckFailure(participantEntity.uuid, it)
+      }
+      .doOnSubscribe { handleBookingDetailsSubscribed(participantEntity) }
+      .observeOn(AndroidSchedulers.mainThread())
+      .map {
+        if (autobidUsecase.getStatusFromLocal()) {
+          it.enableAutoBid()
+        } else {
+          it
+        }
+      }
+      .subscribe(
+        { handleBookingDetailsSuccess(it) },
+        Timber::e
+      )
+  }
+
+  private fun handleBookingDetailsSuccess(bookingDetailsModel: BookingDetailsModel) {
+    trackBidAckSuccess(bookingDetailsModel)
+    this.bookingDetailsModel = bookingDetailsModel
+    performAction(bookingDetailsModel)
+  }
+
+  private fun handleBookingDetailsSubscribed(participantEntity: ParticipantEntity) {
+    setState(State.ENQUEUE)
+    trackReadyBookingEvent(
+      EVENT_BID_FETCHING_INITIATED,
+      participantEntity.uuid
+    )
+  }
+
+  private fun performAction(bookingDetailsModel: BookingDetailsModel) {
+    when {
+      bookingDetailsModel.isOptionalBid() -> handleDefaultBidType(bookingDetailsModel)
+      multiActiveBookingUsecase.isPooled(bookingDetailsModel.serviceType) ->
+        handlePooling(bookingDetailsModel)
+      bookingDetailsModel.autoBid -> handleAutoBid(bookingDetailsModel)
+    }
+  }
+
+  private fun handlePooling(bookingDetailsModel: BookingDetailsModel) {
+    when {
+      bookingDetailsModel.isOptionalPooledBid() -> handleDefaultBidType(bookingDetailsModel)
+      bookingDetailsModel.isCompulsoryPooledBid() -> handleCompulsoryBidType(bookingDetailsModel)
+      bookingDetailsModel.isOptionalPooledAutoBid() -> handleOptionalPooledAutoBid(bookingDetailsModel)
+      bookingDetailsModel.isOptionalBid() -> handleDefaultBidType(bookingDetailsModel)
+      bookingDetailsModel.autoBid -> handlePoolableAutoBid(bookingDetailsModel)
+    }
+  }
+
+  private fun handleDefaultBidType(bookingDetailsModel: BookingDetailsModel) {
+    if (isBidStateMachineEnabled()) {
+      bidStateMachine.incomingManualBid(bookingDetailsModel)
+    }
+    ReadyBookingState.update(bookingDetailsModel)
+    listener.onBidReceived(bookingDetailsModel)
+    validateBidAcknowledgement(bookingDetailsModel)
+  }
+
+  private fun handleCompulsoryBidType(bookingDetailsModel: BookingDetailsModel) {
+    if (isBidStateMachineEnabled()) {
+      bidStateMachine.incomingManualBid(bookingDetailsModel)
+    }
+    setState(State.DISPATCH)
+    ReadyBookingState.update(bookingDetailsModel)
+    listener.onBidReceived(bookingDetailsModel)
+    validateBidAcknowledgement(bookingDetailsModel)
+  }
+
+  private fun handleAutoBidAccepted(bookingDetailModel: BookingDetailsModel) {
+    isChained(bookingDetailModel).doOn(
+      trueBlock = {
+        listener.onChainedBidAccepted(bookingDetailModel.orderNumber)
+      },
+      falseBlock = {
+        handleIncomingAutoBidForStateMachine(bookingDetailModel)
+        listener.onBidAccepted(bookingDetailModel.orderNumber, bookingDetailModel.serviceType)
+      })
+  }
+
+  @SuppressLint("CheckResult")
+  private fun handleOptionalPooledAutoBid(bookingDetailModel: BookingDetailsModel) {
+    getAcceptBookingResult(bookingDetailModel)
+      .flatMapCompletable {
+        when (it) {
+          is AcceptBookingSuccess -> Completable.complete()
+          is AcceptBookingFailure -> Completable.error(it.throwable)
+        }
+      }.subscribe(
+        {
+          trackAcceptSuccessEvent(bookingDetailModel)
+          if (isBidStateMachineEnabled()) {
+            bidStateMachine.incomingManualBid(bookingDetailModel)
+          }
+          listener.onBidReceived(bookingDetailModel)
+        },
+        Timber::e
+      )
+  }
+
+  @SuppressLint("CheckResult")
+  private fun handlePoolableAutoBid(bookingDetailModel: BookingDetailsModel) {
+    getAcceptBookingResult(bookingDetailModel)
+      .flatMapCompletable {
+        onAcceptResponseReceived(it, bookingDetailModel)
+      }.subscribe(
+        {
+          handleIncomingAutoBidForStateMachine(bookingDetailModel)
+          listener.onPoolableAutoBidAccepted(
+            bookingDetailModel.orderNumber,
+            bookingDetailModel.serviceType
+          )
+        },
+        Timber::e
+      )
+  }
+
+  private fun handleIncomingAutoBidForStateMachine(bookingDetailModel: BookingDetailsModel) {
+    if (isBidStateMachineEnabled()) {
+      bidStateMachine.incomingAutoBid(
+        bookingDetailModel.orderNumber,
+        bookingDetailModel.serviceType
+      )
+    }
+  }
+
+  private fun onAcceptResponseReceived(
+    acceptBookingResult: AcceptBookingResult,
+    booking: BookingDetailsModel
+  ): Completable {
+    return when (acceptBookingResult) {
+      is AcceptBookingSuccess -> {
+        trackAcceptSuccessEvent(booking)
+        fetchActiveBookingsForPooledOrders()
+      }
+      is AcceptBookingFailure -> {
+        trackReadyBookingEvent(EVENT_BID_ACCEPT_FAILURE,
+          booking.participant.uuid
+        )
+        Completable.error(acceptBookingResult.throwable)
+      }
+    }
+  }
+
+  private fun getAcceptBookingResult(bookingDetailModel: BookingDetailsModel): Single<AcceptBookingResult> {
+    return bookingUsecase.acceptBooking(bookingDetailModel.participant)
+      .doOnSubscribe {
+        trackReadyBookingEvent(
+          EVENT_BID_ACCEPT_INITIATED,
+          bookingDetailModel.participant.uuid
+        )
+      }
+      .doOnSuccess {
+        dwarfAcceptBooking(bookingDetailModel.orderNumber)
+        clear()
+      }
+      .doOnError {
+        analyticsHelper.track(
+          AutoBidAcceptFailureEvent(
+            bookingDetailModel.participant.uuid,
+            getBookingType(bookingDetailModel.allocationStrategy).toString(),
+            it)
+        )
+      }
+      .doOnEvent { _, _ -> setState(State.DISPATCH) }
+      .doOnDispose { setState(State.DISPATCH) }
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+  }
+
+  @SuppressLint("CheckResult")
+  private fun handleAutoBid(bookingDetailModel: BookingDetailsModel) {
+    acceptBooking(bookingDetailModel.participant, bookingDetailModel)
+      .doOnSubscribe {
+        trackReadyBookingEvent(
+          EVENT_BID_ACCEPT_INITIATED,
+          bookingDetailModel.participant.uuid
+        )
+      }
+      .doOnSuccess {
+        dwarfAcceptBooking(bookingDetailModel.orderNumber)
+        clear()
+      }
+      .doOnError {
+        analyticsHelper.track(
+          AutoBidAcceptFailureEvent(
+            bookingDetailModel.participant.uuid,
+            getBookingType(bookingDetailModel.allocationStrategy).toString(),
+            it)
+        )
+      }
+      .doOnEvent { _, _ -> setState(State.DISPATCH) }
+      .doOnDispose { setState(State.DISPATCH) }
+      .subscribeOn(Schedulers.io())
+      .observeOn(AndroidSchedulers.mainThread())
+      .subscribe(
+        {
+          trackAcceptSuccessEvent(bookingDetailModel)
+          handleAutoBidAccepted(bookingDetailModel)
+        },
+        Timber::e
+      )
+  }
+
+  private fun trackAcceptSuccessEvent(bookingDetailModel: BookingDetailsModel) {
+    trackBidEvent(
+      eventName = EVENT_BID_ACCEPT_SUCCESS,
+      participantId = bookingDetailModel.participant.uuid,
+      bookingType = getBookingType(bookingDetailModel.allocationStrategy).toString(),
+      orderNumber = bookingDetailModel.orderNumber,
+      isPooled = multiActiveBookingUsecase.isPooled(bookingDetailModel.serviceType)
+    )
+  }
+
+  private fun fetchActiveBookingsForPooledOrders(): Completable {
+    return multiActiveBookingUsecase.fetchAllActiveBookings()
+  }
+
+  private fun acceptBooking(
+    participantEntity: ParticipantEntity,
+    bookingDetails: BookingDetailsModel
+  ): Single<BookingDetailsModel> {
+    return bookingUsecase
+      .acceptBooking(participantEntity)
+      .flatMap {
+        handleAcceptBookingResult(it, bookingDetails)
+      }
+      .map { bookingDetails }
+  }
+
+  private fun handleAcceptBookingResult(
+    result: AcceptBookingResult,
+    bookingDetails: BookingDetailsModel
+  ): Single<Optional<ActiveBooking<*, *>>> {
+    val shouldFetchActiveBooking = when (result) {
+      is AcceptBookingSuccess -> true
+      is AcceptBookingFailure ->
+        // Chances of conflict in state b/w backend and client, optimistically try to fetch booking from ABS
+        result.getConnectionState() == ServerConnectionState.ESTABLISHED
+    }
+
+    return if (shouldFetchActiveBooking) {
+      fetchActiveBooking(bookingDetails)
+    } else {
+      Single.error((result as AcceptBookingFailure).throwable)
+    }
+  }
+
+  private fun fetchActiveBooking(
+    bookingDetails: BookingDetailsModel
+  ): Single<Optional<ActiveBooking<*, *>>> {
+    val activeBookingSource = if (shouldRetryABS(bookingDetails)) {
+      bookingUsecase.getActiveBookingForChainedOrders()
+    } else {
+      bookingUsecase.getActiveBooking()
+    }
+
+    return activeBookingSource
+      .doOnSuccess { trackAbsNoOrder(bookingDetails, it) }
+      .doOnError { trackAbsFailure(bookingDetails, it) }
+  }
+
+  private fun trackAbsFailure(bookingDetails: BookingDetailsModel, error: Throwable) {
+    analyticsHelper.track(AbsFetchFailedEvent(bookingDetails, true, error))
+  }
+
+  private fun trackAbsNoOrder(bookingDetails: BookingDetailsModel, activeBooking: Optional<ActiveBooking<*, *>>) {
+    if (activeBooking.isPresent().not()) {
+      analyticsHelper.track(AbsNoOrderBookingEvent(bookingDetails, true))
+    }
+  }
+
+  private fun shouldRetryABS(bookingDetails: BookingDetailsModel) =
+    featureToggles.isEnabled(KEY_ABS_CHAINING_RETRY_ENABLED) &&
+        bookingDetails.allocationStrategy == AllocationStrategy.CHAINED
+
+  private fun isBidStateMachineEnabled(): Boolean = featureToggles.isEnabled(KEY_IS_BID_STATE_MACHINE_ENABLED)
+
+  private fun trackBidAckSuccess(bookingDetails: BookingDetailsModel) {
+    trackBidEvent(
+      eventName = EVENT_BID_FETCHING_SUCCESS,
+      participantId = bookingDetails.participant.uuid,
+      bookingType = getBookingType(bookingDetails.allocationStrategy).toString(),
+      experimentName = bookingDetails.experimentName,
+      orderNumber = bookingDetails.orderNumber,
+      isPooled = multiActiveBookingUsecase.isPooled(bookingDetails.serviceType)
+    )
+  }
+
+  private fun trackBidAckFailure(participantUuid: String, error: Throwable) {
+    analyticsHelper.trackBidAckFailure(participantUuid, isAutoBidEnabled(), error)
+  }
+
+  private fun isAutoBidEnabled() = autobidUsecase.getStatusFromLocal()
+
+  private fun validateBidAcknowledgement(it: BookingDetailsModel) {
+    handler.postDelayed({
+      if (ReadyBookingState.get() == it) {
+        ReadyBookingState.reset()
+        analyticsHelper.trackBidLost(it.orderNumber, it.duration)
+        if (featureToggles.isEnabled(KEY_PATCH_BID_MANAGER)) {
+          setState(State.DISPATCH)
+        }
+      }
+    }, TimeUnit.SECONDS.toMillis(it.duration))
+  }
+
+  private fun isChained(it: BookingDetailsModel) =
+    featureToggles.isEnabled(KEY_CHAINING_ENABLED) &&
+        it.allocationStrategy == AllocationStrategy.CHAINED
+
+  private fun trackReadyBookingEvent(eventName: String, participantId: String) {
+    analyticsHelper.trackReadyBookingEvent(
+      eventName,
+      state,
+      participantId
+    )
+  }
+
+  private fun trackBidEvent(
+    eventName: String,
+    participantId: String,
+    bookingType: String,
+    experimentName: String? = null,
+    orderNumber: String,
+    isPooled: Boolean
+  ) {
+    analyticsHelper.trackReadyBookingEvent(
+      eventName,
+      state,
+      participantId,
+      bookingType,
+      experimentName,
+      orderNumber,
+      isPooled
+    )
+  }
+
+  private fun dwarfAcceptBooking(orderNumber: String) {
+    bookingUsecase.dwarfActiveBookingSignal(orderNumber)
+  }
+
+  enum class State {
+    ENQUEUE,
+    DISPATCH
+  }
+}
+
+internal interface ReadyBookingListener {
+  fun onBidReceived(bookingDetailsModel: BookingDetailsModel)
+  fun onBidAccepted(orderNumber: String, serviceType: Int)
+  fun onLocationModified(message: String, location: LatLng, target: Target)
+  fun onCancelled(orderNumber: String, message: String)
+  fun onChainedBidAccepted(orderNumber: String)
+  fun onPoolableAutoBidAccepted(orderNumber: String, serviceType: Int)
+  fun onBookingReminderReceived(bookingReminderModel: BookingReminderModel)
+  fun onPaymentMethodEdited(title: String)
+}
+
+object ReadyBookingState {
+
+  private val pendingBooking = AtomicReference<BookingDetailsModel>()
+
+  fun hasBooking(): Boolean = pendingBooking.get() != null
+
+  internal fun get(): BookingDetailsModel? = pendingBooking.get()
+
+  internal fun update(model: BookingDetailsModel) {
+    pendingBooking.set(model)
+  }
+
+  fun reset() {
+    pendingBooking.set(null)
+  }
+}

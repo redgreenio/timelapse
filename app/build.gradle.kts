@@ -98,6 +98,9 @@ dependencies {
   testImplementation(deps.mobius.test)
 
   quickFeedbackImplementation(projects.liftoff)
+
+  // Toys
+  implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.32")
 }
 
 with(application) {
