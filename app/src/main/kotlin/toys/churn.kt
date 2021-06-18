@@ -10,22 +10,36 @@ fun main() {
   println("Took ${timeInMillis}ms.")
 }
 
+@SuppressWarnings("MagicNumber")
 private fun printLocAcrossCommits() {
   val churnFileFromResources = "ExtendedDiffHtml-churn.txt"
   val rawText = UserSettingsNode::class.java.getResourceAsStream("/toys/$churnFileFromResources")!!
     .reader()
     .readText()
+    .trim()
 
-  rawText
+  val lines = rawText
     .lines()
-    .filter { it.contains("1 file changed") }
+
+  val oldestToNewest = lines
     .reversed()
+
+  val locs = oldestToNewest
+    .filter { it.contains("1 file changed") }
     .scan(0) { loc, line ->
       val insertions = getInsertions(line)
       val deletions = getDeletions(line)
       loc + insertions - deletions
     }
-    .onEach { println(it) }
+    .drop(1)
+
+  val commitHashes = oldestToNewest
+    .filterIndexed { index, _ -> (index + 1) % 3 == 0 }
+    .map { it.split(" ").first() }
+
+  commitHashes
+    .zip(locs)
+    .onEach { println("${it.first}, ${it.second}") }
 }
 
 private fun getInsertions(line: String): Int =
