@@ -1,10 +1,9 @@
 @file:SuppressWarnings("TooManyFunctions")
+
 package toys
 
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
-import io.redgreen.timelapse.do_not_rename.UserSettingsNode
-import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.revwalk.RevCommit
@@ -29,7 +28,6 @@ private val CORE_ENVIRONMENT = createKtCoreEnvironment()
 private val PSI_FACTORY = KtPsiFactory(CORE_ENVIRONMENT.project, false)
 
 fun main() {
-  plainComputeMetrics()
   rxComputeMetrics()
 }
 
@@ -52,6 +50,7 @@ private fun rxComputeMetrics() {
   println("\nRx took ${endTimeMillis - startMillis}ms.")
 }
 
+@SuppressWarnings("unused", "UnusedPrivateMember")
 private fun plainComputeMetrics() {
   val timeInMillis = measureTimeMillis {
     val allOfIt = getCommitHashesAndLoc()
@@ -72,7 +71,10 @@ private fun printOutput(allOfIt: List<Pair<String, Triple<Int, Int, Int>>>) {
   }
 }
 
-private fun computeMetrics(commitHashLocPair: Pair<String, Int>, content: String): Pair<String, Triple<Int, Int, Int>> {
+private fun computeMetrics(
+  commitHashLocPair: Pair<String, Int>,
+  content: String
+): Pair<String, Triple<Int, Int, Int>> {
   val (commitHash, loc) = commitHashLocPair
 
   val ktFile = createKtFile(content)
@@ -105,11 +107,21 @@ private fun getContentAtRevision(commitHash: String): String {
 
 @SuppressWarnings("MagicNumber")
 private fun getCommitHashesAndLoc(): List<Pair<String, Int>> {
-  val churnFileFromResources = "ExtendedDiffHtml-churn.txt"
-  val rawText = UserSettingsNode::class.java.getResourceAsStream("/toys/$churnFileFromResources")!!
+  val args = listOf(
+    "git",
+    "--git-dir",
+    REPO_PATH,
+    "log",
+    "--stat",
+    "--pretty=oneline",
+    "--follow",
+    "--",
+    FILE_PATH,
+  )
+  val rawText = Runtime.getRuntime().exec(args.toTypedArray())
+    .inputStream
     .reader()
-    .readText()
-    .trim()
+    .use { it.readText().trim() }
 
   val lines = rawText
     .lines()
@@ -151,9 +163,8 @@ private fun getNumber(line: String, term: String): Int {
 }
 
 private fun getContent(commit: RevCommit): String? {
-  val git = Git(REPO)
   try {
-    TreeWalk.forPath(git.repository, FILE_PATH, commit.tree).use { treeWalk ->
+    TreeWalk.forPath(REPO, FILE_PATH, commit.tree).use { treeWalk ->
       val blobId = treeWalk.getObjectId(0)
       REPO.newObjectReader().use { objectReader ->
         val objectLoader = objectReader.open(blobId)
