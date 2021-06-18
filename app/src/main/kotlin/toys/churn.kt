@@ -1,6 +1,8 @@
 @file:SuppressWarnings("TooManyFunctions")
 package toys
 
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import io.redgreen.timelapse.do_not_rename.UserSettingsNode
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.ObjectId
@@ -27,25 +29,52 @@ private val CORE_ENVIRONMENT = createKtCoreEnvironment()
 private val PSI_FACTORY = KtPsiFactory(CORE_ENVIRONMENT.project, false)
 
 fun main() {
-  val timeInMillis = measureTimeMillis {
-    val commitHashesAndLoc = getCommitHashesAndLoc()
-    commitHashesAndLoc
-      .map(::computeMetrics)
-      .onEach { (commitHash, metrics) ->
-        val (loc, cc, mcc) = metrics
-        val paddedLoc = loc.toString().padStart(PADDING)
-        val paddedCognitive = cc.toString().padStart(PADDING)
-        val paddedCyclomatic = mcc.toString().padStart(PADDING)
-        println("$commitHash || $paddedLoc @@ $paddedCognitive ^^ $paddedCyclomatic")
-      }
-  }
-  println("\nTook ${timeInMillis}ms.")
+  plainComputeMetrics()
+  rxComputeMetrics()
 }
 
-private fun computeMetrics(commitHashLocPair: Pair<String, Int>): Pair<String, Triple<Int, Int, Int>> {
+private fun rxComputeMetrics() {
+  var startMillis = 0L
+  var endTimeMillis = 0L
+
+  val allOfIt = Observable
+    .fromIterable(getCommitHashesAndLoc())
+    .flatMap { Observable.fromCallable { it to getContentAtRevision(it.first) }.subscribeOn(Schedulers.io()) }
+    .map { Observable.fromCallable { computeMetrics(it.first, it.second) } }
+    .flatMap { it.subscribeOn(Schedulers.computation()) }
+    .toList()
+    .doOnSubscribe { startMillis = System.currentTimeMillis() }
+    .doOnSuccess {
+      endTimeMillis = System.currentTimeMillis()
+    }.blockingGet()
+
+  printOutput(allOfIt)
+  println("\nRx took ${endTimeMillis - startMillis}ms.")
+}
+
+private fun plainComputeMetrics() {
+  val timeInMillis = measureTimeMillis {
+    val allOfIt = getCommitHashesAndLoc()
+      .map { commitHashAndLoc -> commitHashAndLoc to getContentAtRevision(commitHashAndLoc.first) }
+      .map { computeMetrics(it.first, it.second) }
+    printOutput(allOfIt)
+  }
+  println("\nPlain took ${timeInMillis}ms.\n")
+}
+
+private fun printOutput(allOfIt: List<Pair<String, Triple<Int, Int, Int>>>) {
+  allOfIt.onEach { (commitHash, metrics) ->
+    val (loc, cc, mcc) = metrics
+    val paddedLoc = loc.toString().padStart(PADDING)
+    val paddedCognitive = cc.toString().padStart(PADDING)
+    val paddedCyclomatic = mcc.toString().padStart(PADDING)
+    println("$commitHash || $paddedLoc @@ $paddedCognitive ^^ $paddedCyclomatic")
+  }
+}
+
+private fun computeMetrics(commitHashLocPair: Pair<String, Int>, content: String): Pair<String, Triple<Int, Int, Int>> {
   val (commitHash, loc) = commitHashLocPair
 
-  val content = getContentAtRevision(commitHash)
   val ktFile = createKtFile(content)
   val cognitiveComplexity = computeCognitiveComplexity(ktFile)
   val cyclomaticComplexity = computeCyclomaticComplexity(ktFile)
