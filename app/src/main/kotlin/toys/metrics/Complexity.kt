@@ -29,7 +29,7 @@ fun main() {
   println("Cyclomatic complexity: ${cyclomaticComplexityVisitor.complexity}")
 }
 
-private fun createKtCoreEnvironment(
+fun createKtCoreEnvironment(
   configuration: CompilerConfiguration = CompilerConfiguration(),
   disposable: Disposable = Disposer.newDisposable()
 ): KotlinCoreEnvironment {
