@@ -18,8 +18,8 @@ import java.io.IOException
 import java.nio.charset.StandardCharsets
 import kotlin.system.measureTimeMillis
 
-private const val REPO_PATH = "/Users/ragunathjawahar/IdeaProjects/timelapse/.git"
-private const val FILE_PATH = "app/src/main/kotlin/io/redgreen/timelapse/extendeddiff/ExtendedDiffHtml.kt"
+private const val REPO_PATH = "/Users/ragunathjawahar/GithubProjects/simple-android/.git"
+private const val FILE_PATH = "app/src/main/java/org/simple/clinic/newentry/PatientEntryScreenController.kt"
 private const val PADDING = 4
 
 private val REPO = RepositoryBuilder().setGitDir(File(REPO_PATH)).build()
@@ -28,16 +28,26 @@ private val CORE_ENVIRONMENT = createKtCoreEnvironment()
 private val PSI_FACTORY = KtPsiFactory(CORE_ENVIRONMENT.project, false)
 
 fun main() {
-  rxComputeMetrics()
+  // rxComputeMetrics()
+  plainComputeMetrics()
 }
 
+@SuppressWarnings("unused", "UnusedPrivateMember")
 private fun rxComputeMetrics() {
   var startMillis = 0L
   var endTimeMillis = 0L
 
   val allOfIt = Observable
     .fromIterable(getCommitHashesAndLoc())
-    .flatMap { Observable.fromCallable { it to getContentAtRevision(it.first) }.subscribeOn(Schedulers.io()) }
+    .flatMap {
+      val content = getContentAtRevision(it.first)
+      val fileRenamed = content == null
+      if (fileRenamed) {
+        Observable.empty()
+      } else {
+        Observable.fromCallable { it to content }.subscribeOn(Schedulers.io())
+      }
+    }
     .map { Observable.fromCallable { computeMetrics(it.first, it.second) } }
     .flatMap { it.subscribeOn(Schedulers.computation()) }
     .toList()
@@ -50,7 +60,6 @@ private fun rxComputeMetrics() {
   println("\nRx took ${endTimeMillis - startMillis}ms.")
 }
 
-@SuppressWarnings("unused", "UnusedPrivateMember")
 private fun plainComputeMetrics() {
   val timeInMillis = measureTimeMillis {
     val allOfIt = getCommitHashesAndLoc()
@@ -73,9 +82,11 @@ private fun printOutput(allOfIt: List<Pair<String, Triple<Int, Int, Int>>>) {
 
 private fun computeMetrics(
   commitHashLocPair: Pair<String, Int>,
-  content: String
+  content: String?
 ): Pair<String, Triple<Int, Int, Int>> {
   val (commitHash, loc) = commitHashLocPair
+
+  content ?: return commitHash to Triple(-1, -1, -1) // File was renamed (need to handle this use case)
 
   val ktFile = createKtFile(content)
   val cognitiveComplexity = computeCognitiveComplexity(ktFile)
@@ -100,9 +111,9 @@ private fun computeCognitiveComplexity(ktFile: KtFile): Int {
 private fun createKtFile(content: String): KtFile =
   PSI_FACTORY.createFile("FileUnderAnalysis.kt", content)
 
-private fun getContentAtRevision(commitHash: String): String {
+private fun getContentAtRevision(commitHash: String): String? {
   val revCommit = REPO.parseCommit(ObjectId.fromString(commitHash))
-  return getContent(revCommit)!!
+  return getContent(revCommit)
 }
 
 @SuppressWarnings("MagicNumber")
@@ -162,6 +173,7 @@ private fun getNumber(line: String, term: String): Int {
   }
 }
 
+@SuppressWarnings("TooGenericExceptionCaught", "SwallowedException")
 private fun getContent(commit: RevCommit): String? {
   try {
     TreeWalk.forPath(REPO, FILE_PATH, commit.tree).use { treeWalk ->
@@ -171,8 +183,10 @@ private fun getContent(commit: RevCommit): String? {
         return String(objectLoader.bytes, StandardCharsets.UTF_8)
       }
     }
+  } catch (e: NullPointerException) {
+    println("${commit.name}: File renamed, don't know the old name yet.")
   } catch (e: IOException) {
-    println(e)
+    println(e.message)
   }
   return null
 }
