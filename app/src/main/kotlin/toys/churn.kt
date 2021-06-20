@@ -77,12 +77,13 @@ private fun plainComputeMetrics() {
 }
 
 private fun printOutput(allOfIt: List<Pair<String, Triple<Int, Int, Int>>>) {
+  println("Commit Hash, LOC, Cognitive, Cyclomatic")
   allOfIt.onEach { (commitHash, metrics) ->
     val (loc, cc, mcc) = metrics
     val paddedLoc = loc.toString().padStart(PADDING)
     val paddedCognitive = cc.toString().padStart(PADDING)
     val paddedCyclomatic = mcc.toString().padStart(PADDING)
-    println("$commitHash || $paddedLoc @@ $paddedCognitive ^^ $paddedCyclomatic")
+    println("$commitHash, $paddedLoc, $paddedCognitive, $paddedCyclomatic")
   }
 }
 
