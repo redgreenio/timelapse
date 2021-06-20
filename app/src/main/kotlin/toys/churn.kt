@@ -4,9 +4,10 @@ package toys
 
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import io.redgreen.timelapse.complexity.ParsedCommit
+import io.redgreen.timelapse.complexity.parseAll
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.RepositoryBuilder
-import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.treewalk.TreeWalk
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
@@ -40,7 +41,7 @@ private fun rxComputeMetrics() {
   val allOfIt = Observable
     .fromIterable(getCommitHashesAndLoc())
     .flatMap {
-      val content = getContentAtRevision(it.first)
+      val content = getContentAtRevision(it.first, FILE_PATH)
       val fileRenamed = content == null
       if (fileRenamed) {
         Observable.empty()
@@ -62,9 +63,14 @@ private fun rxComputeMetrics() {
 
 private fun plainComputeMetrics() {
   val timeInMillis = measureTimeMillis {
-    val allOfIt = getCommitHashesAndLoc()
-      .map { commitHashAndLoc -> commitHashAndLoc to getContentAtRevision(commitHashAndLoc.first) }
-      .map { computeMetrics(it.first, it.second) }
+    val allOfIt = getParsedCommitsAndLoc()
+      .map { parsedCommitLoc ->
+        parsedCommitLoc to getContentAtRevision(parsedCommitLoc.first.commitHash.value, parsedCommitLoc.first.filePath)
+      }
+      .map { (parsedCommitLoc, content) ->
+        val commitHashLocPair = parsedCommitLoc.first.commitHash.value to parsedCommitLoc.second
+        computeMetrics(commitHashLocPair, content)
+      }
     printOutput(allOfIt)
   }
   println("\nPlain took ${timeInMillis}ms.\n")
@@ -111,9 +117,51 @@ private fun computeCognitiveComplexity(ktFile: KtFile): Int {
 private fun createKtFile(content: String): KtFile =
   PSI_FACTORY.createFile("FileUnderAnalysis.kt", content)
 
-private fun getContentAtRevision(commitHash: String): String? {
+@SuppressWarnings("TooGenericExceptionCaught", "SwallowedException")
+private fun getContentAtRevision(commitHash: String, filePath: String): String? {
   val revCommit = REPO.parseCommit(ObjectId.fromString(commitHash))
-  return getContent(revCommit)
+  try {
+    TreeWalk.forPath(REPO, filePath, revCommit.tree).use { treeWalk ->
+      val blobId = treeWalk.getObjectId(0)
+      REPO.newObjectReader().use { objectReader ->
+        val objectLoader = objectReader.open(blobId)
+        return String(objectLoader.bytes, StandardCharsets.UTF_8)
+      }
+    }
+  } catch (e: NullPointerException) {
+    println("${revCommit.name}: File not found ($filePath).")
+  } catch (e: IOException) {
+    println(e.message)
+  }
+  return null
+}
+
+private fun getParsedCommitsAndLoc(): List<Pair<ParsedCommit, Int>> {
+  val args = listOf(
+    "git",
+    "--git-dir",
+    REPO_PATH,
+    "log",
+    "--pretty=%H |@| %aN |@| %ae |@| %aI%n%cN |@| %ce |@| %cI%n%s",
+    "--numstat",
+    "--follow",
+    "--",
+    FILE_PATH,
+  )
+
+  val rawText = Runtime.getRuntime().exec(args.toTypedArray())
+    .inputStream
+    .reader()
+    .use { it.readText().trim() }
+
+  val oldestToNewestCommits = parseAll(rawText).reversed()
+  val locs = oldestToNewestCommits
+    .scan(0) { loc, parsedCommit ->
+      loc + parsedCommit.stats.insertions - parsedCommit.stats.deletions
+    }
+    .drop(1)
+
+  return oldestToNewestCommits.zip(locs)
 }
 
 @SuppressWarnings("MagicNumber")
@@ -171,22 +219,4 @@ private fun getNumber(line: String, term: String): Int {
   } else {
     0
   }
-}
-
-@SuppressWarnings("TooGenericExceptionCaught", "SwallowedException")
-private fun getContent(commit: RevCommit): String? {
-  try {
-    TreeWalk.forPath(REPO, FILE_PATH, commit.tree).use { treeWalk ->
-      val blobId = treeWalk.getObjectId(0)
-      REPO.newObjectReader().use { objectReader ->
-        val objectLoader = objectReader.open(blobId)
-        return String(objectLoader.bytes, StandardCharsets.UTF_8)
-      }
-    }
-  } catch (e: NullPointerException) {
-    println("${commit.name}: File renamed, don't know the old name yet.")
-  } catch (e: IOException) {
-    println(e.message)
-  }
-  return null
 }
