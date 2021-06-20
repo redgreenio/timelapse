@@ -7,6 +7,8 @@ import java.time.ZonedDateTime
 private const val DELIMITER = " |@| "
 private const val RAW_COMMIT_LINE_COUNT = 5
 private const val NEWLINE = "\n"
+private const val TAB = "\t"
+private const val SPACE = " "
 
 /**
  * Parser for command,
@@ -17,7 +19,7 @@ internal fun parse(rawCommit: String): ParsedCommit {
   val (sha, authorName, authorEmail, authoredIso) = lines[0].split(DELIMITER)
   val (committerName, committerEmail, committedIso) = lines[1].split(DELIMITER)
   val summary = lines[2]
-  val (insertions, deletions, filePath) = lines.last().trim().replace(Regex(" +"), " ").split(" ")
+  val (insertions, deletions, filePath) = sanitizeStatsLine(lines.last()).split(" ")
 
   return ParsedCommit(
     CommitHash(sha),
@@ -38,4 +40,11 @@ fun parseAll(rawCommits: String): List<ParsedCommit> {
     splitRawCommits.add(allLines.subList(i, i + RAW_COMMIT_LINE_COUNT).joinToString(NEWLINE))
   }
   return splitRawCommits.map(::parse)
+}
+
+private fun sanitizeStatsLine(statsLine: String): String {
+  return statsLine.trim()
+    .replace(Regex(" +"), SPACE) // Multiple spaces with a single space
+    .replaceFirst(TAB, SPACE) // First tab character with a space
+    .replaceFirst(TAB, SPACE) // Second tab character with a space
 }
