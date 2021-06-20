@@ -5,12 +5,14 @@ import io.redgreen.timelapse.git.model.Identity
 import java.time.ZonedDateTime
 
 private const val DELIMITER = " |@| "
+private const val RAW_COMMIT_LINE_COUNT = 5
+private const val NEWLINE = "\n"
 
 /**
  * Parser for command,
  * git log --pretty='%H |@| %aN |@| %ae |@| %aI%n%cN |@| %ce |@| %cI%n%s' --numstat --follow -- <file-path>
  */
-fun parse(rawCommit: String): ParsedCommit {
+internal fun parse(rawCommit: String): ParsedCommit {
   val lines = rawCommit.lines()
   val (sha, authorName, authorEmail, authoredIso) = lines[0].split(DELIMITER)
   val (committerName, committerEmail, committedIso) = lines[1].split(DELIMITER)
@@ -27,4 +29,13 @@ fun parse(rawCommit: String): ParsedCommit {
     filePath,
     Stats(insertions.toInt(), deletions.toInt())
   )
+}
+
+fun parseAll(rawCommits: String): List<ParsedCommit> {
+  val allLines = rawCommits.lines()
+  val splitRawCommits = mutableListOf<String>()
+  for (i in 0..allLines.lastIndex step RAW_COMMIT_LINE_COUNT) {
+    splitRawCommits.add(allLines.subList(i, i + RAW_COMMIT_LINE_COUNT).joinToString(NEWLINE))
+  }
+  return splitRawCommits.map(::parse)
 }
