@@ -101,4 +101,33 @@ class ParserTest {
         )
       )
   }
+
+  @Test
+  fun `it should parse a commit with a stats line containing tabs`() {
+    val rawCommit = """
+      cdf75934bad11807964253b0c74dac2f8d666be5 |@| Ragunath Jawahar |@| ragunath@redgreen.io |@| 2021-06-20T05:38:41+05:30
+      Ragunath Jawahar |@| ragunath@redgreen.io |@| 2021-06-20T05:38:41+05:30
+      refactor: rename classes
+      
+      0	207	app/src/main/java/org/simple/clinic/newentry/PatientEntryScreenController.kt
+    """.trimIndent()
+
+    // when
+    val actualCommit = parse(rawCommit)
+
+    // then
+    val expectedCommit = ParsedCommit(
+      CommitHash("cdf75934bad11807964253b0c74dac2f8d666be5"),
+      "refactor: rename classes",
+      Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
+      ZonedDateTime.of(2021, 6, 20, 5, 38, 41, 0, ZoneOffset.of("+05:30")),
+      Identity("Ragunath Jawahar", "ragunath@redgreen.io"),
+      ZonedDateTime.of(2021, 6, 20, 5, 38, 41, 0, ZoneOffset.of("+05:30")),
+      "app/src/main/java/org/simple/clinic/newentry/PatientEntryScreenController.kt",
+      Stats(0, 207)
+    )
+
+    assertThat(actualCommit)
+      .isEqualTo(expectedCommit)
+  }
 }
