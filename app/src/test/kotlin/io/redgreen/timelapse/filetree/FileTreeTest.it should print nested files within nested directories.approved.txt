@@ -1,0 +1,13 @@
+/Users/MightySquirrel/WorldDomination/s-ray
+├─ app
+│  ├─ src
+│  │  └─ main
+│  │     └─ kotlin
+│  │        └─ HelloWorld.kt
+│  ├─ build.gradle.kts
+│  └─ gradle.properties
+├─ buildscripts
+│  ├─ install-hooks.gradle.kts
+│  └─ quality.gradle.kts
+├─ .editorconfig
+└─ .gitignore

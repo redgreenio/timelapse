@@ -1,0 +1,5 @@
+/Users/MightySquirrel/WorldDomination/s-ray
+├─ app
+│  └─ build.gradle.kts
+├─ .editorconfig
+└─ .gitignore

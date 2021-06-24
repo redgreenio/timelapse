@@ -1,0 +1,3 @@
+/Users/MightySquirrel/WorldDomination/s-ray
+├─ .editorconfig
+└─ .gitignore
