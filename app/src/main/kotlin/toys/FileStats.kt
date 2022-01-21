@@ -27,12 +27,11 @@ private val exclusions = listOf(
 )
 
 fun main() {
-  val isGitHubProject = true
-  val projectName = "intellij-community" // /Users/ragunathjawahar/GitHubProjects/intellij-community/"platform/platform-tests/testData/diff/applyPatch/fileWithGitStyleCyrillicPaths/
-  val jsonOutFile = "/Users/ragunathjawahar/JsProjects/file-stats/files/data.json"
+  // /Users/ragunathjawahar/GitHubProjects/intellij-community/"platform/platform-tests/testData/diff/applyPatch/fileWithGitStyleCyrillicPaths/
+  val projectName = "angular"
+  val jsonOutFile = "/Users/ragunathjawahar/.sunburst/data.json"
 
-  val projectContainerDirectory = if (isGitHubProject) "GitHubProjects" else "IdeaProjects"
-  val gitDirectory = File("/Users/ragunathjawahar/$projectContainerDirectory/$projectName")
+  val gitDirectory = File("/Users/ragunathjawahar/GitHubProjects/$projectName")
 
   val filesInCurrentRevision = getFilesInCurrentRevision("${gitDirectory.absolutePath}/.git")
 
