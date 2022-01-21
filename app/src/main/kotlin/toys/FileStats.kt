@@ -24,6 +24,10 @@ private val exclusions = listOf(
   ".apk",
   ".pdf",
   ".bmp",
+  ".zip",
+  ".war",
+  ".tar",
+  ".tar.gz",
 )
 
 fun main() {
